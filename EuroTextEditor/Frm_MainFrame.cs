@@ -185,9 +185,14 @@ namespace EuroTextEditor
                 ISheet Config = workbook.CreateSheet("Config");
                 ISheet DataInfo = workbook.CreateSheet("Data Info");
 
+                //Output groups and levels
+                string[] outLevels = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\OutputLevels.txt");
+                string[] textGroup = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\Groups.txt");
+                string[] textSections = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\TextSections.txt");
+
                 //Create sheet
                 ExcelWritters writters = new ExcelWritters();
-                writters.CreateMessagesSheet(Messages, workbook);
+                writters.CreateMessagesSheet(Messages, workbook, outLevels, textGroup, textSections);
                 writters.CreateFormatInfoSheet(FormatInfo, workbook);
                 writters.CreateConfigSheet(Config, workbook);
                 writters.CreateDataInfo(DataInfo, workbook);
@@ -198,6 +203,7 @@ namespace EuroTextEditor
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_MainFrame_Load(object sender, EventArgs e)
         {
             //Get Text Sections and levels
@@ -237,6 +243,7 @@ namespace EuroTextEditor
             Label_TotalHashCodes.Text = "Total: " + ListBox_HashCodes.Items.Count;
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void ListBox_HashCodes_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (ListBox_HashCodes.SelectedItems.Count == 1)
@@ -246,6 +253,51 @@ namespace EuroTextEditor
                     Text = ListBox_HashCodes.SelectedItem.ToString()
                 };
                 textEditor.ShowDialog();
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Button_Output_Click(object sender, EventArgs e)
+        {
+            string newFile = @"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\Test.xls";
+            using (FileStream fs = new FileStream(newFile, FileMode.Create, FileAccess.Write))
+            {
+                IWorkbook workbook = new HSSFWorkbook();
+
+                //Create the first sheet that contains all messages
+                ISheet Messages = workbook.CreateSheet("Messages");
+                ISheet FormatInfo = workbook.CreateSheet("Format Info");
+                ISheet Config = workbook.CreateSheet("Config");
+                ISheet DataInfo = workbook.CreateSheet("Data Info");
+
+                //Output groups and levels
+                string[] outLevels = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\OutputLevels.txt");
+                string[] textGroup = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\Groups.txt");
+                string[] textSection = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\TextSections.txt");
+
+                //Create sheet
+                ExcelWritters writters = new ExcelWritters();
+                writters.CreateMessagesSheet(Messages, workbook, outLevels, textGroup, textSection);
+                writters.CreateFormatInfoSheet(FormatInfo, workbook);
+                writters.CreateConfigSheet(Config, workbook);
+                writters.CreateDataInfo(DataInfo, workbook);
+
+                //Write file
+                workbook.Write(fs);
+                workbook.Close();
+            }
+        }
+
+        private void MenuItem_Exit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void MenuItem_SetHashCodesDir_Click(object sender, EventArgs e)
+        {
+            if (OpenFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                GlobalVariables.HashtablesFilePath = OpenFileDialog.FileName;
             }
         }
     }

@@ -62,7 +62,6 @@ namespace EuroTextEditor.Editor
             this.Textbox_FilePath.ReadOnly = true;
             this.Textbox_FilePath.Size = new System.Drawing.Size(348, 20);
             this.Textbox_FilePath.TabIndex = 0;
-            this.Textbox_FilePath.Text = "X:\\Sphinx\\Albert\\hashcodes.h";
             // 
             // GroupBox_AvailableHashCodes
             // 

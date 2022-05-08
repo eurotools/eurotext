@@ -87,6 +87,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\GlobalVariables.cs" />
+    <Compile Include="Classes\IniFile.cs" />
+    <Compile Include="Classes\MostRecentFilesMenu.cs" />
     <Compile Include="Editor\Frm_HashCodesSelector.cs">
       <SubType>Form</SubType>
     </Compile>

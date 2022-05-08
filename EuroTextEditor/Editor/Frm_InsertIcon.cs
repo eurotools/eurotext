@@ -23,7 +23,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_InsertIcon_Load(object sender, EventArgs e)
         {
-            HashCodesControl.LoadHashCodesSections(@"X:\Sphinx\Albert\hashcodes.h");
+            HashCodesControl.LoadHashCodesSections(GlobalVariables.HashtablesFilePath);
             HashCodesControl.DefaultSection = defaultSection;
             HashCodesControl.ForceHashTableSection = forceHashTableSection;
         }

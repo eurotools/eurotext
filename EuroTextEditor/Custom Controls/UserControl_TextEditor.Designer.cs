@@ -69,6 +69,7 @@ namespace EuroTextEditor
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.Textbox = new System.Windows.Forms.RichTextBox();
+            this.MenuItem_ShowGamePadButton = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -279,7 +280,8 @@ namespace EuroTextEditor
             this.DropDown_GamePad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.DropDown_GamePad.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItem_DisableGamepad,
-            this.MenuItem_StopGamepad});
+            this.MenuItem_StopGamepad,
+            this.MenuItem_ShowGamePadButton});
             this.DropDown_GamePad.Image = ((System.Drawing.Image)(resources.GetObject("DropDown_GamePad.Image")));
             this.DropDown_GamePad.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DropDown_GamePad.Name = "DropDown_GamePad";
@@ -289,15 +291,15 @@ namespace EuroTextEditor
             // MenuItem_DisableGamepad
             // 
             this.MenuItem_DisableGamepad.Name = "MenuItem_DisableGamepad";
-            this.MenuItem_DisableGamepad.Size = new System.Drawing.Size(225, 22);
-            this.MenuItem_DisableGamepad.Text = "Disable all gamepad testing";
+            this.MenuItem_DisableGamepad.Size = new System.Drawing.Size(227, 22);
+            this.MenuItem_DisableGamepad.Text = "Disable All Gamepad Testing";
             this.MenuItem_DisableGamepad.Click += new System.EventHandler(this.MenuItem_DisableGamepad_Click);
             // 
             // MenuItem_StopGamepad
             // 
             this.MenuItem_StopGamepad.Name = "MenuItem_StopGamepad";
-            this.MenuItem_StopGamepad.Size = new System.Drawing.Size(225, 22);
-            this.MenuItem_StopGamepad.Text = "Stop Gamepad being hidden";
+            this.MenuItem_StopGamepad.Size = new System.Drawing.Size(227, 22);
+            this.MenuItem_StopGamepad.Text = "Stop Gamepad Being Hidden";
             this.MenuItem_StopGamepad.Click += new System.EventHandler(this.MenuItem_StopGamepad_Click);
             // 
             // toolStrip2
@@ -412,6 +414,13 @@ namespace EuroTextEditor
             this.Textbox.TextChanged += new System.EventHandler(this.Textbox_TextChanged);
             this.Textbox.VisibleChanged += new System.EventHandler(this.Textbox_VisibleChanged);
             // 
+            // MenuItem_ShowGamePadButton
+            // 
+            this.MenuItem_ShowGamePadButton.Name = "MenuItem_ShowGamePadButton";
+            this.MenuItem_ShowGamePadButton.Size = new System.Drawing.Size(227, 22);
+            this.MenuItem_ShowGamePadButton.Text = "Show Gamepad Button";
+            this.MenuItem_ShowGamePadButton.Click += new System.EventHandler(this.MenuItem_ShowGamePadButton_Click);
+            // 
             // UserControl_TextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -421,6 +430,7 @@ namespace EuroTextEditor
             this.Controls.Add(this.toolStrip1);
             this.Name = "UserControl_TextEditor";
             this.Size = new System.Drawing.Size(529, 346);
+            this.Load += new System.EventHandler(this.UserControl_TextEditor_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.toolStrip2.ResumeLayout(false);
@@ -471,5 +481,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.ToolStripMenuItem MenuItem_EPO;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_InsertTextString;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_FadeIn;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_ShowGamePadButton;
     }
 }

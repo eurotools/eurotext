@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -11,7 +12,6 @@ namespace EuroTextEditor
     public partial class UserControl_TextEditor : UserControl
     {
         //-------------------------------------------------------------------------------------------------------------------------------
-        //private readonly string fontColorRegexPattern = @"(?s)(?=(<FC\s?([0-9]+)\s?,\s?([0-9]+)\s?,\s?([0-9]+)\s?>(?<inner>(?>(?!<FC\b|<END\s?FC>).|(?<c>)<FC\b|(?<b-c>)<END\s?FC>)*)<END\s?FC>))";
         private readonly string fontColorRegexPattern = @"(?s)(?=(<FC\s+([0-9]+)\s?,\s?([0-9]+)\s?,\s?([0-9]+)\s?>(?<inner>(?>(?!<FC\b|<END FC>).|(?<c>)<FC\b|(?<b-c>)<END FC>)*)(<END FC>|.*)))";
         //private readonly string tagsPattern = @"<.*?>";
 
@@ -19,6 +19,12 @@ namespace EuroTextEditor
         public UserControl_TextEditor()
         {
             InitializeComponent();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void UserControl_TextEditor_Load(object sender, EventArgs e)
+        {
+            Textbox.AutoWordSelection = false;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -35,22 +41,29 @@ namespace EuroTextEditor
         private void MenuItem_FontType_Click(object sender, EventArgs e)
         {
             //Open selector
-            Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Font", true)
+            if (File.Exists(GlobalVariables.HashtablesFilePath))
             {
-                Text = "Font Type"
-            };
-            if (selector.ShowDialog() == DialogResult.OK)
+                Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Font", true)
+                {
+                    Text = "Font Type"
+                };
+                if (selector.ShowDialog() == DialogResult.OK)
+                {
+                    //Add tags
+                    if (Textbox.SelectedText.Length > 0)
+                    {
+                        Textbox.SelectedText = string.Join("", "<FT ", selector.SelectedHashCode, ">", Textbox.SelectedText, "<END FT>");
+                    }
+                    else
+                    {
+                        string replacedText = string.Join("", "<FT ", selector.SelectedHashCode, ">");
+                        Textbox.SelectedText = replacedText;
+                    }
+                }
+            }
+            else
             {
-                //Add tags
-                if (Textbox.SelectedText.Length > 0)
-                {
-                    Textbox.SelectedText = string.Join("", "<FT ", selector.SelectedHashCode, ">", Textbox.SelectedText, "<END FT>");
-                }
-                else
-                {
-                    string replacedText = string.Join("", "<FT ", selector.SelectedHashCode, ">");
-                    Textbox.SelectedText = replacedText;
-                }
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -108,15 +121,22 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_EffectString_Click(object sender, EventArgs e)
         {
-            //Open selector
-            Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Text", true)
+            if (File.Exists(GlobalVariables.HashtablesFilePath))
             {
-                Text = "Insert Text Effect"
-            };
-            if (selector.ShowDialog() == DialogResult.OK)
+                //Open selector
+                Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Text", true)
+                {
+                    Text = "Insert Text Effect"
+                };
+                if (selector.ShowDialog() == DialogResult.OK)
+                {
+                    string replacedText = string.Join("", "<ES ", selector.SelectedHashCode, ">");
+                    Textbox.SelectedText = replacedText;
+                }
+            }
+            else
             {
-                string replacedText = string.Join("", "<ES ", selector.SelectedHashCode, ">");
-                Textbox.SelectedText = replacedText;
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -153,24 +173,38 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_InsertButton_Click(object sender, EventArgs e)
         {
-            Frm_TextEditor_Buttons buttonsForm = new Frm_TextEditor_Buttons();
-            if (buttonsForm.ShowDialog() == DialogResult.OK)
+            if (File.Exists(GlobalVariables.HashtablesFilePath))
             {
-                //Add tags
-                string replacedText = buttonsForm.ButtonsText;
-                Textbox.SelectedText = replacedText;
+                Frm_TextEditor_Buttons buttonsForm = new Frm_TextEditor_Buttons();
+                if (buttonsForm.ShowDialog() == DialogResult.OK)
+                {
+                    //Add tags
+                    string replacedText = buttonsForm.ButtonsText;
+                    Textbox.SelectedText = replacedText;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_ItemIcon_Click(object sender, EventArgs e)
         {
-            Frm_InsertIcon buttonsForm = new Frm_InsertIcon("HT_Texture", true);
-            if (buttonsForm.ShowDialog() == DialogResult.OK)
+            if (File.Exists(GlobalVariables.HashtablesFilePath))
             {
-                //Add tags
-                string replacedText = buttonsForm.SelectedIcon;
-                Textbox.SelectedText = replacedText;
+                Frm_InsertIcon buttonsForm = new Frm_InsertIcon("HT_Texture", true);
+                if (buttonsForm.ShowDialog() == DialogResult.OK)
+                {
+                    //Add tags
+                    string replacedText = buttonsForm.SelectedIcon;
+                    Textbox.SelectedText = replacedText;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -204,28 +238,63 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_ShowObjective_Click(object sender, EventArgs e)
         {
-            //Open selector
-            Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Objective", true)
+            if (File.Exists(GlobalVariables.HashtablesFilePath))
             {
-                Text = "Show Objective"
-            };
-            if (selector.ShowDialog() == DialogResult.OK)
+                //Open selector
+                Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Objective", true)
+                {
+                    Text = "Show Objective"
+                };
+                if (selector.ShowDialog() == DialogResult.OK)
+                {
+                    Textbox.SelectedText = string.Join("", "<SO ", selector.SelectedHashCode, ">");
+                }
+            }
+            else
             {
-                Textbox.SelectedText = string.Join("", "<SO ", selector.SelectedHashCode, ">");
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_InsertTextString_Click(object sender, EventArgs e)
         {
-            //Open selector
-            Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Objective", true)
+            if (File.Exists(GlobalVariables.HashtablesFilePath))
             {
-                Text = "Inserts Text String"
-            };
-            if (selector.ShowDialog() == DialogResult.OK)
+                //Open selector
+                Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Objective", true)
+                {
+                    Text = "Inserts Text String"
+                };
+                if (selector.ShowDialog() == DialogResult.OK)
+                {
+                    Textbox.SelectedText = string.Join("", "<IS ", selector.SelectedHashCode, ">");
+                }
+            }
+            else
             {
-                Textbox.SelectedText = string.Join("", "<IS ", selector.SelectedHashCode, ">");
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_ShowGamePadButton_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(GlobalVariables.HashtablesFilePath))
+            {
+                //Open selector
+                Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Action", true)
+                {
+                    Text = "Show Gamepad Button"
+                };
+                if (selector.ShowDialog() == DialogResult.OK)
+                {
+                    Textbox.SelectedText = string.Join("", "<SB ", selector.SelectedHashCode, ">");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

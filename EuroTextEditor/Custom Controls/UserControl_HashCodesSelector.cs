@@ -50,6 +50,7 @@ namespace EuroTextEditor.Editor
         public UserControl_HashCodesSelector()
         {
             InitializeComponent();
+            Textbox_FilePath.Text = GlobalVariables.HashtablesFilePath;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -86,7 +87,7 @@ namespace EuroTextEditor.Editor
         {
             //Get all sections
             HashSet<string> AvailableHashCodes = new HashSet<string>();
-            using (StreamReader file = new StreamReader(Textbox_FilePath.Text))
+            using (StreamReader file = new StreamReader(GlobalVariables.HashtablesFilePath))
             {
                 string ln;
 
