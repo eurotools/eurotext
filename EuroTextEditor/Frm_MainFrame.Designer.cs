@@ -128,6 +128,7 @@ namespace EuroTextEditor
             this.Button_CreateNewGroup.TabIndex = 4;
             this.Button_CreateNewGroup.Text = "Create New Group";
             this.Button_CreateNewGroup.UseVisualStyleBackColor = true;
+            this.Button_CreateNewGroup.Click += new System.EventHandler(this.Button_CreateNewGroup_Click);
             // 
             // ListBox_TextGroups
             // 
@@ -138,8 +139,10 @@ namespace EuroTextEditor
             this.ListBox_TextGroups.HorizontalScrollbar = true;
             this.ListBox_TextGroups.Location = new System.Drawing.Point(6, 48);
             this.ListBox_TextGroups.Name = "ListBox_TextGroups";
+            this.ListBox_TextGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.ListBox_TextGroups.Size = new System.Drawing.Size(240, 537);
             this.ListBox_TextGroups.TabIndex = 0;
+            this.ListBox_TextGroups.DoubleClick += new System.EventHandler(this.ListBox_TextGroups_DoubleClick);
             // 
             // MainMenu
             // 
@@ -164,11 +167,13 @@ namespace EuroTextEditor
             // 
             this.MenuItem_OpenProject.Index = 0;
             this.MenuItem_OpenProject.Text = "Open Project";
+            this.MenuItem_OpenProject.Click += new System.EventHandler(this.MenuItem_OpenProject_Click);
             // 
             // MenuItem_NewProject
             // 
             this.MenuItem_NewProject.Index = 1;
             this.MenuItem_NewProject.Text = "New Project";
+            this.MenuItem_NewProject.Click += new System.EventHandler(this.MenuItem_NewProject_Click);
             // 
             // MenuItem_Divider1
             // 
@@ -248,6 +253,7 @@ namespace EuroTextEditor
             this.ListBox_HashCodes.HorizontalScrollbar = true;
             this.ListBox_HashCodes.Location = new System.Drawing.Point(6, 48);
             this.ListBox_HashCodes.Name = "ListBox_HashCodes";
+            this.ListBox_HashCodes.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.ListBox_HashCodes.Size = new System.Drawing.Size(260, 537);
             this.ListBox_HashCodes.TabIndex = 1;
             this.ListBox_HashCodes.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox_HashCodes_MouseDoubleClick);
@@ -399,8 +405,8 @@ namespace EuroTextEditor
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Menu = this.MainMenu;
             this.Name = "Frm_MainFrame";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EuroText Editor";
-            this.Load += new System.EventHandler(this.Frm_MainFrame_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_ExcelSheet)).EndInit();
             this.GroupBox_TextGroups.ResumeLayout(false);
             this.GroupBox_TextGroups.PerformLayout();
@@ -420,9 +426,7 @@ namespace EuroTextEditor
         private System.Windows.Forms.Button Button_ReadTable;
         private System.Windows.Forms.DataGridView DataGridView_ExcelSheet;
         private System.Windows.Forms.GroupBox GroupBox_TextGroups;
-        private System.Windows.Forms.Label Label_Total_Groups;
         private System.Windows.Forms.Button Button_CreateNewGroup;
-        private System.Windows.Forms.ListBox ListBox_TextGroups;
         private System.Windows.Forms.MainMenu MainMenu;
         private System.Windows.Forms.MenuItem MenuItem_File;
         private System.Windows.Forms.MenuItem MenuItem_OpenProject;
@@ -431,12 +435,9 @@ namespace EuroTextEditor
         private System.Windows.Forms.MenuItem MenuItem_Help;
         private System.Windows.Forms.MenuItem MenuItem_About;
         private System.Windows.Forms.GroupBox GroupBox_HashCodes;
-        private System.Windows.Forms.Label Label_TotalHashCodes;
-        private System.Windows.Forms.ListBox ListBox_HashCodes;
         private System.Windows.Forms.Button Button_UpdateHashCodes;
         private System.Windows.Forms.Button Button_GetGroups;
         private System.Windows.Forms.Button Button_GetMessages;
-        private System.Windows.Forms.ListView ListView_SectionsAndLevels;
         private System.Windows.Forms.ColumnHeader Col_OutputLevel;
         private System.Windows.Forms.ColumnHeader Col_TextSection;
         private System.Windows.Forms.GroupBox Groupbox_Output;
@@ -451,6 +452,11 @@ namespace EuroTextEditor
         private System.Windows.Forms.SaveFileDialog SaveFileDialog;
         private System.Windows.Forms.CheckBox Checkbox_DataInfoSheet;
         private System.Windows.Forms.CheckBox Checkbox_FormatInfo;
+        protected internal System.Windows.Forms.Label Label_Total_Groups;
+        protected internal System.Windows.Forms.ListBox ListBox_TextGroups;
+        protected internal System.Windows.Forms.Label Label_TotalHashCodes;
+        protected internal System.Windows.Forms.ListBox ListBox_HashCodes;
+        protected internal System.Windows.Forms.ListView ListView_SectionsAndLevels;
     }
 }
 

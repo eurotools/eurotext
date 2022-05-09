@@ -13,7 +13,7 @@ namespace EuroTextEditor
     partial class ExcelWritters
     {
         //-------------------------------------------------------------------------------------------------------------------------------
-        internal void CreateMessagesSheet(ISheet Messages, IWorkbook workbook, string[] outLevels, string[] textGroup, string[] textSections, DoWorkEventArgs e, BackgroundWorker asyncWorker)
+        internal void CreateMessagesSheet(ISheet Messages, IWorkbook workbook, string[] outLevels, string[] textGroup, string[] textSections, BackgroundWorker asyncWorker)
         {
             //-------------------------------------------------------------------------------------------
             //  Fonts
@@ -412,7 +412,7 @@ namespace EuroTextEditor
 
             //Print output levels
             int lastColIndex = 15;
-            PrintColorsSection(outLevels, languagesArray.Length, orangeLightBackgroundUnderline, colorsLevelsVerticalBold, headerRow, orangeLightBackgroundUnderline, true); ;
+            PrintColorsSection(outLevels, languagesArray.Length, orangeLightBackgroundUnderline, colorsLevelsVerticalBold, headerRow, true); ;
             lastColIndex += outLevels.Length;
 
             //Print GameData
@@ -708,7 +708,7 @@ namespace EuroTextEditor
                                 }
 
                                 //Print Section
-                                PrintColorsSection(outLevels, languagesArray.Length, orangeLightBackground, colorsLevels, headerRow, orangeLightBackgroundUnderline);
+                                PrintColorsSection(outLevels, languagesArray.Length, orangeLightBackground, colorsLevels, headerRow);
 
                                 //Set bit to the output group
                                 if (!string.IsNullOrEmpty(textObj.OutputSection))
@@ -783,7 +783,7 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void PrintColorsSection(string[] outLevels, int languagesArrayLength, ICellStyle firstColor, ICellStyle[] colorsLevels, IRow headerRow, ICellStyle orangeLightBackgroundUnderline, bool printText = false)
+        private void PrintColorsSection(string[] outLevels, int languagesArrayLength, ICellStyle firstColor, ICellStyle[] colorsLevels, IRow headerRow, bool printText = false)
         {
             int k = 0;
             for (int i = 0; i < outLevels.Length; i++)

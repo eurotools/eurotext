@@ -121,23 +121,29 @@
     <Compile Include="Custom Controls\UserControl_HashCodesSelector.Designer.cs">
       <DependentUpon>UserControl_HashCodesSelector.cs</DependentUpon>
     </Compile>
-    <Compile Include="Excel Writers\Excel_Writters_ConfigSheet.cs" />
-    <Compile Include="Excel Writers\Excel_Writters_DataInfo.cs" />
-    <Compile Include="Excel Writers\Excel_Writters_FormatSheet.cs" />
-    <Compile Include="Excel Writers\Excel_Writters_MessagesSheet.cs" />
-    <Compile Include="EXText\EXText_Reader.cs" />
+    <Compile Include="Classes\Excel Writers\Excel_Writters_ConfigSheet.cs" />
+    <Compile Include="Classes\Excel Writers\Excel_Writters_DataInfo.cs" />
+    <Compile Include="Classes\Excel Writers\Excel_Writters_FormatSheet.cs" />
+    <Compile Include="Classes\Excel Writers\Excel_Writters_MessagesSheet.cs" />
+    <Compile Include="Classes\EXText\EXText_Reader.cs" />
     <Compile Include="Editor\SubForms\Frm_FadeIn.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editor\SubForms\Frm_FadeIn.Designer.cs">
       <DependentUpon>Frm_FadeIn.cs</DependentUpon>
     </Compile>
-    <Compile Include="EXText\EXText_Writer.cs" />
-    <Compile Include="Frm_Exporter.cs">
+    <Compile Include="Classes\EXText\EXText_Writer.cs" />
+    <Compile Include="Forms\Frm_Exporter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Frm_Exporter.Designer.cs">
+    <Compile Include="Forms\Frm_Exporter.Designer.cs">
       <DependentUpon>Frm_Exporter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Frm_GroupsViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Frm_GroupsViewer.Designer.cs">
+      <DependentUpon>Frm_GroupsViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Frm_MainFrame.cs">
       <SubType>Form</SubType>
@@ -151,7 +157,13 @@
     <Compile Include="Editor\Frm_TextEditor.Designer.cs">
       <DependentUpon>Frm_TextEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Objects\EXText.cs" />
+    <Compile Include="Classes\Objects\EXText.cs" />
+    <Compile Include="Frm_Splash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm_Splash.Designer.cs">
+      <DependentUpon>Frm_Splash.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Custom Controls\UserControl_TextEditor.cs">
@@ -178,14 +190,20 @@
     <EmbeddedResource Include="Editor\SubForms\Frm_FadeIn.resx">
       <DependentUpon>Frm_FadeIn.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Frm_Exporter.resx">
+    <EmbeddedResource Include="Forms\Frm_Exporter.resx">
       <DependentUpon>Frm_Exporter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Frm_GroupsViewer.resx">
+      <DependentUpon>Frm_GroupsViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_MainFrame.resx">
       <DependentUpon>Frm_MainFrame.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor\Frm_TextEditor.resx">
       <DependentUpon>Frm_TextEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frm_Splash.resx">
+      <DependentUpon>Frm_Splash.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

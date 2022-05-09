@@ -13,7 +13,16 @@ namespace EuroTextEditor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Frm_MainFrame());
+
+            //Show Splash Screen
+            Frm_MainFrame mainForm = new Frm_MainFrame();
+            using (Frm_Splash programSplash = new Frm_Splash(mainForm))
+            {
+                programSplash.ShowDialog();
+            }
+
+            //Start application
+            Application.Run(mainForm);
         }
     }
 }

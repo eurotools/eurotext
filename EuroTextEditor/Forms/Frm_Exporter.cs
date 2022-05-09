@@ -60,7 +60,7 @@ namespace EuroTextEditor
 
                 //Create sheet
                 ISheet Messages = workbook.CreateSheet("Messages");
-                writters.CreateMessagesSheet(Messages, workbook, outLevels, textGroup, textSection, e, BackgroundWorker);
+                writters.CreateMessagesSheet(Messages, workbook, outLevels, textGroup, textSection, BackgroundWorker);
 
                 if (includeFormatInfoSheet)
                 {

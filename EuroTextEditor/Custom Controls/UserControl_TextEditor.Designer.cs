@@ -30,7 +30,7 @@ namespace EuroTextEditor
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControl_TextEditor));
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.Toolbar1 = new System.Windows.Forms.ToolStrip();
             this.DropDown_Insert = new System.Windows.Forms.ToolStripDropDownButton();
             this.MenuItem_ExitButton = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_PageDownButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,16 +47,17 @@ namespace EuroTextEditor
             this.DropDown_Effect = new System.Windows.Forms.ToolStripDropDownButton();
             this.MenuItem_EffectString = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_FadeIn = new System.Windows.Forms.ToolStripMenuItem();
+            this.DropDown_GamePad = new System.Windows.Forms.ToolStripDropDownButton();
+            this.MenuItem_DisableGamepad = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_StopGamepad = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_ShowGamePadButton = new System.Windows.Forms.ToolStripMenuItem();
             this.DropDown_Others = new System.Windows.Forms.ToolStripDropDownButton();
             this.MenuItem_CenterText = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_ShowObjective = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Wait = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_EFF = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_EPO = new System.Windows.Forms.ToolStripMenuItem();
-            this.DropDown_GamePad = new System.Windows.Forms.ToolStripDropDownButton();
-            this.MenuItem_DisableGamepad = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_StopGamepad = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.Toolbar2 = new System.Windows.Forms.ToolStrip();
             this.ToolButton_Cut = new System.Windows.Forms.ToolStripButton();
             this.ToolButton_Copy = new System.Windows.Forms.ToolStripButton();
             this.ToolButton_Paste = new System.Windows.Forms.ToolStripButton();
@@ -64,30 +65,43 @@ namespace EuroTextEditor
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolButton_Undo = new System.Windows.Forms.ToolStripButton();
             this.ToolButton_Redo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.ToolButton_SelectAll = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolButton_FontSize = new System.Windows.Forms.ToolStripButton();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.Textbox = new System.Windows.Forms.RichTextBox();
-            this.MenuItem_ShowGamePadButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip1.SuspendLayout();
-            this.toolStrip2.SuspendLayout();
+            this.ContextMenu_RichTextbox = new System.Windows.Forms.ContextMenu();
+            this.MenuItem_Cut = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Copy = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Paste = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Delete = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Separator = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Undo = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Redo = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Separator1 = new System.Windows.Forms.MenuItem();
+            this.MenuItem_SelectAll = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Separator2 = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Font = new System.Windows.Forms.MenuItem();
+            this.Toolbar1.SuspendLayout();
+            this.Toolbar2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // toolStrip1
+            // Toolbar1
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Toolbar1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.DropDown_Insert,
             this.DropDown_Icons,
             this.DropDown_Button,
             this.DropDown_Effect,
-            this.DropDown_Others,
-            this.DropDown_GamePad});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(529, 25);
-            this.toolStrip1.TabIndex = 2;
-            this.toolStrip1.Text = "MainMenu";
+            this.DropDown_GamePad,
+            this.DropDown_Others});
+            this.Toolbar1.Location = new System.Drawing.Point(0, 0);
+            this.Toolbar1.Name = "Toolbar1";
+            this.Toolbar1.Size = new System.Drawing.Size(529, 25);
+            this.Toolbar1.TabIndex = 0;
+            this.Toolbar1.Text = "MainMenu";
             // 
             // DropDown_Insert
             // 
@@ -225,6 +239,40 @@ namespace EuroTextEditor
             this.MenuItem_FadeIn.Text = "Fade In";
             this.MenuItem_FadeIn.Click += new System.EventHandler(this.MenuItem_FadeIn_Click);
             // 
+            // DropDown_GamePad
+            // 
+            this.DropDown_GamePad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.DropDown_GamePad.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItem_DisableGamepad,
+            this.MenuItem_StopGamepad,
+            this.MenuItem_ShowGamePadButton});
+            this.DropDown_GamePad.Image = ((System.Drawing.Image)(resources.GetObject("DropDown_GamePad.Image")));
+            this.DropDown_GamePad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.DropDown_GamePad.Name = "DropDown_GamePad";
+            this.DropDown_GamePad.Size = new System.Drawing.Size(71, 22);
+            this.DropDown_GamePad.Text = "Gamepad";
+            // 
+            // MenuItem_DisableGamepad
+            // 
+            this.MenuItem_DisableGamepad.Name = "MenuItem_DisableGamepad";
+            this.MenuItem_DisableGamepad.Size = new System.Drawing.Size(227, 22);
+            this.MenuItem_DisableGamepad.Text = "Disable All Gamepad Testing";
+            this.MenuItem_DisableGamepad.Click += new System.EventHandler(this.MenuItem_DisableGamepad_Click);
+            // 
+            // MenuItem_StopGamepad
+            // 
+            this.MenuItem_StopGamepad.Name = "MenuItem_StopGamepad";
+            this.MenuItem_StopGamepad.Size = new System.Drawing.Size(227, 22);
+            this.MenuItem_StopGamepad.Text = "Stop Gamepad Being Hidden";
+            this.MenuItem_StopGamepad.Click += new System.EventHandler(this.MenuItem_StopGamepad_Click);
+            // 
+            // MenuItem_ShowGamePadButton
+            // 
+            this.MenuItem_ShowGamePadButton.Name = "MenuItem_ShowGamePadButton";
+            this.MenuItem_ShowGamePadButton.Size = new System.Drawing.Size(227, 22);
+            this.MenuItem_ShowGamePadButton.Text = "Show Gamepad Button";
+            this.MenuItem_ShowGamePadButton.Click += new System.EventHandler(this.MenuItem_ShowGamePadButton_Click);
+            // 
             // DropDown_Others
             // 
             this.DropDown_Others.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -275,36 +323,9 @@ namespace EuroTextEditor
             this.MenuItem_EPO.Text = "Enable Page Buttons Override";
             this.MenuItem_EPO.Click += new System.EventHandler(this.MenuItem_EPO_Click);
             // 
-            // DropDown_GamePad
+            // Toolbar2
             // 
-            this.DropDown_GamePad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.DropDown_GamePad.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItem_DisableGamepad,
-            this.MenuItem_StopGamepad,
-            this.MenuItem_ShowGamePadButton});
-            this.DropDown_GamePad.Image = ((System.Drawing.Image)(resources.GetObject("DropDown_GamePad.Image")));
-            this.DropDown_GamePad.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.DropDown_GamePad.Name = "DropDown_GamePad";
-            this.DropDown_GamePad.Size = new System.Drawing.Size(71, 22);
-            this.DropDown_GamePad.Text = "Gamepad";
-            // 
-            // MenuItem_DisableGamepad
-            // 
-            this.MenuItem_DisableGamepad.Name = "MenuItem_DisableGamepad";
-            this.MenuItem_DisableGamepad.Size = new System.Drawing.Size(227, 22);
-            this.MenuItem_DisableGamepad.Text = "Disable All Gamepad Testing";
-            this.MenuItem_DisableGamepad.Click += new System.EventHandler(this.MenuItem_DisableGamepad_Click);
-            // 
-            // MenuItem_StopGamepad
-            // 
-            this.MenuItem_StopGamepad.Name = "MenuItem_StopGamepad";
-            this.MenuItem_StopGamepad.Size = new System.Drawing.Size(227, 22);
-            this.MenuItem_StopGamepad.Text = "Stop Gamepad Being Hidden";
-            this.MenuItem_StopGamepad.Click += new System.EventHandler(this.MenuItem_StopGamepad_Click);
-            // 
-            // toolStrip2
-            // 
-            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Toolbar2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolButton_Cut,
             this.ToolButton_Copy,
             this.ToolButton_Paste,
@@ -312,13 +333,15 @@ namespace EuroTextEditor
             this.toolStripSeparator1,
             this.ToolButton_Undo,
             this.ToolButton_Redo,
+            this.toolStripSeparator3,
+            this.ToolButton_SelectAll,
             this.toolStripSeparator2,
             this.ToolButton_FontSize});
-            this.toolStrip2.Location = new System.Drawing.Point(0, 25);
-            this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(529, 25);
-            this.toolStrip2.TabIndex = 4;
-            this.toolStrip2.Text = "toolStrip2";
+            this.Toolbar2.Location = new System.Drawing.Point(0, 25);
+            this.Toolbar2.Name = "Toolbar2";
+            this.Toolbar2.Size = new System.Drawing.Size(529, 25);
+            this.Toolbar2.TabIndex = 1;
+            this.Toolbar2.Text = "toolStrip2";
             // 
             // ToolButton_Cut
             // 
@@ -385,6 +408,21 @@ namespace EuroTextEditor
             this.ToolButton_Redo.Text = "Redo";
             this.ToolButton_Redo.Click += new System.EventHandler(this.ToolButton_Redo_Click);
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // ToolButton_SelectAll
+            // 
+            this.ToolButton_SelectAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ToolButton_SelectAll.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_SelectAll.Image")));
+            this.ToolButton_SelectAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolButton_SelectAll.Name = "ToolButton_SelectAll";
+            this.ToolButton_SelectAll.Size = new System.Drawing.Size(59, 22);
+            this.ToolButton_SelectAll.Text = "Select All";
+            this.ToolButton_SelectAll.Click += new System.EventHandler(this.ToolButton_SelectAll_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -405,36 +443,108 @@ namespace EuroTextEditor
             this.Textbox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.Textbox.ContextMenu = this.ContextMenu_RichTextbox;
             this.Textbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Textbox.Location = new System.Drawing.Point(0, 53);
             this.Textbox.Name = "Textbox";
             this.Textbox.Size = new System.Drawing.Size(529, 293);
-            this.Textbox.TabIndex = 5;
+            this.Textbox.TabIndex = 2;
             this.Textbox.Text = "";
             this.Textbox.TextChanged += new System.EventHandler(this.Textbox_TextChanged);
             this.Textbox.VisibleChanged += new System.EventHandler(this.Textbox_VisibleChanged);
             // 
-            // MenuItem_ShowGamePadButton
+            // ContextMenu_RichTextbox
             // 
-            this.MenuItem_ShowGamePadButton.Name = "MenuItem_ShowGamePadButton";
-            this.MenuItem_ShowGamePadButton.Size = new System.Drawing.Size(227, 22);
-            this.MenuItem_ShowGamePadButton.Text = "Show Gamepad Button";
-            this.MenuItem_ShowGamePadButton.Click += new System.EventHandler(this.MenuItem_ShowGamePadButton_Click);
+            this.ContextMenu_RichTextbox.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.MenuItem_Cut,
+            this.MenuItem_Copy,
+            this.MenuItem_Paste,
+            this.MenuItem_Delete,
+            this.MenuItem_Separator,
+            this.MenuItem_Undo,
+            this.MenuItem_Redo,
+            this.MenuItem_Separator1,
+            this.MenuItem_SelectAll,
+            this.MenuItem_Separator2,
+            this.MenuItem_Font});
+            // 
+            // MenuItem_Cut
+            // 
+            this.MenuItem_Cut.Index = 0;
+            this.MenuItem_Cut.Text = "Cut";
+            this.MenuItem_Cut.Click += new System.EventHandler(this.MenuItem_Cut_Click);
+            // 
+            // MenuItem_Copy
+            // 
+            this.MenuItem_Copy.Index = 1;
+            this.MenuItem_Copy.Text = "Copy";
+            this.MenuItem_Copy.Click += new System.EventHandler(this.MenuItem_Copy_Click);
+            // 
+            // MenuItem_Paste
+            // 
+            this.MenuItem_Paste.Index = 2;
+            this.MenuItem_Paste.Text = "Paste";
+            this.MenuItem_Paste.Click += new System.EventHandler(this.MenuItem_Paste_Click);
+            // 
+            // MenuItem_Delete
+            // 
+            this.MenuItem_Delete.Index = 3;
+            this.MenuItem_Delete.Text = "Delete";
+            this.MenuItem_Delete.Click += new System.EventHandler(this.MenuItem_Delete_Click);
+            // 
+            // MenuItem_Separator
+            // 
+            this.MenuItem_Separator.Index = 4;
+            this.MenuItem_Separator.Text = "-";
+            // 
+            // MenuItem_Undo
+            // 
+            this.MenuItem_Undo.Index = 5;
+            this.MenuItem_Undo.Text = "Undo";
+            this.MenuItem_Undo.Click += new System.EventHandler(this.MenuItem_Undo_Click);
+            // 
+            // MenuItem_Redo
+            // 
+            this.MenuItem_Redo.Index = 6;
+            this.MenuItem_Redo.Text = "Redo";
+            this.MenuItem_Redo.Click += new System.EventHandler(this.MenuItem_Redo_Click);
+            // 
+            // MenuItem_Separator1
+            // 
+            this.MenuItem_Separator1.Index = 7;
+            this.MenuItem_Separator1.Text = "-";
+            // 
+            // MenuItem_SelectAll
+            // 
+            this.MenuItem_SelectAll.Index = 8;
+            this.MenuItem_SelectAll.Text = "Select All";
+            this.MenuItem_SelectAll.Click += new System.EventHandler(this.MenuItem_SelectAll_Click);
+            // 
+            // MenuItem_Separator2
+            // 
+            this.MenuItem_Separator2.Index = 9;
+            this.MenuItem_Separator2.Text = "-";
+            // 
+            // MenuItem_Font
+            // 
+            this.MenuItem_Font.Index = 10;
+            this.MenuItem_Font.Text = "Font";
+            this.MenuItem_Font.Click += new System.EventHandler(this.MenuItem_Font_Click);
             // 
             // UserControl_TextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.Textbox);
-            this.Controls.Add(this.toolStrip2);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.Toolbar2);
+            this.Controls.Add(this.Toolbar1);
             this.Name = "UserControl_TextEditor";
             this.Size = new System.Drawing.Size(529, 346);
             this.Load += new System.EventHandler(this.UserControl_TextEditor_Load);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            this.toolStrip2.ResumeLayout(false);
-            this.toolStrip2.PerformLayout();
+            this.Toolbar1.ResumeLayout(false);
+            this.Toolbar1.PerformLayout();
+            this.Toolbar2.ResumeLayout(false);
+            this.Toolbar2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -442,7 +552,7 @@ namespace EuroTextEditor
 
         #endregion
 
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip Toolbar1;
         private System.Windows.Forms.ToolStripDropDownButton DropDown_Insert;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_ExitButton;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_PageDownButton;
@@ -452,7 +562,7 @@ namespace EuroTextEditor
         private System.Windows.Forms.ToolStripMenuItem MenuItem_NewLine;
         private System.Windows.Forms.ToolStripDropDownButton DropDown_Icons;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_ItemIcon;
-        private System.Windows.Forms.ToolStrip toolStrip2;
+        private System.Windows.Forms.ToolStrip Toolbar2;
         private System.Windows.Forms.ToolStripButton ToolButton_Cut;
         private System.Windows.Forms.ToolStripButton ToolButton_Copy;
         private System.Windows.Forms.ToolStripButton ToolButton_Paste;
@@ -482,5 +592,19 @@ namespace EuroTextEditor
         private System.Windows.Forms.ToolStripMenuItem MenuItem_InsertTextString;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_FadeIn;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_ShowGamePadButton;
+        private System.Windows.Forms.ContextMenu ContextMenu_RichTextbox;
+        private System.Windows.Forms.MenuItem MenuItem_Cut;
+        private System.Windows.Forms.MenuItem MenuItem_Copy;
+        private System.Windows.Forms.MenuItem MenuItem_Paste;
+        private System.Windows.Forms.MenuItem MenuItem_Delete;
+        private System.Windows.Forms.MenuItem MenuItem_Separator;
+        private System.Windows.Forms.MenuItem MenuItem_Undo;
+        private System.Windows.Forms.MenuItem MenuItem_Redo;
+        private System.Windows.Forms.MenuItem MenuItem_Separator1;
+        private System.Windows.Forms.MenuItem MenuItem_SelectAll;
+        private System.Windows.Forms.MenuItem MenuItem_Separator2;
+        private System.Windows.Forms.MenuItem MenuItem_Font;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton ToolButton_SelectAll;
     }
 }

@@ -80,11 +80,17 @@ namespace EuroTextEditor
             objText.TextLanguage[7] = Textbox_Japan.Textbox.Text;
 
             //Group and Output Section
-            objText.Group = Combobox_Group.SelectedItem.ToString();
-            objText.OutputSection = Combobox_OutputSection.SelectedItem.ToString();
+            if (Combobox_Group.SelectedItem != null)
+            {
+                objText.Group = Combobox_Group.SelectedItem.ToString();
+            }
+            if (Combobox_OutputSection.SelectedValue != null)
+            {
+                objText.OutputSection = Combobox_OutputSection.SelectedValue.ToString();
+            }
 
             //Others
-            objText.DeadText = Convert.ToInt32(CheckBox_TextDead);
+            objText.DeadText = Convert.ToInt32(CheckBox_TextDead.Checked);
             objText.MaxNumOfChars = (int)Numeric_MaxChars.Value;
 
             EXText_Writer filesWriter = new EXText_Writer();

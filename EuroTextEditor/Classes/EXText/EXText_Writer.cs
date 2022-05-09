@@ -12,12 +12,27 @@ namespace EuroTextEditor
         {
             using (StreamWriter writetext = new StreamWriter(outputFilePath))
             {
+                //Parameters section
                 writetext.WriteLine("#Parameters");
-                writetext.Write(string.Join(" ", "MaxNumOfChars", objectText.MaxNumOfChars));
-                writetext.Write(string.Join(" ", "DeadText", objectText.DeadText));
-                writetext.Write(string.Join(" ", "Group", objectText.Group));
-                writetext.Write(string.Join(" ", "OutputSection", objectText.OutputSection));
+                if (objectText.MaxNumOfChars > 0)
+                {
+                    writetext.WriteLine(string.Join(" ", "MaxNumOfChars", objectText.MaxNumOfChars));
+                }
+                if (objectText.DeadText > 0)
+                {
+                    writetext.WriteLine(string.Join(" ", "DeadText", objectText.DeadText));
+                }
+                if (!string.IsNullOrEmpty(objectText.Group))
+                {
+                    writetext.WriteLine(string.Join(" ", "Group", objectText.Group));
+                }
+                if (!string.IsNullOrEmpty(objectText.OutputSection))
+                {
+                    writetext.WriteLine(string.Join(" ", "OutputSection", objectText.OutputSection));
+                }
                 writetext.WriteLine("#END");
+
+                //Languages section
                 if (objectText.TextLanguage[0].Length > 0)
                 {
                     writetext.WriteLine("");

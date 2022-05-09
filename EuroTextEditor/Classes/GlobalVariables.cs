@@ -6,6 +6,7 @@
     internal static class GlobalVariables
     {
         public static string HashtablesFilePath = string.Empty;
+        public static string WorkingDirectory = string.Empty;
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

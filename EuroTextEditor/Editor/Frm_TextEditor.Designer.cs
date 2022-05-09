@@ -84,7 +84,7 @@ namespace EuroTextEditor
             this.GroupBox_Settings.Location = new System.Drawing.Point(12, 12);
             this.GroupBox_Settings.Name = "GroupBox_Settings";
             this.GroupBox_Settings.Size = new System.Drawing.Size(742, 44);
-            this.GroupBox_Settings.TabIndex = 2;
+            this.GroupBox_Settings.TabIndex = 0;
             this.GroupBox_Settings.TabStop = false;
             this.GroupBox_Settings.Text = "Settings:";
             // 
@@ -159,7 +159,7 @@ namespace EuroTextEditor
             this.Button_OK.Location = new System.Drawing.Point(598, 503);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
-            this.Button_OK.TabIndex = 3;
+            this.Button_OK.TabIndex = 2;
             this.Button_OK.Text = "OK";
             this.Button_OK.UseVisualStyleBackColor = true;
             this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
@@ -170,7 +170,7 @@ namespace EuroTextEditor
             this.Button_Cancel.Location = new System.Drawing.Point(679, 503);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.Button_Cancel.TabIndex = 4;
+            this.Button_Cancel.TabIndex = 3;
             this.Button_Cancel.Text = "Cancel";
             this.Button_Cancel.UseVisualStyleBackColor = true;
             this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
@@ -192,7 +192,7 @@ namespace EuroTextEditor
             this.TabControl_Messages.Name = "TabControl_Messages";
             this.TabControl_Messages.SelectedIndex = 0;
             this.TabControl_Messages.Size = new System.Drawing.Size(742, 435);
-            this.TabControl_Messages.TabIndex = 5;
+            this.TabControl_Messages.TabIndex = 1;
             // 
             // TabPage_EnglishUS
             // 
@@ -220,7 +220,7 @@ namespace EuroTextEditor
             this.TabPage_EnglishUK.Location = new System.Drawing.Point(4, 22);
             this.TabPage_EnglishUK.Name = "TabPage_EnglishUK";
             this.TabPage_EnglishUK.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_EnglishUK.Size = new System.Drawing.Size(707, 409);
+            this.TabPage_EnglishUK.Size = new System.Drawing.Size(734, 409);
             this.TabPage_EnglishUK.TabIndex = 1;
             this.TabPage_EnglishUK.Text = "English UK";
             // 
@@ -229,7 +229,7 @@ namespace EuroTextEditor
             this.Textbox_EnglishUK.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Textbox_EnglishUK.Location = new System.Drawing.Point(3, 3);
             this.Textbox_EnglishUK.Name = "Textbox_EnglishUK";
-            this.Textbox_EnglishUK.Size = new System.Drawing.Size(701, 403);
+            this.Textbox_EnglishUK.Size = new System.Drawing.Size(728, 403);
             this.Textbox_EnglishUK.TabIndex = 1;
             // 
             // TabPage_German
@@ -239,7 +239,7 @@ namespace EuroTextEditor
             this.TabPage_German.Location = new System.Drawing.Point(4, 22);
             this.TabPage_German.Name = "TabPage_German";
             this.TabPage_German.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_German.Size = new System.Drawing.Size(707, 409);
+            this.TabPage_German.Size = new System.Drawing.Size(734, 409);
             this.TabPage_German.TabIndex = 2;
             this.TabPage_German.Text = "German";
             // 
@@ -248,7 +248,7 @@ namespace EuroTextEditor
             this.Textbox_German.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Textbox_German.Location = new System.Drawing.Point(3, 3);
             this.Textbox_German.Name = "Textbox_German";
-            this.Textbox_German.Size = new System.Drawing.Size(701, 403);
+            this.Textbox_German.Size = new System.Drawing.Size(728, 403);
             this.Textbox_German.TabIndex = 2;
             // 
             // TabPage_French
@@ -258,7 +258,7 @@ namespace EuroTextEditor
             this.TabPage_French.Location = new System.Drawing.Point(4, 22);
             this.TabPage_French.Name = "TabPage_French";
             this.TabPage_French.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_French.Size = new System.Drawing.Size(707, 409);
+            this.TabPage_French.Size = new System.Drawing.Size(734, 409);
             this.TabPage_French.TabIndex = 3;
             this.TabPage_French.Text = "French";
             // 
@@ -267,7 +267,7 @@ namespace EuroTextEditor
             this.Textbox_French.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Textbox_French.Location = new System.Drawing.Point(3, 3);
             this.Textbox_French.Name = "Textbox_French";
-            this.Textbox_French.Size = new System.Drawing.Size(701, 403);
+            this.Textbox_French.Size = new System.Drawing.Size(728, 403);
             this.Textbox_French.TabIndex = 2;
             // 
             // TabPage_Spanish
@@ -277,7 +277,7 @@ namespace EuroTextEditor
             this.TabPage_Spanish.Location = new System.Drawing.Point(4, 22);
             this.TabPage_Spanish.Name = "TabPage_Spanish";
             this.TabPage_Spanish.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_Spanish.Size = new System.Drawing.Size(707, 409);
+            this.TabPage_Spanish.Size = new System.Drawing.Size(734, 409);
             this.TabPage_Spanish.TabIndex = 4;
             this.TabPage_Spanish.Text = "Spanish";
             // 
@@ -286,7 +286,7 @@ namespace EuroTextEditor
             this.Textbox_Spanish.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Textbox_Spanish.Location = new System.Drawing.Point(3, 3);
             this.Textbox_Spanish.Name = "Textbox_Spanish";
-            this.Textbox_Spanish.Size = new System.Drawing.Size(701, 403);
+            this.Textbox_Spanish.Size = new System.Drawing.Size(728, 403);
             this.Textbox_Spanish.TabIndex = 2;
             // 
             // TabPage_Italian
@@ -296,7 +296,7 @@ namespace EuroTextEditor
             this.TabPage_Italian.Location = new System.Drawing.Point(4, 22);
             this.TabPage_Italian.Name = "TabPage_Italian";
             this.TabPage_Italian.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_Italian.Size = new System.Drawing.Size(707, 409);
+            this.TabPage_Italian.Size = new System.Drawing.Size(734, 409);
             this.TabPage_Italian.TabIndex = 5;
             this.TabPage_Italian.Text = "Italian";
             // 
@@ -305,7 +305,7 @@ namespace EuroTextEditor
             this.Textbox_Italian.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Textbox_Italian.Location = new System.Drawing.Point(3, 3);
             this.Textbox_Italian.Name = "Textbox_Italian";
-            this.Textbox_Italian.Size = new System.Drawing.Size(701, 403);
+            this.Textbox_Italian.Size = new System.Drawing.Size(728, 403);
             this.Textbox_Italian.TabIndex = 2;
             // 
             // TabPage_Korean
@@ -315,7 +315,7 @@ namespace EuroTextEditor
             this.TabPage_Korean.Location = new System.Drawing.Point(4, 22);
             this.TabPage_Korean.Name = "TabPage_Korean";
             this.TabPage_Korean.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_Korean.Size = new System.Drawing.Size(707, 409);
+            this.TabPage_Korean.Size = new System.Drawing.Size(734, 409);
             this.TabPage_Korean.TabIndex = 6;
             this.TabPage_Korean.Text = "Korean";
             // 
@@ -324,7 +324,7 @@ namespace EuroTextEditor
             this.Textbox_Korean.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Textbox_Korean.Location = new System.Drawing.Point(3, 3);
             this.Textbox_Korean.Name = "Textbox_Korean";
-            this.Textbox_Korean.Size = new System.Drawing.Size(701, 403);
+            this.Textbox_Korean.Size = new System.Drawing.Size(728, 403);
             this.Textbox_Korean.TabIndex = 2;
             // 
             // TabPage_Japan
@@ -334,7 +334,7 @@ namespace EuroTextEditor
             this.TabPage_Japan.Location = new System.Drawing.Point(4, 22);
             this.TabPage_Japan.Name = "TabPage_Japan";
             this.TabPage_Japan.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_Japan.Size = new System.Drawing.Size(707, 409);
+            this.TabPage_Japan.Size = new System.Drawing.Size(734, 409);
             this.TabPage_Japan.TabIndex = 7;
             this.TabPage_Japan.Text = "Japan";
             // 
@@ -343,7 +343,7 @@ namespace EuroTextEditor
             this.Textbox_Japan.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Textbox_Japan.Location = new System.Drawing.Point(3, 3);
             this.Textbox_Japan.Name = "Textbox_Japan";
-            this.Textbox_Japan.Size = new System.Drawing.Size(701, 403);
+            this.Textbox_Japan.Size = new System.Drawing.Size(728, 403);
             this.Textbox_Japan.TabIndex = 2;
             // 
             // Frm_TextEditor

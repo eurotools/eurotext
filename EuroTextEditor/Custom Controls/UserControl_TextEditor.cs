@@ -27,17 +27,252 @@ namespace EuroTextEditor
             Textbox.AutoWordSelection = false;
         }
 
+        //-------------------------------------------------------------------------------------------
+        //  TOOLBAR OPTIONS
+        //-------------------------------------------------------------------------------------------
+        private void ToolButton_Cut_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.Cut();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_Copy_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.Copy();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_Paste_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.Paste();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_Delete_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.SelectedText = string.Empty;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_Undo_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.Undo();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_Redo_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.Redo();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_SelectAll_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.SelectAll();
+        }
+
         //-------------------------------------------------------------------------------------------------------------------------------
         private void ToolButton_FontSize_Click(object sender, EventArgs e)
         {
             DialogResult diagResult = fontDialog1.ShowDialog();
             if (diagResult == DialogResult.OK)
             {
+                Textbox.Focus();
                 Textbox.SelectAll();
                 Textbox.SelectionFont = fontDialog1.Font;
             }
         }
 
+        //-------------------------------------------------------------------------------------------
+        //  CONTEXT MENU
+        //-------------------------------------------------------------------------------------------
+        private void MenuItem_Cut_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.Cut();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Copy_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.Copy();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Paste_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.Paste();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Delete_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.SelectedText = string.Empty;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Undo_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.Undo();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Redo_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.Redo();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_SelectAll_Click(object sender, EventArgs e)
+        {
+            Textbox.Focus();
+            Textbox.SelectAll();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Font_Click(object sender, EventArgs e)
+        {
+            DialogResult diagResult = fontDialog1.ShowDialog();
+            if (diagResult == DialogResult.OK)
+            {
+                Textbox.Focus();
+                Textbox.SelectAll();
+                Textbox.SelectionFont = fontDialog1.Font;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  TOOLBAR 1 - INSERT MENU
+        //-------------------------------------------------------------------------------------------
+        private void MenuItem_ExitButton_Click(object sender, EventArgs e)
+        {
+            if (!Textbox.Text.EndsWith("<E>"))
+            {
+                Textbox.Text = string.Join("", Textbox.Text, "<E>");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_PageDownButton_Click(object sender, EventArgs e)
+        {
+            Textbox.SelectedText = string.Join("", "<P>", Textbox.SelectedText);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_InsertButton_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(GlobalVariables.HashtablesFilePath))
+            {
+                Frm_TextEditor_Buttons buttonsForm = new Frm_TextEditor_Buttons();
+                if (buttonsForm.ShowDialog() == DialogResult.OK)
+                {
+                    //Add tags
+                    string replacedText = buttonsForm.ButtonsText;
+                    Textbox.SelectedText = replacedText;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_LessThan_Click(object sender, EventArgs e)
+        {
+            Textbox.SelectedText = string.Join("", "<LT>", Textbox.SelectedText);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_MoreThan_Click(object sender, EventArgs e)
+        {
+            Textbox.SelectedText = string.Join("", "<MT>", Textbox.SelectedText);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_NewLine_Click(object sender, EventArgs e)
+        {
+            Textbox.SelectedText = string.Join("", "<N>", Textbox.SelectedText);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_InsertTextString_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(GlobalVariables.HashtablesFilePath))
+            {
+                //Open selector
+                Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Objective", true)
+                {
+                    Text = "Inserts Text String"
+                };
+                if (selector.ShowDialog() == DialogResult.OK)
+                {
+                    Textbox.SelectedText = string.Join("", "<IS ", selector.SelectedHashCode, ">");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  TOOLBAR 1 - ICONS MENU
+        //-------------------------------------------------------------------------------------------
+        private void MenuItem_ItemIcon_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(GlobalVariables.HashtablesFilePath))
+            {
+                Frm_InsertIcon buttonsForm = new Frm_InsertIcon("HT_Texture", true);
+                if (buttonsForm.ShowDialog() == DialogResult.OK)
+                {
+                    //Add tags
+                    string replacedText = buttonsForm.SelectedIcon;
+                    Textbox.SelectedText = replacedText;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  TOOLBAR 1 - FONT MENU
+        //-------------------------------------------------------------------------------------------
+        private void MenuItem_FontColour_Click(object sender, EventArgs e)
+        {
+            DialogResult diagResult = colorDialog1.ShowDialog();
+            if (diagResult == DialogResult.OK)
+            {
+                //Add tags
+                string replacedText;
+                if (Textbox.SelectedText.Length > 0)
+                {
+                    replacedText = string.Format("<FC {0},{1},{2}>{3}<END FC>", colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B, Textbox.SelectedText);
+                }
+                else
+                {
+                    replacedText = string.Format("<FC {0},{1},{2}>{3}", colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B, Textbox.SelectedText);
+                }
+
+                Textbox.SelectedText = replacedText;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_FontType_Click(object sender, EventArgs e)
         {
             //Open selector
@@ -67,58 +302,9 @@ namespace EuroTextEditor
             }
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void ToolButton_Cut_Click(object sender, EventArgs e)
-        {
-            Textbox.Cut();
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void ToolButton_Copy_Click(object sender, EventArgs e)
-        {
-            Textbox.Copy();
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void ToolButton_Paste_Click(object sender, EventArgs e)
-        {
-            Textbox.Paste();
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void ToolButton_Delete_Click(object sender, EventArgs e)
-        {
-            Textbox.SelectedText = string.Empty;
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void ToolButton_Undo_Click(object sender, EventArgs e)
-        {
-            Textbox.Undo();
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void ToolButton_Redo_Click(object sender, EventArgs e)
-        {
-            Textbox.Redo();
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_ExitButton_Click(object sender, EventArgs e)
-        {
-            if (!Textbox.Text.EndsWith("<E>"))
-            {
-                Textbox.Text = string.Join("", Textbox.Text, "<E>");
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_PageDownButton_Click(object sender, EventArgs e)
-        {
-            Textbox.SelectedText = string.Join("", "<P>", Textbox.SelectedText);
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------
+        //  TOOLBAR 1 - EFFECTS MENU
+        //-------------------------------------------------------------------------------------------
         private void MenuItem_EffectString_Click(object sender, EventArgs e)
         {
             if (File.Exists(GlobalVariables.HashtablesFilePath))
@@ -141,18 +327,28 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_LessThan_Click(object sender, EventArgs e)
+        private void MenuItem_FadeIn_Click(object sender, EventArgs e)
         {
-            Textbox.SelectedText = string.Join("", "<LT>", Textbox.SelectedText);
+            Frm_FadeIn selector = new Frm_FadeIn();
+            if (selector.ShowDialog() == DialogResult.OK)
+            {
+                string replacedText;
+                if (Textbox.SelectedText.Length > 0)
+                {
+                    replacedText = string.Format("{0}{1}{2}", selector.fadeInEffect, Textbox.SelectedText, "<END FI>");
+                }
+                else
+                {
+                    replacedText = string.Join("", selector.fadeInEffect, Textbox.SelectedText);
+                }
+
+                Textbox.SelectedText = replacedText;
+            }
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_MoreThan_Click(object sender, EventArgs e)
-        {
-            Textbox.SelectedText = string.Join("", "<MT>", Textbox.SelectedText);
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------
+        //  TOOLBAR 1 - GAMEPAD MENU
+        //-------------------------------------------------------------------------------------------
         private void MenuItem_DisableGamepad_Click(object sender, EventArgs e)
         {
             Textbox.SelectedText = string.Join("", "<DP>", Textbox.SelectedText);
@@ -165,22 +361,18 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_NewLine_Click(object sender, EventArgs e)
-        {
-            Textbox.SelectedText = string.Join("", "<N>", Textbox.SelectedText);
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_InsertButton_Click(object sender, EventArgs e)
+        private void MenuItem_ShowGamePadButton_Click(object sender, EventArgs e)
         {
             if (File.Exists(GlobalVariables.HashtablesFilePath))
             {
-                Frm_TextEditor_Buttons buttonsForm = new Frm_TextEditor_Buttons();
-                if (buttonsForm.ShowDialog() == DialogResult.OK)
+                //Open selector
+                Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Action", true)
                 {
-                    //Add tags
-                    string replacedText = buttonsForm.ButtonsText;
-                    Textbox.SelectedText = replacedText;
+                    Text = "Show Gamepad Button"
+                };
+                if (selector.ShowDialog() == DialogResult.OK)
+                {
+                    Textbox.SelectedText = string.Join("", "<SB ", selector.SelectedHashCode, ">");
                 }
             }
             else
@@ -189,47 +381,9 @@ namespace EuroTextEditor
             }
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_ItemIcon_Click(object sender, EventArgs e)
-        {
-            if (File.Exists(GlobalVariables.HashtablesFilePath))
-            {
-                Frm_InsertIcon buttonsForm = new Frm_InsertIcon("HT_Texture", true);
-                if (buttonsForm.ShowDialog() == DialogResult.OK)
-                {
-                    //Add tags
-                    string replacedText = buttonsForm.SelectedIcon;
-                    Textbox.SelectedText = replacedText;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_FontColour_Click(object sender, EventArgs e)
-        {
-            DialogResult diagResult = colorDialog1.ShowDialog();
-            if (diagResult == DialogResult.OK)
-            {
-                //Add tags
-                string replacedText;
-                if (Textbox.SelectedText.Length > 0)
-                {
-                    replacedText = string.Format("<FC {0},{1},{2}>{3}<END FC>", colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B, Textbox.SelectedText);
-                }
-                else
-                {
-                    replacedText = string.Format("<FC {0},{1},{2}>{3}", colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B, Textbox.SelectedText);
-                }
-
-                Textbox.SelectedText = replacedText;
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------
+        //  TOOLBAR 1 - OTHERS MENU
+        //-------------------------------------------------------------------------------------------
         private void MenuItem_CenterText_Click(object sender, EventArgs e)
         {
             Textbox.SelectedText = string.Join("", "<CNTR>", Textbox.SelectedText);
@@ -257,54 +411,6 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_InsertTextString_Click(object sender, EventArgs e)
-        {
-            if (File.Exists(GlobalVariables.HashtablesFilePath))
-            {
-                //Open selector
-                Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Objective", true)
-                {
-                    Text = "Inserts Text String"
-                };
-                if (selector.ShowDialog() == DialogResult.OK)
-                {
-                    Textbox.SelectedText = string.Join("", "<IS ", selector.SelectedHashCode, ">");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_ShowGamePadButton_Click(object sender, EventArgs e)
-        {
-            if (File.Exists(GlobalVariables.HashtablesFilePath))
-            {
-                //Open selector
-                Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Action", true)
-                {
-                    Text = "Show Gamepad Button"
-                };
-                if (selector.ShowDialog() == DialogResult.OK)
-                {
-                    Textbox.SelectedText = string.Join("", "<SB ", selector.SelectedHashCode, ">");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void Textbox_TextChanged(object sender, EventArgs e)
-        {
-            UpdateWordsInColor();
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_Wait_Click(object sender, EventArgs e)
         {
             //Open selector
@@ -319,26 +425,6 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_FadeIn_Click(object sender, EventArgs e)
-        {
-            Frm_FadeIn selector = new Frm_FadeIn();
-            if (selector.ShowDialog() == DialogResult.OK)
-            {
-                string replacedText;
-                if (Textbox.SelectedText.Length > 0)
-                {
-                    replacedText = string.Format("{0}{1}{2}", selector.fadeInEffect, Textbox.SelectedText, "<END FI>");
-                }
-                else
-                {
-                    replacedText = string.Join("", selector.fadeInEffect, Textbox.SelectedText);
-                }
-
-                Textbox.SelectedText = replacedText;
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_EFF_Click(object sender, EventArgs e)
         {
             Textbox.SelectedText = string.Join("", "<EFF>", Textbox.SelectedText);
@@ -348,6 +434,14 @@ namespace EuroTextEditor
         private void MenuItem_EPO_Click(object sender, EventArgs e)
         {
             Textbox.SelectedText = string.Join("", "<EPO>", Textbox.SelectedText);
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  EVENTS
+        //-------------------------------------------------------------------------------------------
+        private void Textbox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateWordsInColor();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------

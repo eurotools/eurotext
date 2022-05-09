@@ -1,11 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using EuroTextEditor.Classes;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
 namespace EuroTextEditor
 {
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     internal static class CommonFunctions
     {
+        //-------------------------------------------------------------------------------------------
+        //  HASHTABLES
+        //-------------------------------------------------------------------------------------------
         internal static HashSet<string> ReadHashTableSection(string hashTableFilePath, string hashTableSection)
         {
             HashSet<string> AvailableHashCodes = new HashSet<string>();
@@ -30,4 +37,6 @@ namespace EuroTextEditor
             return AvailableHashCodes;
         }
     }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
 }

@@ -5,9 +5,9 @@
     //-------------------------------------------------------------------------------------------------------------------------------
     public class EXText
     {
-        public string HashCode;
-        public string[] TextLanguage = new string[8];
-        public string Group;
+        public string HashCode = string.Empty;
+        public string[] TextLanguage = new string[8] { "", "", "", "", "", "", "", "" };
+        public string Group = string.Empty;
         public string OutputSection = string.Empty;
         public int MaxNumOfChars;
         public int DeadText;
