@@ -11,12 +11,9 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         internal void CreateConfigSheet(ISheet FormatInfo, IWorkbook workbook)
         {
-            int rowIndex = 0;
-
-            //Styles
-            HSSFPalette palette = ((HSSFWorkbook)workbook).GetCustomPalette();
-
-            //Fonts
+            //-------------------------------------------------------------------------------------------
+            //  Fonts
+            //-------------------------------------------------------------------------------------------
             IFont titleFont = workbook.CreateFont();
             titleFont.FontName = "Arial";
             titleFont.FontHeightInPoints = 16;
@@ -25,7 +22,11 @@ namespace EuroTextEditor
             font.FontName = "Arial";
             font.FontHeightInPoints = 12;
 
-            //Styles
+            //-------------------------------------------------------------------------------------------
+            //  Styles
+            //-------------------------------------------------------------------------------------------
+            HSSFPalette palette = ((HSSFWorkbook)workbook).GetCustomPalette();
+
             ICellStyle pinkBackground = workbook.CreateCellStyle();
             short pinkBackgroundColor = 45;
             palette.SetColorAtIndex(pinkBackgroundColor, 255, 153, 204);
@@ -70,10 +71,14 @@ namespace EuroTextEditor
             grayBackground.BorderRight = BorderStyle.Thin;
             grayBackground.BorderBottom = BorderStyle.Thin;
 
-            //Create a new row
+            //-------------------------------------------------------------------------------------------
+            //  Writing
+            //-------------------------------------------------------------------------------------------
+            //Row
+            int rowIndex = 0;
             IRow currentRow = FormatInfo.CreateRow(rowIndex);
 
-            //Print POSITION MARKERS Section
+            //Configuration Settings - Title only
             ICell posMarkersCell = currentRow.CreateCell(0);
             posMarkersCell.CellStyle = pinkBackground;
             posMarkersCell.SetCellValue("Configuration settings");
@@ -81,10 +86,11 @@ namespace EuroTextEditor
             //Create empty row and add a new one
             rowIndex++;
             AddEmptyRow(ref currentRow, rowIndex, FormatInfo, null);
+
+            //Hashcodes Exporting - Key and Value
             rowIndex++;
             currentRow = FormatInfo.CreateRow(rowIndex);
 
-            //Hashcode exporting
             ICell hashcodeExporting = currentRow.CreateCell(0);
             hashcodeExporting.CellStyle = grayBackground;
             hashcodeExporting.SetCellValue("Enable Hashcode exporting");
@@ -93,11 +99,10 @@ namespace EuroTextEditor
             hashcodeExportingValue.CellStyle = blueBackgroundCenter;
             hashcodeExportingValue.SetCellValue(1);
 
-            //New row
+            //Admin File Path - Key and Value
             rowIndex++;
             currentRow = FormatInfo.CreateRow(rowIndex);
 
-            //Hashcode exporting
             ICell hashcodeAdminPath = currentRow.CreateCell(0);
             hashcodeAdminPath.CellStyle = grayBackground;
             hashcodeAdminPath.SetCellValue("Hashcode admin file path");
@@ -106,11 +111,10 @@ namespace EuroTextEditor
             hashcodeAdminPathDesc.CellStyle = blueBackground;
             hashcodeAdminPathDesc.SetCellValue(@"x:\enginex\utils\htadmin.exe");
 
-            //New row
+            //Hashcode exporting
             rowIndex++;
             currentRow = FormatInfo.CreateRow(rowIndex);
 
-            //Hashcode exporting
             ICell hashcodeSection = currentRow.CreateCell(0);
             hashcodeSection.CellStyle = grayBackground;
             hashcodeSection.SetCellValue("Message Hashcode section");

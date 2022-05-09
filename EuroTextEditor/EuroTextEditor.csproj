@@ -87,31 +87,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\CommonFunctions.cs" />
     <Compile Include="Classes\GlobalVariables.cs" />
     <Compile Include="Classes\IniFile.cs" />
     <Compile Include="Classes\MostRecentFilesMenu.cs" />
-    <Compile Include="Editor\Frm_HashCodesSelector.cs">
+    <Compile Include="Editor\SubForms\Frm_HashCodesSelector.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editor\Frm_HashCodesSelector.Designer.cs">
+    <Compile Include="Editor\SubForms\Frm_HashCodesSelector.Designer.cs">
       <DependentUpon>Frm_HashCodesSelector.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor\Frm_InsertIcon.cs">
+    <Compile Include="Editor\SubForms\Frm_InsertIcon.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editor\Frm_InsertIcon.Designer.cs">
+    <Compile Include="Editor\SubForms\Frm_InsertIcon.Designer.cs">
       <DependentUpon>Frm_InsertIcon.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor\Frm_TextEditor_Buttons.cs">
+    <Compile Include="Editor\SubForms\Frm_TextEditor_Buttons.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editor\Frm_TextEditor_Buttons.Designer.cs">
+    <Compile Include="Editor\SubForms\Frm_TextEditor_Buttons.Designer.cs">
       <DependentUpon>Frm_TextEditor_Buttons.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor\Frm_WaitTime.cs">
+    <Compile Include="Editor\SubForms\Frm_WaitTime.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editor\Frm_WaitTime.Designer.cs">
+    <Compile Include="Editor\SubForms\Frm_WaitTime.Designer.cs">
       <DependentUpon>Frm_WaitTime.cs</DependentUpon>
     </Compile>
     <Compile Include="Custom Controls\UserControl_HashCodesSelector.cs">
@@ -125,11 +126,18 @@
     <Compile Include="Excel Writers\Excel_Writters_FormatSheet.cs" />
     <Compile Include="Excel Writers\Excel_Writters_MessagesSheet.cs" />
     <Compile Include="EXText\EXText_Reader.cs" />
-    <Compile Include="Editor\Frm_FadeIn.cs">
+    <Compile Include="Editor\SubForms\Frm_FadeIn.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editor\Frm_FadeIn.Designer.cs">
+    <Compile Include="Editor\SubForms\Frm_FadeIn.Designer.cs">
       <DependentUpon>Frm_FadeIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EXText\EXText_Writer.cs" />
+    <Compile Include="Frm_Exporter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm_Exporter.Designer.cs">
+      <DependentUpon>Frm_Exporter.cs</DependentUpon>
     </Compile>
     <Compile Include="Frm_MainFrame.cs">
       <SubType>Form</SubType>
@@ -152,23 +160,26 @@
     <Compile Include="Custom Controls\UserControl_TextEditor.Designer.cs">
       <DependentUpon>UserControl_TextEditor.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Editor\Frm_HashCodesSelector.resx">
+    <EmbeddedResource Include="Editor\SubForms\Frm_HashCodesSelector.resx">
       <DependentUpon>Frm_HashCodesSelector.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editor\Frm_InsertIcon.resx">
+    <EmbeddedResource Include="Editor\SubForms\Frm_InsertIcon.resx">
       <DependentUpon>Frm_InsertIcon.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editor\Frm_TextEditor_Buttons.resx">
+    <EmbeddedResource Include="Editor\SubForms\Frm_TextEditor_Buttons.resx">
       <DependentUpon>Frm_TextEditor_Buttons.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editor\Frm_WaitTime.resx">
+    <EmbeddedResource Include="Editor\SubForms\Frm_WaitTime.resx">
       <DependentUpon>Frm_WaitTime.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Custom Controls\UserControl_HashCodesSelector.resx">
       <DependentUpon>UserControl_HashCodesSelector.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editor\Frm_FadeIn.resx">
+    <EmbeddedResource Include="Editor\SubForms\Frm_FadeIn.resx">
       <DependentUpon>Frm_FadeIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frm_Exporter.resx">
+      <DependentUpon>Frm_Exporter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_MainFrame.resx">
       <DependentUpon>Frm_MainFrame.cs</DependentUpon>

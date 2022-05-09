@@ -1,5 +1,6 @@
 ﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using System.ComponentModel;
 
 namespace EuroTextEditor
 {
@@ -9,13 +10,11 @@ namespace EuroTextEditor
     partial class ExcelWritters
     {
         //-------------------------------------------------------------------------------------------------------------------------------
-        internal void CreateDataInfo(ISheet FormatInfo, IWorkbook workbook)
+        internal void CreateDataInfo(ISheet FormatInfo, IWorkbook workbook, DoWorkEventArgs e, BackgroundWorker asyncWorker)
         {
-            int rowIndex = 0;
-
-            //Styles
-            HSSFPalette palette = ((HSSFWorkbook)workbook).GetCustomPalette();
-
+            //-------------------------------------------------------------------------------------------
+            //  Fonts
+            //-------------------------------------------------------------------------------------------
             IFont font = workbook.CreateFont();
             font.FontName = "Arial";
             font.FontHeightInPoints = 10;
@@ -25,7 +24,11 @@ namespace EuroTextEditor
             fontColor.FontHeightInPoints = 10;
             fontColor.Color = IndexedColors.Blue.Index;
 
-            //Styles
+            //-------------------------------------------------------------------------------------------
+            //  Styles
+            //-------------------------------------------------------------------------------------------
+            HSSFPalette palette = ((HSSFWorkbook)workbook).GetCustomPalette();
+
             ICellStyle pinkBackground = workbook.CreateCellStyle();
             short pinkBackgroundColor = 45;
             palette.SetColorAtIndex(pinkBackgroundColor, 255, 153, 204);
@@ -63,14 +66,21 @@ namespace EuroTextEditor
             borderedCellStyle.BorderRight = BorderStyle.Thin;
             borderedCellStyle.BorderBottom = BorderStyle.Thin;
 
-            //Print POSITION MARKERS Section
+            //-------------------------------------------------------------------------------------------
+            //  Writing
+            //-------------------------------------------------------------------------------------------
+            int rowIndex = 0;
             IRow currentRow = FormatInfo.CreateRow(rowIndex);
+
+            //User data - Title only
             ICell userDataCell = currentRow.CreateCell(0);
             userDataCell.CellStyle = pinkBackground;
             userDataCell.SetCellValue("User Data");
 
+            //Effect Format Codes - Key and Value
             rowIndex = 6;
             currentRow = FormatInfo.CreateRow(rowIndex);
+
             ICell EffectFormatCodesCell = currentRow.CreateCell(0);
             EffectFormatCodesCell.CellStyle = pinkBackground;
             EffectFormatCodesCell.SetCellValue("Effect Format Codes");
@@ -78,8 +88,11 @@ namespace EuroTextEditor
             ICell EffectFormatCodesValueCell = currentRow.CreateCell(1);
             EffectFormatCodesValueCell.SetCellValue("These are the format codes that are supported by the help window. Typically these format codes allow you to change the font colour before or during the text, add command buttons EG page down, exit button)");
 
+
+            //Start with descriptions of each tag
             rowIndex++;
             currentRow = FormatInfo.CreateRow(rowIndex);
+
             ICell ShowExitButtonCell = currentRow.CreateCell(0);
             ShowExitButtonCell.CellStyle = blueBackgroundAndFore;
             ShowExitButtonCell.SetCellValue("Show Exit Button");
@@ -188,6 +201,8 @@ namespace EuroTextEditor
                 ICell markerDesc = currentRow.CreateCell(1);
                 markerDesc.CellStyle = borderedCellStyle;
                 markerDesc.SetCellValue(formatCodes[i, 1]);
+
+                asyncWorker.ReportProgress((i * 100) / formatCodes.GetLength(0), string.Join(" ", "Effect Format Codes:", formatCodes[i, 0], formatCodes[i, 1]));
             }
 
             //Set size

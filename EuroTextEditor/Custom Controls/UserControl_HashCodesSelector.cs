@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace EuroTextEditor.Editor
@@ -86,24 +85,8 @@ namespace EuroTextEditor.Editor
         private void Combobox_HashCodes_Section_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Get all sections
-            HashSet<string> AvailableHashCodes = new HashSet<string>();
-            using (StreamReader file = new StreamReader(GlobalVariables.HashtablesFilePath))
-            {
-                string ln;
-
-                while ((ln = file.ReadLine()) != null)
-                {
-                    if (ln.Contains(Combobox_HashCodes_Section.SelectedItem.ToString() + "_"))
-                    {
-                        Match regexMatch = Regex.Match(ln, @"#define\s(\w+)");
-                        if (regexMatch.Length > 0)
-                        {
-                            AvailableHashCodes.Add(regexMatch.Groups[1].Value);
-                        }
-                    }
-                }
-                file.Close();
-            }
+            string hashTableSection = Combobox_HashCodes_Section.SelectedItem.ToString() + "_";
+            HashSet<string> AvailableHashCodes = CommonFunctions.ReadHashTableSection(GlobalVariables.HashtablesFilePath, hashTableSection);
 
             //Add sections to the combobox
             if (AvailableHashCodes.Count > 0)

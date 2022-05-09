@@ -1,10 +1,9 @@
 ﻿using ExcelDataReader;
-using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace EuroTextEditor
@@ -172,38 +171,6 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void Button_WriteTest_Click(object sender, EventArgs e)
-        {
-            string newFile = @"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\Test.xls";
-            using (FileStream fs = new FileStream(newFile, FileMode.Create, FileAccess.Write))
-            {
-                IWorkbook workbook = new HSSFWorkbook();
-
-                //Create the first sheet that contains all messages
-                ISheet Messages = workbook.CreateSheet("Messages");
-                ISheet FormatInfo = workbook.CreateSheet("Format Info");
-                ISheet Config = workbook.CreateSheet("Config");
-                ISheet DataInfo = workbook.CreateSheet("Data Info");
-
-                //Output groups and levels
-                string[] outLevels = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\OutputLevels.txt");
-                string[] textGroup = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\Groups.txt");
-                string[] textSections = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\TextSections.txt");
-
-                //Create sheet
-                ExcelWritters writters = new ExcelWritters();
-                writters.CreateMessagesSheet(Messages, workbook, outLevels, textGroup, textSections);
-                writters.CreateFormatInfoSheet(FormatInfo, workbook);
-                writters.CreateConfigSheet(Config, workbook);
-                writters.CreateDataInfo(DataInfo, workbook);
-
-                //Write file
-                workbook.Write(fs);
-                workbook.Close();
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_MainFrame_Load(object sender, EventArgs e)
         {
             //Get Text Sections and levels
@@ -248,56 +215,79 @@ namespace EuroTextEditor
         {
             if (ListBox_HashCodes.SelectedItems.Count == 1)
             {
-                Frm_TextEditor textEditor = new Frm_TextEditor(Path.Combine(@"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\Messages", ListBox_HashCodes.SelectedItem.ToString() + ".txt"))
+                string textFilePath = Path.Combine(@"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\Messages", ListBox_HashCodes.SelectedItem.ToString() + ".txt");
+                if (!File.Exists(textFilePath))
                 {
-                    Text = ListBox_HashCodes.SelectedItem.ToString()
-                };
-                textEditor.ShowDialog();
+                    DialogResult answer = MessageBox.Show(string.Join(" ", "", "Source file not found:", textFilePath, "\n\nDo you want to create it now?"), "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (answer == DialogResult.Yes)
+                    {
+                        //Create object
+                        EXText newTextFile = new EXText();
+
+                        //Write Object
+                        EXText_Writer filesWriter = new EXText_Writer();
+                        filesWriter.EXTextObjectToTextFile(newTextFile, textFilePath);
+                    }
+                }
+
+                //Show form
+                if (File.Exists(textFilePath))
+                {
+                    Frm_TextEditor textEditor = new Frm_TextEditor(textFilePath)
+                    {
+                        Text = ListBox_HashCodes.SelectedItem.ToString()
+                    };
+                    textEditor.ShowDialog();
+                }
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_Output_Click(object sender, EventArgs e)
         {
-            string newFile = @"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\Test.xls";
-            using (FileStream fs = new FileStream(newFile, FileMode.Create, FileAccess.Write))
+            if (SaveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                IWorkbook workbook = new HSSFWorkbook();
-
-                //Create the first sheet that contains all messages
-                ISheet Messages = workbook.CreateSheet("Messages");
-                ISheet FormatInfo = workbook.CreateSheet("Format Info");
-                ISheet Config = workbook.CreateSheet("Config");
-                ISheet DataInfo = workbook.CreateSheet("Data Info");
-
-                //Output groups and levels
-                string[] outLevels = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\OutputLevels.txt");
-                string[] textGroup = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\Groups.txt");
-                string[] textSection = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\TextSections.txt");
-
-                //Create sheet
-                ExcelWritters writters = new ExcelWritters();
-                writters.CreateMessagesSheet(Messages, workbook, outLevels, textGroup, textSection);
-                writters.CreateFormatInfoSheet(FormatInfo, workbook);
-                writters.CreateConfigSheet(Config, workbook);
-                writters.CreateDataInfo(DataInfo, workbook);
-
-                //Write file
-                workbook.Write(fs);
-                workbook.Close();
+                Frm_Exporter exporterTask = new Frm_Exporter(this, SaveFileDialog.FileName, Checkbox_FormatInfo.Checked, Checkbox_DataInfoSheet.Checked);
+                exporterTask.ShowDialog();
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_SetHashCodesDir_Click(object sender, EventArgs e)
         {
             if (OpenFileDialog.ShowDialog() == DialogResult.OK)
             {
                 GlobalVariables.HashtablesFilePath = OpenFileDialog.FileName;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Button_UpdateHashCodes_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(GlobalVariables.HashtablesFilePath))
+            {
+                //Get hashcodes
+                string hashTableSection = "HT_Text_";
+                HashSet<string> AvailableHashCodes = CommonFunctions.ReadHashTableSection(GlobalVariables.HashtablesFilePath, hashTableSection);
+
+                //Update control
+                ListBox_HashCodes.BeginUpdate();
+                ListBox_HashCodes.Items.Clear();
+                ListBox_HashCodes.Items.AddRange(AvailableHashCodes.ToArray());
+                ListBox_HashCodes.EndUpdate();
+
+                //Update label
+                Label_TotalHashCodes.Text = "Total: " + ListBox_HashCodes.Items.Count;
+            }
+            else
+            {
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

@@ -52,17 +52,19 @@ namespace EuroTextEditor
             this.GroupBox_HashCodes = new System.Windows.Forms.GroupBox();
             this.Label_TotalHashCodes = new System.Windows.Forms.Label();
             this.ListBox_HashCodes = new System.Windows.Forms.ListBox();
-            this.Button_Update = new System.Windows.Forms.Button();
+            this.Button_UpdateHashCodes = new System.Windows.Forms.Button();
             this.Button_GetGroups = new System.Windows.Forms.Button();
             this.Button_GetMessages = new System.Windows.Forms.Button();
-            this.Button_WriteTest = new System.Windows.Forms.Button();
             this.ListView_SectionsAndLevels = new System.Windows.Forms.ListView();
             this.Col_TextSection = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_OutputLevel = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Groupbox_Output = new System.Windows.Forms.GroupBox();
+            this.Checkbox_DataInfoSheet = new System.Windows.Forms.CheckBox();
+            this.Checkbox_FormatInfo = new System.Windows.Forms.CheckBox();
             this.Button_Output = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_ExcelSheet)).BeginInit();
             this.GroupBox_TextGroups.SuspendLayout();
             this.GroupBox_HashCodes.SuspendLayout();
@@ -218,7 +220,7 @@ namespace EuroTextEditor
             // 
             this.GroupBox_HashCodes.Controls.Add(this.Label_TotalHashCodes);
             this.GroupBox_HashCodes.Controls.Add(this.ListBox_HashCodes);
-            this.GroupBox_HashCodes.Controls.Add(this.Button_Update);
+            this.GroupBox_HashCodes.Controls.Add(this.Button_UpdateHashCodes);
             this.GroupBox_HashCodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GroupBox_HashCodes.Location = new System.Drawing.Point(0, 0);
             this.GroupBox_HashCodes.Name = "GroupBox_HashCodes";
@@ -250,16 +252,17 @@ namespace EuroTextEditor
             this.ListBox_HashCodes.TabIndex = 1;
             this.ListBox_HashCodes.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox_HashCodes_MouseDoubleClick);
             // 
-            // Button_Update
+            // Button_UpdateHashCodes
             // 
-            this.Button_Update.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.Button_UpdateHashCodes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Update.Location = new System.Drawing.Point(6, 19);
-            this.Button_Update.Name = "Button_Update";
-            this.Button_Update.Size = new System.Drawing.Size(260, 23);
-            this.Button_Update.TabIndex = 0;
-            this.Button_Update.Text = "Update HashCodes List";
-            this.Button_Update.UseVisualStyleBackColor = true;
+            this.Button_UpdateHashCodes.Location = new System.Drawing.Point(6, 19);
+            this.Button_UpdateHashCodes.Name = "Button_UpdateHashCodes";
+            this.Button_UpdateHashCodes.Size = new System.Drawing.Size(260, 23);
+            this.Button_UpdateHashCodes.TabIndex = 0;
+            this.Button_UpdateHashCodes.Text = "Update HashCodes List";
+            this.Button_UpdateHashCodes.UseVisualStyleBackColor = true;
+            this.Button_UpdateHashCodes.Click += new System.EventHandler(this.Button_UpdateHashCodes_Click);
             // 
             // Button_GetGroups
             // 
@@ -282,17 +285,6 @@ namespace EuroTextEditor
             this.Button_GetMessages.Text = "Get Messages";
             this.Button_GetMessages.UseVisualStyleBackColor = true;
             this.Button_GetMessages.Click += new System.EventHandler(this.Button_GetMessages_Click);
-            // 
-            // Button_WriteTest
-            // 
-            this.Button_WriteTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_WriteTest.Location = new System.Drawing.Point(849, 498);
-            this.Button_WriteTest.Name = "Button_WriteTest";
-            this.Button_WriteTest.Size = new System.Drawing.Size(86, 23);
-            this.Button_WriteTest.TabIndex = 7;
-            this.Button_WriteTest.Text = "Write Test";
-            this.Button_WriteTest.UseVisualStyleBackColor = true;
-            this.Button_WriteTest.Click += new System.EventHandler(this.Button_WriteTest_Click);
             // 
             // ListView_SectionsAndLevels
             // 
@@ -323,13 +315,35 @@ namespace EuroTextEditor
             // Groupbox_Output
             // 
             this.Groupbox_Output.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Groupbox_Output.Controls.Add(this.Checkbox_DataInfoSheet);
+            this.Groupbox_Output.Controls.Add(this.Checkbox_FormatInfo);
             this.Groupbox_Output.Controls.Add(this.Button_Output);
             this.Groupbox_Output.Location = new System.Drawing.Point(849, 0);
             this.Groupbox_Output.Name = "Groupbox_Output";
-            this.Groupbox_Output.Size = new System.Drawing.Size(164, 82);
+            this.Groupbox_Output.Size = new System.Drawing.Size(164, 97);
             this.Groupbox_Output.TabIndex = 8;
             this.Groupbox_Output.TabStop = false;
             this.Groupbox_Output.Text = "Options:";
+            // 
+            // Checkbox_DataInfoSheet
+            // 
+            this.Checkbox_DataInfoSheet.AutoSize = true;
+            this.Checkbox_DataInfoSheet.Location = new System.Drawing.Point(6, 71);
+            this.Checkbox_DataInfoSheet.Name = "Checkbox_DataInfoSheet";
+            this.Checkbox_DataInfoSheet.Size = new System.Drawing.Size(139, 17);
+            this.Checkbox_DataInfoSheet.TabIndex = 2;
+            this.Checkbox_DataInfoSheet.Text = "Include Data Info Sheet";
+            this.Checkbox_DataInfoSheet.UseVisualStyleBackColor = true;
+            // 
+            // Checkbox_FormatInfo
+            // 
+            this.Checkbox_FormatInfo.AutoSize = true;
+            this.Checkbox_FormatInfo.Location = new System.Drawing.Point(6, 48);
+            this.Checkbox_FormatInfo.Name = "Checkbox_FormatInfo";
+            this.Checkbox_FormatInfo.Size = new System.Drawing.Size(148, 17);
+            this.Checkbox_FormatInfo.TabIndex = 1;
+            this.Checkbox_FormatInfo.Text = "Include Format Info Sheet";
+            this.Checkbox_FormatInfo.UseVisualStyleBackColor = true;
             // 
             // Button_Output
             // 
@@ -366,6 +380,10 @@ namespace EuroTextEditor
             // 
             this.OpenFileDialog.Filter = "Header files (*.h)|*.h|All files (*.*)|*.*";
             // 
+            // SaveFileDialog
+            // 
+            this.SaveFileDialog.Filter = "Excel 97-2003 Workbook (*.xls)|*.xls";
+            // 
             // Frm_MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -375,7 +393,6 @@ namespace EuroTextEditor
             this.Controls.Add(this.Groupbox_Output);
             this.Controls.Add(this.ListView_SectionsAndLevels);
             this.Controls.Add(this.Button_GetGroups);
-            this.Controls.Add(this.Button_WriteTest);
             this.Controls.Add(this.Button_GetMessages);
             this.Controls.Add(this.DataGridView_ExcelSheet);
             this.Controls.Add(this.Button_ReadTable);
@@ -390,6 +407,7 @@ namespace EuroTextEditor
             this.GroupBox_HashCodes.ResumeLayout(false);
             this.GroupBox_HashCodes.PerformLayout();
             this.Groupbox_Output.ResumeLayout(false);
+            this.Groupbox_Output.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -415,10 +433,9 @@ namespace EuroTextEditor
         private System.Windows.Forms.GroupBox GroupBox_HashCodes;
         private System.Windows.Forms.Label Label_TotalHashCodes;
         private System.Windows.Forms.ListBox ListBox_HashCodes;
-        private System.Windows.Forms.Button Button_Update;
+        private System.Windows.Forms.Button Button_UpdateHashCodes;
         private System.Windows.Forms.Button Button_GetGroups;
         private System.Windows.Forms.Button Button_GetMessages;
-        private System.Windows.Forms.Button Button_WriteTest;
         private System.Windows.Forms.ListView ListView_SectionsAndLevels;
         private System.Windows.Forms.ColumnHeader Col_OutputLevel;
         private System.Windows.Forms.ColumnHeader Col_TextSection;
@@ -431,6 +448,9 @@ namespace EuroTextEditor
         private System.Windows.Forms.MenuItem MenuItem_Settings;
         private System.Windows.Forms.MenuItem MenuItem_SetHashCodesDir;
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
+        private System.Windows.Forms.SaveFileDialog SaveFileDialog;
+        private System.Windows.Forms.CheckBox Checkbox_DataInfoSheet;
+        private System.Windows.Forms.CheckBox Checkbox_FormatInfo;
     }
 }
 

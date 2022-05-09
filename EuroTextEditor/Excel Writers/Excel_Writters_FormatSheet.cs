@@ -1,5 +1,6 @@
 ﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using System.ComponentModel;
 
 namespace EuroTextEditor
 {
@@ -9,18 +10,19 @@ namespace EuroTextEditor
     partial class ExcelWritters
     {
         //-------------------------------------------------------------------------------------------------------------------------------
-        internal void CreateFormatInfoSheet(ISheet FormatInfo, IWorkbook workbook)
+        internal void CreateFormatInfoSheet(ISheet FormatInfo, IWorkbook workbook, DoWorkEventArgs e, BackgroundWorker asyncWorker)
         {
-            int rowIndex = 0;
-
-            //Styles
-            HSSFPalette palette = ((HSSFWorkbook)workbook).GetCustomPalette();
-
-            //Bold and underline font
+            //-------------------------------------------------------------------------------------------
+            //  Fonts
+            //-------------------------------------------------------------------------------------------
             IFont font = workbook.CreateFont();
             font.FontName = "Arial";
 
-            //Styles
+            //-------------------------------------------------------------------------------------------
+            //  Styles
+            //-------------------------------------------------------------------------------------------
+            HSSFPalette palette = ((HSSFWorkbook)workbook).GetCustomPalette();
+
             ICellStyle pinkBackground = workbook.CreateCellStyle();
             short pinkBackgroundColor = 45;
             palette.SetColorAtIndex(pinkBackgroundColor, 255, 153, 204);
@@ -55,10 +57,14 @@ namespace EuroTextEditor
             borderedCellStyle.BorderRight = BorderStyle.Thin;
             borderedCellStyle.BorderBottom = BorderStyle.Thin;
 
+            //-------------------------------------------------------------------------------------------
+            //  Writing
+            //-------------------------------------------------------------------------------------------
             //Create a new row
+            int rowIndex = 0;
             IRow currentRow = FormatInfo.CreateRow(rowIndex);
 
-            //Print POSITION MARKERS Section
+            //POSITION MARKERS Section
             ICell posMarkersCell = currentRow.CreateCell(0);
             posMarkersCell.CellStyle = pinkBackground;
             posMarkersCell.SetCellValue("Position markers");
@@ -95,6 +101,8 @@ namespace EuroTextEditor
                 ICell markerDesc = currentRow.CreateCell(1);
                 markerDesc.CellStyle = borderedCellStyle;
                 markerDesc.SetCellValue(positionMarkers[i, 1]);
+
+                asyncWorker.ReportProgress((i * 100) / positionMarkers.GetLength(0), string.Join(" ", "Position markers:", positionMarkers[i, 0], positionMarkers[i, 1]));
             }
 
             //Empty Row
@@ -108,6 +116,7 @@ namespace EuroTextEditor
             //Print DATA TYPE MARKERS
             rowIndex++;
             currentRow = FormatInfo.CreateRow(rowIndex);
+
             ICell dataTypeMarkerCell = currentRow.CreateCell(0);
             dataTypeMarkerCell.CellStyle = pinkBackground;
             dataTypeMarkerCell.SetCellValue("Data Type markers");
@@ -148,6 +157,8 @@ namespace EuroTextEditor
                 ICell markerDesc = currentRow.CreateCell(1);
                 markerDesc.CellStyle = borderedCellStyle;
                 markerDesc.SetCellValue(DataTypeMarkers[i, 1]);
+
+                asyncWorker.ReportProgress((i * 100) / DataTypeMarkers.GetLength(0), string.Join(" ", "Data Type markers:", DataTypeMarkers[i, 0], DataTypeMarkers[i, 1]));
             }
 
             //Empty Row
@@ -163,6 +174,7 @@ namespace EuroTextEditor
             //Print MISC MARKERS Section
             rowIndex++;
             currentRow = FormatInfo.CreateRow(rowIndex);
+
             ICell miscMarkerCell = currentRow.CreateCell(0);
             miscMarkerCell.CellStyle = pinkBackground;
             miscMarkerCell.SetCellValue("Misc markers");
@@ -171,8 +183,10 @@ namespace EuroTextEditor
             miscMarkerDescCell.CellStyle = blueBackground;
             miscMarkerDescCell.SetCellValue("Description");
 
+            //Create a new row
             rowIndex++;
             currentRow = FormatInfo.CreateRow(rowIndex);
+
             ICell miscMarkerName = currentRow.CreateCell(0);
             miscMarkerName.CellStyle = borderedCellStyle;
             miscMarkerName.SetCellValue("SHEET_TYPE_TEXT");
@@ -192,6 +206,7 @@ namespace EuroTextEditor
             //Print Language Markers Section
             rowIndex++;
             currentRow = FormatInfo.CreateRow(rowIndex);
+
             ICell langMarkersCell = currentRow.CreateCell(0);
             langMarkersCell.CellStyle = pinkBackground;
             langMarkersCell.SetCellValue("Language Markers");
@@ -228,6 +243,8 @@ namespace EuroTextEditor
                 ICell markerDesc = currentRow.CreateCell(1);
                 markerDesc.CellStyle = borderedCellStyle;
                 markerDesc.SetCellValue(languageMarkers[i, 1]);
+
+                asyncWorker.ReportProgress((i * 100) / languageMarkers.GetLength(0), string.Join(" ", "Language Markers:", languageMarkers[i, 0], languageMarkers[i, 1]));
             }
 
             //Create gray line

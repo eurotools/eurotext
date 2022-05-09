@@ -1,6 +1,9 @@
 ﻿using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
+using System;
+using System.ComponentModel;
+using System.IO;
 
 namespace EuroTextEditor
 {
@@ -10,24 +13,28 @@ namespace EuroTextEditor
     partial class ExcelWritters
     {
         //-------------------------------------------------------------------------------------------------------------------------------
-        internal void CreateMessagesSheet(ISheet Messages, IWorkbook workbook, string[] outLevels, string[] textGroup, string[] textSections)
+        internal void CreateMessagesSheet(ISheet Messages, IWorkbook workbook, string[] outLevels, string[] textGroup, string[] textSections, DoWorkEventArgs e, BackgroundWorker asyncWorker)
         {
-            int rowIndex = 0;
-
-            //Styles
-            HSSFPalette palette = ((HSSFWorkbook)workbook).GetCustomPalette();
-
-            //Bold and underline font
+            //-------------------------------------------------------------------------------------------
+            //  Fonts
+            //-------------------------------------------------------------------------------------------
             IFont fontUnderline = workbook.CreateFont();
             fontUnderline.FontName = "Arial";
             fontUnderline.IsBold = true;
             fontUnderline.Underline = FontUnderlineType.Single;
 
-            IFont font = workbook.CreateFont();
-            fontUnderline.FontName = "Arial";
-            fontUnderline.IsBold = true;
+            IFont fontBold = workbook.CreateFont();
+            fontBold.FontName = "Arial";
+            fontBold.IsBold = true;
 
-            //Styles
+            IFont fontStandard = workbook.CreateFont();
+            fontStandard.FontName = "Arial";
+
+            //-------------------------------------------------------------------------------------------
+            //  Styles
+            //-------------------------------------------------------------------------------------------
+            HSSFPalette palette = ((HSSFWorkbook)workbook).GetCustomPalette();
+
             ICellStyle VerticalCenter = workbook.CreateCellStyle();
             VerticalCenter.VerticalAlignment = VerticalAlignment.Center;
             VerticalCenter.Alignment = HorizontalAlignment.Center;
@@ -36,11 +43,33 @@ namespace EuroTextEditor
             VerticalCenter.BorderRight = BorderStyle.Thin;
             VerticalCenter.BorderBottom = BorderStyle.Thin;
 
+            ICellStyle normalStyleLeft = workbook.CreateCellStyle();
+            normalStyleLeft.Alignment = HorizontalAlignment.Left;
+            normalStyleLeft.BorderLeft = BorderStyle.Thin;
+            normalStyleLeft.BorderTop = BorderStyle.Thin;
+            normalStyleLeft.BorderRight = BorderStyle.Thin;
+            normalStyleLeft.BorderBottom = BorderStyle.Thin;
+
+            ICellStyle normalStyle = workbook.CreateCellStyle();
+            normalStyle.BorderLeft = BorderStyle.Thin;
+            normalStyle.BorderTop = BorderStyle.Thin;
+            normalStyle.BorderRight = BorderStyle.Thin;
+            normalStyle.BorderBottom = BorderStyle.Thin;
+
+            ICellStyle textLangsStyle = workbook.CreateCellStyle();
+            textLangsStyle.VerticalAlignment = VerticalAlignment.Top;
+            textLangsStyle.Alignment = HorizontalAlignment.Left;
+            textLangsStyle.BorderLeft = BorderStyle.Thin;
+            textLangsStyle.BorderTop = BorderStyle.Thin;
+            textLangsStyle.BorderRight = BorderStyle.Thin;
+            textLangsStyle.BorderBottom = BorderStyle.Thin;
+
             ICellStyle redBackgroundVerticalCenter = workbook.CreateCellStyle();
             redBackgroundVerticalCenter.FillForegroundColor = HSSFColor.Red.Index;
             redBackgroundVerticalCenter.FillPattern = FillPattern.SolidForeground;
             redBackgroundVerticalCenter.Rotation = 90;
             redBackgroundVerticalCenter.VerticalAlignment = VerticalAlignment.Center;
+            redBackgroundVerticalCenter.Alignment = HorizontalAlignment.Center;
             redBackgroundVerticalCenter.SetFont(fontUnderline);
             redBackgroundVerticalCenter.BorderLeft = BorderStyle.Thin;
             redBackgroundVerticalCenter.BorderTop = BorderStyle.Thin;
@@ -64,7 +93,7 @@ namespace EuroTextEditor
             palette.SetColorAtIndex(pinkBackgroundColor, 255, 153, 204);
             pinkBackgroundVerticalCenter.FillForegroundColor = pinkBackgroundColor;
             pinkBackgroundVerticalCenter.FillPattern = FillPattern.SolidForeground;
-            pinkBackgroundVerticalCenter.SetFont(font);
+            pinkBackgroundVerticalCenter.SetFont(fontStandard);
             pinkBackgroundVerticalCenter.BorderLeft = BorderStyle.Thin;
             pinkBackgroundVerticalCenter.BorderTop = BorderStyle.Thin;
             pinkBackgroundVerticalCenter.BorderRight = BorderStyle.Thin;
@@ -82,11 +111,21 @@ namespace EuroTextEditor
             blueBackgroundVerticalCenterUnderline.BorderRight = BorderStyle.Thin;
             blueBackgroundVerticalCenterUnderline.BorderBottom = BorderStyle.Thin;
 
+            ICellStyle blueBackgroundBold = workbook.CreateCellStyle();
+            palette.SetColorAtIndex(blueBackgroundColor, 204, 255, 255);
+            blueBackgroundBold.FillForegroundColor = blueBackgroundColor;
+            blueBackgroundBold.FillPattern = FillPattern.SolidForeground;
+            blueBackgroundBold.SetFont(fontBold);
+            blueBackgroundBold.BorderLeft = BorderStyle.Thin;
+            blueBackgroundBold.BorderTop = BorderStyle.Thin;
+            blueBackgroundBold.BorderRight = BorderStyle.Thin;
+            blueBackgroundBold.BorderBottom = BorderStyle.Thin;
+
             ICellStyle blueBackground = workbook.CreateCellStyle();
             palette.SetColorAtIndex(blueBackgroundColor, 204, 255, 255);
             blueBackground.FillForegroundColor = blueBackgroundColor;
             blueBackground.FillPattern = FillPattern.SolidForeground;
-            blueBackground.SetFont(font);
+            blueBackground.SetFont(fontStandard);
             blueBackground.BorderLeft = BorderStyle.Thin;
             blueBackground.BorderTop = BorderStyle.Thin;
             blueBackground.BorderRight = BorderStyle.Thin;
@@ -103,13 +142,72 @@ namespace EuroTextEditor
             grayBackground.BorderBottom = BorderStyle.Thin;
 
             //-----------------Colors used in the levels sections-----------------
-            ICellStyle greenBackground = workbook.CreateCellStyle();
+            ICellStyle greenBackgroundVerticalBold = workbook.CreateCellStyle();
             short greenBackgroundColor = 48;
+            palette.SetColorAtIndex(greenBackgroundColor, 0, 255, 0);
+            greenBackgroundVerticalBold.FillForegroundColor = greenBackgroundColor;
+            greenBackgroundVerticalBold.FillPattern = FillPattern.SolidForeground;
+            greenBackgroundVerticalBold.Rotation = 90;
+            greenBackgroundVerticalBold.SetFont(fontBold);
+            greenBackgroundVerticalBold.FillPattern = FillPattern.SolidForeground;
+            greenBackgroundVerticalBold.BorderLeft = BorderStyle.Thin;
+            greenBackgroundVerticalBold.BorderTop = BorderStyle.Thin;
+            greenBackgroundVerticalBold.BorderRight = BorderStyle.Thin;
+            greenBackgroundVerticalBold.BorderBottom = BorderStyle.Thin;
+
+            ICellStyle orangeBackgroundVerticalBold = workbook.CreateCellStyle();
+            short orangeBackgroundColor = 49;
+            palette.SetColorAtIndex(orangeBackgroundColor, 255, 204, 0);
+            orangeBackgroundVerticalBold.FillForegroundColor = orangeBackgroundColor;
+            orangeBackgroundVerticalBold.FillPattern = FillPattern.SolidForeground;
+            orangeBackgroundVerticalBold.Rotation = 90;
+            orangeBackgroundVerticalBold.SetFont(fontBold);
+            orangeBackgroundVerticalBold.BorderLeft = BorderStyle.Thin;
+            orangeBackgroundVerticalBold.BorderTop = BorderStyle.Thin;
+            orangeBackgroundVerticalBold.BorderRight = BorderStyle.Thin;
+            orangeBackgroundVerticalBold.BorderBottom = BorderStyle.Thin;
+
+            ICellStyle purpleBackgroundVerticalBold = workbook.CreateCellStyle();
+            short purpleBackgroundColor = 50;
+            palette.SetColorAtIndex(purpleBackgroundColor, 255, 0, 255);
+            purpleBackgroundVerticalBold.FillForegroundColor = purpleBackgroundColor;
+            purpleBackgroundVerticalBold.FillPattern = FillPattern.SolidForeground;
+            purpleBackgroundVerticalBold.Rotation = 90;
+            purpleBackgroundVerticalBold.SetFont(fontBold);
+            purpleBackgroundVerticalBold.BorderLeft = BorderStyle.Thin;
+            purpleBackgroundVerticalBold.BorderTop = BorderStyle.Thin;
+            purpleBackgroundVerticalBold.BorderRight = BorderStyle.Thin;
+            purpleBackgroundVerticalBold.BorderBottom = BorderStyle.Thin;
+
+            ICellStyle darkBlueBackgroundVerticalBold = workbook.CreateCellStyle();
+            short darkBlueBackgroundColor = 51;
+            palette.SetColorAtIndex(darkBlueBackgroundColor, 0, 204, 255);
+            darkBlueBackgroundVerticalBold.FillForegroundColor = darkBlueBackgroundColor;
+            darkBlueBackgroundVerticalBold.FillPattern = FillPattern.SolidForeground;
+            darkBlueBackgroundVerticalBold.Rotation = 90;
+            darkBlueBackgroundVerticalBold.SetFont(fontBold);
+            darkBlueBackgroundVerticalBold.BorderLeft = BorderStyle.Thin;
+            darkBlueBackgroundVerticalBold.BorderTop = BorderStyle.Thin;
+            darkBlueBackgroundVerticalBold.BorderRight = BorderStyle.Thin;
+            darkBlueBackgroundVerticalBold.BorderBottom = BorderStyle.Thin;
+
+            ICellStyle yellowBackgroundVerticalBold = workbook.CreateCellStyle();
+            short yellowBackgroundColor = 52;
+            palette.SetColorAtIndex(yellowBackgroundColor, 255, 255, 0);
+            yellowBackgroundVerticalBold.FillForegroundColor = yellowBackgroundColor;
+            yellowBackgroundVerticalBold.FillPattern = FillPattern.SolidForeground;
+            yellowBackgroundVerticalBold.Rotation = 90;
+            yellowBackgroundVerticalBold.SetFont(fontBold);
+            yellowBackgroundVerticalBold.BorderLeft = BorderStyle.Thin;
+            yellowBackgroundVerticalBold.BorderTop = BorderStyle.Thin;
+            yellowBackgroundVerticalBold.BorderRight = BorderStyle.Thin;
+            yellowBackgroundVerticalBold.BorderBottom = BorderStyle.Thin;
+
+            ICellStyle greenBackground = workbook.CreateCellStyle();
             palette.SetColorAtIndex(greenBackgroundColor, 0, 255, 0);
             greenBackground.FillForegroundColor = greenBackgroundColor;
             greenBackground.FillPattern = FillPattern.SolidForeground;
-            greenBackground.Rotation = 90;
-            greenBackground.SetFont(fontUnderline);
+            greenBackground.SetFont(fontStandard);
             greenBackground.FillPattern = FillPattern.SolidForeground;
             greenBackground.BorderLeft = BorderStyle.Thin;
             greenBackground.BorderTop = BorderStyle.Thin;
@@ -117,52 +215,46 @@ namespace EuroTextEditor
             greenBackground.BorderBottom = BorderStyle.Thin;
 
             ICellStyle orangeBackground = workbook.CreateCellStyle();
-            short orangeBackgroundColor = 49;
             palette.SetColorAtIndex(orangeBackgroundColor, 255, 204, 0);
             orangeBackground.FillForegroundColor = orangeBackgroundColor;
             orangeBackground.FillPattern = FillPattern.SolidForeground;
-            orangeBackground.Rotation = 90;
-            orangeBackground.SetFont(fontUnderline);
+            orangeBackground.SetFont(fontStandard);
             orangeBackground.BorderLeft = BorderStyle.Thin;
             orangeBackground.BorderTop = BorderStyle.Thin;
             orangeBackground.BorderRight = BorderStyle.Thin;
             orangeBackground.BorderBottom = BorderStyle.Thin;
 
             ICellStyle purpleBackground = workbook.CreateCellStyle();
-            short purpleBackgroundColor = 50;
             palette.SetColorAtIndex(purpleBackgroundColor, 255, 0, 255);
             purpleBackground.FillForegroundColor = purpleBackgroundColor;
             purpleBackground.FillPattern = FillPattern.SolidForeground;
-            purpleBackground.Rotation = 90;
-            purpleBackground.SetFont(fontUnderline);
+            purpleBackground.SetFont(fontStandard);
             purpleBackground.BorderLeft = BorderStyle.Thin;
             purpleBackground.BorderTop = BorderStyle.Thin;
             purpleBackground.BorderRight = BorderStyle.Thin;
             purpleBackground.BorderBottom = BorderStyle.Thin;
 
             ICellStyle darkBlueBackground = workbook.CreateCellStyle();
-            short darkBlueBackgroundColor = 51;
             palette.SetColorAtIndex(darkBlueBackgroundColor, 0, 204, 255);
             darkBlueBackground.FillForegroundColor = darkBlueBackgroundColor;
             darkBlueBackground.FillPattern = FillPattern.SolidForeground;
-            darkBlueBackground.Rotation = 90;
-            darkBlueBackground.SetFont(fontUnderline);
+            darkBlueBackground.SetFont(fontStandard);
             darkBlueBackground.BorderLeft = BorderStyle.Thin;
             darkBlueBackground.BorderTop = BorderStyle.Thin;
             darkBlueBackground.BorderRight = BorderStyle.Thin;
             darkBlueBackground.BorderBottom = BorderStyle.Thin;
 
             ICellStyle yellowBackground = workbook.CreateCellStyle();
-            short yellowBackgroundColor = 52;
             palette.SetColorAtIndex(yellowBackgroundColor, 255, 255, 0);
             yellowBackground.FillForegroundColor = yellowBackgroundColor;
             yellowBackground.FillPattern = FillPattern.SolidForeground;
-            yellowBackground.Rotation = 90;
-            yellowBackground.SetFont(fontUnderline);
+            yellowBackground.SetFont(fontStandard);
             yellowBackground.BorderLeft = BorderStyle.Thin;
             yellowBackground.BorderTop = BorderStyle.Thin;
             yellowBackground.BorderRight = BorderStyle.Thin;
             yellowBackground.BorderBottom = BorderStyle.Thin;
+
+            //-----------------------------------------------------------------------------------------
 
             ICellStyle orangeLightBackgroundUnderline = workbook.CreateCellStyle();
             short orangeLightBackgroundColor = 53;
@@ -183,13 +275,13 @@ namespace EuroTextEditor
             orangeLightBackground.FillForegroundColor = orangeLightBackgroundColor;
             orangeLightBackground.FillPattern = FillPattern.SolidForeground;
             orangeLightBackground.Alignment = HorizontalAlignment.Center;
-            orangeLightBackground.SetFont(font);
+            orangeLightBackground.SetFont(fontStandard);
             orangeLightBackground.BorderLeft = BorderStyle.Thin;
             orangeLightBackground.BorderTop = BorderStyle.Thin;
             orangeLightBackground.BorderRight = BorderStyle.Thin;
             orangeLightBackground.BorderBottom = BorderStyle.Thin;
 
-            //-----------------Game Data and Sound INformation-----------------
+            //-----------------Game Data and Sound Information-----------------
             ICellStyle grayUnderlineBackground = workbook.CreateCellStyle();
             palette.SetColorAtIndex(grayBackgroundColor, 192, 192, 192);
             grayUnderlineBackground.FillForegroundColor = grayBackgroundColor;
@@ -201,29 +293,29 @@ namespace EuroTextEditor
             grayUnderlineBackground.BorderRight = BorderStyle.Thin;
             grayUnderlineBackground.BorderBottom = BorderStyle.Thin;
 
-            ICellStyle limeBackground = workbook.CreateCellStyle();
+            ICellStyle limeBackgroundUnderline = workbook.CreateCellStyle();
             short limeBackgroundColor = 55;
+            palette.SetColorAtIndex(limeBackgroundColor, 204, 255, 204);
+            limeBackgroundUnderline.FillForegroundColor = limeBackgroundColor;
+            limeBackgroundUnderline.FillPattern = FillPattern.SolidForeground;
+            limeBackgroundUnderline.VerticalAlignment = VerticalAlignment.Center;
+            limeBackgroundUnderline.Alignment = HorizontalAlignment.Center;
+            limeBackgroundUnderline.SetFont(fontUnderline);
+            limeBackgroundUnderline.BorderLeft = BorderStyle.Thin;
+            limeBackgroundUnderline.BorderTop = BorderStyle.Thin;
+            limeBackgroundUnderline.BorderRight = BorderStyle.Thin;
+            limeBackgroundUnderline.BorderBottom = BorderStyle.Thin;
+
+            ICellStyle limeBackground = workbook.CreateCellStyle();
             palette.SetColorAtIndex(limeBackgroundColor, 204, 255, 204);
             limeBackground.FillForegroundColor = limeBackgroundColor;
             limeBackground.FillPattern = FillPattern.SolidForeground;
-            limeBackground.VerticalAlignment = VerticalAlignment.Center;
             limeBackground.Alignment = HorizontalAlignment.Center;
-            limeBackground.SetFont(fontUnderline);
+            limeBackground.SetFont(fontStandard);
             limeBackground.BorderLeft = BorderStyle.Thin;
             limeBackground.BorderTop = BorderStyle.Thin;
             limeBackground.BorderRight = BorderStyle.Thin;
             limeBackground.BorderBottom = BorderStyle.Thin;
-
-            ICellStyle limeBackgroundNoUnderline = workbook.CreateCellStyle();
-            palette.SetColorAtIndex(limeBackgroundColor, 204, 255, 204);
-            limeBackgroundNoUnderline.FillForegroundColor = limeBackgroundColor;
-            limeBackgroundNoUnderline.FillPattern = FillPattern.SolidForeground;
-            limeBackgroundNoUnderline.Alignment = HorizontalAlignment.Center;
-            limeBackgroundNoUnderline.SetFont(font);
-            limeBackgroundNoUnderline.BorderLeft = BorderStyle.Thin;
-            limeBackgroundNoUnderline.BorderTop = BorderStyle.Thin;
-            limeBackgroundNoUnderline.BorderRight = BorderStyle.Thin;
-            limeBackgroundNoUnderline.BorderBottom = BorderStyle.Thin;
 
             ICellStyle yellowTextGroup = workbook.CreateCellStyle();
             short yellowTextGroupColor = 56;
@@ -235,18 +327,46 @@ namespace EuroTextEditor
             yellowTextGroup.BorderRight = BorderStyle.Thin;
             yellowTextGroup.BorderBottom = BorderStyle.Thin;
 
-            ICellStyle lightPurple = workbook.CreateCellStyle();
+            ICellStyle lightPurpleCenter = workbook.CreateCellStyle();
             short lightPurpleColor = 57;
             palette.SetColorAtIndex(lightPurpleColor, 204, 153, 255);
-            lightPurple.Alignment = HorizontalAlignment.Center;
+            lightPurpleCenter.FillForegroundColor = lightPurpleColor;
+            lightPurpleCenter.Alignment = HorizontalAlignment.Center;
+            lightPurpleCenter.FillPattern = FillPattern.SolidForeground;
+            lightPurpleCenter.SetFont(fontStandard);
+            lightPurpleCenter.BorderLeft = BorderStyle.Thin;
+            lightPurpleCenter.BorderTop = BorderStyle.Thin;
+            lightPurpleCenter.BorderRight = BorderStyle.Thin;
+            lightPurpleCenter.BorderBottom = BorderStyle.Thin;
+
+            ICellStyle lightPurple = workbook.CreateCellStyle();
+            palette.SetColorAtIndex(lightPurpleColor, 204, 153, 255);
             lightPurple.FillForegroundColor = lightPurpleColor;
+            lightPurple.Alignment = HorizontalAlignment.Left;
             lightPurple.FillPattern = FillPattern.SolidForeground;
+            lightPurple.SetFont(fontStandard);
             lightPurple.BorderLeft = BorderStyle.Thin;
             lightPurple.BorderTop = BorderStyle.Thin;
             lightPurple.BorderRight = BorderStyle.Thin;
             lightPurple.BorderBottom = BorderStyle.Thin;
 
+            ICellStyle lightGreen = workbook.CreateCellStyle();
+            short lightGreenColor = 58;
+            palette.SetColorAtIndex(lightGreenColor, 153, 204, 0);
+            lightGreen.FillForegroundColor = lightGreenColor;
+            lightGreen.Alignment = HorizontalAlignment.Left;
+            lightGreen.FillPattern = FillPattern.SolidForeground;
+            lightGreen.SetFont(fontStandard);
+            lightGreen.BorderLeft = BorderStyle.Thin;
+            lightGreen.BorderTop = BorderStyle.Thin;
+            lightGreen.BorderRight = BorderStyle.Thin;
+            lightGreen.BorderBottom = BorderStyle.Thin;
+
+            //-------------------------------------------------------------------------------------------
+            //  Writing
+            //-------------------------------------------------------------------------------------------
             //Header row
+            int rowIndex = 0;
             IRow headerRow = Messages.CreateRow(rowIndex);
 
             ICell sheetTypeCell = headerRow.CreateCell(0);
@@ -267,7 +387,6 @@ namespace EuroTextEditor
 
             ICell emptyCell = headerRow.CreateCell(4);
             emptyCell.CellStyle = grayBackground;
-            emptyCell.SetCellValue(" ");
 
             ICell languagesCell = headerRow.CreateCell(5);
             languagesCell.CellStyle = blueBackgroundVerticalCenterUnderline;
@@ -286,89 +405,92 @@ namespace EuroTextEditor
                 }
             }
 
-            //Print output levels
-            int k = 0;
-            int lastColIndex = 15;
+            //Languages Array
+            string[] languagesArray = new string[] { "English US", "English UK", "German", "French", "Spanish", "Italian", "Korean", "Japan" };
+            ICellStyle[] colorsLevelsVerticalBold = new ICellStyle[] { greenBackgroundVerticalBold, orangeBackgroundVerticalBold, purpleBackgroundVerticalBold, darkBlueBackgroundVerticalBold, yellowBackgroundVerticalBold };
             ICellStyle[] colorsLevels = new ICellStyle[] { greenBackground, orangeBackground, purpleBackground, darkBlueBackground, yellowBackground };
-            for (int i = 0; i < outLevels.Length; i++, lastColIndex++)
-            {
-                //Ensure index not out of bounds
-                if (k >= colorsLevels.Length)
-                {
-                    k = 0;
-                }
-                //Create cell
-                ICell levelCell = headerRow.CreateCell(15 + i);
-                if (i == 0)
-                {
-                    levelCell.CellStyle = orangeLightBackgroundUnderline;
-                }
-                else
-                {
-                    levelCell.CellStyle = colorsLevels[k];
-                }
-                levelCell.SetCellValue(outLevels[i]);
-                k++;
-            }
+
+            //Print output levels
+            int lastColIndex = 15;
+            PrintColorsSection(outLevels, languagesArray.Length, orangeLightBackgroundUnderline, colorsLevelsVerticalBold, headerRow, orangeLightBackgroundUnderline, true); ;
+            lastColIndex += outLevels.Length;
 
             //Print GameData
             for (int i = 0; i < 4; i++)
             {
-                ICell gameDataCell = headerRow.CreateCell(lastColIndex + i);
+                ICell gameDataCell = headerRow.CreateCell(lastColIndex++);
                 gameDataCell.CellStyle = grayUnderlineBackground;
                 if (i == 1)
                 {
                     gameDataCell.SetCellValue("Game Data");
                 }
             }
-            lastColIndex += 4;
 
             //Print Sound information
-            ICell soundInfoCell = headerRow.CreateCell(lastColIndex);
-            soundInfoCell.CellStyle = limeBackground;
+            ICell soundInfoCell = headerRow.CreateCell(lastColIndex++);
+            soundInfoCell.CellStyle = limeBackgroundUnderline;
             soundInfoCell.SetCellValue("Sound Information");
 
-            lastColIndex += 2;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
-                ICell emptyCells = headerRow.CreateCell(lastColIndex + i);
-                emptyCells.CellStyle = grayBackground;
-                emptyCells.SetCellValue("  ");
+                ICell emptyCells = headerRow.CreateCell(lastColIndex++);
+                if (i > 0)
+                {
+                    emptyCells.CellStyle = grayBackground;
+                }
+                else
+                {
+                    emptyCells.CellStyle = normalStyle;
+                }
             }
 
             //--------------------------------------------------[Row 2]-------------------------------------------
+            //Reset var
+            lastColIndex = 0;
+
+            //Create new row
             rowIndex++;
             headerRow = Messages.CreateRow(rowIndex);
 
-            ICell grayCell = headerRow.CreateCell(4);
-            grayCell.CellStyle = grayBackground;
-            grayCell.SetCellValue("  ");
+            //Start printing
+            for (int i = 0; i < 5; i++, lastColIndex++)
+            {
+                ICell secondRowEmptyCell = headerRow.CreateCell(i);
+                if (i == 4)
+                {
+                    secondRowEmptyCell.CellStyle = grayBackground;
+                }
+                else
+                {
+                    secondRowEmptyCell.CellStyle = normalStyle;
+                }
+            }
 
             //Print languages
-            string[] languagesArray = new string[] { "English US", "English UK", "German", "French", "Spanish", "Italian", "Korean", "Japan" };
-            for (int i = 0; i <languagesArray.Length; i++)
+            for (int i = 0; i < languagesArray.Length; i++, lastColIndex++)
             {
                 ICell langCell = headerRow.CreateCell(5 + i);
-                langCell.CellStyle = blueBackground;
+                langCell.CellStyle = blueBackgroundBold;
                 langCell.SetCellValue(languagesArray[i]);
             }
 
-            grayCell = headerRow.CreateCell(13);
-            grayCell.CellStyle = grayBackground;
-            grayCell.SetCellValue("  ");
-
-            grayCell = headerRow.CreateCell(14);
-            grayCell.CellStyle = grayBackground;
-            grayCell.SetCellValue("  ");
+            //Empty cells
+            int startColIndex = 5 + languagesArray.Length;
+            for (int i = 0; i < 2; i++, lastColIndex++)
+            {
+                ICell grayCell = headerRow.CreateCell(startColIndex + i);
+                grayCell.CellStyle = grayBackground;
+            }
 
             //Print text groups
-            lastColIndex = 15;
+            startColIndex = lastColIndex;
             for (int i = 0; i < textSections.Length; i++, lastColIndex++)
             {
                 //Create cell
-                ICell levelCell = headerRow.CreateCell(15 + i);
+                ICell levelCell = headerRow.CreateCell(startColIndex + i);
                 levelCell.CellStyle = yellowTextGroup;
                 levelCell.SetCellValue(textSections[i]);
+                Messages.SetColumnWidth(15 + i, 870);
             }
 
             for (int i = 0; i < 4; i++)
@@ -379,13 +501,13 @@ namespace EuroTextEditor
 
             //Print Sound information
             ICell waveNameCell = headerRow.CreateCell(lastColIndex++);
-            waveNameCell.CellStyle = limeBackgroundNoUnderline;
+            waveNameCell.CellStyle = limeBackground;
             waveNameCell.SetCellValue("Wave Name");
             Messages.AutoSizeColumn(lastColIndex - 1);
 
-            //Ps2 name
+            //PS2 name
             ICell ps2NameCell = headerRow.CreateCell(lastColIndex++);
-            ps2NameCell.CellStyle = lightPurple;
+            ps2NameCell.CellStyle = lightPurpleCenter;
             ps2NameCell.SetCellValue("PS2 Name");
             Messages.AutoSizeColumn(lastColIndex - 1);
 
@@ -400,29 +522,37 @@ namespace EuroTextEditor
 
 
             //--------------------------------------------------[Row 3]-------------------------------------------
+            //Reset var
+            lastColIndex = 0;
+
+            //Create new row
             rowIndex++;
             headerRow = Messages.CreateRow(rowIndex);
 
-
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++, lastColIndex++)
             {
-                ICell emptyCells = headerRow.CreateCell(i);
-                emptyCells.CellStyle = lightPurple;
-                if (i == 0)
+                ICell markerCells = headerRow.CreateCell(i);
+                if (i < 3)
                 {
-                    emptyCells.SetCellValue("MARKER_FORMAT_ROW");
+                    markerCells.CellStyle = lightPurple;
+                    if (i == 0)
+                    {
+                        markerCells.SetCellValue("MARKER_FORMAT_ROW");
+                    }
+                }
+                else
+                {
+                    markerCells.CellStyle = pinkBackgroundVerticalCenter;
+                    markerCells.SetCellValue("MARKER_HASHCODE");
                 }
             }
 
-            ICell markerHashCodeCell = headerRow.CreateCell(3);
-            markerHashCodeCell.CellStyle = pinkBackgroundVerticalCenter;
-            markerHashCodeCell.SetCellValue("MARKER_HASHCODE");
-
             //Print language markers
+            startColIndex = lastColIndex;
             string[] languageMarkersArray = new string[] { "MARKER_LANGUAGE_START", "MARKER_ENGLISH_US", "MARKER_ENGLISH_UK", "MARKER_GERMAN", "MARKER_FRENCH", "MARKER_SPANISH", "MARKER_ITALIAN", "MARKER_KOREAN", "MARKER_JAPANESE", "MARKER_LANGUAGE_END" };
-            for (int i = 0; i < languageMarkersArray.Length; i++)
+            for (int i = 0; i < languageMarkersArray.Length; i++, lastColIndex++)
             {
-                ICell langCell = headerRow.CreateCell(4 + i);
+                ICell langCell = headerRow.CreateCell(startColIndex + i);
                 langCell.CellStyle = blueBackground;
                 langCell.SetCellValue(languageMarkersArray[i]);
             }
@@ -457,11 +587,11 @@ namespace EuroTextEditor
             markerSoundStart.SetCellValue("MARKER_SOUND_START");
 
             ICell markerStringSound = headerRow.CreateCell(lastColIndex++);
-            markerStringSound.CellStyle = limeBackgroundNoUnderline;
+            markerStringSound.CellStyle = limeBackground;
             markerStringSound.SetCellValue("STRING");
 
             ICell markerHashCodeSound = headerRow.CreateCell(lastColIndex++);
-            markerHashCodeSound.CellStyle = limeBackgroundNoUnderline;
+            markerHashCodeSound.CellStyle = limeBackground;
             markerHashCodeSound.SetCellValue("HASHCODE");
             Messages.AutoSizeColumn(lastColIndex - 1);
 
@@ -475,15 +605,212 @@ namespace EuroTextEditor
 
             ICell MarkerEnd = headerRow.CreateCell(lastColIndex++);
             MarkerEnd.CellStyle = grayBackground;
-            MarkerEnd.SetCellValue("");
+
+            //-------------------------------------------------------------------------------------------
+            //  WRITE MESSAGES
+            //-------------------------------------------------------------------------------------------
+            rowIndex++;
+            headerRow = Messages.CreateRow(rowIndex);
+            PrintTextGroup(lastColIndex, grayBackground, headerRow, "M_TEXT_ALL");
+
+            //Get all messages
+            string[] messagesToPrint = Directory.GetFiles(@"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\Messages", "*.txt", SearchOption.TopDirectoryOnly);
+
+            //Create a reader
+            EXText_Reader textReader = new EXText_Reader();
+
+            //Print other groups
+            int totalItems = messagesToPrint.Length * textGroup.Length;
+            int currentCount = 0;
+
+            for (int i = 0; i < textGroup.Length; i++)
+            {
+                if (asyncWorker.CancellationPending)
+                {
+                    break;
+                }
+                else
+                {
+                    rowIndex++;
+                    headerRow = Messages.CreateRow(rowIndex);
+                    PrintTextGroup(lastColIndex, grayBackground, headerRow, textGroup[i]);
+
+                    for (int j = 0; j < messagesToPrint.Length; j++)
+                    {
+                        if (asyncWorker.CancellationPending)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            //Read text object
+                            EXText textObj = textReader.ReadEXTextFile(messagesToPrint[j]);
+
+                            //Report progress
+                            currentCount++;
+                            asyncWorker.ReportProgress((currentCount * 100) / totalItems, string.Join(" ", "Text Group:", textGroup[i], "Checking:", textObj.HashCode));
+
+                            //Ensure that this messsage is in the group
+                            if (!textObj.Group.Equals(textGroup[i]))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                //Create a new row
+                                rowIndex++;
+                                headerRow = Messages.CreateRow(rowIndex);
+
+                                //Print basic config
+                                for (int l = 0; l < 5; l++)
+                                {
+                                    ICell infoCell = headerRow.CreateCell(l);
+                                    infoCell.CellStyle = normalStyle;
+                                    switch (l)
+                                    {
+                                        case 1:
+                                            if (textObj.MaxNumOfChars > 0)
+                                            {
+                                                infoCell.SetCellValue(textObj.MaxNumOfChars);
+                                            }
+                                            break;
+                                        case 2:
+                                            if (textObj.DeadText > 0)
+                                            {
+                                                infoCell.SetCellValue(textObj.DeadText);
+                                            }
+                                            break;
+                                        case 3:
+                                            infoCell.SetCellValue(textObj.HashCode);
+                                            infoCell.CellStyle = normalStyleLeft;
+                                            break;
+                                        case 4:
+                                            infoCell.CellStyle = grayBackground;
+                                            break;
+                                    }
+                                }
+
+                                //Print languages
+                                for (int l = 0; l < textObj.TextLanguage.Length; l++)
+                                {
+                                    ICell langCell = headerRow.CreateCell(5 + l);
+                                    langCell.CellStyle = textLangsStyle;
+                                    langCell.SetCellValue(textObj.TextLanguage[l]);
+                                    langCell.CellStyle.WrapText = true;
+                                }
+
+                                //Empty section
+                                startColIndex = 5 + textObj.TextLanguage.Length;
+                                for (int l = 0; l < 2; l++)
+                                {
+                                    ICell emtpyCell = headerRow.CreateCell(startColIndex + l);
+                                    emtpyCell.CellStyle = grayBackground;
+                                }
+
+                                //Print Section
+                                PrintColorsSection(outLevels, languagesArray.Length, orangeLightBackground, colorsLevels, headerRow, orangeLightBackgroundUnderline);
+
+                                //Set bit to the output group
+                                if (!string.IsNullOrEmpty(textObj.OutputSection))
+                                {
+                                    int bitPosition = Array.IndexOf(textSections, textObj.OutputSection);
+                                    int colIndex = 7 + languagesArray.Length + bitPosition;
+                                    ICell textSectionCell = headerRow.GetCell(colIndex);
+                                    if (textSectionCell != null)
+                                    {
+                                        textSectionCell.SetCellValue(1);
+                                    }
+                                }
+
+                                //Print game data and sound information
+                                startColIndex = 7 + languagesArray.Length + outLevels.Length;
+                                for (int l = 0; l < 9; l++)
+                                {
+                                    ICell emtpyCell = headerRow.CreateCell(startColIndex + l);
+                                    if (l == 4 || l == 5)
+                                    {
+                                        emtpyCell.CellStyle = normalStyle;
+                                    }
+                                    else
+                                    {
+                                        emtpyCell.CellStyle = grayBackground;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    rowIndex++;
+                    headerRow = Messages.CreateRow(rowIndex);
+                    PrintTextGroup(lastColIndex, grayBackground, headerRow, textGroup[i]);
+                }
+            }
+
+            //End generic group
+            rowIndex++;
+            headerRow = Messages.CreateRow(rowIndex);
+            PrintTextGroup(lastColIndex, grayBackground, headerRow, "M_TEXT_ALL");
+
+            //Last marker
+            rowIndex++;
+            headerRow = Messages.CreateRow(rowIndex);
+            PrintTextGroup(lastColIndex, lightGreen, headerRow, "MARKER_LAST_MESSAGE");
+
+            //Autosize columns
+            Messages.AutoSizeColumn(0);
+            Messages.SetColumnWidth(1, 970);
+            Messages.SetColumnWidth(2, 970);
+            Messages.AutoSizeColumn(3);
+            Messages.SetColumnWidth(4, 570);
+            Messages.SetColumnWidth(13, 6900);
+            Messages.SetColumnWidth(14, 2100);
 
             //Messages.SetRowGroupCollapsed(0, true);
-            for (int i = 0; i < 15; i++)
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void PrintTextGroup(int lastColIndex, ICellStyle grayBackground, IRow headerRow, string groupName)
+        {
+            for (int i = 0; i < lastColIndex; i++)
             {
-                if (i != 4 && i != 14)
+                ICell textAllGroup = headerRow.CreateCell(i);
+                textAllGroup.CellStyle = grayBackground;
+                if (i == 0)
                 {
-                    Messages.AutoSizeColumn(i);
+                    textAllGroup.SetCellValue(groupName);
                 }
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void PrintColorsSection(string[] outLevels, int languagesArrayLength, ICellStyle firstColor, ICellStyle[] colorsLevels, IRow headerRow, ICellStyle orangeLightBackgroundUnderline, bool printText = false)
+        {
+            int k = 0;
+            for (int i = 0; i < outLevels.Length; i++)
+            {
+                //Ensure index not out of bounds
+                if (k >= colorsLevels.Length)
+                {
+                    k = 0;
+                }
+
+                //Set color
+                ICell levelCell = headerRow.CreateCell(7 + languagesArrayLength + i);
+                if (i == 0)
+                {
+                    levelCell.CellStyle = firstColor;
+                }
+                else
+                {
+                    levelCell.CellStyle = colorsLevels[k];
+                }
+
+                //Set text
+                if (printText)
+                {
+                    levelCell.SetCellValue(outLevels[i]);
+                }
+                k++;
             }
         }
     }
