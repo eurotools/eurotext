@@ -27,6 +27,14 @@ namespace EuroTextEditor
                     ButtonsText += string.Join("", "<N>  <B " + (i + 1) + "> ", ButtonsTextBoxes[i].Text.Trim());
                 }
             }
+
+            DialogResult = DialogResult.OK;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Button_Cancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
         }
     }
 

@@ -173,7 +173,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_InsertButton_Click(object sender, EventArgs e)
         {
-            if (File.Exists(GlobalVariables.HashtablesFilePath))
+            if (File.Exists(Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h")))
             {
                 Frm_TextEditor_Buttons buttonsForm = new Frm_TextEditor_Buttons();
                 if (buttonsForm.ShowDialog() == DialogResult.OK)
@@ -210,7 +210,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_InsertTextString_Click(object sender, EventArgs e)
         {
-            if (File.Exists(GlobalVariables.HashtablesFilePath))
+            if (File.Exists(Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h")))
             {
                 //Open selector
                 Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Objective", true)
@@ -233,7 +233,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         private void MenuItem_ItemIcon_Click(object sender, EventArgs e)
         {
-            if (File.Exists(GlobalVariables.HashtablesFilePath))
+            if (File.Exists(Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h")))
             {
                 Frm_InsertIcon buttonsForm = new Frm_InsertIcon("HT_Texture", true);
                 if (buttonsForm.ShowDialog() == DialogResult.OK)
@@ -276,7 +276,7 @@ namespace EuroTextEditor
         private void MenuItem_FontType_Click(object sender, EventArgs e)
         {
             //Open selector
-            if (File.Exists(GlobalVariables.HashtablesFilePath))
+            if (File.Exists(Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h")))
             {
                 Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Font", true)
                 {
@@ -307,7 +307,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         private void MenuItem_EffectString_Click(object sender, EventArgs e)
         {
-            if (File.Exists(GlobalVariables.HashtablesFilePath))
+            if (File.Exists(Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h")))
             {
                 //Open selector
                 Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Text", true)
@@ -363,7 +363,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_ShowGamePadButton_Click(object sender, EventArgs e)
         {
-            if (File.Exists(GlobalVariables.HashtablesFilePath))
+            if (File.Exists(Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h")))
             {
                 //Open selector
                 Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Action", true)
@@ -392,7 +392,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_ShowObjective_Click(object sender, EventArgs e)
         {
-            if (File.Exists(GlobalVariables.HashtablesFilePath))
+            if (File.Exists(Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h")))
             {
                 //Open selector
                 Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_Objective", true)
@@ -506,6 +506,37 @@ namespace EuroTextEditor
             {
                 UpdateWordsInColor();
             }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_TimerTest_Click(object sender, EventArgs e)
+        {
+            int charCount = 0, timeFor30;
+            decimal calcTime;
+
+            bool insideFormatter = false;
+            for (int i = 0; i < Textbox.Text.Length; i++)
+            {
+                if (Textbox.Text[i] == '<')
+                {
+                    insideFormatter = true;
+                }
+                if (!insideFormatter && Textbox.Text[i] != ' ')
+                {
+                    charCount++;
+                }
+                if (Textbox.Text[i] == '>')
+                {
+                    insideFormatter = false;
+                }
+            }
+
+            //Do calculations
+            calcTime = decimal.Divide(charCount, 30);
+            timeFor30 = (int)Math.Round(calcTime * 30);
+
+            //Show info
+            MessageBox.Show(string.Join(" ", "Character count =", charCount, "\nTeletype time =", calcTime.ToString("0.00000000"), "Seconds", "\nFrames =", timeFor30), "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------

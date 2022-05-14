@@ -32,7 +32,6 @@ namespace EuroTextEditor
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Exporter));
             this.GroupBox = new System.Windows.Forms.GroupBox();
             this.ProgressBar_Status = new System.Windows.Forms.ProgressBar();
-            this.BackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.GroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,7 +45,7 @@ namespace EuroTextEditor
             this.GroupBox.Location = new System.Drawing.Point(7, 6);
             this.GroupBox.Name = "GroupBox";
             this.GroupBox.Size = new System.Drawing.Size(689, 60);
-            this.GroupBox.TabIndex = 0;
+            this.GroupBox.TabIndex = 1;
             this.GroupBox.TabStop = false;
             this.GroupBox.Text = "EuroText Task Time Remaining:";
             // 
@@ -59,14 +58,6 @@ namespace EuroTextEditor
             this.ProgressBar_Status.Size = new System.Drawing.Size(678, 23);
             this.ProgressBar_Status.TabIndex = 0;
             // 
-            // BackgroundWorker
-            // 
-            this.BackgroundWorker.WorkerReportsProgress = true;
-            this.BackgroundWorker.WorkerSupportsCancellation = true;
-            this.BackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker_DoWork);
-            this.BackgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BackgroundWorker_ProgressChanged);
-            this.BackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker_RunWorkerCompleted);
-            // 
             // Frm_Exporter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -78,11 +69,8 @@ namespace EuroTextEditor
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Frm_Exporter";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Outputting SpreadSheet";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_Exporter_FormClosing);
-            this.Shown += new System.EventHandler(this.Frm_Exporter_Shown);
             this.GroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -90,8 +78,7 @@ namespace EuroTextEditor
 
         #endregion
 
-        private System.Windows.Forms.GroupBox GroupBox;
-        private System.Windows.Forms.ProgressBar ProgressBar_Status;
-        private System.ComponentModel.BackgroundWorker BackgroundWorker;
+        protected internal System.Windows.Forms.GroupBox GroupBox;
+        protected internal System.Windows.Forms.ProgressBar ProgressBar_Status;
     }
 }

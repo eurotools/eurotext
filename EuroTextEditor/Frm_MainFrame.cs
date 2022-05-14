@@ -1,9 +1,12 @@
-﻿using ExcelDataReader;
+﻿using EuroTextEditor.Classes;
+using ExcelDataReader;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace EuroTextEditor
@@ -20,11 +23,33 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------
+        //  MAINFORM
+        //-------------------------------------------------------------------------------------------
+        private void Frm_MainFrame_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //Application INI
+            IniFile applicationIni = new IniFile(Path.Combine(Application.StartupPath, "EuroText.ini"));
+            applicationIni.Write("UserName", GlobalVariables.EuroTextUser, "Misc");
+            applicationIni.Write("Last_Project_Opened", GlobalVariables.WorkingDirectory, "Misc");
+            applicationIni.Write("HashTablesAdmin_Path", GlobalVariables.HashtablesAdminPath, "Settings");
+            applicationIni.Write("includeDataInfoSheet", Checkbox_DataInfoSheet.Checked.ToString(), "MainForm");
+            applicationIni.Write("includeFormatInfoSheet", Checkbox_FormatInfo.Checked.ToString(), "MainForm");
+        }
+
+        //-------------------------------------------------------------------------------------------
         //  MENU ITEM - FILE
         //-------------------------------------------------------------------------------------------
         private void MenuItem_OpenProject_Click(object sender, EventArgs e)
         {
+            if (OpenFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                //Update Global variable and restart
+                GlobalVariables.WorkingDirectory = Path.GetDirectoryName(OpenFileDialog.FileName);
 
+                //Restart application
+                Process.Start(Application.ExecutablePath);
+                Application.Exit();
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -40,35 +65,24 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------
-        //  MENU ITEM - SETTINGS
-        //-------------------------------------------------------------------------------------------
-        private void MenuItem_SetHashCodesDir_Click(object sender, EventArgs e)
-        {
-            if (OpenFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                GlobalVariables.HashtablesFilePath = OpenFileDialog.FileName;
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------
         //  LISTBOX HASHCODES
         //-------------------------------------------------------------------------------------------
         private void ListBox_HashCodes_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (ListBox_HashCodes.SelectedItems.Count == 1)
             {
-                string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", ListBox_HashCodes.SelectedItem.ToString() + ".txt");
+                string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", ListBox_HashCodes.SelectedItem.ToString() + ".etf");
                 if (!File.Exists(textFilePath))
                 {
                     DialogResult answer = MessageBox.Show(string.Join(" ", "", "Source file not found:", textFilePath, "\n\nDo you want to create it now?"), "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (answer == DialogResult.Yes)
                     {
                         //Create object
-                        EXText newTextFile = new EXText();
+                        EuroText_TextFile newTextFile = new EuroText_TextFile();
 
                         //Write Object
-                        EXText_Writer filesWriter = new EXText_Writer();
-                        filesWriter.EXTextObjectToTextFile(newTextFile, textFilePath);
+                        ETXML_Writter filesWriter = new ETXML_Writter();
+                        filesWriter.WriteTextFile(textFilePath, newTextFile);
                     }
                 }
 
@@ -87,25 +101,18 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_UpdateHashCodes_Click(object sender, EventArgs e)
         {
-            if (File.Exists(GlobalVariables.HashtablesFilePath))
-            {
-                //Get hashcodes
-                string hashTableSection = "HT_Text_";
-                HashSet<string> AvailableHashCodes = CommonFunctions.ReadHashTableSection(GlobalVariables.HashtablesFilePath, hashTableSection);
+            //Get text files
+            string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly).Select(fileName => Path.GetFileNameWithoutExtension(fileName)).ToArray();
 
-                //Update control
-                ListBox_HashCodes.BeginUpdate();
-                ListBox_HashCodes.Items.Clear();
-                ListBox_HashCodes.Items.AddRange(AvailableHashCodes.ToArray());
-                ListBox_HashCodes.EndUpdate();
+            //Update control
+            ListBox_HashCodes.BeginUpdate();
+            ListBox_HashCodes.Items.Clear();
+            ListBox_HashCodes.Items.AddRange(filesToAdd);
+            ListBox_HashCodes.EndUpdate();
+            listCollection = filesToAdd;
 
-                //Update label
-                Label_TotalHashCodes.Text = "Total: " + ListBox_HashCodes.Items.Count;
-            }
-            else
-            {
-                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            //Update label
+            Label_TotalHashCodes.Text = "Total: " + ListBox_HashCodes.Items.Count;
         }
 
         //-------------------------------------------------------------------------------------------
@@ -122,12 +129,12 @@ namespace EuroTextEditor
                 for (int i = 0; i < ListBox_HashCodes.Items.Count; i++)
                 {
                     //Get message text and ensure that the source file exists
-                    string filePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", ListBox_HashCodes.Items[i].ToString() + ".txt");
+                    string filePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", ListBox_HashCodes.Items[i].ToString() + ".etf");
                     if (File.Exists(filePath))
                     {
                         //Read object
-                        EXText_Reader filesReader = new EXText_Reader();
-                        EXText objText = filesReader.ReadEXTextFile(filePath);
+                        ETXML_Reader filesReader = new ETXML_Reader();
+                        EuroText_TextFile objText = filesReader.ReadTextFile(filePath);
 
                         //Add items
                         if (objText.Group.Equals(groupToSearch))
@@ -149,7 +156,37 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_CreateNewGroup_Click(object sender, EventArgs e)
         {
+            using (Frm_InputBox newGroupForm = new Frm_InputBox("Create New", "Enter Name", ""))
+            {
+                if (newGroupForm.ShowDialog() == DialogResult.OK)
+                {
+                    //Format the name
+                    string newGroupName = newGroupForm.ReturnValue.ToUpper().Trim();
+                    if (!newGroupName.StartsWith("M_"))
+                    {
+                        newGroupName = string.Join("", "M_", newGroupName);
+                    }
 
+                    //Add the group to the list
+                    if (!ListBox_TextGroups.Items.Contains(newGroupName))
+                    {
+                        ListBox_TextGroups.Items.Add(newGroupName);
+
+                        //Get text file path
+                        string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "Groups.txt");
+                        if (File.Exists(textGroupsFilePath))
+                        {
+                            //Update txt
+                            string[] clist = ListBox_TextGroups.Items.OfType<string>().ToArray();
+                            File.WriteAllLines(textGroupsFilePath, clist);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("The new group could not be added, a group with the same name already exists.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
 
         //-------------------------------------------------------------------------------------------
@@ -157,9 +194,10 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         private void Button_Output_Click(object sender, EventArgs e)
         {
-            if (SaveFileDialog.ShowDialog() == DialogResult.OK)
+            //Ensure that the last output filepath still exists
+            if (Directory.Exists(GlobalVariables.CurrentProject.SpreadSheetsDirectory))
             {
-                Frm_Exporter exporterTask = new Frm_Exporter(this, SaveFileDialog.FileName, Checkbox_FormatInfo.Checked, Checkbox_DataInfoSheet.Checked);
+                Frm_SpreadsheetExporter exporterTask = new Frm_SpreadsheetExporter(this, GlobalVariables.CurrentProject.SpreadSheetsDirectory, Checkbox_FormatInfo.Checked, Checkbox_DataInfoSheet.Checked);
                 exporterTask.ShowDialog();
             }
         }
@@ -230,7 +268,8 @@ namespace EuroTextEditor
             {
                 int rowNumber = 0;
                 string TextGroup = string.Empty;
-                string[] Languages = new string[] { "English US", "English UK", "German", "French", "Spanish", "Italian", "Korean", "Japan" };
+                ETXML_Writter filesWriter = new ETXML_Writter();
+
                 foreach (DataGridViewRow row in DataGridView_ExcelSheet.Rows)
                 {
                     if (rowNumber > 3 && row.Cells.Count > 2)
@@ -248,12 +287,13 @@ namespace EuroTextEditor
                             if (TextHashCode.StartsWith("HT_Text_"))
                             {
                                 //Get basic parameters
-                                EXText textobj = new EXText
+                                EuroText_TextFile textobj = new EuroText_TextFile
                                 {
                                     Group = TextGroup,
                                     DeadText = Convert.ToInt32(row.Cells[2].Value.ToString().Equals("1")),
-                                    HashCode = row.Cells[3].Value.ToString()
                                 };
+
+                                string HashCode = row.Cells[3].Value.ToString();
 
                                 //Check if there is a char limitation
                                 if (!string.IsNullOrEmpty(row.Cells[1].Value.ToString()))
@@ -262,9 +302,12 @@ namespace EuroTextEditor
                                 }
 
                                 //Get text in all languages
-                                for (int i = 0; i < textobj.TextLanguage.Length; i++)
+                                for (int i = 0; i < GlobalVariables.CurrentProject.Languages.Count; i++)
                                 {
-                                    textobj.TextLanguage[i] = row.Cells[5 + i].Value.ToString();
+                                    string languages = DataGridView_ExcelSheet.Rows[1].Cells[5 + i].Value.ToString();
+                                    string languageData = row.Cells[5 + i].Value.ToString();
+
+                                    textobj.Messages.Add(languages, languageData);
                                 }
 
                                 //Get output section
@@ -277,33 +320,8 @@ namespace EuroTextEditor
                                 }
 
                                 //Print EXText to text file
-                                string textFilePath = Path.Combine(@"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\Messages\", textobj.HashCode.Trim() + ".txt");
-                                using (StreamWriter sw = File.CreateText(textFilePath))
-                                {
-                                    sw.WriteLine("#Parameters");
-                                    if (textobj.MaxNumOfChars > 0)
-                                    {
-                                        sw.WriteLine("MaxNumOfChars " + textobj.MaxNumOfChars);
-                                    }
-                                    if (textobj.DeadText > 0)
-                                    {
-                                        sw.WriteLine("DeadText " + textobj.DeadText);
-                                    }
-                                    sw.WriteLine("Group " + textobj.Group);
-                                    sw.WriteLine("OutputSection " + textobj.OutputSection);
-                                    sw.WriteLine("#END");
-                                    sw.WriteLine(string.Empty);
-                                    for (int i = 0; i < textobj.TextLanguage.Length; i++)
-                                    {
-                                        if (textobj.TextLanguage[i].Length > 0)
-                                        {
-                                            sw.WriteLine("#" + Languages[i]);
-                                            sw.WriteLine(textobj.TextLanguage[i]);
-                                            sw.WriteLine("#END");
-                                            sw.WriteLine(string.Empty);
-                                        }
-                                    }
-                                }
+                                string textFilePath = Path.Combine(@"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\Messages\", HashCode + ".etf");
+                                filesWriter.WriteTextFile(textFilePath, textobj);
                             }
                         }
                     }
@@ -317,6 +335,243 @@ namespace EuroTextEditor
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Button_GetSections_Click(object sender, EventArgs e)
+        {
+            if (DataGridView_ExcelSheet.Rows.Count > 0)
+            {
+                ETXML_Writter filesWriter = new ETXML_Writter();
+                EuroText_TextSections textSectionsDemo = new EuroText_TextSections();
+
+                bool InsideMarkerLevelStart = false;
+                DataGridViewRow formatRow = DataGridView_ExcelSheet.Rows[2];
+                for (int i = 0; i < formatRow.Cells.Count; i++)
+                {
+                    if (formatRow.Cells[i].Value.Equals("MARKER_LEVEL_END"))
+                    {
+                        break;
+                    }
+                    if (InsideMarkerLevelStart)
+                    {
+                        string sectionName = DataGridView_ExcelSheet.Rows[0].Cells[i].Value.ToString();
+                        int sectionNum = Convert.ToInt32(Regex.Match(DataGridView_ExcelSheet.Rows[1].Cells[i].Value.ToString(), @"\d+").Value);
+                        textSectionsDemo.TextSections.Add(sectionNum, sectionName);
+                    }
+                    if (formatRow.Cells[i].Value.Equals("MARKER_LEVEL_START"))
+                    {
+                        InsideMarkerLevelStart = true;
+                    }
+                }
+
+                //Write file
+                string filePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
+                filesWriter.WriteTextSections(filePath, textSectionsDemo);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal string[] listCollection;
+        private void Textbox_SearchBarHashCodes_TextChanged(object sender, EventArgs e)
+        {
+            //Update control
+            ListBox_HashCodes.BeginUpdate();
+            ListBox_HashCodes.Items.Clear();
+            if (string.IsNullOrEmpty(Textbox_SearchBarHashCodes.Text.Trim()))
+            {
+                ListBox_HashCodes.Items.AddRange(listCollection.ToArray());
+            }
+            else
+            {
+                for (int i = 0; i < listCollection.Length; i++)
+                {
+                    if (listCollection[i].IndexOf(Textbox_SearchBarHashCodes.Text.Trim(), StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        ListBox_HashCodes.Items.Add(listCollection[i]);
+                    }
+                }
+
+            }
+            ListBox_HashCodes.EndUpdate();
+
+            //Update label
+            Label_TotalHashCodes.Text = "Total: " + ListBox_HashCodes.Items.Count;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_SetGroup_Click(object sender, EventArgs e)
+        {
+            string[] availableGroups = ListBox_TextGroups.Items.OfType<string>().ToArray();
+
+            //Show form
+            Frm_SetTextGroup setGroup = new Frm_SetTextGroup(availableGroups);
+            if (setGroup.ShowDialog() == DialogResult.OK)
+            {
+                //Get the group that use user has selected
+                string selectedGroup = setGroup.selectedTextGroup;
+
+                //Call reader lib
+                ETXML_Reader filesReader = new ETXML_Reader();
+                ETXML_Writter filesWriter = new ETXML_Writter();
+
+                //Update all text files
+                foreach (string selectedItem in ListBox_HashCodes.SelectedItems)
+                {
+                    string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", selectedItem + ".etf");
+                    if (File.Exists(textFilePath))
+                    {
+                        //Update property
+                        EuroText_TextFile textObjectData = filesReader.ReadTextFile(textFilePath);
+                        textObjectData.Group = selectedGroup;
+
+                        //Write file again
+                        filesWriter.WriteTextFile(textFilePath, textObjectData);
+                    }
+                }
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Button_TextStore_Click(object sender, EventArgs e)
+        {
+            string[] selectedFiles = ListBox_HashCodes.SelectedItems.OfType<string>().ToArray();
+
+            Frm_TextStore storeText = new Frm_TextStore(selectedFiles);
+            storeText.ShowDialog();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Button_ExportHashCodes_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(GlobalVariables.HashtablesAdminPath))
+            {
+                Queue<string> hashcodes = new Queue<string>();
+                for (int i = 0; i < ListBox_HashCodes.Items.Count; i++)
+                {
+                    hashcodes.Enqueue(ListBox_HashCodes.Items[i].ToString());
+                }
+
+                while (hashcodes.Count > 0)
+                {
+                    string commandLine = "/A HT_Text";
+                    for(int i = 0; i < 600; i++)
+                    {
+                        if (hashcodes.Count > 0)
+                        {
+                            commandLine = commandLine + " " + hashcodes.Dequeue();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    //Run HT_Admin
+                    Process HtAdmin = new Process();
+                    HtAdmin.StartInfo.FileName = GlobalVariables.HashtablesAdminPath;
+                    HtAdmin.StartInfo.Arguments = commandLine;
+                    HtAdmin.Start();
+                    HtAdmin.WaitForExit();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Could not find the HashTable Admin Tool, please set the file path under the project settings form.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Button_ProjectSettings_Click(object sender, EventArgs e)
+        {
+            Frm_ProjectForm projectSettings = new Frm_ProjectForm();
+            projectSettings.ShowDialog();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Button_CreateSection_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h")))
+            {
+                //Open selector
+                Frm_HashCodesSelector selector = new Frm_HashCodesSelector("HT_File", true)
+                {
+                    Text = "Add New Text Section"
+                };
+                if (selector.ShowDialog() == DialogResult.OK)
+                {
+                    //Check if item exists
+                    bool canAddNewSection = true;
+                    foreach (ListViewItem itemToCheck in ListView_SectionsAndLevels.Items)
+                    {
+                        string levelName = itemToCheck.SubItems[1].Text;
+                        if (levelName.Equals(selector.SelectedHashCode))
+                        {
+                            canAddNewSection = false;
+                            break;
+                        }
+                    }
+
+                    //Add item
+                    if (canAddNewSection)
+                    {
+                        //Update control
+                        GlobalVariables.CurrentProject.TextSectionsID++;
+                        ListView_SectionsAndLevels.Items.Add(new ListViewItem(new[] { GlobalVariables.CurrentProject.TextSectionsID.ToString("00"), selector.SelectedHashCode }));
+
+                        //Create or update the TextSections file
+                        EuroText_TextSections sectionsFileText = new EuroText_TextSections();
+                        string projectFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
+                        if (File.Exists(projectFilePath))
+                        {
+                            ETXML_Reader projectFileReader = new ETXML_Reader();
+                            sectionsFileText = projectFileReader.ReadTextSectionsFile(projectFilePath);
+                        }
+
+                        //Update dictionary and write file
+                        foreach (ListViewItem itemToCheck in ListView_SectionsAndLevels.Items)
+                        {
+                            int sectionNum = Convert.ToInt32(itemToCheck.Text);
+                            string levelName = itemToCheck.SubItems[1].Text;
+
+                            if (!sectionsFileText.TextSections.ContainsKey(sectionNum))
+                            {
+                                sectionsFileText.TextSections.Add(sectionNum, levelName);
+                            }
+                        }
+
+                        //Write file again
+                        ETXML_Writter filesWriter = new ETXML_Writter();
+                        filesWriter.WriteTextSections(projectFilePath, sectionsFileText);
+                    }
+                    else
+                    {
+                        MessageBox.Show("The selected section could not be added, a section with this level already exists.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_New_Click(object sender, EventArgs e)
+        {
+            Frm_InputBox newTextFile = new Frm_InputBox("Create New", "Enter Name", "");
+            if (newTextFile.ShowDialog() == DialogResult.OK)
+            {
+                Match match = Regex.Match(newTextFile.ReturnValue, @"^[a-zA-Z0-9_]*$");
+                if (match.Success)
+                {
+
+                }
+                else
+                {
+                    MessageBox.Show("Label '" + newTextFile.ReturnValue + "' uses invalid characters, only numbers, digits and underscore characters are allowed.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

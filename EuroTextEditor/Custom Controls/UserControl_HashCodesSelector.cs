@@ -49,7 +49,7 @@ namespace EuroTextEditor.Editor
         public UserControl_HashCodesSelector()
         {
             InitializeComponent();
-            Textbox_FilePath.Text = GlobalVariables.HashtablesFilePath;
+            Textbox_FilePath.Text = Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h");
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ namespace EuroTextEditor.Editor
         {
             //Get all sections
             string hashTableSection = Combobox_HashCodes_Section.SelectedItem.ToString() + "_";
-            HashSet<string> AvailableHashCodes = CommonFunctions.ReadHashTableSection(GlobalVariables.HashtablesFilePath, hashTableSection);
+            HashSet<string> AvailableHashCodes = CommonFunctions.ReadHashTableSection(Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h"), hashTableSection);
 
             //Add sections to the combobox
             if (AvailableHashCodes.Count > 0)

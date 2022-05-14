@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EuroTextEditor
@@ -23,7 +24,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_HashCodesSelector_Load(object sender, EventArgs e)
         {
-            HashCodesControl.LoadHashCodesSections(GlobalVariables.HashtablesFilePath);
+            HashCodesControl.LoadHashCodesSections(Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h"));
             HashCodesControl.DefaultSection = defaultSection;
             HashCodesControl.ForceHashTableSection = forceHashTableSection;
         }

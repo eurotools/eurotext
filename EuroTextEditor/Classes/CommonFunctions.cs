@@ -1,5 +1,4 @@
-﻿using EuroTextEditor.Classes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -35,6 +34,25 @@ namespace EuroTextEditor
             }
 
             return AvailableHashCodes;
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  USERNAME
+        //-------------------------------------------------------------------------------------------
+        internal static string AskForUserName(string defaultName)
+        {
+            string inputUserName = defaultName;
+
+            do
+            {
+                Frm_InputBox textInfo = new Frm_InputBox("Enter UserName.", "Please enter your username.", "");
+                if (textInfo.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    inputUserName = textInfo.ReturnValue;
+                }
+            } while (string.IsNullOrEmpty(inputUserName));
+
+            return inputUserName;
         }
     }
 

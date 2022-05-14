@@ -38,48 +38,66 @@ namespace EuroTextEditor
             {
                 //Read ini file
                 IniFile euroTextIni = new IniFile(iniFilePath);
+                GlobalVariables.EuroTextUser = euroTextIni.Read("UserName", "Misc");
                 GlobalVariables.WorkingDirectory = euroTextIni.Read("Last_Project_Opened", "Misc");
+                GlobalVariables.HashtablesAdminPath = euroTextIni.Read("HashTablesAdmin_Path", "Settings");
+                string tempVar = euroTextIni.Read("includeDataInfoSheet", "MainForm");
+                if (!string.IsNullOrEmpty(tempVar))
+                {
+                    mainform.Checkbox_DataInfoSheet.Checked = Convert.ToBoolean(tempVar);
+                }
+                tempVar = euroTextIni.Read("includeFormatInfoSheet", "MainForm");
+                if (!string.IsNullOrEmpty(tempVar))
+                {
+                    mainform.Checkbox_FormatInfo.Checked = Convert.ToBoolean(tempVar);
+                }
 
-                //Read project
-                string projectFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Project.ini");
+                //Read EuroText Project file
+                ETXML_Reader projectFileReader = new ETXML_Reader();
+                string projectFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Project.etp");
                 if (File.Exists(projectFilePath))
                 {
                     //Read properties file
-                    IniFile projectFile = new IniFile(projectFilePath);
-                    GlobalVariables.HashtablesFilePath = projectFile.Read("filePath", "HashTables");
+                    GlobalVariables.CurrentProject = projectFileReader.ReadProjectFile(projectFilePath);
+
+                    //Update form text
                     mainform.Text = "EuroText: \"" + GlobalVariables.WorkingDirectory + "\"";
 
                     //Get Text Sections and levels
-                    string[] textSections = File.ReadAllLines(Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.txt"));
-                    string[] outLevels = File.ReadAllLines(Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "OutputLevels.txt"));
-
-                    //Add text sections
-                    for (int i = 0; i < textSections.Length; i++)
+                    string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
+                    if (File.Exists(textSectionsFilePath))
                     {
-                        mainform.ListView_SectionsAndLevels.Items.Add(textSections[i]);
-                    }
-
-                    //Add levels
-                    for (int i = 0; i < outLevels.Length; i++)
-                    {
-                        if (i < mainform.ListView_SectionsAndLevels.Items.Count)
+                        EuroText_TextSections sectionsFileText = projectFileReader.ReadTextSectionsFile(textSectionsFilePath);
+                        mainform.ListView_SectionsAndLevels.BeginUpdate();
+                        foreach (KeyValuePair<int, string> textSectionItem in sectionsFileText.TextSections)
                         {
-                            mainform.ListView_SectionsAndLevels.Items[i].SubItems.Add(outLevels[i]);
+                            mainform.ListView_SectionsAndLevels.Items.Add(new ListViewItem(new[] { textSectionItem.Key.ToString("00"), textSectionItem.Value.ToString() }));
                         }
+                        mainform.ListView_SectionsAndLevels.EndUpdate();
+                        mainform.Label_TotalSections.Text = "Total: " + mainform.ListView_SectionsAndLevels.Items.Count;
                     }
 
                     //Get all groups
-                    string[] textGroup = File.ReadAllLines(Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "Groups.txt"));
-                    mainform.ListBox_TextGroups.BeginUpdate();
-                    mainform.ListBox_TextGroups.Items.AddRange(textGroup);
-                    mainform.ListBox_TextGroups.EndUpdate();
-                    mainform.Label_Total_Groups.Text = "Total: " + mainform.ListBox_TextGroups.Items.Count;
+                    string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "Groups.txt");
+                    if (File.Exists(textGroupsFilePath))
+                    {
+                        string[] textGroup = File.ReadAllLines(textGroupsFilePath);
+                        mainform.ListBox_TextGroups.BeginUpdate();
+                        mainform.ListBox_TextGroups.Items.AddRange(textGroup);
+                        mainform.ListBox_TextGroups.EndUpdate();
+                        mainform.Label_Total_Groups.Text = "Total: " + mainform.ListBox_TextGroups.Items.Count;
+                    }
 
-                    //Get all hashcodes
-                    HashSet<string> availableHashCodes = CommonFunctions.ReadHashTableSection(GlobalVariables.HashtablesFilePath, "HT_Text_");
+                    //Get text files
+                    string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly).Select(fileName => Path.GetFileNameWithoutExtension(fileName)).ToArray();
+
+                    //Update control
                     mainform.ListBox_HashCodes.BeginUpdate();
-                    mainform.ListBox_HashCodes.Items.AddRange(availableHashCodes.ToArray());
+                    mainform.ListBox_HashCodes.Items.AddRange(filesToAdd);
                     mainform.ListBox_HashCodes.EndUpdate();
+                    mainform.listCollection = filesToAdd;
+
+                    //Update label
                     mainform.Label_TotalHashCodes.Text = "Total: " + mainform.ListBox_HashCodes.Items.Count;
                 }
                 else

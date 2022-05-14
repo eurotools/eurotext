@@ -2,6 +2,7 @@
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 
@@ -617,7 +618,7 @@ namespace EuroTextEditor
             string[] messagesToPrint = Directory.GetFiles(@"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\Messages", "*.txt", SearchOption.TopDirectoryOnly);
 
             //Create a reader
-            EXText_Reader textReader = new EXText_Reader();
+            ETXML_Reader textReader = new ETXML_Reader();
 
             //Print other groups
             int totalItems = messagesToPrint.Length * textGroup.Length;
@@ -644,11 +645,12 @@ namespace EuroTextEditor
                         else
                         {
                             //Read text object
-                            EXText textObj = textReader.ReadEXTextFile(messagesToPrint[j]);
+                            EuroText_TextFile textObj = textReader.ReadTextFile(messagesToPrint[j]);
+                            string textObjHashCode = Path.GetFileNameWithoutExtension(messagesToPrint[j]);
 
                             //Report progress
                             currentCount++;
-                            asyncWorker.ReportProgress((currentCount * 100) / totalItems, string.Join(" ", "Text Group:", textGroup[i], "Checking:", textObj.HashCode));
+                            asyncWorker.ReportProgress((currentCount * 100) / totalItems, string.Join(" ", "Text Group:", textGroup[i], "Checking:", textObjHashCode));
 
                             //Ensure that this messsage is in the group
                             if (!textObj.Group.Equals(textGroup[i]))
@@ -681,7 +683,7 @@ namespace EuroTextEditor
                                             }
                                             break;
                                         case 3:
-                                            infoCell.SetCellValue(textObj.HashCode);
+                                            infoCell.SetCellValue(textObjHashCode);
                                             infoCell.CellStyle = normalStyleLeft;
                                             break;
                                         case 4:
@@ -691,16 +693,17 @@ namespace EuroTextEditor
                                 }
 
                                 //Print languages
-                                for (int l = 0; l < textObj.TextLanguage.Length; l++)
+                                int langCol = 5;
+                                foreach (KeyValuePair<string, string> messageToPrint in textObj.Messages)
                                 {
-                                    ICell langCell = headerRow.CreateCell(5 + l);
+                                    ICell langCell = headerRow.CreateCell(langCol++);
                                     langCell.CellStyle = textLangsStyle;
-                                    langCell.SetCellValue(textObj.TextLanguage[l]);
+                                    langCell.SetCellValue(messageToPrint.Value);
                                     langCell.CellStyle.WrapText = true;
                                 }
 
                                 //Empty section
-                                startColIndex = 5 + textObj.TextLanguage.Length;
+                                startColIndex = 5 + textObj.Messages.Count;
                                 for (int l = 0; l < 2; l++)
                                 {
                                     ICell emtpyCell = headerRow.CreateCell(startColIndex + l);

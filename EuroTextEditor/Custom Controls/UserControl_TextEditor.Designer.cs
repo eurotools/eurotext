@@ -57,6 +57,7 @@ namespace EuroTextEditor
             this.MenuItem_Wait = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_EFF = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_EPO = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolButton_TimerTest = new System.Windows.Forms.ToolStripButton();
             this.Toolbar2 = new System.Windows.Forms.ToolStrip();
             this.ToolButton_Cut = new System.Windows.Forms.ToolStripButton();
             this.ToolButton_Copy = new System.Windows.Forms.ToolStripButton();
@@ -96,7 +97,8 @@ namespace EuroTextEditor
             this.DropDown_Button,
             this.DropDown_Effect,
             this.DropDown_GamePad,
-            this.DropDown_Others});
+            this.DropDown_Others,
+            this.ToolButton_TimerTest});
             this.Toolbar1.Location = new System.Drawing.Point(0, 0);
             this.Toolbar1.Name = "Toolbar1";
             this.Toolbar1.Size = new System.Drawing.Size(529, 25);
@@ -322,6 +324,17 @@ namespace EuroTextEditor
             this.MenuItem_EPO.Size = new System.Drawing.Size(246, 22);
             this.MenuItem_EPO.Text = "Enable Page Buttons Override";
             this.MenuItem_EPO.Click += new System.EventHandler(this.MenuItem_EPO_Click);
+            // 
+            // ToolButton_TimerTest
+            // 
+            this.ToolButton_TimerTest.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ToolButton_TimerTest.Font = new System.Drawing.Font("Monotype Corsiva", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ToolButton_TimerTest.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_TimerTest.Image")));
+            this.ToolButton_TimerTest.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolButton_TimerTest.Name = "ToolButton_TimerTest";
+            this.ToolButton_TimerTest.Size = new System.Drawing.Size(23, 22);
+            this.ToolButton_TimerTest.Text = "T";
+            this.ToolButton_TimerTest.Click += new System.EventHandler(this.ToolButton_TimerTest_Click);
             // 
             // Toolbar2
             // 
@@ -606,5 +619,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.MenuItem MenuItem_Font;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton ToolButton_SelectAll;
+        private System.Windows.Forms.ToolStripButton ToolButton_TimerTest;
     }
 }

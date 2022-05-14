@@ -200,6 +200,7 @@ namespace EuroTextEditor
             this.Button_Cancel.TabIndex = 17;
             this.Button_Cancel.Text = "Cancel";
             this.Button_Cancel.UseVisualStyleBackColor = true;
+            this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
             // 
             // Frm_TextEditor_Buttons
             // 
