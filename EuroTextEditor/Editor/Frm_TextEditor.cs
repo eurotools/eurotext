@@ -25,24 +25,35 @@ namespace EuroTextEditor
         private void Frm_TextEditor_Load(object sender, EventArgs e)
         {
             //Get all groups
-            string[] textGroup = File.ReadAllLines(@"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\Groups.txt");
-            Combobox_Group.Items.AddRange(textGroup);
-            if (Combobox_Group.Items.Count > 0)
+            string textGroupsFileText = @"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\Groups.txt";
+            if (File.Exists(textGroupsFileText))
             {
-                Combobox_Group.SelectedIndex = 0;
+                string[] textGroup = File.ReadAllLines(textGroupsFileText);
+                Combobox_Group.BeginUpdate();
+                Combobox_Group.Items.Add("");
+                Combobox_Group.Items.AddRange(textGroup);
+                Combobox_Group.EndUpdate();
+                if (Combobox_Group.Items.Count > 0)
+                {
+                    Combobox_Group.SelectedIndex = 0;
+                }
             }
 
             //Get all output levels and sections
-            string[] outLevels = File.ReadAllLines(@"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\OutputLevels.txt");
-            string[] outSections = File.ReadAllLines(@"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\TextSections.txt");
-            Dictionary<string, string> sectionsAndLevels = new Dictionary<string, string> { { "", "" } };
-            for (int i = 0; i < outSections.Length; i++)
+            string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
+            if (File.Exists(textSectionsFilePath))
             {
-                sectionsAndLevels.Add(outLevels[i], outSections[i]);
+                ETXML_Reader projectFileReader = new ETXML_Reader();
+                EuroText_TextSections sectionsFileText = projectFileReader.ReadTextSectionsFile(textSectionsFilePath);
+                Dictionary<string, string> sectionsAndLevels = new Dictionary<string, string> { { "", "" } };
+                foreach (KeyValuePair<string, string> entry in sectionsFileText.TextSections)
+                {
+                    sectionsAndLevels.Add(entry.Key, entry.Value);
+                }
+                Combobox_OutputSection.DataSource = new BindingSource(sectionsAndLevels, null);
+                Combobox_OutputSection.DisplayMember = "Value";
+                Combobox_OutputSection.ValueMember = "Key";
             }
-            Combobox_OutputSection.DataSource = new BindingSource(sectionsAndLevels, null);
-            Combobox_OutputSection.DisplayMember = "Key";
-            Combobox_OutputSection.ValueMember = "Value";
 
             //New object
             ETXML_Reader filesReader = new ETXML_Reader();
@@ -52,9 +63,14 @@ namespace EuroTextEditor
             {
                 foreach (string languageMessage in GlobalVariables.CurrentProject.Languages)
                 {
+                    //Create a new control
                     UserControl_TextEditor langEditor = new UserControl_TextEditor();
-                    langEditor.Textbox.Text = objText.Messages[languageMessage];
+                    if (objText.Messages.ContainsKey(languageMessage))
+                    {
+                        langEditor.Textbox.Text = objText.Messages[languageMessage];
+                    }
 
+                    //Create a new tab
                     TabPage LangaugeTab = new TabPage
                     {
                         Text = languageMessage,
@@ -69,7 +85,6 @@ namespace EuroTextEditor
             {
                 TabControl_Messages.Visible = false;
             }
-
 
             //Group and Output Section
             Combobox_Group.SelectedItem = objText.Group;
@@ -91,7 +106,14 @@ namespace EuroTextEditor
                 string messageData = tabInfo.Controls.Cast<UserControl_TextEditor>().First().Textbox.Text;
 
                 //Update controls
-                objText.Messages[language] = messageData;
+                if (objText.Messages.ContainsKey(language))
+                {
+                    objText.Messages[language] = messageData;
+                }
+                else
+                {
+                    objText.Messages.Add(language, messageData);
+                }
             }
 
             //Group and Output Section

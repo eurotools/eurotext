@@ -41,8 +41,8 @@
     <ApplicationIcon>address_book_pad.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
-      <HintPath>..\packages\Portable.BouncyCastle.1.8.9\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="Costura, Version=5.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.5.7.0\lib\netstandard1.0\Costura.dll</HintPath>
@@ -53,21 +53,21 @@
     <Reference Include="ExcelDataReader.DataSet, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelDataReader.DataSet.3.6.0\lib\net35\ExcelDataReader.DataSet.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.2.10, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpZipLib.1.3.2\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.3.11, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.3.3\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="NPOI, Version=2.5.5.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NPOI.2.5.5\lib\net45\NPOI.dll</HintPath>
+    <Reference Include="NPOI, Version=2.5.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.6\lib\net45\NPOI.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.OOXML, Version=2.5.5.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NPOI.2.5.5\lib\net45\NPOI.OOXML.dll</HintPath>
+    <Reference Include="NPOI.OOXML, Version=2.5.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.6\lib\net45\NPOI.OOXML.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.OpenXml4Net, Version=2.5.5.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NPOI.2.5.5\lib\net45\NPOI.OpenXml4Net.dll</HintPath>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.5.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.6\lib\net45\NPOI.OpenXml4Net.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.OpenXmlFormats, Version=2.5.5.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NPOI.2.5.5\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.5.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.6\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -86,6 +86,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.1.6643.41644, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WeifenLuo.WinFormsUI.Docking.2.1.0\lib\net20\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\ComboItemData.cs" />
@@ -93,7 +96,10 @@
     <Compile Include="Classes\GlobalVariables.cs" />
     <Compile Include="Classes\IniFile.cs" />
     <Compile Include="Classes\MostRecentFilesMenu.cs" />
-    <Compile Include="Objects\EuroText_ProjectFile.cs" />
+    <Compile Include="Frm_MainFrame_Functions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ETXML\Objects\EuroText_ProjectFile.cs" />
     <Compile Include="Custom Controls\ListView_ColumnSortingClick.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -190,7 +196,7 @@
     <Compile Include="Editor\Frm_TextEditor.Designer.cs">
       <DependentUpon>Frm_TextEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Objects\EuroText_TextFile.cs" />
+    <Compile Include="ETXML\Objects\EuroText_TextFile.cs" />
     <Compile Include="Forms\Frm_ProjectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -203,7 +209,25 @@
     <Compile Include="Frm_Splash.Designer.cs">
       <DependentUpon>Frm_Splash.cs</DependentUpon>
     </Compile>
-    <Compile Include="Objects\EuroText_TextSections.cs" />
+    <Compile Include="ETXML\Objects\EuroText_TextSections.cs" />
+    <Compile Include="Main Forms\Frm_ListBoxHashCodes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main Forms\Frm_ListBoxHashCodes.Designer.cs">
+      <DependentUpon>Frm_ListBoxHashCodes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main Forms\Frm_ListBox_TextGroups.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main Forms\Frm_ListBox_TextGroups.Designer.cs">
+      <DependentUpon>Frm_ListBox_TextGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main Forms\Frm_ListBox_TextSections.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main Forms\Frm_ListBox_TextSections.Designer.cs">
+      <DependentUpon>Frm_ListBox_TextSections.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Custom Controls\UserControl_TextEditor.cs">
@@ -259,6 +283,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_Splash.resx">
       <DependentUpon>Frm_Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main Forms\Frm_ListBoxHashCodes.resx">
+      <DependentUpon>Frm_ListBoxHashCodes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main Forms\Frm_ListBox_TextGroups.resx">
+      <DependentUpon>Frm_ListBox_TextGroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main Forms\Frm_ListBox_TextSections.resx">
+      <DependentUpon>Frm_ListBox_TextSections.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -53,6 +54,29 @@ namespace EuroTextEditor
             } while (string.IsNullOrEmpty(inputUserName));
 
             return inputUserName;
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  MULTIPLE DELETION
+        //-------------------------------------------------------------------------------------------
+        internal static string MultipleDeletionMessage(string messageToShow, string[] itemsToDelete)
+        {
+            int maxItemsToShow = 33;
+
+            //Create message to inform user
+            string filesListToDelete = messageToShow + Environment.NewLine + Environment.NewLine;
+            int numItems = Math.Min(maxItemsToShow, itemsToDelete.Length);
+            for (int i = 0; i < numItems; i++)
+            {
+                filesListToDelete += "'" + itemsToDelete[i] + "'" + Environment.NewLine;
+            }
+            if (itemsToDelete.Length > maxItemsToShow)
+            {
+                filesListToDelete += "Plus Some More ....." + Environment.NewLine;
+                filesListToDelete += "............" + Environment.NewLine;
+            }
+            filesListToDelete += Environment.NewLine + "Total Files: " + itemsToDelete.Length;
+            return filesListToDelete;
         }
     }
 

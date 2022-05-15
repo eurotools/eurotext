@@ -156,7 +156,7 @@ namespace EuroTextEditor
                 textWriter.WriteElementString("LastModifiedBy", GlobalVariables.EuroTextUser);
                 textWriter.WriteEndElement();
                 textWriter.WriteStartElement("TextSections");
-                foreach (KeyValuePair<int, string> textSection in projObj.TextSections)
+                foreach (KeyValuePair<string, string> textSection in projObj.TextSections)
                 {
                     textWriter.WriteStartElement("TextSection");
                     textWriter.WriteAttributeString("sectionNumber", textSection.Key.ToString());

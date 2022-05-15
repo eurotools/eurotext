@@ -14,7 +14,7 @@ namespace EuroTextEditor
         public string LastModifiedBy = string.Empty;
 
         //Text Sections
-        public Dictionary<int, string> TextSections = new Dictionary<int, string>();
+        public Dictionary<string, string> TextSections = new Dictionary<string, string>();
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

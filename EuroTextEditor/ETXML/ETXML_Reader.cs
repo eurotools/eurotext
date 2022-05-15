@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace EuroTextEditor
@@ -175,8 +176,8 @@ namespace EuroTextEditor
                 XmlNodeList paremetersNodes = reader.SelectNodes("ETXML/TextSections/*");
                 foreach (XmlNode node in paremetersNodes)
                 {
-                    int maxId = Convert.ToInt32(node.Attributes["sectionNumber"].Value);
-                    projData.TextSections.Add(maxId, node.InnerText);
+                    int maxId = Convert.ToInt32(Regex.Match(node.Attributes["sectionNumber"].Value, @"\d+").Value);
+                    projData.TextSections.Add("HT_TextSection" + maxId.ToString("00"), node.InnerText);
                     GlobalVariables.CurrentProject.TextSectionsID = Math.Max(GlobalVariables.CurrentProject.TextSectionsID, maxId);
                 }
             }

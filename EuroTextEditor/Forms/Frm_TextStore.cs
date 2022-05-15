@@ -25,8 +25,20 @@ namespace EuroTextEditor
         {
             ETXML_Reader filesReader = new ETXML_Reader();
 
-            //Update ListView Control
+            //Add languages to the combobox
+            Combobox_Section.BeginUpdate();
+            Combobox_Section.Items.AddRange(GlobalVariables.CurrentProject.Languages.ToArray());
+            Combobox_Section.EndUpdate();
+
+            //Add columns to the listview
             ListView_TextStore.BeginUpdate();
+            for (int i = 0; i < GlobalVariables.CurrentProject.Languages.Count; i++)
+            {
+                ColumnHeader newCol = ListView_TextStore.Columns.Add(GlobalVariables.CurrentProject.Languages[i]);
+                newCol.Width = 150;
+            }
+
+            //Update ListView Control
             for (int i = 0; i < textFilesToEdit.Length; i++)
             {
                 //Read file
@@ -37,7 +49,14 @@ namespace EuroTextEditor
 
                     //Create new item
                     ListViewItem item = new ListViewItem(new[] { Path.GetFileNameWithoutExtension(textFilePath), objText.OutputSection, objText.Group, "", });
-                    item.SubItems.AddRange(objText.Messages.Values.ToArray());
+                    for (int j = 0; j < GlobalVariables.CurrentProject.Languages.Count; j++)
+                    {
+                        string language = GlobalVariables.CurrentProject.Languages[j];
+                        if (objText.Messages.ContainsKey(language))
+                        {
+                            item.SubItems.Add(objText.Messages[language]);
+                        }
+                    }
 
                     //Add item to listview
                     ListView_TextStore.Items.Add(item);
@@ -52,7 +71,6 @@ namespace EuroTextEditor
                 ListView_TextStore.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
                 ListView_TextStore.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
             }
-
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -103,7 +121,6 @@ namespace EuroTextEditor
                     };
                     textEditor.ShowDialog();
                 }
-
 
                 //Read file
                 EuroText_TextFile objText = filesReader.ReadTextFile(textFilePath);
