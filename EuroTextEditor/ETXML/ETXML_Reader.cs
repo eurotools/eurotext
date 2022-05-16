@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -39,6 +40,18 @@ namespace EuroTextEditor
                             break;
                         case "LastModifiedBy":
                             textObject.LastModifiedBy = node.InnerText;
+                            break;
+                    }
+                }
+
+                //Read Basic Info
+                XmlNodeList rowInfoNodes = reader.SelectNodes("ETXML/RowInfo/*");
+                foreach (XmlNode node in rowInfoNodes)
+                {
+                    switch (node.Name)
+                    {
+                        case "Color":
+                            textObject.RowColor = ColorTranslator.FromHtml(node.InnerText);
                             break;
                     }
                 }

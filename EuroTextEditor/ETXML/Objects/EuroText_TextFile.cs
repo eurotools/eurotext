@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace EuroTextEditor
 {
@@ -7,6 +8,9 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public class EuroText_TextFile
     {
+        //Only used in the editor
+        public Color RowColor;
+
         //Info
         public string FirstCreated = string.Empty;
         public string CreatedBy = string.Empty;

@@ -85,6 +85,7 @@ namespace EuroTextEditor
             this.MenuItem_SelectAll = new System.Windows.Forms.MenuItem();
             this.MenuItem_Separator2 = new System.Windows.Forms.MenuItem();
             this.MenuItem_Font = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Tab = new System.Windows.Forms.ToolStripMenuItem();
             this.Toolbar1.SuspendLayout();
             this.Toolbar2.SuspendLayout();
             this.SuspendLayout();
@@ -114,6 +115,7 @@ namespace EuroTextEditor
             this.MenuItem_InsertButton,
             this.MenuItem_LessThan,
             this.MenuItem_MoreThan,
+            this.MenuItem_Tab,
             this.MenuItem_NewLine,
             this.MenuItem_InsertTextString});
             this.DropDown_Insert.Image = ((System.Drawing.Image)(resources.GetObject("DropDown_Insert.Image")));
@@ -125,50 +127,50 @@ namespace EuroTextEditor
             // MenuItem_ExitButton
             // 
             this.MenuItem_ExitButton.Name = "MenuItem_ExitButton";
-            this.MenuItem_ExitButton.Size = new System.Drawing.Size(173, 22);
+            this.MenuItem_ExitButton.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_ExitButton.Text = "Exit Button";
             this.MenuItem_ExitButton.Click += new System.EventHandler(this.MenuItem_ExitButton_Click);
             // 
             // MenuItem_PageDownButton
             // 
             this.MenuItem_PageDownButton.Name = "MenuItem_PageDownButton";
-            this.MenuItem_PageDownButton.Size = new System.Drawing.Size(173, 22);
+            this.MenuItem_PageDownButton.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_PageDownButton.Text = "Page Down Button";
             this.MenuItem_PageDownButton.Click += new System.EventHandler(this.MenuItem_PageDownButton_Click);
             // 
             // MenuItem_InsertButton
             // 
             this.MenuItem_InsertButton.Name = "MenuItem_InsertButton";
-            this.MenuItem_InsertButton.Size = new System.Drawing.Size(173, 22);
+            this.MenuItem_InsertButton.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_InsertButton.Text = "Insert Button";
             this.MenuItem_InsertButton.Click += new System.EventHandler(this.MenuItem_InsertButton_Click);
             // 
             // MenuItem_LessThan
             // 
             this.MenuItem_LessThan.Name = "MenuItem_LessThan";
-            this.MenuItem_LessThan.Size = new System.Drawing.Size(173, 22);
+            this.MenuItem_LessThan.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_LessThan.Text = "Insert Less Than";
             this.MenuItem_LessThan.Click += new System.EventHandler(this.MenuItem_LessThan_Click);
             // 
             // MenuItem_MoreThan
             // 
             this.MenuItem_MoreThan.Name = "MenuItem_MoreThan";
-            this.MenuItem_MoreThan.Size = new System.Drawing.Size(173, 22);
+            this.MenuItem_MoreThan.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_MoreThan.Text = "Insert More Than";
             this.MenuItem_MoreThan.Click += new System.EventHandler(this.MenuItem_MoreThan_Click);
             // 
             // MenuItem_NewLine
             // 
             this.MenuItem_NewLine.Name = "MenuItem_NewLine";
-            this.MenuItem_NewLine.Size = new System.Drawing.Size(173, 22);
+            this.MenuItem_NewLine.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_NewLine.Text = "Insert New Line";
             this.MenuItem_NewLine.Click += new System.EventHandler(this.MenuItem_NewLine_Click);
             // 
             // MenuItem_InsertTextString
             // 
             this.MenuItem_InsertTextString.Name = "MenuItem_InsertTextString";
-            this.MenuItem_InsertTextString.Size = new System.Drawing.Size(173, 22);
-            this.MenuItem_InsertTextString.Text = "Inserts Text String";
+            this.MenuItem_InsertTextString.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_InsertTextString.Text = "Insert Text String";
             this.MenuItem_InsertTextString.Click += new System.EventHandler(this.MenuItem_InsertTextString_Click);
             // 
             // DropDown_Icons
@@ -545,6 +547,13 @@ namespace EuroTextEditor
             this.MenuItem_Font.Text = "Font";
             this.MenuItem_Font.Click += new System.EventHandler(this.MenuItem_Font_Click);
             // 
+            // MenuItem_Tab
+            // 
+            this.MenuItem_Tab.Name = "MenuItem_Tab";
+            this.MenuItem_Tab.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_Tab.Text = "Insert Tab";
+            this.MenuItem_Tab.Click += new System.EventHandler(this.MenuItem_Tab_Click);
+            // 
             // UserControl_TextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -626,5 +635,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton ToolButton_SelectAll;
         private System.Windows.Forms.ToolStripButton ToolButton_TimerTest;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Tab;
     }
 }

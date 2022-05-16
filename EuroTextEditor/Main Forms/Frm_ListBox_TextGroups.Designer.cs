@@ -33,6 +33,7 @@ namespace EuroTextEditor
             this.ListBox_TextGroups = new System.Windows.Forms.ListBox();
             this.ContextMenu_TextGroups = new System.Windows.Forms.ContextMenu();
             this.MenuItem_NewGroup = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Delete = new System.Windows.Forms.MenuItem();
             this.SuspendLayout();
             // 
             // ListBox_TextGroups
@@ -51,13 +52,20 @@ namespace EuroTextEditor
             // ContextMenu_TextGroups
             // 
             this.ContextMenu_TextGroups.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.MenuItem_NewGroup});
+            this.MenuItem_NewGroup,
+            this.MenuItem_Delete});
             // 
             // MenuItem_NewGroup
             // 
             this.MenuItem_NewGroup.Index = 0;
-            this.MenuItem_NewGroup.Text = "Create New Group";
+            this.MenuItem_NewGroup.Text = "New";
             this.MenuItem_NewGroup.Click += new System.EventHandler(this.MenuItem_NewGroup_Click);
+            // 
+            // MenuItem_Delete
+            // 
+            this.MenuItem_Delete.Index = 1;
+            this.MenuItem_Delete.Text = "Delete";
+            this.MenuItem_Delete.Click += new System.EventHandler(this.MenuItem_DeleteGroup_Click);
             // 
             // Frm_ListBox_TextGroups
             // 
@@ -72,11 +80,13 @@ namespace EuroTextEditor
             this.Text = "Text Groups";
             this.VisibleChanged += new System.EventHandler(this.Frm_ListBox_TextGroups_VisibleChanged);
             this.ResumeLayout(false);
+
         }
 
         #endregion
         protected internal System.Windows.Forms.ListBox ListBox_TextGroups;
         private System.Windows.Forms.ContextMenu ContextMenu_TextGroups;
         private System.Windows.Forms.MenuItem MenuItem_NewGroup;
+        private System.Windows.Forms.MenuItem MenuItem_Delete;
     }
 }

@@ -208,6 +208,12 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Tab_Click(object sender, EventArgs e)
+        {
+            Textbox.SelectedText = string.Join("", "<T>", Textbox.SelectedText);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_NewLine_Click(object sender, EventArgs e)
         {
             Textbox.SelectedText = string.Join("", "<N>", Textbox.SelectedText);

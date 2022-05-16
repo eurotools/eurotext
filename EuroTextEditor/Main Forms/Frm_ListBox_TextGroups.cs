@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
+using static System.Windows.Forms.ListBox;
 
 namespace EuroTextEditor
 {
@@ -82,6 +83,28 @@ namespace EuroTextEditor
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_DeleteGroup_Click(object sender, EventArgs e)
+        {
+            string[] itemsToDelete = ListBox_TextGroups.SelectedItems.OfType<string>().ToArray();
+            DialogResult answerQuestion = MessageBox.Show(CommonFunctions.MultipleDeletionMessage("Are you sure you want to delete Groups", itemsToDelete), "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (answerQuestion == DialogResult.Yes)
+            {
+                if (ListBox_TextGroups.SelectedItems.Count > 0)
+                {
+                    SelectedObjectCollection selectedItems = ListBox_TextGroups.SelectedItems;
+                    for (int i = selectedItems.Count - 1; i >= 0; i--)
+                    {
+                        ListBox_TextGroups.Items.Remove(selectedItems[i]);
+
+                        //Update text file
+                        string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "Groups.txt");
+                        File.WriteAllLines(textGroupsFilePath, ListBox_TextGroups.Items.OfType<string>().ToArray());
+                    }
+                }
+            }
+        }
+
         //-------------------------------------------------------------------------------------------
         //  FUNCTIONS
         //-------------------------------------------------------------------------------------------
@@ -132,7 +155,7 @@ namespace EuroTextEditor
                 ListBox_TextGroups.Items.AddRange(File.ReadAllLines(textGroupsFilePath));
                 ListBox_TextGroups.EndUpdate();
             }
-        }      
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

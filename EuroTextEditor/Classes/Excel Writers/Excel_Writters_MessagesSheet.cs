@@ -445,7 +445,6 @@ namespace EuroTextEditor
             //Collapse row
             Messages.SetRowGroupCollapsed(0, true);
 
-
             //--------------------------------------------------[Row 2]-------------------------------------------
             //Reset var
             lastColIndex = 0;
@@ -555,7 +554,12 @@ namespace EuroTextEditor
             {
                 ICell langCell = headerRow.CreateCell(lastColIndex++);
                 langCell.CellStyle = blueBackground;
-                string cellValue = "MARKER_" + GlobalVariables.CurrentProject.Languages[i].ToUpper().Replace(" ", "_");
+                string language = GlobalVariables.CurrentProject.Languages[i];
+                if(language.Equals("Japan", StringComparison.OrdinalIgnoreCase))
+                {
+                    language = "JAPANESE";
+                }
+                string cellValue = "MARKER_" + language.ToUpper().Replace(" ", "_");
                 langCell.SetCellValue(cellValue);
             }
 

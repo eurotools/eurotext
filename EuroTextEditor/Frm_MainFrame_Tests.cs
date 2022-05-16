@@ -3,10 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EuroTextEditor
@@ -21,7 +18,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         private void ReadTable_Click(object sender, EventArgs e)
         {
-            using (var stream = File.Open(@"X:\Sphinx\Grafix\Spreadsheets\SphinxText.xls", FileMode.Open, FileAccess.Read))
+            using (var stream = File.Open(@"C:\Users\Jordi Martinez\Desktop\Sphinx and the shadow of set\SphinxModContent\Grafix\Spreadsheets\ShadowOfSetMod.xls", FileMode.Open, FileAccess.Read))
             {
                 // Auto-detect format, supports:
                 //  - Binary Excel files (2.0-2003 format; *.xls)
@@ -84,6 +81,22 @@ namespace EuroTextEditor
                 string TextGroup = string.Empty;
                 ETXML_Writter filesWriter = new ETXML_Writter();
 
+
+                int startSection = 50;
+                int endSections = 90;
+
+                for (int i = 0; i < DataGridView_ExcelSheet.Rows[2].Cells.Count; i++)
+                {
+                    if (DataGridView_ExcelSheet.Rows[2].Cells[i].Value.Equals("MARKER_LEVEL_START"))
+                    {
+                        startSection = i + 1;
+                    }
+                    if (DataGridView_ExcelSheet.Rows[2].Cells[i].Value.Equals("MARKER_LEVEL_END"))
+                    {
+                        endSections = i;
+                    }
+                }
+
                 foreach (DataGridViewRow row in DataGridView_ExcelSheet.Rows)
                 {
                     if (rowNumber > 3 && row.Cells.Count > 2)
@@ -129,9 +142,9 @@ namespace EuroTextEditor
                                 }
 
                                 //Get output section
-                                for (int i = 0; i < 52; i++)
+                                for (int i = 0; i < endSections - startSection; i++)
                                 {
-                                    if (row.Cells[15 + i].Value.ToString().Equals("1"))
+                                    if (row.Cells[startSection + i].Value.ToString().Equals("1"))
                                     {
                                         textobj.OutputSection = DataGridView_ExcelSheet.Rows[1].Cells[15 + i].Value.ToString();
                                     }

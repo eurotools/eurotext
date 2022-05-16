@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -236,6 +237,57 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_SetColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                foreach (ListViewItem itemToModify in ListView_HashCodes.SelectedItems)
+                {
+                    itemToModify.BackColor = colorDialog1.Color;
+
+                    //Update TextFile
+                    ETXML_Reader filesReader = new ETXML_Reader();
+                    ETXML_Writter filesWriter = new ETXML_Writter();
+
+                    string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", itemToModify.Text + ".etf");
+                    if (File.Exists(textFilePath))
+                    {
+                        //Update property
+                        EuroText_TextFile textObjectData = filesReader.ReadTextFile(textFilePath);
+                        textObjectData.RowColor = colorDialog1.Color;
+
+                        //Write file again
+                        filesWriter.WriteTextFile(textFilePath, textObjectData);
+                    }
+                }
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_RemoveColor_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem itemToModify in ListView_HashCodes.SelectedItems)
+            {
+                itemToModify.BackColor = SystemColors.Window;
+
+                //Update TextFile
+                ETXML_Reader filesReader = new ETXML_Reader();
+                ETXML_Writter filesWriter = new ETXML_Writter();
+
+                string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", itemToModify.Text + ".etf");
+                if (File.Exists(textFilePath))
+                {
+                    //Update property
+                    EuroText_TextFile textObjectData = filesReader.ReadTextFile(textFilePath);
+                    textObjectData.RowColor = SystemColors.Window;
+
+                    //Write file again
+                    filesWriter.WriteTextFile(textFilePath, textObjectData);
+                }
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_Refresh_Click(object sender, EventArgs e)
         {
             LoadEuroTextFiles();
@@ -297,7 +349,8 @@ namespace EuroTextEditor
                     EuroText_TextFile objTextData = filesReader.ReadTextFile(filesToAdd[i]);
 
                     //Update control
-                    ListView_HashCodes.Items.Add(new ListViewItem(new[] { Path.GetFileNameWithoutExtension(filesToAdd[i]).ToString(), objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy }));
+                    ListViewItem HashCodeItem = ListView_HashCodes.Items.Add(new ListViewItem(new[] { Path.GetFileNameWithoutExtension(filesToAdd[i]).ToString(), objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy }));
+                    HashCodeItem.BackColor = objTextData.RowColor;
 
                 }
                 ListView_HashCodes.EndUpdate();

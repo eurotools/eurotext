@@ -37,7 +37,6 @@ namespace EuroTextEditor
             this.MenuItem_Rename = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
             this.MenuItem_SetGroup = new System.Windows.Forms.MenuItem();
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.MenuItem_MultiEditor = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.MenuItem_Refresh = new System.Windows.Forms.MenuItem();
@@ -51,6 +50,10 @@ namespace EuroTextEditor
             this.GroupBox_Search = new System.Windows.Forms.GroupBox();
             this.CheckBox_ExactMatch = new System.Windows.Forms.CheckBox();
             this.Button_Search = new System.Windows.Forms.Button();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.MenuItem_Color = new System.Windows.Forms.MenuItem();
+            this.MenuItem_RemoveColor = new System.Windows.Forms.MenuItem();
+            this.MenuItem_SetColor = new System.Windows.Forms.MenuItem();
             this.GroupBox_Search.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,8 +66,8 @@ namespace EuroTextEditor
             this.MenuItem_Rename,
             this.menuItem4,
             this.MenuItem_SetGroup,
-            this.menuItem1,
             this.MenuItem_MultiEditor,
+            this.MenuItem_Color,
             this.menuItem2,
             this.MenuItem_Refresh});
             // 
@@ -103,14 +106,9 @@ namespace EuroTextEditor
             this.MenuItem_SetGroup.Text = "Set Group";
             this.MenuItem_SetGroup.Click += new System.EventHandler(this.MenuItem_SetGroup_Click);
             // 
-            // menuItem1
-            // 
-            this.menuItem1.Index = 6;
-            this.menuItem1.Text = "-";
-            // 
             // MenuItem_MultiEditor
             // 
-            this.MenuItem_MultiEditor.Index = 7;
+            this.MenuItem_MultiEditor.Index = 6;
             this.MenuItem_MultiEditor.Text = "Multi Editor";
             this.MenuItem_MultiEditor.Click += new System.EventHandler(this.MenuItem_MultiEditor_Click);
             // 
@@ -195,12 +193,12 @@ namespace EuroTextEditor
             this.GroupBox_Search.TabStop = false;
             this.GroupBox_Search.Text = "Search";
             // 
-            // checkBox1
+            // CheckBox_ExactMatch
             // 
             this.CheckBox_ExactMatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CheckBox_ExactMatch.AutoSize = true;
             this.CheckBox_ExactMatch.Location = new System.Drawing.Point(231, 21);
-            this.CheckBox_ExactMatch.Name = "checkBox1";
+            this.CheckBox_ExactMatch.Name = "CheckBox_ExactMatch";
             this.CheckBox_ExactMatch.Size = new System.Drawing.Size(86, 17);
             this.CheckBox_ExactMatch.TabIndex = 6;
             this.CheckBox_ExactMatch.Text = "Exact Match";
@@ -216,6 +214,26 @@ namespace EuroTextEditor
             this.Button_Search.Text = "Search";
             this.Button_Search.UseVisualStyleBackColor = true;
             this.Button_Search.Click += new System.EventHandler(this.Button_Search_Click);
+            // 
+            // MenuItem_Color
+            // 
+            this.MenuItem_Color.Index = 7;
+            this.MenuItem_Color.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.MenuItem_RemoveColor,
+            this.MenuItem_SetColor});
+            this.MenuItem_Color.Text = "Color";
+            // 
+            // MenuItem_RemoveColor
+            // 
+            this.MenuItem_RemoveColor.Index = 0;
+            this.MenuItem_RemoveColor.Text = "Remove";
+            this.MenuItem_RemoveColor.Click += new System.EventHandler(this.MenuItem_RemoveColor_Click);
+            // 
+            // MenuItem_SetColor
+            // 
+            this.MenuItem_SetColor.Index = 1;
+            this.MenuItem_SetColor.Text = "Set Color";
+            this.MenuItem_SetColor.Click += new System.EventHandler(this.MenuItem_SetColor_Click);
             // 
             // Frm_ListBoxHashCodes
             // 
@@ -245,7 +263,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.MenuItem MenuItem_Rename;
         private System.Windows.Forms.MenuItem menuItem4;
         private System.Windows.Forms.MenuItem MenuItem_SetGroup;
-        private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem MenuItem_MultiEditor;
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem MenuItem_Refresh;
@@ -259,5 +276,9 @@ namespace EuroTextEditor
         private System.Windows.Forms.GroupBox GroupBox_Search;
         private System.Windows.Forms.Button Button_Search;
         private System.Windows.Forms.CheckBox CheckBox_ExactMatch;
+        private System.Windows.Forms.MenuItem MenuItem_Color;
+        private System.Windows.Forms.MenuItem MenuItem_RemoveColor;
+        private System.Windows.Forms.MenuItem MenuItem_SetColor;
+        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }

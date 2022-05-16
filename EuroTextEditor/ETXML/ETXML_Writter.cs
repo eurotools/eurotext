@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Xml;
 
 namespace EuroTextEditor
@@ -28,6 +29,9 @@ namespace EuroTextEditor
                 textWriter.WriteElementString("CreatedBy", textObj.CreatedBy);
                 textWriter.WriteElementString("LastModified", textObj.LastModified);
                 textWriter.WriteElementString("LastModifiedBy", textObj.LastModifiedBy);
+                textWriter.WriteEndElement();
+                textWriter.WriteStartElement("RowInfo");
+                textWriter.WriteElementString("Color", ColorTranslator.ToHtml(textObj.RowColor));
                 textWriter.WriteEndElement();
                 textWriter.WriteStartElement("Properties");
                 textWriter.WriteElementString("Group", textObj.Group);
