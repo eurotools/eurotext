@@ -199,14 +199,20 @@ namespace EuroTextEditor
                     ETXML_Writter filesWriter = new ETXML_Writter();
 
                     //Update all text files
-                    foreach (string selectedItem in ListView_HashCodes.SelectedItems)
+                    foreach (ListViewItem selectedItem in ListView_HashCodes.SelectedItems)
                     {
-                        string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", selectedItem + ".etf");
+                        string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", selectedItem.Text + ".etf");
                         if (File.Exists(textFilePath))
                         {
                             //Update property
                             EuroText_TextFile textObjectData = filesReader.ReadTextFile(textFilePath);
+                            textObjectData.LastModified = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+                            textObjectData.LastModifiedBy = GlobalVariables.EuroTextUser;
                             textObjectData.Group = selectedGroup;
+
+                            //Update listview
+                            selectedItem.SubItems[3].Text = textObjectData.LastModified;
+                            selectedItem.SubItems[4].Text = textObjectData.LastModifiedBy;
 
                             //Write file again
                             filesWriter.WriteTextFile(textFilePath, textObjectData);
@@ -265,7 +271,7 @@ namespace EuroTextEditor
                 //Show form
                 if (File.Exists(textFilePath))
                 {
-                    Frm_TextEditor textEditor = new Frm_TextEditor(textFilePath)
+                    Frm_TextEditor textEditor = new Frm_TextEditor(textFilePath, ListView_HashCodes.SelectedItems[0])
                     {
                         Text = ListView_HashCodes.SelectedItems[0].Text
                     };
@@ -295,6 +301,39 @@ namespace EuroTextEditor
 
                 }
                 ListView_HashCodes.EndUpdate();
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Button_Search_Click(object sender, EventArgs e)
+        {
+            List<ListViewItem> results = new List<ListViewItem>();
+            foreach(ListViewItem item in ListView_HashCodes.Items)
+            {
+                if (CheckBox_ExactMatch.Checked)
+                {
+                    if (item.Equals(Textbox_SearchBarHashCodes.Text))
+                    {
+                        results.Add((ListViewItem)item.Clone());
+                    }
+                }
+                else
+                {
+                    if (item.Text.IndexOf(Textbox_SearchBarHashCodes.Text, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        results.Add((ListViewItem)item.Clone());
+                    }
+                }
+            }
+
+            if(results.Count >0)
+            {
+                Frm_SearchResults resultsForm = new Frm_SearchResults(results.ToArray());
+                resultsForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("No results", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }

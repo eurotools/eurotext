@@ -3,6 +3,7 @@ using NPOI.SS.UserModel;
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace EuroTextEditor
@@ -54,13 +55,20 @@ namespace EuroTextEditor
                 ExcelWritters writters = new ExcelWritters();
 
                 //Output groups and levels
-                string[] outLevels = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\OutputLevels.txt");
                 string[] textGroup = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\Groups.txt");
-                string[] textSection = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\TextSections.txt");
+
+                //Create or update the TextSections file
+                EuroText_TextSections sectionsFileText = new EuroText_TextSections();
+                string projectFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
+                if (File.Exists(projectFilePath))
+                {
+                    ETXML_Reader projectFileReader = new ETXML_Reader();
+                    sectionsFileText = projectFileReader.ReadTextSectionsFile(projectFilePath);
+                }
 
                 //Create sheet
                 ISheet Messages = workbook.CreateSheet("Messages");
-                writters.CreateMessagesSheet(Messages, workbook, outLevels, textGroup, textSection, BackgroundWorker);
+                writters.CreateMessagesSheet(Messages, workbook, sectionsFileText.TextSections.Values.ToArray(), textGroup, sectionsFileText.TextSections.Keys.ToArray(), BackgroundWorker);
 
                 if (includeFormatInfoSheet)
                 {

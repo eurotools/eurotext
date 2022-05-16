@@ -12,15 +12,17 @@ namespace EuroTextEditor
     public partial class Frm_TextEditor : Form
     {
         private readonly string filePath;
+        private readonly ListViewItem listViewItemMainForm;
         private EuroText_TextFile objText;
         private UserControl_TextEditor[] languageEditors;
         private int languageEditorsIndex = 0;
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        public Frm_TextEditor(string textFilePath)
+        public Frm_TextEditor(string textFilePath, ListViewItem objectToModify)
         {
             InitializeComponent();
             filePath = textFilePath;
+            listViewItemMainForm = objectToModify;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -201,6 +203,12 @@ namespace EuroTextEditor
             //Others
             objText.DeadText = Convert.ToInt32(CheckBox_TextDead.Checked);
             objText.MaxNumOfChars = (int)Numeric_MaxChars.Value;
+
+            //Update properties and listview
+            objText.LastModified = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+            objText.LastModifiedBy = GlobalVariables.EuroTextUser;
+            listViewItemMainForm.SubItems[3].Text = objText.LastModified;
+            listViewItemMainForm.SubItems[4].Text = objText.LastModifiedBy;
 
             ETXML_Writter filesWriter = new ETXML_Writter();
             filesWriter.WriteTextFile(filePath, objText);

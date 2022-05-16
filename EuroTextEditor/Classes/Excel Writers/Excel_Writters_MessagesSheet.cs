@@ -367,36 +367,37 @@ namespace EuroTextEditor
             //  Writing
             //-------------------------------------------------------------------------------------------
             //Header row
+            int lastColIndex = 0;
             int rowIndex = 0;
             IRow headerRow = Messages.CreateRow(rowIndex);
 
-            ICell sheetTypeCell = headerRow.CreateCell(0);
+            ICell sheetTypeCell = headerRow.CreateCell(lastColIndex++);
             sheetTypeCell.CellStyle = VerticalCenter;
             sheetTypeCell.SetCellValue("SHEET_TYPE_TEXT");
 
-            ICell maxNumOfChannelsCell = headerRow.CreateCell(1);
+            ICell maxNumOfChannelsCell = headerRow.CreateCell(lastColIndex++);
             maxNumOfChannelsCell.CellStyle = redBackgroundVerticalCenter;
             maxNumOfChannelsCell.SetCellValue("Max Num Of Chars");
 
-            ICell deadTextCell = headerRow.CreateCell(2);
+            ICell deadTextCell = headerRow.CreateCell(lastColIndex++);
             deadTextCell.CellStyle = redBackgroundVerticalCenter;
             deadTextCell.SetCellValue("Dead Text");
 
-            ICell hashcodesCell = headerRow.CreateCell(3);
+            ICell hashcodesCell = headerRow.CreateCell(lastColIndex++);
             hashcodesCell.CellStyle = pinkBackgroundVerticalCenterUnderline;
             hashcodesCell.SetCellValue("Hash Codes");
 
-            ICell emptyCell = headerRow.CreateCell(4);
+            ICell emptyCell = headerRow.CreateCell(lastColIndex++);
             emptyCell.CellStyle = grayBackground;
 
-            ICell languagesCell = headerRow.CreateCell(5);
+            ICell languagesCell = headerRow.CreateCell(lastColIndex++);
             languagesCell.CellStyle = blueBackgroundVerticalCenterUnderline;
             languagesCell.SetCellValue("Languages");
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < GlobalVariables.CurrentProject.Languages.Count + 1; i++)
             {
-                emptyCell = headerRow.CreateCell(6 + i);
-                if (i > 6)
+                emptyCell = headerRow.CreateCell(lastColIndex++);
+                if (i > GlobalVariables.CurrentProject.Languages.Count - 2)
                 {
                     emptyCell.CellStyle = grayBackground;
                 }
@@ -407,14 +408,11 @@ namespace EuroTextEditor
             }
 
             //Languages Array
-            string[] languagesArray = new string[] { "English US", "English UK", "German", "French", "Spanish", "Italian", "Korean", "Japan" };
             ICellStyle[] colorsLevelsVerticalBold = new ICellStyle[] { greenBackgroundVerticalBold, orangeBackgroundVerticalBold, purpleBackgroundVerticalBold, darkBlueBackgroundVerticalBold, yellowBackgroundVerticalBold };
             ICellStyle[] colorsLevels = new ICellStyle[] { greenBackground, orangeBackground, purpleBackground, darkBlueBackground, yellowBackground };
 
             //Print output levels
-            int lastColIndex = 15;
-            PrintColorsSection(outLevels, languagesArray.Length, orangeLightBackgroundUnderline, colorsLevelsVerticalBold, headerRow, true); ;
-            lastColIndex += outLevels.Length;
+            PrintColorsSection(ref lastColIndex, outLevels, orangeLightBackgroundUnderline, colorsLevelsVerticalBold, headerRow, true);
 
             //Print GameData
             for (int i = 0; i < 4; i++)
@@ -431,7 +429,6 @@ namespace EuroTextEditor
             ICell soundInfoCell = headerRow.CreateCell(lastColIndex++);
             soundInfoCell.CellStyle = limeBackgroundUnderline;
             soundInfoCell.SetCellValue("Sound Information");
-
             for (int i = 0; i < 4; i++)
             {
                 ICell emptyCells = headerRow.CreateCell(lastColIndex++);
@@ -445,6 +442,10 @@ namespace EuroTextEditor
                 }
             }
 
+            //Collapse row
+            Messages.SetRowGroupCollapsed(0, true);
+
+
             //--------------------------------------------------[Row 2]-------------------------------------------
             //Reset var
             lastColIndex = 0;
@@ -454,9 +455,9 @@ namespace EuroTextEditor
             headerRow = Messages.CreateRow(rowIndex);
 
             //Start printing
-            for (int i = 0; i < 5; i++, lastColIndex++)
+            for (int i = 0; i < 5; i++)
             {
-                ICell secondRowEmptyCell = headerRow.CreateCell(i);
+                ICell secondRowEmptyCell = headerRow.CreateCell(lastColIndex++);
                 if (i == 4)
                 {
                     secondRowEmptyCell.CellStyle = grayBackground;
@@ -468,30 +469,28 @@ namespace EuroTextEditor
             }
 
             //Print languages
-            for (int i = 0; i < languagesArray.Length; i++, lastColIndex++)
+            for (int i = 0; i < GlobalVariables.CurrentProject.Languages.Count; i++)
             {
-                ICell langCell = headerRow.CreateCell(5 + i);
+                ICell langCell = headerRow.CreateCell(lastColIndex++);
                 langCell.CellStyle = blueBackgroundBold;
-                langCell.SetCellValue(languagesArray[i]);
+                langCell.SetCellValue(GlobalVariables.CurrentProject.Languages[i]);
             }
 
             //Empty cells
-            int startColIndex = 5 + languagesArray.Length;
-            for (int i = 0; i < 2; i++, lastColIndex++)
+            for (int i = 0; i < 2; i++)
             {
-                ICell grayCell = headerRow.CreateCell(startColIndex + i);
+                ICell grayCell = headerRow.CreateCell(lastColIndex++);
                 grayCell.CellStyle = grayBackground;
             }
 
             //Print text groups
-            startColIndex = lastColIndex;
-            for (int i = 0; i < textSections.Length; i++, lastColIndex++)
+            for (int i = 0; i < textSections.Length; i++)
             {
                 //Create cell
-                ICell levelCell = headerRow.CreateCell(startColIndex + i);
+                ICell levelCell = headerRow.CreateCell(lastColIndex++);
                 levelCell.CellStyle = yellowTextGroup;
                 levelCell.SetCellValue(textSections[i]);
-                Messages.SetColumnWidth(15 + i, 870);
+                Messages.SetColumnWidth(lastColIndex - 1, 870);
             }
 
             for (int i = 0; i < 4; i++)
@@ -521,7 +520,6 @@ namespace EuroTextEditor
             //Freeze two first rows
             Messages.CreateFreezePane(0, 2);
 
-
             //--------------------------------------------------[Row 3]-------------------------------------------
             //Reset var
             lastColIndex = 0;
@@ -549,24 +547,33 @@ namespace EuroTextEditor
             }
 
             //Print language markers
-            startColIndex = lastColIndex;
-            string[] languageMarkersArray = new string[] { "MARKER_LANGUAGE_START", "MARKER_ENGLISH_US", "MARKER_ENGLISH_UK", "MARKER_GERMAN", "MARKER_FRENCH", "MARKER_SPANISH", "MARKER_ITALIAN", "MARKER_KOREAN", "MARKER_JAPANESE", "MARKER_LANGUAGE_END" };
-            for (int i = 0; i < languageMarkersArray.Length; i++, lastColIndex++)
+            ICell languagesStartMarker = headerRow.CreateCell(lastColIndex++);
+            languagesStartMarker.CellStyle = blueBackground;
+            languagesStartMarker.SetCellValue("MARKER_LANGUAGE_START");
+
+            for (int i = 0; i < GlobalVariables.CurrentProject.Languages.Count; i++)
             {
-                ICell langCell = headerRow.CreateCell(startColIndex + i);
+                ICell langCell = headerRow.CreateCell(lastColIndex++);
                 langCell.CellStyle = blueBackground;
-                langCell.SetCellValue(languageMarkersArray[i]);
+                string cellValue = "MARKER_" + GlobalVariables.CurrentProject.Languages[i].ToUpper().Replace(" ", "_");
+                langCell.SetCellValue(cellValue);
             }
 
-            ICell markerLevelStart = headerRow.CreateCell(14);
+            ICell languagesEndMarker = headerRow.CreateCell(lastColIndex++);
+            languagesEndMarker.CellStyle = blueBackground;
+            languagesEndMarker.SetCellValue("MARKER_LANGUAGE_END");
+            Messages.SetColumnWidth(lastColIndex - 1, 6900);
+
+            //Print levels
+            ICell markerLevelStart = headerRow.CreateCell(lastColIndex++);
             markerLevelStart.CellStyle = grayBackground;
             markerLevelStart.SetCellValue("MARKER_LEVEL_START");
+            Messages.SetColumnWidth(lastColIndex - 1, 2100);
 
-            lastColIndex = 15;
-            for (int i = 0; i < outLevels.Length; i++, lastColIndex++)
+            for (int i = 0; i < outLevels.Length; i++)
             {
                 //Create cell
-                ICell levelCell = headerRow.CreateCell(15 + i);
+                ICell levelCell = headerRow.CreateCell(lastColIndex++);
                 levelCell.CellStyle = orangeLightBackground;
                 levelCell.SetCellValue("LEVEL");
             }
@@ -610,15 +617,21 @@ namespace EuroTextEditor
             //-------------------------------------------------------------------------------------------
             //  WRITE MESSAGES
             //-------------------------------------------------------------------------------------------
+            int SpreadSheetColsCount = lastColIndex;
+
+            //Reset var
+            lastColIndex = 0;
+
+            //Create new row
             rowIndex++;
-            headerRow = Messages.CreateRow(rowIndex);
-            PrintTextGroup(lastColIndex, grayBackground, headerRow, "M_TEXT_ALL");
+            headerRow = Messages.CreateRow(rowIndex++);
+
+            //Print groups
+            PrintTextGroup(SpreadSheetColsCount, grayBackground, headerRow, "M_TEXT_ALL");
 
             //Get all messages
-            string[] messagesToPrint = Directory.GetFiles(@"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\Messages", "*.txt", SearchOption.TopDirectoryOnly);
-
-            //Create a reader
             ETXML_Reader textReader = new ETXML_Reader();
+            string[] messagesToPrint = Directory.GetFiles(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
 
             //Print other groups
             int totalItems = messagesToPrint.Length * textGroup.Length;
@@ -632,9 +645,8 @@ namespace EuroTextEditor
                 }
                 else
                 {
-                    rowIndex++;
-                    headerRow = Messages.CreateRow(rowIndex);
-                    PrintTextGroup(lastColIndex, grayBackground, headerRow, textGroup[i]);
+                    headerRow = Messages.CreateRow(rowIndex++);
+                    PrintTextGroup(SpreadSheetColsCount, grayBackground, headerRow, textGroup[i]);
 
                     for (int j = 0; j < messagesToPrint.Length; j++)
                     {
@@ -660,13 +672,12 @@ namespace EuroTextEditor
                             else
                             {
                                 //Create a new row
-                                rowIndex++;
-                                headerRow = Messages.CreateRow(rowIndex);
+                                headerRow = Messages.CreateRow(rowIndex++);
 
                                 //Print basic config
                                 for (int l = 0; l < 5; l++)
                                 {
-                                    ICell infoCell = headerRow.CreateCell(l);
+                                    ICell infoCell = headerRow.CreateCell(lastColIndex++);
                                     infoCell.CellStyle = normalStyle;
                                     switch (l)
                                     {
@@ -693,31 +704,32 @@ namespace EuroTextEditor
                                 }
 
                                 //Print languages
-                                int langCol = 5;
-                                foreach (KeyValuePair<string, string> messageToPrint in textObj.Messages)
+                                foreach(string languageToPrint in GlobalVariables.CurrentProject.Languages)
                                 {
-                                    ICell langCell = headerRow.CreateCell(langCol++);
+                                    ICell langCell = headerRow.CreateCell(lastColIndex++);
                                     langCell.CellStyle = textLangsStyle;
-                                    langCell.SetCellValue(messageToPrint.Value);
+                                    if (textObj.Messages.ContainsKey(languageToPrint))
+                                    {
+                                        langCell.SetCellValue(textObj.Messages[languageToPrint]);
+                                    }
                                     langCell.CellStyle.WrapText = true;
                                 }
 
                                 //Empty section
-                                startColIndex = 5 + textObj.Messages.Count;
                                 for (int l = 0; l < 2; l++)
                                 {
-                                    ICell emtpyCell = headerRow.CreateCell(startColIndex + l);
+                                    ICell emtpyCell = headerRow.CreateCell(lastColIndex++);
                                     emtpyCell.CellStyle = grayBackground;
                                 }
 
                                 //Print Section
-                                PrintColorsSection(outLevels, languagesArray.Length, orangeLightBackground, colorsLevels, headerRow);
+                                PrintColorsSection(ref lastColIndex, outLevels, orangeLightBackground, colorsLevels, headerRow);
 
                                 //Set bit to the output group
                                 if (!string.IsNullOrEmpty(textObj.OutputSection))
                                 {
                                     int bitPosition = Array.IndexOf(textSections, textObj.OutputSection);
-                                    int colIndex = 7 + languagesArray.Length + bitPosition;
+                                    int colIndex = 7 + GlobalVariables.CurrentProject.Languages.Count + bitPosition;
                                     ICell textSectionCell = headerRow.GetCell(colIndex);
                                     if (textSectionCell != null)
                                     {
@@ -726,10 +738,9 @@ namespace EuroTextEditor
                                 }
 
                                 //Print game data and sound information
-                                startColIndex = 7 + languagesArray.Length + outLevels.Length;
                                 for (int l = 0; l < 9; l++)
                                 {
-                                    ICell emtpyCell = headerRow.CreateCell(startColIndex + l);
+                                    ICell emtpyCell = headerRow.CreateCell(lastColIndex++);
                                     if (l == 4 || l == 5)
                                     {
                                         emtpyCell.CellStyle = normalStyle;
@@ -739,25 +750,24 @@ namespace EuroTextEditor
                                         emtpyCell.CellStyle = grayBackground;
                                     }
                                 }
+
+                                lastColIndex = 0;
                             }
                         }
                     }
 
-                    rowIndex++;
-                    headerRow = Messages.CreateRow(rowIndex);
-                    PrintTextGroup(lastColIndex, grayBackground, headerRow, textGroup[i]);
+                    headerRow = Messages.CreateRow(rowIndex++);
+                    PrintTextGroup(SpreadSheetColsCount, grayBackground, headerRow, textGroup[i]);
                 }
             }
 
             //End generic group
-            rowIndex++;
-            headerRow = Messages.CreateRow(rowIndex);
-            PrintTextGroup(lastColIndex, grayBackground, headerRow, "M_TEXT_ALL");
+            headerRow = Messages.CreateRow(rowIndex++);
+            PrintTextGroup(SpreadSheetColsCount, grayBackground, headerRow, "M_TEXT_ALL");
 
             //Last marker
-            rowIndex++;
-            headerRow = Messages.CreateRow(rowIndex);
-            PrintTextGroup(lastColIndex, lightGreen, headerRow, "MARKER_LAST_MESSAGE");
+            headerRow = Messages.CreateRow(rowIndex++);
+            PrintTextGroup(SpreadSheetColsCount, lightGreen, headerRow, "MARKER_LAST_MESSAGE");
 
             //Autosize columns
             Messages.AutoSizeColumn(0);
@@ -765,10 +775,6 @@ namespace EuroTextEditor
             Messages.SetColumnWidth(2, 970);
             Messages.AutoSizeColumn(3);
             Messages.SetColumnWidth(4, 570);
-            Messages.SetColumnWidth(13, 6900);
-            Messages.SetColumnWidth(14, 2100);
-
-            //Messages.SetRowGroupCollapsed(0, true);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -786,7 +792,7 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void PrintColorsSection(string[] outLevels, int languagesArrayLength, ICellStyle firstColor, ICellStyle[] colorsLevels, IRow headerRow, bool printText = false)
+        private void PrintColorsSection(ref int lastColIndex, string[] outLevels, ICellStyle firstColor, ICellStyle[] colorsLevels, IRow headerRow, bool printText = false)
         {
             int k = 0;
             for (int i = 0; i < outLevels.Length; i++)
@@ -798,7 +804,7 @@ namespace EuroTextEditor
                 }
 
                 //Set color
-                ICell levelCell = headerRow.CreateCell(7 + languagesArrayLength + i);
+                ICell levelCell = headerRow.CreateCell(lastColIndex++);
                 if (i == 0)
                 {
                     levelCell.CellStyle = firstColor;

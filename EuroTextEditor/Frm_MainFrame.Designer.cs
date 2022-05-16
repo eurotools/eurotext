@@ -307,7 +307,6 @@ namespace EuroTextEditor
             this.GroupBox_Testing.TabIndex = 10;
             this.GroupBox_Testing.TabStop = false;
             this.GroupBox_Testing.Text = "Testing";
-            this.GroupBox_Testing.Visible = false;
             // 
             // Button_GetSections
             // 

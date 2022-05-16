@@ -1,0 +1,142 @@
+﻿
+namespace EuroTextEditor
+{
+    partial class Frm_SearchResults
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_SearchResults));
+            this.GroupBox_Results = new System.Windows.Forms.GroupBox();
+            this.ListView_HashCodes = new System.Windows.Forms.ListView();
+            this.Col_HashCodes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_FirstCreated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_FirstCreatedBy = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_LastModify = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_LastModifyBy = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Button_OK = new System.Windows.Forms.Button();
+            this.GroupBox_Results.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // GroupBox_Results
+            // 
+            this.GroupBox_Results.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_Results.Controls.Add(this.ListView_HashCodes);
+            this.GroupBox_Results.Location = new System.Drawing.Point(12, 12);
+            this.GroupBox_Results.Name = "GroupBox_Results";
+            this.GroupBox_Results.Size = new System.Drawing.Size(758, 485);
+            this.GroupBox_Results.TabIndex = 1;
+            this.GroupBox_Results.TabStop = false;
+            this.GroupBox_Results.Text = "50 Results:";
+            // 
+            // ListView_HashCodes
+            // 
+            this.ListView_HashCodes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Col_HashCodes,
+            this.Col_FirstCreated,
+            this.Col_FirstCreatedBy,
+            this.Col_LastModify,
+            this.Col_LastModifyBy});
+            this.ListView_HashCodes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ListView_HashCodes.FullRowSelect = true;
+            this.ListView_HashCodes.GridLines = true;
+            this.ListView_HashCodes.HideSelection = false;
+            this.ListView_HashCodes.Location = new System.Drawing.Point(3, 16);
+            this.ListView_HashCodes.Name = "ListView_HashCodes";
+            this.ListView_HashCodes.Size = new System.Drawing.Size(752, 466);
+            this.ListView_HashCodes.TabIndex = 8;
+            this.ListView_HashCodes.UseCompatibleStateImageBehavior = false;
+            this.ListView_HashCodes.View = System.Windows.Forms.View.Details;
+            // 
+            // Col_HashCodes
+            // 
+            this.Col_HashCodes.Text = "HashCode";
+            this.Col_HashCodes.Width = 200;
+            // 
+            // Col_FirstCreated
+            // 
+            this.Col_FirstCreated.Text = "First Created";
+            this.Col_FirstCreated.Width = 130;
+            // 
+            // Col_FirstCreatedBy
+            // 
+            this.Col_FirstCreatedBy.Text = "Created By";
+            this.Col_FirstCreatedBy.Width = 130;
+            // 
+            // Col_LastModify
+            // 
+            this.Col_LastModify.Text = "Last Modify";
+            this.Col_LastModify.Width = 130;
+            // 
+            // Col_LastModifyBy
+            // 
+            this.Col_LastModifyBy.Text = "Last Modify By";
+            this.Col_LastModifyBy.Width = 130;
+            // 
+            // Button_OK
+            // 
+            this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_OK.Location = new System.Drawing.Point(347, 503);
+            this.Button_OK.Name = "Button_OK";
+            this.Button_OK.Size = new System.Drawing.Size(75, 23);
+            this.Button_OK.TabIndex = 2;
+            this.Button_OK.Text = "OK";
+            this.Button_OK.UseVisualStyleBackColor = true;
+            this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
+            // 
+            // Frm_SearchResults
+            // 
+            this.AcceptButton = this.Button_OK;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(782, 538);
+            this.Controls.Add(this.Button_OK);
+            this.Controls.Add(this.GroupBox_Results);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "Frm_SearchResults";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Search Results";
+            this.GroupBox_Results.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+        private System.Windows.Forms.GroupBox GroupBox_Results;
+        private System.Windows.Forms.Button Button_OK;
+        protected internal System.Windows.Forms.ListView ListView_HashCodes;
+        private System.Windows.Forms.ColumnHeader Col_HashCodes;
+        private System.Windows.Forms.ColumnHeader Col_FirstCreated;
+        private System.Windows.Forms.ColumnHeader Col_FirstCreatedBy;
+        private System.Windows.Forms.ColumnHeader Col_LastModify;
+        private System.Windows.Forms.ColumnHeader Col_LastModifyBy;
+    }
+}

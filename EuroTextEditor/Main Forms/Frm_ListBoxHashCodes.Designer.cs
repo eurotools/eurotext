@@ -49,7 +49,7 @@ namespace EuroTextEditor
             this.Col_LastModifyBy = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Textbox_SearchBarHashCodes = new System.Windows.Forms.TextBox();
             this.GroupBox_Search = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.CheckBox_ExactMatch = new System.Windows.Forms.CheckBox();
             this.Button_Search = new System.Windows.Forms.Button();
             this.GroupBox_Search.SuspendLayout();
             this.SuspendLayout();
@@ -184,7 +184,7 @@ namespace EuroTextEditor
             // 
             // GroupBox_Search
             // 
-            this.GroupBox_Search.Controls.Add(this.checkBox1);
+            this.GroupBox_Search.Controls.Add(this.CheckBox_ExactMatch);
             this.GroupBox_Search.Controls.Add(this.Button_Search);
             this.GroupBox_Search.Controls.Add(this.Textbox_SearchBarHashCodes);
             this.GroupBox_Search.Dock = System.Windows.Forms.DockStyle.Top;
@@ -197,14 +197,14 @@ namespace EuroTextEditor
             // 
             // checkBox1
             // 
-            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(231, 21);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(86, 17);
-            this.checkBox1.TabIndex = 6;
-            this.checkBox1.Text = "Exact Match";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.CheckBox_ExactMatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.CheckBox_ExactMatch.AutoSize = true;
+            this.CheckBox_ExactMatch.Location = new System.Drawing.Point(231, 21);
+            this.CheckBox_ExactMatch.Name = "checkBox1";
+            this.CheckBox_ExactMatch.Size = new System.Drawing.Size(86, 17);
+            this.CheckBox_ExactMatch.TabIndex = 6;
+            this.CheckBox_ExactMatch.Text = "Exact Match";
+            this.CheckBox_ExactMatch.UseVisualStyleBackColor = true;
             // 
             // Button_Search
             // 
@@ -215,6 +215,7 @@ namespace EuroTextEditor
             this.Button_Search.TabIndex = 5;
             this.Button_Search.Text = "Search";
             this.Button_Search.UseVisualStyleBackColor = true;
+            this.Button_Search.Click += new System.EventHandler(this.Button_Search_Click);
             // 
             // Frm_ListBoxHashCodes
             // 
@@ -257,6 +258,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.TextBox Textbox_SearchBarHashCodes;
         private System.Windows.Forms.GroupBox GroupBox_Search;
         private System.Windows.Forms.Button Button_Search;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox CheckBox_ExactMatch;
     }
 }
