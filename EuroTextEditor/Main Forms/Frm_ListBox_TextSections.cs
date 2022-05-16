@@ -10,30 +10,26 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class Frm_ListBox_TextSections : DockContent
     {
+        private readonly MenuItem formMenuItem;
+
         //-------------------------------------------------------------------------------------------------------------------------------
-        public Frm_ListBox_TextSections()
+        public Frm_ListBox_TextSections(MenuItem parentMainForm)
         {
             InitializeComponent();
+            formMenuItem = parentMainForm;
+
+            //Menu Item
+            formMenuItem.Click += (se, ev) => { if (IsHidden) { Show(); formMenuItem.Checked = true; } };
         }
 
         //-------------------------------------------------------------------------------------------
         //  FORM EVENTS
         //-------------------------------------------------------------------------------------------
-        private void Frm_ListBox_TextSections_Load(object sender, System.EventArgs e)
+        private void Frm_ListBox_TextSections_VisibleChanged(object sender, System.EventArgs e)
         {
-            ETXML_Reader projectFileReader = new ETXML_Reader();
-
-            //Get Text Sections and levels
-            string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
-            if (File.Exists(textSectionsFilePath))
+            if (IsHidden)
             {
-                EuroText_TextSections sectionsFileText = projectFileReader.ReadTextSectionsFile(textSectionsFilePath);
-                ListView_SectionsAndLevels.BeginUpdate();
-                foreach (KeyValuePair<string, string> textSectionItem in sectionsFileText.TextSections)
-                {
-                    ListView_SectionsAndLevels.Items.Add(new ListViewItem(new[] { textSectionItem.Key, textSectionItem.Value.ToString() }));
-                }
-                ListView_SectionsAndLevels.EndUpdate();
+                formMenuItem.Checked = false;
             }
         }
 
@@ -105,6 +101,27 @@ namespace EuroTextEditor
             else
             {
                 MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  FUNCTIONS
+        //-------------------------------------------------------------------------------------------
+        internal void LoadTextSections()
+        {
+            ETXML_Reader projectFileReader = new ETXML_Reader();
+
+            //Get Text Sections and levels
+            string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
+            if (File.Exists(textSectionsFilePath))
+            {
+                EuroText_TextSections sectionsFileText = projectFileReader.ReadTextSectionsFile(textSectionsFilePath);
+                ListView_SectionsAndLevels.BeginUpdate();
+                foreach (KeyValuePair<string, string> textSectionItem in sectionsFileText.TextSections)
+                {
+                    ListView_SectionsAndLevels.Items.Add(new ListViewItem(new[] { textSectionItem.Key, textSectionItem.Value.ToString() }));
+                }
+                ListView_SectionsAndLevels.EndUpdate();
             }
         }
     }

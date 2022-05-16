@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace EuroTextEditor
 {
@@ -13,6 +13,8 @@ namespace EuroTextEditor
     {
         private readonly string filePath;
         private EuroText_TextFile objText;
+        private UserControl_TextEditor[] languageEditors;
+        private int languageEditorsIndex = 0;
 
         //-------------------------------------------------------------------------------------------------------------------------------
         public Frm_TextEditor(string textFilePath)
@@ -59,33 +61,6 @@ namespace EuroTextEditor
             ETXML_Reader filesReader = new ETXML_Reader();
             objText = filesReader.ReadTextFile(filePath);
 
-            if (GlobalVariables.CurrentProject.Languages.Count > 0)
-            {
-                foreach (string languageMessage in GlobalVariables.CurrentProject.Languages)
-                {
-                    //Create a new control
-                    UserControl_TextEditor langEditor = new UserControl_TextEditor();
-                    if (objText.Messages.ContainsKey(languageMessage))
-                    {
-                        langEditor.Textbox.Text = objText.Messages[languageMessage];
-                    }
-
-                    //Create a new tab
-                    TabPage LangaugeTab = new TabPage
-                    {
-                        Text = languageMessage,
-                        Name = "TabPage_" + languageMessage
-                    };
-                    LangaugeTab.Controls.Add(langEditor);
-                    langEditor.Dock = DockStyle.Fill;
-                    TabControl_Messages.TabPages.Add(LangaugeTab);
-                }
-            }
-            else
-            {
-                TabControl_Messages.Visible = false;
-            }
-
             //Group and Output Section
             Combobox_Group.SelectedItem = objText.Group;
             Combobox_OutputSection.SelectedValue = objText.OutputSection;
@@ -96,14 +71,111 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void Frm_TextEditor_Shown(object sender, EventArgs e)
+        {
+            if (GlobalVariables.CurrentProject.Languages.Count > 0)
+            {
+                string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsTextEditor.xml");
+                languageEditors = new UserControl_TextEditor[GlobalVariables.CurrentProject.Languages.Count];
+                for (int i = 0; i < GlobalVariables.CurrentProject.Languages.Count; i++)
+                {
+                    string currentLanguage = GlobalVariables.CurrentProject.Languages[i];
+
+                    //Add menu item
+                    MenuItem newMenuItem = MenuItem_Windows.MenuItems.Add(currentLanguage);
+                    newMenuItem.Name = "MenuItem_Frm_" + currentLanguage;
+                    newMenuItem.Checked = true;
+
+                    //Create a new language editor
+                    UserControl_TextEditor newLangEditor = new UserControl_TextEditor(newMenuItem)
+                    {
+                        Text = currentLanguage,
+                        TabText = currentLanguage,
+                        Name = "Frm_" + currentLanguage
+                    };
+
+                    //Add text to this language editor
+                    if (objText.Messages.ContainsKey(currentLanguage))
+                    {
+                        newLangEditor.Textbox.Text = objText.Messages[currentLanguage];
+                    }
+
+                    languageEditors[i] = newLangEditor;
+                    if (!File.Exists(configFile))
+                    {
+                        newLangEditor.Show(dockPanel, DockState.Document);
+                    }
+                }
+
+                //Show forms
+                if (File.Exists(configFile))
+                {
+                    DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
+                    dockPanel.LoadFromXml(configFile, _deserializeDockContent);
+                }
+
+                //Update menus
+                for (int i = 0; i < languageEditors.Length; i++)
+                {
+                    if (languageEditors[i] != null && languageEditors[i].IsHidden)
+                    {
+                        for (int j = 0; j < MenuItem_Windows.MenuItems.Count; j++)
+                        {
+                            if (MenuItem_Windows.MenuItems[j].Name.Equals("MenuItem_" + languageEditors[i].Name))
+                            {
+                                MenuItem_Windows.MenuItems[j].Checked = false;
+                                languageEditors[i].DockPanel = dockPanel;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private IDockContent DeserializeDockContent(string persistString)
+        {
+            if (languageEditorsIndex < languageEditors.Length)
+            {
+                if (persistString == typeof(UserControl_TextEditor).ToString())
+                {
+                    return languageEditors[languageEditorsIndex++];
+                }
+            }
+            return null;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Frm_TextEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //Dock conifg
+            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsTextEditor.xml");
+            dockPanel.SaveAsXml(configFile);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_ResetPanels_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < languageEditors.Length; i++)
+            {
+                //Update properties
+                languageEditors[i].IsFloat = false;
+                languageEditors[i].IsHidden = false;
+                languageEditors[i].Pane = dockPanel.Panes[0];
+                languageEditors[i].Show(dockPanel, DockState.Document);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_OK_Click(object sender, EventArgs e)
         {
             //Update text
-            foreach (TabPage tabInfo in TabControl_Messages.TabPages)
+            for (int i = 0; i < languageEditors.Length; i++)
             {
                 //Get message data
-                string language = tabInfo.Text;
-                string messageData = tabInfo.Controls.Cast<UserControl_TextEditor>().First().Textbox.Text;
+                string language = languageEditors[i].Text;
+                string messageData = languageEditors[i].Textbox.Text;
 
                 //Update controls
                 if (objText.Messages.ContainsKey(language))

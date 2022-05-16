@@ -358,4 +358,26 @@
   <metadata name="ContextMenu_RichTextbox.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>464, 17</value>
   </metadata>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAQAAEABAAoAQAAJgAAACAgEAABAAQA6AIAAE4BAAAoAAAAEAAAACAAAAABAAQAAAAAAMAA
+        AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADAwMAAAAD/AAD/
+        AAAA//8A/wAAAP8A/wD//wAA////AAAAAAAAAAAAeIiIiIiIAAB/v7+/v7gAAHv7+wD7+AAAeIiIgwAA
+        AAB7+/v7OPsAAH+/v7+zj7cAeIiIiIg4sAB/v7+/v7MAAnv7+/v7+ACieIiIiIiIAvp7+/v7+/gCr3+/
+        v7+/uAAqewsLCwsLAAIAt7e3t7AAAAAAAAAAAAAAgA8AAAAHAAAABwAAAAcAAAAHAAAAAwAAAAEAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAGAACADwAA1V8AACgAAAAgAAAAQAAAAAEABAAAAAAAgAIAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAwMDAAICAgAAAAP8AAP8AAAD/
+        /wD/AAAA/wD/AP//AAD///8AAAAAAAAAAAAAAAAAAAAAAACHd3d3d3d3d3d3dwcAAAAIv7+/v7+/v7+/
+        v79wcAAACHd3d3d3d3d3d3d3cHAAAAi/v7+/v7+/v7+/v3BwAAAI+/v7+/v7+/v7+/twcAAACHd3d3dw
+        B3d3d3d3cHAAAAi/v7+/vzAL+/v7+3BwAAAI+/v7+/vz8Ai/v79wcAAACHd3d3d3dz/4AAAHcHAAAAi/
+        v7+/v7+z//czMHBwAAAI+/v7+/v7+z//czMAcAAACHd3d3d3d3dz//czMgAAAAi/v7+/v7+/vz//czAA
+        AAAI+/v7+/v7+/vz//cAAAAACHd3d3d3d3d3dz/wAAAgAAi/v7+/v7+/v7+zAAACIgAI+/v7+/v7+/v7
+        /w8AKqIgCHd3d3d3d3d3d3cA8qKqIAi/v7+/v7+/v7+/sAqqKqAI+/v7+/v7+/v7+/8quqKgCHd3d3d3
+        d3d3d3d3Kq+qIAi/v7+/v7+/v7+/v3Kq+qAI+/v7+/v7+/v7+/twKqugCHd3d3d3d3d3d3d3cHKq8Ai/
+        v7+/v7+/v7+/v3BwKqAI+/v7+/v7+/v7+/twcAKgCL+/v7+/v7+/v7+/cHAAIAjw+wvw+wvw+wvw+4Bw
+        AAAIsL8PsL8PsL8PsL+AcAAAAIuIuIuIuIuIuIuIuAAAAAAAAAAAAAAAAAAAAAAAAADgAAA/wAAAH4AA
+        AA+AAAAPgAAAD4AAAA+AAAAPgAAAD4AAAA+AAAAPgAAAD4AAAA+AAAAPgAAAD4AAAAeAAAADgAAAAYAA
+        AAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAmAAAANgAAAD4AAAA/AAAAf5JJJfw==
+</value>
+  </data>
 </root>

@@ -29,8 +29,7 @@ namespace EuroTextEditor
         /// </summary>
         private void InitializeComponent()
         {
-            this.Textbox_SearchBarHashCodes = new System.Windows.Forms.TextBox();
-            this.ListBox_HashCodes = new System.Windows.Forms.ListBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_ListBoxHashCodes));
             this.ContextMenu_HashCodes = new System.Windows.Forms.ContextMenu();
             this.MenuItem_Edit = new System.Windows.Forms.MenuItem();
             this.MenuItem_New = new System.Windows.Forms.MenuItem();
@@ -42,35 +41,18 @@ namespace EuroTextEditor
             this.MenuItem_MultiEditor = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.MenuItem_Refresh = new System.Windows.Forms.MenuItem();
+            this.ListView_HashCodes = new System.Windows.Forms.ListView();
+            this.Col_HashCodes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_FirstCreated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_FirstCreatedBy = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_LastModify = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_LastModifyBy = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Textbox_SearchBarHashCodes = new System.Windows.Forms.TextBox();
             this.GroupBox_Search = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.Button_Search = new System.Windows.Forms.Button();
             this.GroupBox_Search.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // Textbox_SearchBarHashCodes
-            // 
-            this.Textbox_SearchBarHashCodes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_SearchBarHashCodes.Location = new System.Drawing.Point(6, 19);
-            this.Textbox_SearchBarHashCodes.Name = "Textbox_SearchBarHashCodes";
-            this.Textbox_SearchBarHashCodes.Size = new System.Drawing.Size(297, 20);
-            this.Textbox_SearchBarHashCodes.TabIndex = 4;
-            this.Textbox_SearchBarHashCodes.TextChanged += new System.EventHandler(this.Textbox_SearchBarHashCodes_TextChanged);
-            // 
-            // ListBox_HashCodes
-            // 
-            this.ListBox_HashCodes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ListBox_HashCodes.FormattingEnabled = true;
-            this.ListBox_HashCodes.HorizontalScrollbar = true;
-            this.ListBox_HashCodes.Location = new System.Drawing.Point(0, 57);
-            this.ListBox_HashCodes.Name = "ListBox_HashCodes";
-            this.ListBox_HashCodes.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.ListBox_HashCodes.Size = new System.Drawing.Size(309, 381);
-            this.ListBox_HashCodes.Sorted = true;
-            this.ListBox_HashCodes.TabIndex = 1;
-            this.ListBox_HashCodes.ContextMenu = this.ContextMenu_HashCodes;
-            this.ListBox_HashCodes.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox_HashCodes_MouseDoubleClick);
             // 
             // ContextMenu_HashCodes
             // 
@@ -143,28 +125,111 @@ namespace EuroTextEditor
             this.MenuItem_Refresh.Text = "Refresh";
             this.MenuItem_Refresh.Click += new System.EventHandler(this.MenuItem_Refresh_Click);
             // 
+            // ListView_HashCodes
+            // 
+            this.ListView_HashCodes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ListView_HashCodes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Col_HashCodes,
+            this.Col_FirstCreated,
+            this.Col_FirstCreatedBy,
+            this.Col_LastModify,
+            this.Col_LastModifyBy});
+            this.ListView_HashCodes.ContextMenu = this.ContextMenu_HashCodes;
+            this.ListView_HashCodes.FullRowSelect = true;
+            this.ListView_HashCodes.GridLines = true;
+            this.ListView_HashCodes.HideSelection = false;
+            this.ListView_HashCodes.Location = new System.Drawing.Point(0, 57);
+            this.ListView_HashCodes.Name = "ListView_HashCodes";
+            this.ListView_HashCodes.Size = new System.Drawing.Size(378, 421);
+            this.ListView_HashCodes.TabIndex = 7;
+            this.ListView_HashCodes.UseCompatibleStateImageBehavior = false;
+            this.ListView_HashCodes.View = System.Windows.Forms.View.Details;
+            this.ListView_HashCodes.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView_HashCodes_MouseDoubleClick);
+            // 
+            // Col_HashCodes
+            // 
+            this.Col_HashCodes.Text = "HashCode";
+            this.Col_HashCodes.Width = 200;
+            // 
+            // Col_FirstCreated
+            // 
+            this.Col_FirstCreated.Text = "First Created";
+            this.Col_FirstCreated.Width = 130;
+            // 
+            // Col_FirstCreatedBy
+            // 
+            this.Col_FirstCreatedBy.Text = "Created By";
+            this.Col_FirstCreatedBy.Width = 130;
+            // 
+            // Col_LastModify
+            // 
+            this.Col_LastModify.Text = "Last Modify";
+            this.Col_LastModify.Width = 130;
+            // 
+            // Col_LastModifyBy
+            // 
+            this.Col_LastModifyBy.Text = "Last Modify By";
+            this.Col_LastModifyBy.Width = 130;
+            // 
+            // Textbox_SearchBarHashCodes
+            // 
+            this.Textbox_SearchBarHashCodes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Textbox_SearchBarHashCodes.Location = new System.Drawing.Point(6, 19);
+            this.Textbox_SearchBarHashCodes.Name = "Textbox_SearchBarHashCodes";
+            this.Textbox_SearchBarHashCodes.Size = new System.Drawing.Size(219, 20);
+            this.Textbox_SearchBarHashCodes.TabIndex = 4;
+            // 
             // GroupBox_Search
             // 
+            this.GroupBox_Search.Controls.Add(this.checkBox1);
+            this.GroupBox_Search.Controls.Add(this.Button_Search);
             this.GroupBox_Search.Controls.Add(this.Textbox_SearchBarHashCodes);
             this.GroupBox_Search.Dock = System.Windows.Forms.DockStyle.Top;
             this.GroupBox_Search.Location = new System.Drawing.Point(0, 0);
             this.GroupBox_Search.Name = "GroupBox_Search";
-            this.GroupBox_Search.Size = new System.Drawing.Size(309, 51);
+            this.GroupBox_Search.Size = new System.Drawing.Size(378, 51);
             this.GroupBox_Search.TabIndex = 6;
             this.GroupBox_Search.TabStop = false;
             this.GroupBox_Search.Text = "Search";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(231, 21);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(86, 17);
+            this.checkBox1.TabIndex = 6;
+            this.checkBox1.Text = "Exact Match";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // Button_Search
+            // 
+            this.Button_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Search.Location = new System.Drawing.Point(323, 17);
+            this.Button_Search.Name = "Button_Search";
+            this.Button_Search.Size = new System.Drawing.Size(49, 23);
+            this.Button_Search.TabIndex = 5;
+            this.Button_Search.Text = "Search";
+            this.Button_Search.UseVisualStyleBackColor = true;
             // 
             // Frm_ListBoxHashCodes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(309, 448);
+            this.ClientSize = new System.Drawing.Size(378, 478);
+            this.Controls.Add(this.ListView_HashCodes);
             this.Controls.Add(this.GroupBox_Search);
-            this.Controls.Add(this.ListBox_HashCodes);
+            this.HideOnClose = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_ListBoxHashCodes";
             this.TabText = "HashCodes";
             this.Text = "HashCodes";
-            this.Load += new System.EventHandler(this.Frm_ListBoxHashCodes_Load);
+            this.Shown += new System.EventHandler(this.Frm_ListBoxHashCodes_Shown);
+            this.VisibleChanged += new System.EventHandler(this.Frm_ListBoxHashCodes_VisibleChanged);
             this.GroupBox_Search.ResumeLayout(false);
             this.GroupBox_Search.PerformLayout();
             this.ResumeLayout(false);
@@ -172,8 +237,6 @@ namespace EuroTextEditor
         }
 
         #endregion
-        private System.Windows.Forms.TextBox Textbox_SearchBarHashCodes;
-        protected internal System.Windows.Forms.ListBox ListBox_HashCodes;
         private System.Windows.Forms.ContextMenu ContextMenu_HashCodes;
         private System.Windows.Forms.MenuItem MenuItem_Edit;
         private System.Windows.Forms.MenuItem MenuItem_New;
@@ -183,8 +246,17 @@ namespace EuroTextEditor
         private System.Windows.Forms.MenuItem MenuItem_SetGroup;
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem MenuItem_MultiEditor;
-        private System.Windows.Forms.GroupBox GroupBox_Search;
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem MenuItem_Refresh;
+        private System.Windows.Forms.ColumnHeader Col_HashCodes;
+        private System.Windows.Forms.ColumnHeader Col_FirstCreated;
+        private System.Windows.Forms.ColumnHeader Col_FirstCreatedBy;
+        private System.Windows.Forms.ColumnHeader Col_LastModify;
+        private System.Windows.Forms.ColumnHeader Col_LastModifyBy;
+        protected internal System.Windows.Forms.ListView ListView_HashCodes;
+        private System.Windows.Forms.TextBox Textbox_SearchBarHashCodes;
+        private System.Windows.Forms.GroupBox GroupBox_Search;
+        private System.Windows.Forms.Button Button_Search;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

@@ -29,6 +29,7 @@ namespace EuroTextEditor
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_ListBox_TextGroups));
             this.ListBox_TextGroups = new System.Windows.Forms.ListBox();
             this.ContextMenu_TextGroups = new System.Windows.Forms.ContextMenu();
             this.MenuItem_NewGroup = new System.Windows.Forms.MenuItem();
@@ -43,7 +44,7 @@ namespace EuroTextEditor
             this.ListBox_TextGroups.Location = new System.Drawing.Point(0, 0);
             this.ListBox_TextGroups.Name = "ListBox_TextGroups";
             this.ListBox_TextGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.ListBox_TextGroups.Size = new System.Drawing.Size(270, 395);
+            this.ListBox_TextGroups.Size = new System.Drawing.Size(353, 395);
             this.ListBox_TextGroups.TabIndex = 0;
             this.ListBox_TextGroups.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox_TextGroups_MouseDoubleClick);
             // 
@@ -62,14 +63,15 @@ namespace EuroTextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(270, 395);
+            this.ClientSize = new System.Drawing.Size(353, 395);
             this.Controls.Add(this.ListBox_TextGroups);
+            this.HideOnClose = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_ListBox_TextGroups";
             this.TabText = "Text Groups";
             this.Text = "Text Groups";
-            this.Load += new System.EventHandler(this.Frm_ListBox_TextGroups_Load);
+            this.VisibleChanged += new System.EventHandler(this.Frm_ListBox_TextGroups_VisibleChanged);
             this.ResumeLayout(false);
-
         }
 
         #endregion

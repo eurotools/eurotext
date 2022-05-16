@@ -29,6 +29,7 @@ namespace EuroTextEditor
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_TextEditor));
             this.GroupBox_Settings = new System.Windows.Forms.GroupBox();
             this.Combobox_OutputSection = new System.Windows.Forms.ComboBox();
@@ -40,8 +41,15 @@ namespace EuroTextEditor
             this.Label_MaxNumOfChars = new System.Windows.Forms.Label();
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
-            this.TabControl_Messages = new System.Windows.Forms.TabControl();
-            this.label1 = new System.Windows.Forms.Label();
+            this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
+            this.MenuItem_File = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Save = new System.Windows.Forms.MenuItem();
+            this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.MenuItem_ResetPanels = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Exit = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Windows = new System.Windows.Forms.MenuItem();
             this.GroupBox_Settings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_MaxChars)).BeginInit();
             this.SuspendLayout();
@@ -57,7 +65,7 @@ namespace EuroTextEditor
             this.GroupBox_Settings.Controls.Add(this.CheckBox_TextDead);
             this.GroupBox_Settings.Controls.Add(this.Numeric_MaxChars);
             this.GroupBox_Settings.Controls.Add(this.Label_MaxNumOfChars);
-            this.GroupBox_Settings.Location = new System.Drawing.Point(12, 12);
+            this.GroupBox_Settings.Location = new System.Drawing.Point(12, 1);
             this.GroupBox_Settings.Name = "GroupBox_Settings";
             this.GroupBox_Settings.Size = new System.Drawing.Size(742, 44);
             this.GroupBox_Settings.TabIndex = 0;
@@ -132,7 +140,7 @@ namespace EuroTextEditor
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Button_OK.Location = new System.Drawing.Point(598, 554);
+            this.Button_OK.Location = new System.Drawing.Point(598, 538);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 3;
@@ -143,7 +151,7 @@ namespace EuroTextEditor
             // Button_Cancel
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Cancel.Location = new System.Drawing.Point(679, 554);
+            this.Button_Cancel.Location = new System.Drawing.Point(679, 538);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 4;
@@ -151,51 +159,92 @@ namespace EuroTextEditor
             this.Button_Cancel.UseVisualStyleBackColor = true;
             this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
             // 
-            // TabControl_Messages
+            // dockPanel
             // 
-            this.TabControl_Messages.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.dockPanel.ActiveAutoHideContent = null;
+            this.dockPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TabControl_Messages.Location = new System.Drawing.Point(12, 62);
-            this.TabControl_Messages.Name = "TabControl_Messages";
-            this.TabControl_Messages.SelectedIndex = 0;
-            this.TabControl_Messages.Size = new System.Drawing.Size(742, 486);
-            this.TabControl_Messages.TabIndex = 1;
+            this.dockPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
+            this.dockPanel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
+            this.dockPanel.Location = new System.Drawing.Point(12, 51);
+            this.dockPanel.Name = "dockPanel";
+            this.dockPanel.Size = new System.Drawing.Size(742, 481);
+            this.dockPanel.TabIndex = 6;
             // 
-            // label1
+            // mainMenu1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(31, 275);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(691, 42);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "This message has no languages defined";
+            this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.MenuItem_File,
+            this.MenuItem_Windows});
+            // 
+            // MenuItem_File
+            // 
+            this.MenuItem_File.Index = 0;
+            this.MenuItem_File.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.MenuItem_Save,
+            this.menuItem3,
+            this.MenuItem_ResetPanels,
+            this.menuItem1,
+            this.MenuItem_Exit});
+            this.MenuItem_File.Text = "File";
+            // 
+            // MenuItem_Save
+            // 
+            this.MenuItem_Save.Index = 0;
+            this.MenuItem_Save.Text = "Save";
+            // 
+            // menuItem3
+            // 
+            this.menuItem3.Index = 1;
+            this.menuItem3.Text = "-";
+            // 
+            // MenuItem_ResetPanels
+            // 
+            this.MenuItem_ResetPanels.Index = 2;
+            this.MenuItem_ResetPanels.Text = "Reset Settings";
+            this.MenuItem_ResetPanels.Click += new System.EventHandler(this.MenuItem_ResetPanels_Click);
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 3;
+            this.menuItem1.Text = "-";
+            // 
+            // MenuItem_Exit
+            // 
+            this.MenuItem_Exit.Index = 4;
+            this.MenuItem_Exit.Text = "Exit";
+            // 
+            // MenuItem_Windows
+            // 
+            this.MenuItem_Windows.Index = 1;
+            this.MenuItem_Windows.Text = "Windows";
             // 
             // Frm_TextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(766, 589);
-            this.Controls.Add(this.TabControl_Messages);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(766, 573);
+            this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Button_OK);
             this.Controls.Add(this.GroupBox_Settings);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.Menu = this.mainMenu1;
             this.MinimizeBox = false;
             this.Name = "Frm_TextEditor";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Messages Editor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_TextEditor_FormClosing);
             this.Load += new System.EventHandler(this.Frm_TextEditor_Load);
+            this.Shown += new System.EventHandler(this.Frm_TextEditor_Shown);
             this.GroupBox_Settings.ResumeLayout(false);
             this.GroupBox_Settings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_MaxChars)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -210,7 +259,14 @@ namespace EuroTextEditor
         private System.Windows.Forms.Label Label_MaxNumOfChars;
         private System.Windows.Forms.Button Button_OK;
         private System.Windows.Forms.Button Button_Cancel;
-        private System.Windows.Forms.TabControl TabControl_Messages;
-        private System.Windows.Forms.Label label1;
+        private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
+        private System.Windows.Forms.MainMenu mainMenu1;
+        private System.Windows.Forms.MenuItem MenuItem_File;
+        private System.Windows.Forms.MenuItem MenuItem_Save;
+        private System.Windows.Forms.MenuItem menuItem3;
+        private System.Windows.Forms.MenuItem MenuItem_Exit;
+        private System.Windows.Forms.MenuItem MenuItem_Windows;
+        private System.Windows.Forms.MenuItem MenuItem_ResetPanels;
+        private System.Windows.Forms.MenuItem menuItem1;
     }
 }

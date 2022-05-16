@@ -101,7 +101,7 @@ namespace EuroTextEditor
             this.ToolButton_TimerTest});
             this.Toolbar1.Location = new System.Drawing.Point(0, 0);
             this.Toolbar1.Name = "Toolbar1";
-            this.Toolbar1.Size = new System.Drawing.Size(529, 25);
+            this.Toolbar1.Size = new System.Drawing.Size(547, 25);
             this.Toolbar1.TabIndex = 0;
             this.Toolbar1.Text = "MainMenu";
             // 
@@ -352,7 +352,7 @@ namespace EuroTextEditor
             this.ToolButton_FontSize});
             this.Toolbar2.Location = new System.Drawing.Point(0, 25);
             this.Toolbar2.Name = "Toolbar2";
-            this.Toolbar2.Size = new System.Drawing.Size(529, 25);
+            this.Toolbar2.Size = new System.Drawing.Size(547, 25);
             this.Toolbar2.TabIndex = 1;
             this.Toolbar2.Text = "toolStrip2";
             // 
@@ -456,11 +456,12 @@ namespace EuroTextEditor
             this.Textbox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.Textbox.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox.ContextMenu = this.ContextMenu_RichTextbox;
             this.Textbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Textbox.Location = new System.Drawing.Point(0, 53);
+            this.Textbox.Location = new System.Drawing.Point(0, 50);
             this.Textbox.Name = "Textbox";
-            this.Textbox.Size = new System.Drawing.Size(529, 293);
+            this.Textbox.Size = new System.Drawing.Size(547, 301);
             this.Textbox.TabIndex = 2;
             this.Textbox.Text = "";
             this.Textbox.TextChanged += new System.EventHandler(this.Textbox_TextChanged);
@@ -548,12 +549,17 @@ namespace EuroTextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.Textbox);
+            this.ClientSize = new System.Drawing.Size(547, 350);
             this.Controls.Add(this.Toolbar2);
             this.Controls.Add(this.Toolbar1);
+            this.Controls.Add(this.Textbox);
+            this.HideOnClose = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "UserControl_TextEditor";
-            this.Size = new System.Drawing.Size(529, 346);
+            this.TabText = "Text Editor";
+            this.Text = "Text Editor";
             this.Load += new System.EventHandler(this.UserControl_TextEditor_Load);
+            this.VisibleChanged += new System.EventHandler(this.UserControl_TextEditor_VisibleChanged);
             this.Toolbar1.ResumeLayout(false);
             this.Toolbar1.PerformLayout();
             this.Toolbar2.ResumeLayout(false);

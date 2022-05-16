@@ -29,6 +29,7 @@ namespace EuroTextEditor
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_ListBox_TextSections));
             this.ListView_SectionsAndLevels = new System.Windows.Forms.ListView();
             this.Col_TextSection = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_OutputLevel = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -48,7 +49,7 @@ namespace EuroTextEditor
             this.ListView_SectionsAndLevels.HideSelection = false;
             this.ListView_SectionsAndLevels.Location = new System.Drawing.Point(0, 0);
             this.ListView_SectionsAndLevels.Name = "ListView_SectionsAndLevels";
-            this.ListView_SectionsAndLevels.Size = new System.Drawing.Size(270, 395);
+            this.ListView_SectionsAndLevels.Size = new System.Drawing.Size(353, 395);
             this.ListView_SectionsAndLevels.TabIndex = 0;
             this.ListView_SectionsAndLevels.UseCompatibleStateImageBehavior = false;
             this.ListView_SectionsAndLevels.View = System.Windows.Forms.View.Details;
@@ -78,12 +79,14 @@ namespace EuroTextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(270, 395);
+            this.ClientSize = new System.Drawing.Size(353, 395);
             this.Controls.Add(this.ListView_SectionsAndLevels);
+            this.HideOnClose = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_ListBox_TextSections";
             this.TabText = "Text Sections";
             this.Text = "Text Sections";
-            this.Load += new System.EventHandler(this.Frm_ListBox_TextSections_Load);
+            this.VisibleChanged += new System.EventHandler(this.Frm_ListBox_TextSections_VisibleChanged);
             this.ResumeLayout(false);
 
         }

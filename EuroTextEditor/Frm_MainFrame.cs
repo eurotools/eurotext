@@ -16,18 +16,69 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class Frm_MainFrame : Form
     {
+        internal readonly Frm_ListBoxHashCodes hashCodes;
+        internal readonly Frm_ListBox_TextSections textSections;
+        internal readonly Frm_ListBox_TextGroups textGroups;
+
         //-------------------------------------------------------------------------------------------------------------------------------
         public Frm_MainFrame()
         {
             InitializeComponent();
 
-            //show forms
-            Frm_ListBoxHashCodes hashCodes = new Frm_ListBoxHashCodes();
-            hashCodes.Show(dockPanel, DockState.Document);
-            Frm_ListBox_TextSections textSections = new Frm_ListBox_TextSections();
-            textSections.Show(dockPanel, DockState.DockLeft);
-            Frm_ListBox_TextGroups textGroups = new Frm_ListBox_TextGroups();
-            textGroups.Show(textSections.Pane, DockAlignment.Bottom, 0.5);
+            //Initialize forms
+            hashCodes = new Frm_ListBoxHashCodes(MenuItem_HashCodesForm);
+            textSections = new Frm_ListBox_TextSections(MenuItem_TextSectionsForm);
+            textGroups = new Frm_ListBox_TextGroups(MenuItem_TextGroupsForm);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Frm_MainFrame_Shown(object sender, EventArgs e)
+        {
+            //Show forms
+            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsMainForm.xml");
+            if (File.Exists(configFile))
+            {
+                DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
+                dockPanel.LoadFromXml(configFile, _deserializeDockContent);
+            }
+            else
+            {
+                hashCodes.Show(dockPanel, DockState.Document);
+                textSections.Show(dockPanel, DockState.DockLeft);
+                textGroups.Show(textSections.Pane, DockAlignment.Bottom, 0.5);
+            }
+
+            //Update menus
+            if (textGroups != null && textGroups.IsHidden)
+            {
+                MenuItem_TextGroupsForm.Checked = false;
+            }
+            if (textSections != null && textSections.IsHidden)
+            {
+                MenuItem_TextSectionsForm.Checked = false;
+            }
+            if (hashCodes != null && hashCodes.IsHidden)
+            {
+                MenuItem_HashCodesForm.Checked = false;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private IDockContent DeserializeDockContent(string persistString)
+        {
+            if (persistString == typeof(Frm_ListBoxHashCodes).ToString())
+            {
+                return hashCodes;
+            }
+            if (persistString == typeof(Frm_ListBox_TextSections).ToString())
+            {
+                return textSections;
+            }
+            if (persistString == typeof(Frm_ListBox_TextGroups).ToString())
+            {
+                return textGroups;
+            }
+            return null;
         }
 
         //-------------------------------------------------------------------------------------------
@@ -43,6 +94,10 @@ namespace EuroTextEditor
             applicationIni.Write("includeDataInfoSheet", Checkbox_DataInfoSheet.Checked.ToString(), "MainForm");
             applicationIni.Write("includeFormatInfoSheet", Checkbox_FormatInfo.Checked.ToString(), "MainForm");
             applicationIni.Write("OutputFileName", Textbox_FileName.Text, "MainForm");
+
+            //Dock conifg
+            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsMainForm.xml");
+            dockPanel.SaveAsXml(configFile);
         }
 
         //-------------------------------------------------------------------------------------------
@@ -68,11 +123,31 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_ResetSettings_Click(object sender, EventArgs e)
+        {
+            hashCodes.DockPanel = dockPanel;
+            hashCodes.IsFloat = false;
+            hashCodes.IsHidden = false;
+            hashCodes.Pane = dockPanel.Panes[0];
+            hashCodes.DockState = DockState.Document;
+
+            textSections.DockPanel = dockPanel;
+            textSections.IsFloat = false;
+            textSections.IsHidden = false;
+            textSections.Pane = dockPanel.Panes[0];
+            textSections.DockState = DockState.DockLeft;
+
+            textGroups.DockPanel = dockPanel;
+            textGroups.IsFloat = false;
+            textGroups.IsHidden = false;
+            textGroups.Show(textSections.Pane, DockAlignment.Bottom, 0.5);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
-
 
         //-------------------------------------------------------------------------------------------
         //  OPTIONS SECTION
@@ -257,50 +332,60 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_TextStore_Click(object sender, EventArgs e)
         {
-            /*string[] selectedFiles = ListBox_HashCodes.SelectedItems.OfType<string>().ToArray();
+            if (hashCodes != null && !hashCodes.IsHidden)
+            {
+                List<string> filesToModify = new List<string>();
+                foreach (ListViewItem Item in hashCodes.ListView_HashCodes.SelectedItems)
+                {
+                    filesToModify.Add(Item.Text.ToString());
+                }
 
-            Frm_TextStore storeText = new Frm_TextStore(selectedFiles);
-            storeText.ShowDialog();*/
+                Frm_TextStore storeText = new Frm_TextStore(filesToModify.ToArray());
+                storeText.ShowDialog();
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_ExportHashCodes_Click(object sender, EventArgs e)
         {
-            /*if (File.Exists(GlobalVariables.HashtablesAdminPath))
+            if (hashCodes != null && !hashCodes.IsHidden)
             {
-                Queue<string> hashcodes = new Queue<string>();
-                for (int i = 0; i < ListBox_HashCodes.Items.Count; i++)
+                if (File.Exists(GlobalVariables.HashtablesAdminPath))
                 {
-                    hashcodes.Enqueue(ListBox_HashCodes.Items[i].ToString());
-                }
-
-                while (hashcodes.Count > 0)
-                {
-                    string commandLine = "/A HT_Text";
-                    for (int i = 0; i < 600; i++)
+                    Queue<string> hashcodes = new Queue<string>();
+                    for (int i = 0; i < hashCodes.ListView_HashCodes.Items.Count; i++)
                     {
-                        if (hashcodes.Count > 0)
-                        {
-                            commandLine = commandLine + " " + hashcodes.Dequeue();
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        hashcodes.Enqueue(hashCodes.ListView_HashCodes.Items[i].Text.ToString());
                     }
 
-                    //Run HT_Admin
-                    Process HtAdmin = new Process();
-                    HtAdmin.StartInfo.FileName = GlobalVariables.HashtablesAdminPath;
-                    HtAdmin.StartInfo.Arguments = commandLine;
-                    HtAdmin.Start();
-                    HtAdmin.WaitForExit();
+                    while (hashcodes.Count > 0)
+                    {
+                        string commandLine = "/A HT_Text";
+                        for (int i = 0; i < 600; i++)
+                        {
+                            if (hashcodes.Count > 0)
+                            {
+                                commandLine = commandLine + " " + hashcodes.Dequeue();
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        //Run HT_Admin
+                        Process HtAdmin = new Process();
+                        HtAdmin.StartInfo.FileName = GlobalVariables.HashtablesAdminPath;
+                        HtAdmin.StartInfo.Arguments = commandLine;
+                        HtAdmin.Start();
+                        HtAdmin.WaitForExit();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Could not find the HashTable Admin Tool, please set the file path under the project settings form.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
-            else
-            {
-                MessageBox.Show("Could not find the HashTable Admin Tool, please set the file path under the project settings form.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }*/
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -309,8 +394,6 @@ namespace EuroTextEditor
             Frm_ProjectForm projectSettings = new Frm_ProjectForm();
             projectSettings.ShowDialog();
         }
-
-
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

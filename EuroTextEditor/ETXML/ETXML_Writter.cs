@@ -24,24 +24,10 @@ namespace EuroTextEditor
                 textWriter.WriteAttributeString("type", "TEXTFILE");
                 textWriter.WriteAttributeString("version", "1.0.0");
                 textWriter.WriteStartElement("Info");
-                if (string.IsNullOrEmpty(textObj.FirstCreated))
-                {
-                    textWriter.WriteElementString("FirstCreated", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
-                }
-                else
-                {
-                    textWriter.WriteElementString("FirstCreated", textObj.FirstCreated);
-                }
-                if (string.IsNullOrEmpty(textObj.CreatedBy))
-                {
-                    textWriter.WriteElementString("CreatedBy", GlobalVariables.EuroTextUser);
-                }
-                else
-                {
-                    textWriter.WriteElementString("CreatedBy", textObj.CreatedBy);
-                }
-                textWriter.WriteElementString("LastModified", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
-                textWriter.WriteElementString("LastModifiedBy", GlobalVariables.EuroTextUser);
+                textWriter.WriteElementString("FirstCreated", textObj.FirstCreated);
+                textWriter.WriteElementString("CreatedBy", textObj.CreatedBy);
+                textWriter.WriteElementString("LastModified", textObj.LastModified);
+                textWriter.WriteElementString("LastModifiedBy", textObj.LastModifiedBy);
                 textWriter.WriteEndElement();
                 textWriter.WriteStartElement("Properties");
                 textWriter.WriteElementString("Group", textObj.Group);

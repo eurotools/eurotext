@@ -13,24 +13,26 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class Frm_ListBox_TextGroups : DockContent
     {
+        private readonly MenuItem formMenuItem;
+
         //-------------------------------------------------------------------------------------------------------------------------------
-        public Frm_ListBox_TextGroups()
+        public Frm_ListBox_TextGroups(MenuItem parentMainForm)
         {
             InitializeComponent();
+            formMenuItem = parentMainForm;
+
+            //Menu Item
+            formMenuItem.Click += (se, ev) => { if (IsHidden) { Show(); formMenuItem.Checked = true; } };
         }
 
         //-------------------------------------------------------------------------------------------
         //  FORM EVENTS
         //-------------------------------------------------------------------------------------------
-        private void Frm_ListBox_TextGroups_Load(object sender, EventArgs e)
+        private void Frm_ListBox_TextGroups_VisibleChanged(object sender, EventArgs e)
         {
-            //Get text file path
-            string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "Groups.txt");
-            if (File.Exists(textGroupsFilePath))
+            if (IsHidden)
             {
-                ListBox_TextGroups.BeginUpdate();
-                ListBox_TextGroups.Items.AddRange(File.ReadAllLines(textGroupsFilePath));
-                ListBox_TextGroups.EndUpdate();
+                formMenuItem.Checked = false;
             }
         }
 
@@ -118,6 +120,19 @@ namespace EuroTextEditor
                 groupsViewer.ShowDialog();
             }
         }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal void ReadTextGroups()
+        {
+            //Get text file path
+            string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "Groups.txt");
+            if (File.Exists(textGroupsFilePath))
+            {
+                ListBox_TextGroups.BeginUpdate();
+                ListBox_TextGroups.Items.AddRange(File.ReadAllLines(textGroupsFilePath));
+                ListBox_TextGroups.EndUpdate();
+            }
+        }      
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

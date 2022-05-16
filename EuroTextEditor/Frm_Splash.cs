@@ -62,42 +62,10 @@ namespace EuroTextEditor
                     //Update form text
                     mainform.Text = "EuroText: \"" + GlobalVariables.WorkingDirectory + "\"";
 
-                    //Get Text Sections and levels
-                    /* string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
-                     if (File.Exists(textSectionsFilePath))
-                     {
-                         EuroText_TextSections sectionsFileText = projectFileReader.ReadTextSectionsFile(textSectionsFilePath);
-                         mainform.ListView_SectionsAndLevels.BeginUpdate();
-                         foreach (KeyValuePair<string, string> textSectionItem in sectionsFileText.TextSections)
-                         {
-                             mainform.ListView_SectionsAndLevels.Items.Add(new ListViewItem(new[] { textSectionItem.Key, textSectionItem.Value.ToString() }));
-                         }
-                         mainform.ListView_SectionsAndLevels.EndUpdate();
-                         mainform.Label_TotalSections.Text = "Total: " + mainform.ListView_SectionsAndLevels.Items.Count;
-                     }
-
-                     //Get all groups
-                     string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "Groups.txt");
-                     if (File.Exists(textGroupsFilePath))
-                     {
-                         string[] textGroup = File.ReadAllLines(textGroupsFilePath);
-                         mainform.ListBox_TextGroups.BeginUpdate();
-                         mainform.ListBox_TextGroups.Items.AddRange(textGroup);
-                         mainform.ListBox_TextGroups.EndUpdate();
-                         mainform.Label_Total_Groups.Text = "Total: " + mainform.ListBox_TextGroups.Items.Count;
-                     }
-
-                     //Get text files
-                     string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly).Select(fileName => Path.GetFileNameWithoutExtension(fileName)).ToArray();
-
-                     //Update control
-                     mainform.ListBox_HashCodes.BeginUpdate();
-                     mainform.ListBox_HashCodes.Items.AddRange(filesToAdd);
-                     mainform.ListBox_HashCodes.EndUpdate();
-                     mainform.listCollection = filesToAdd;
-
-                     //Update label
-                     mainform.Label_TotalHashCodes.Text = "Total: " + mainform.ListBox_HashCodes.Items.Count;*/
+                    //Get text files
+                    mainform.hashCodes.LoadEuroTextFiles();
+                    mainform.textGroups.ReadTextGroups();
+                    mainform.textSections.LoadTextSections();
                 }
                 else
                 {

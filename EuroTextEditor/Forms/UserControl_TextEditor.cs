@@ -3,22 +3,28 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace EuroTextEditor
 {
     //-------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
-    public partial class UserControl_TextEditor : UserControl
+    public partial class UserControl_TextEditor : DockContent
     {
         //-------------------------------------------------------------------------------------------------------------------------------
-        private readonly string fontColorRegexPattern = @"(?s)(?=(<FC\s+([0-9]+)\s?,\s?([0-9]+)\s?,\s?([0-9]+)\s?>(?<inner>(?>(?!<FC\b|<END FC>).|(?<c>)<FC\b|(?<b-c>)<END FC>)*)(<END FC>|.*)))";
         //private readonly string tagsPattern = @"<.*?>";
+        private readonly string fontColorRegexPattern = @"(?s)(?=(<FC\s+([0-9]+)\s?,\s?([0-9]+)\s?,\s?([0-9]+)\s?>(?<inner>(?>(?!<FC\b|<END FC>).|(?<c>)<FC\b|(?<b-c>)<END FC>)*)(<END FC>|.*)))";
+        private readonly MenuItem formMenuItem;
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        public UserControl_TextEditor()
+        public UserControl_TextEditor(MenuItem parentMainForm)
         {
             InitializeComponent();
+            formMenuItem = parentMainForm;
+
+            //Menu Item
+            formMenuItem.Click += (se, ev) => { if (IsHidden) { Show(); formMenuItem.Checked = true; } };
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -537,6 +543,15 @@ namespace EuroTextEditor
 
             //Show info
             MessageBox.Show(string.Join(" ", "Character count =", charCount, "\nTeletype time =", calcTime.ToString("0.00000000"), "Seconds", "\nFrames =", timeFor30), "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void UserControl_TextEditor_VisibleChanged(object sender, EventArgs e)
+        {
+            if (IsHidden)
+            {
+                formMenuItem.Checked = false;
+            }
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------

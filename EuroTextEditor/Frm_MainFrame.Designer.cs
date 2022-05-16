@@ -40,7 +40,13 @@ namespace EuroTextEditor
             this.MenuItem_Divider1 = new System.Windows.Forms.MenuItem();
             this.MenuItem_RecentProjects = new System.Windows.Forms.MenuItem();
             this.MenuItem_Divider2 = new System.Windows.Forms.MenuItem();
+            this.MenuItem_ResetSettings = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.MenuItem_Exit = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.MenuItem_TextGroupsForm = new System.Windows.Forms.MenuItem();
+            this.MenuItem_TextSectionsForm = new System.Windows.Forms.MenuItem();
+            this.MenuItem_HashCodesForm = new System.Windows.Forms.MenuItem();
             this.MenuItem_Help = new System.Windows.Forms.MenuItem();
             this.MenuItem_About = new System.Windows.Forms.MenuItem();
             this.Button_GetGroups = new System.Windows.Forms.Button();
@@ -92,6 +98,7 @@ namespace EuroTextEditor
             // 
             this.MainMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.MenuItem_File,
+            this.menuItem1,
             this.MenuItem_Help});
             // 
             // MenuItem_File
@@ -103,6 +110,8 @@ namespace EuroTextEditor
             this.MenuItem_Divider1,
             this.MenuItem_RecentProjects,
             this.MenuItem_Divider2,
+            this.MenuItem_ResetSettings,
+            this.menuItem2,
             this.MenuItem_Exit});
             this.MenuItem_File.Text = "File";
             // 
@@ -133,15 +142,53 @@ namespace EuroTextEditor
             this.MenuItem_Divider2.Index = 4;
             this.MenuItem_Divider2.Text = "-";
             // 
+            // MenuItem_ResetSettings
+            // 
+            this.MenuItem_ResetSettings.Index = 5;
+            this.MenuItem_ResetSettings.Text = "Reset Settings";
+            this.MenuItem_ResetSettings.Click += new System.EventHandler(this.MenuItem_ResetSettings_Click);
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 6;
+            this.menuItem2.Text = "-";
+            // 
             // MenuItem_Exit
             // 
-            this.MenuItem_Exit.Index = 5;
+            this.MenuItem_Exit.Index = 7;
             this.MenuItem_Exit.Text = "Exit";
             this.MenuItem_Exit.Click += new System.EventHandler(this.MenuItem_Exit_Click);
             // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 1;
+            this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.MenuItem_TextGroupsForm,
+            this.MenuItem_TextSectionsForm,
+            this.MenuItem_HashCodesForm});
+            this.menuItem1.Text = "Windows";
+            // 
+            // MenuItem_TextGroupsForm
+            // 
+            this.MenuItem_TextGroupsForm.Checked = true;
+            this.MenuItem_TextGroupsForm.Index = 0;
+            this.MenuItem_TextGroupsForm.Text = "Text Groups";
+            // 
+            // MenuItem_TextSectionsForm
+            // 
+            this.MenuItem_TextSectionsForm.Checked = true;
+            this.MenuItem_TextSectionsForm.Index = 1;
+            this.MenuItem_TextSectionsForm.Text = "Text Sections";
+            // 
+            // MenuItem_HashCodesForm
+            // 
+            this.MenuItem_HashCodesForm.Checked = true;
+            this.MenuItem_HashCodesForm.Index = 2;
+            this.MenuItem_HashCodesForm.Text = "HashCodes";
+            // 
             // MenuItem_Help
             // 
-            this.MenuItem_Help.Index = 1;
+            this.MenuItem_Help.Index = 2;
             this.MenuItem_Help.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.MenuItem_About});
             this.MenuItem_Help.Text = "Help";
@@ -181,7 +228,7 @@ namespace EuroTextEditor
             this.Groupbox_Output.Controls.Add(this.Checkbox_DataInfoSheet);
             this.Groupbox_Output.Controls.Add(this.Checkbox_FormatInfo);
             this.Groupbox_Output.Controls.Add(this.Button_Output);
-            this.Groupbox_Output.Location = new System.Drawing.Point(837, 119);
+            this.Groupbox_Output.Location = new System.Drawing.Point(906, 119);
             this.Groupbox_Output.Name = "Groupbox_Output";
             this.Groupbox_Output.Size = new System.Drawing.Size(164, 136);
             this.Groupbox_Output.TabIndex = 8;
@@ -254,7 +301,7 @@ namespace EuroTextEditor
             this.GroupBox_Testing.Controls.Add(this.Button_ReadTable);
             this.GroupBox_Testing.Controls.Add(this.Button_GetMessages);
             this.GroupBox_Testing.Controls.Add(this.DataGridView_ExcelSheet);
-            this.GroupBox_Testing.Location = new System.Drawing.Point(837, 261);
+            this.GroupBox_Testing.Location = new System.Drawing.Point(906, 261);
             this.GroupBox_Testing.Name = "GroupBox_Testing";
             this.GroupBox_Testing.Size = new System.Drawing.Size(164, 342);
             this.GroupBox_Testing.TabIndex = 10;
@@ -292,7 +339,7 @@ namespace EuroTextEditor
             this.GroupBox_Misc.Controls.Add(this.Button_ProjectSettings);
             this.GroupBox_Misc.Controls.Add(this.Button_ExportHashCodes);
             this.GroupBox_Misc.Controls.Add(this.Button_TextStore);
-            this.GroupBox_Misc.Location = new System.Drawing.Point(837, 0);
+            this.GroupBox_Misc.Location = new System.Drawing.Point(906, 0);
             this.GroupBox_Misc.Name = "GroupBox_Misc";
             this.GroupBox_Misc.Size = new System.Drawing.Size(164, 113);
             this.GroupBox_Misc.TabIndex = 12;
@@ -329,18 +376,19 @@ namespace EuroTextEditor
             this.dockPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dockPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
             this.dockPanel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.dockPanel.Location = new System.Drawing.Point(0, 0);
             this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(831, 615);
+            this.dockPanel.Size = new System.Drawing.Size(900, 679);
             this.dockPanel.TabIndex = 13;
             // 
             // Frm_MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1013, 615);
+            this.ClientSize = new System.Drawing.Size(1082, 679);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.GroupBox_Misc);
             this.Controls.Add(this.GroupBox_Testing);
@@ -351,6 +399,7 @@ namespace EuroTextEditor
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EuroText";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_MainFrame_FormClosing);
+            this.Shown += new System.EventHandler(this.Frm_MainFrame_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_ExcelSheet)).EndInit();
             this.Groupbox_Output.ResumeLayout(false);
             this.Groupbox_Output.PerformLayout();
@@ -390,6 +439,12 @@ namespace EuroTextEditor
         private System.Windows.Forms.Label Label_OutputName;
         protected internal System.Windows.Forms.TextBox Textbox_FileName;
         private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
+        protected internal System.Windows.Forms.MenuItem menuItem1;
+        protected internal System.Windows.Forms.MenuItem MenuItem_TextGroupsForm;
+        protected internal System.Windows.Forms.MenuItem MenuItem_TextSectionsForm;
+        protected internal System.Windows.Forms.MenuItem MenuItem_HashCodesForm;
+        private System.Windows.Forms.MenuItem MenuItem_ResetSettings;
+        private System.Windows.Forms.MenuItem menuItem2;
     }
 }
 
