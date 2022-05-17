@@ -186,7 +186,7 @@ namespace EuroTextEditor
             this.GroupBox_Languages.Controls.Add(this.Listbox_Languages);
             this.GroupBox_Languages.Location = new System.Drawing.Point(12, 171);
             this.GroupBox_Languages.Name = "GroupBox_Languages";
-            this.GroupBox_Languages.Size = new System.Drawing.Size(521, 287);
+            this.GroupBox_Languages.Size = new System.Drawing.Size(521, 292);
             this.GroupBox_Languages.TabIndex = 7;
             this.GroupBox_Languages.TabStop = false;
             this.GroupBox_Languages.Text = "Languages";
@@ -194,7 +194,7 @@ namespace EuroTextEditor
             // Button_DeleteLanguage
             // 
             this.Button_DeleteLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Button_DeleteLanguage.Location = new System.Drawing.Point(131, 258);
+            this.Button_DeleteLanguage.Location = new System.Drawing.Point(131, 263);
             this.Button_DeleteLanguage.Name = "Button_DeleteLanguage";
             this.Button_DeleteLanguage.Size = new System.Drawing.Size(99, 23);
             this.Button_DeleteLanguage.TabIndex = 2;
@@ -205,7 +205,7 @@ namespace EuroTextEditor
             // Button_AddLanguage
             // 
             this.Button_AddLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Button_AddLanguage.Location = new System.Drawing.Point(6, 258);
+            this.Button_AddLanguage.Location = new System.Drawing.Point(6, 263);
             this.Button_AddLanguage.Name = "Button_AddLanguage";
             this.Button_AddLanguage.Size = new System.Drawing.Size(119, 23);
             this.Button_AddLanguage.TabIndex = 1;
@@ -222,7 +222,7 @@ namespace EuroTextEditor
             this.Listbox_Languages.Location = new System.Drawing.Point(6, 19);
             this.Listbox_Languages.Name = "Listbox_Languages";
             this.Listbox_Languages.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.Listbox_Languages.Size = new System.Drawing.Size(509, 225);
+            this.Listbox_Languages.Size = new System.Drawing.Size(509, 238);
             this.Listbox_Languages.TabIndex = 0;
             // 
             // Groupbox_Misc
@@ -233,7 +233,7 @@ namespace EuroTextEditor
             this.Groupbox_Misc.Controls.Add(this.Textbox_UserName);
             this.Groupbox_Misc.Controls.Add(this.Textbox_HashTablesAdmin);
             this.Groupbox_Misc.Controls.Add(this.Label_HashTableAdmin);
-            this.Groupbox_Misc.Location = new System.Drawing.Point(12, 464);
+            this.Groupbox_Misc.Location = new System.Drawing.Point(12, 469);
             this.Groupbox_Misc.Name = "Groupbox_Misc";
             this.Groupbox_Misc.Size = new System.Drawing.Size(521, 72);
             this.Groupbox_Misc.TabIndex = 8;
@@ -285,7 +285,7 @@ namespace EuroTextEditor
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_OK.Location = new System.Drawing.Point(377, 542);
+            this.Button_OK.Location = new System.Drawing.Point(377, 547);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 9;
@@ -297,7 +297,7 @@ namespace EuroTextEditor
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(458, 542);
+            this.Button_Cancel.Location = new System.Drawing.Point(458, 547);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 10;
@@ -315,7 +315,7 @@ namespace EuroTextEditor
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
-            this.ClientSize = new System.Drawing.Size(545, 577);
+            this.ClientSize = new System.Drawing.Size(545, 582);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Button_OK);
             this.Controls.Add(this.Groupbox_Misc);

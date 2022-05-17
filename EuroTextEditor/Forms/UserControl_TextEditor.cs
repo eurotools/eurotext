@@ -66,15 +66,19 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void ToolButton_Undo_Click(object sender, EventArgs e)
         {
-            Textbox.Focus();
-            Textbox.Undo();
+            if (Textbox.CanUndo)
+            {
+                Textbox.Undo();
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void ToolButton_Redo_Click(object sender, EventArgs e)
         {
-            Textbox.Focus();
-            Textbox.Redo();
+            if (Textbox.CanRedo)
+            {
+                Textbox.Redo();
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------

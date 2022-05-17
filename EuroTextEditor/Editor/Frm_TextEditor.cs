@@ -16,6 +16,7 @@ namespace EuroTextEditor
         private EuroText_TextFile objText;
         private UserControl_TextEditor[] languageEditors;
         private int languageEditorsIndex = 0;
+        private readonly string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsTextEditor.xml");
 
         //-------------------------------------------------------------------------------------------------------------------------------
         public Frm_TextEditor(string textFilePath, ListViewItem objectToModify)
@@ -29,13 +30,14 @@ namespace EuroTextEditor
         private void Frm_TextEditor_Load(object sender, EventArgs e)
         {
             //Get all groups
-            string textGroupsFileText = @"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\Groups.txt";
-            if (File.Exists(textGroupsFileText))
+            string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextGroups.etf");
+            if (File.Exists(textGroupsFilePath))
             {
-                string[] textGroup = File.ReadAllLines(textGroupsFileText);
+                ETXML_Reader projectFileReader = new ETXML_Reader();
+                EuroText_TextGroups textGroupsData = projectFileReader.ReadTextGroupsFile(textGroupsFilePath);
                 Combobox_Group.BeginUpdate();
                 Combobox_Group.Items.Add("");
-                Combobox_Group.Items.AddRange(textGroup);
+                Combobox_Group.Items.AddRange(textGroupsData.TextGroups.ToArray());
                 Combobox_Group.EndUpdate();
                 if (Combobox_Group.Items.Count > 0)
                 {
@@ -77,7 +79,6 @@ namespace EuroTextEditor
         {
             if (GlobalVariables.CurrentProject.Languages.Count > 0)
             {
-                string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsTextEditor.xml");
                 languageEditors = new UserControl_TextEditor[GlobalVariables.CurrentProject.Languages.Count];
                 for (int i = 0; i < GlobalVariables.CurrentProject.Languages.Count; i++)
                 {
@@ -149,10 +150,9 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void Frm_TextEditor_FormClosing(object sender, FormClosingEventArgs e)
+        private void Frm_TextEditor_FormClosed(object sender, FormClosedEventArgs e)
         {
             //Dock conifg
-            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsTextEditor.xml");
             dockPanel.SaveAsXml(configFile);
         }
 

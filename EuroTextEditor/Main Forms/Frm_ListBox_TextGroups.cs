@@ -66,12 +66,18 @@ namespace EuroTextEditor
                         ListBox_TextGroups.Items.Add(newGroupName);
 
                         //Get text file path
-                        string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "Groups.txt");
+                        string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextGroups.etf");
                         if (File.Exists(textGroupsFilePath))
                         {
-                            //Update txt
-                            string[] clist = ListBox_TextGroups.Items.OfType<string>().ToArray();
-                            File.WriteAllLines(textGroupsFilePath, clist);
+                            ETXML_Reader projectFileReader = new ETXML_Reader();
+                            EuroText_TextGroups textGroupsData = projectFileReader.ReadTextGroupsFile(textGroupsFilePath);
+                            textGroupsData.LastModified = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+                            textGroupsData.LastModifiedBy = GlobalVariables.EuroTextUser;
+                            textGroupsData.TextGroups = ListBox_TextGroups.Items.OfType<string>().ToList();
+
+                            //Write file
+                            ETXML_Writter filesWriter = new ETXML_Writter();
+                            filesWriter.WriteTextGroups(textGroupsFilePath, textGroupsData);
                         }
                     }
                     else
@@ -95,10 +101,21 @@ namespace EuroTextEditor
                     for (int i = selectedItems.Count - 1; i >= 0; i--)
                     {
                         ListBox_TextGroups.Items.Remove(selectedItems[i]);
+                    }
 
-                        //Update text file
-                        string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "Groups.txt");
-                        File.WriteAllLines(textGroupsFilePath, ListBox_TextGroups.Items.OfType<string>().ToArray());
+                    //Get text file path
+                    string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextGroups.etf");
+                    if (File.Exists(textGroupsFilePath))
+                    {
+                        ETXML_Reader projectFileReader = new ETXML_Reader();
+                        EuroText_TextGroups textGroupsData = projectFileReader.ReadTextGroupsFile(textGroupsFilePath);
+                        textGroupsData.LastModified = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+                        textGroupsData.LastModifiedBy = GlobalVariables.EuroTextUser;
+                        textGroupsData.TextGroups = ListBox_TextGroups.Items.OfType<string>().ToList();
+
+                        //Write file
+                        ETXML_Writter filesWriter = new ETXML_Writter();
+                        filesWriter.WriteTextGroups(textGroupsFilePath, textGroupsData);
                     }
                 }
             }
@@ -146,11 +163,14 @@ namespace EuroTextEditor
         internal void ReadTextGroups()
         {
             //Get text file path
-            string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "Groups.txt");
+            string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextGroups.etf");
             if (File.Exists(textGroupsFilePath))
             {
+                ETXML_Reader projectFileReader = new ETXML_Reader();
+                EuroText_TextGroups textGroupsData = projectFileReader.ReadTextGroupsFile(textGroupsFilePath);
+
                 ListBox_TextGroups.BeginUpdate();
-                ListBox_TextGroups.Items.AddRange(File.ReadAllLines(textGroupsFilePath));
+                ListBox_TextGroups.Items.AddRange(textGroupsData.TextGroups.ToArray());
                 ListBox_TextGroups.EndUpdate();
             }
         }

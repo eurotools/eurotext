@@ -1,6 +1,5 @@
 ﻿using ExcelDataReader;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -41,7 +40,9 @@ namespace EuroTextEditor
             {
                 int rowNumber = 0;
                 string groupName = string.Empty;
-                HashSet<string> GroupHashCodes = new HashSet<string>();
+                ETXML_Writter filesWriter = new ETXML_Writter();
+                EuroText_TextGroups textGroupObj = new EuroText_TextGroups();
+
 
                 //Start reading control
                 foreach (DataGridViewRow row in DataGridView_ExcelSheet.Rows)
@@ -56,7 +57,10 @@ namespace EuroTextEditor
                             if (!string.IsNullOrEmpty(currentGroup) && !currentGroup.Equals(groupName))
                             {
                                 groupName = row.Cells[0].Value.ToString();
-                                GroupHashCodes.Add(groupName);
+                                if (!textGroupObj.TextGroups.Contains(groupName))
+                                {
+                                    textGroupObj.TextGroups.Add(groupName);
+                                }
                             }
                         }
                     }
@@ -65,7 +69,7 @@ namespace EuroTextEditor
                     rowNumber++;
                 }
 
-                File.WriteAllLines(@"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\Groups.txt", GroupHashCodes);
+                filesWriter.WriteTextGroups(@"C:\Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\TextGroups.etf", textGroupObj);
 
                 //Inform
                 MessageBox.Show(string.Join(" ", "Finished, readed", rowNumber, "lines"), "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);

@@ -162,6 +162,54 @@ namespace EuroTextEditor
 
             }
         }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal void WriteTextGroups(string filepath, EuroText_TextGroups projObj)
+        {
+            try
+            {
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Indent = true
+                };
+                XmlWriter textWriter = XmlWriter.Create(filepath, settings);
+                textWriter.WriteStartDocument();
+                textWriter.WriteStartElement("ETXML");
+                textWriter.WriteAttributeString("type", "TEXTGROUPSFILE");
+                textWriter.WriteAttributeString("version", "1.0.0");
+                textWriter.WriteStartElement("Info");
+                if (string.IsNullOrEmpty(projObj.FirstCreated))
+                {
+                    textWriter.WriteElementString("FirstCreated", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
+                }
+                else
+                {
+                    textWriter.WriteElementString("FirstCreated", projObj.FirstCreated);
+                }
+                if (string.IsNullOrEmpty(projObj.CreatedBy))
+                {
+                    textWriter.WriteElementString("CreatedBy", GlobalVariables.EuroTextUser);
+                }
+                else
+                {
+                    textWriter.WriteElementString("CreatedBy", projObj.CreatedBy);
+                }
+                textWriter.WriteElementString("LastModified", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
+                textWriter.WriteElementString("LastModifiedBy", GlobalVariables.EuroTextUser);
+                textWriter.WriteEndElement();
+                textWriter.WriteStartElement("TextGroups");
+                foreach (string textSection in projObj.TextGroups)
+                {
+                    textWriter.WriteElementString("TextGroup", textSection);
+                }
+                textWriter.WriteEndDocument();
+                textWriter.Close();
+            }
+            catch
+            {
+
+            }
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

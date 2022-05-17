@@ -8,7 +8,7 @@
     <ProjectGuid>{32D27B66-5696-4BBA-8973-4A70A9E7D86F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>EuroTextEditor</RootNamespace>
-    <AssemblyName>EuroTextEditor</AssemblyName>
+    <AssemblyName>EuroText</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -39,6 +39,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>address_book_pad.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>EuroTextEditor.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
@@ -102,6 +105,7 @@
     <Compile Include="Custom Controls\UserControl_ListViewHashCodes.Designer.cs">
       <DependentUpon>UserControl_ListViewHashCodes.cs</DependentUpon>
     </Compile>
+    <Compile Include="ETXML\Objects\EuroText_TextGroups.cs" />
     <Compile Include="Forms\Frm_SearchResults.cs">
       <SubType>Form</SubType>
     </Compile>

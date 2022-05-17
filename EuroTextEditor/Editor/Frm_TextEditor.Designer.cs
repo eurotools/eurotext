@@ -238,7 +238,7 @@ namespace EuroTextEditor
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Messages Editor";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_TextEditor_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Frm_TextEditor_FormClosed);
             this.Load += new System.EventHandler(this.Frm_TextEditor_Load);
             this.Shown += new System.EventHandler(this.Frm_TextEditor_Shown);
             this.GroupBox_Settings.ResumeLayout(false);

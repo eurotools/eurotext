@@ -37,6 +37,7 @@ namespace EuroTextEditor
             this.MenuItem_InsertButton = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_LessThan = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_MoreThan = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_Tab = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_NewLine = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_InsertTextString = new System.Windows.Forms.ToolStripMenuItem();
             this.DropDown_Icons = new System.Windows.Forms.ToolStripDropDownButton();
@@ -85,7 +86,6 @@ namespace EuroTextEditor
             this.MenuItem_SelectAll = new System.Windows.Forms.MenuItem();
             this.MenuItem_Separator2 = new System.Windows.Forms.MenuItem();
             this.MenuItem_Font = new System.Windows.Forms.MenuItem();
-            this.MenuItem_Tab = new System.Windows.Forms.ToolStripMenuItem();
             this.Toolbar1.SuspendLayout();
             this.Toolbar2.SuspendLayout();
             this.SuspendLayout();
@@ -127,49 +127,56 @@ namespace EuroTextEditor
             // MenuItem_ExitButton
             // 
             this.MenuItem_ExitButton.Name = "MenuItem_ExitButton";
-            this.MenuItem_ExitButton.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_ExitButton.Size = new System.Drawing.Size(173, 22);
             this.MenuItem_ExitButton.Text = "Exit Button";
             this.MenuItem_ExitButton.Click += new System.EventHandler(this.MenuItem_ExitButton_Click);
             // 
             // MenuItem_PageDownButton
             // 
             this.MenuItem_PageDownButton.Name = "MenuItem_PageDownButton";
-            this.MenuItem_PageDownButton.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_PageDownButton.Size = new System.Drawing.Size(173, 22);
             this.MenuItem_PageDownButton.Text = "Page Down Button";
             this.MenuItem_PageDownButton.Click += new System.EventHandler(this.MenuItem_PageDownButton_Click);
             // 
             // MenuItem_InsertButton
             // 
             this.MenuItem_InsertButton.Name = "MenuItem_InsertButton";
-            this.MenuItem_InsertButton.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_InsertButton.Size = new System.Drawing.Size(173, 22);
             this.MenuItem_InsertButton.Text = "Insert Button";
             this.MenuItem_InsertButton.Click += new System.EventHandler(this.MenuItem_InsertButton_Click);
             // 
             // MenuItem_LessThan
             // 
             this.MenuItem_LessThan.Name = "MenuItem_LessThan";
-            this.MenuItem_LessThan.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_LessThan.Size = new System.Drawing.Size(173, 22);
             this.MenuItem_LessThan.Text = "Insert Less Than";
             this.MenuItem_LessThan.Click += new System.EventHandler(this.MenuItem_LessThan_Click);
             // 
             // MenuItem_MoreThan
             // 
             this.MenuItem_MoreThan.Name = "MenuItem_MoreThan";
-            this.MenuItem_MoreThan.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_MoreThan.Size = new System.Drawing.Size(173, 22);
             this.MenuItem_MoreThan.Text = "Insert More Than";
             this.MenuItem_MoreThan.Click += new System.EventHandler(this.MenuItem_MoreThan_Click);
+            // 
+            // MenuItem_Tab
+            // 
+            this.MenuItem_Tab.Name = "MenuItem_Tab";
+            this.MenuItem_Tab.Size = new System.Drawing.Size(173, 22);
+            this.MenuItem_Tab.Text = "Insert Tab";
+            this.MenuItem_Tab.Click += new System.EventHandler(this.MenuItem_Tab_Click);
             // 
             // MenuItem_NewLine
             // 
             this.MenuItem_NewLine.Name = "MenuItem_NewLine";
-            this.MenuItem_NewLine.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_NewLine.Size = new System.Drawing.Size(173, 22);
             this.MenuItem_NewLine.Text = "Insert New Line";
             this.MenuItem_NewLine.Click += new System.EventHandler(this.MenuItem_NewLine_Click);
             // 
             // MenuItem_InsertTextString
             // 
             this.MenuItem_InsertTextString.Name = "MenuItem_InsertTextString";
-            this.MenuItem_InsertTextString.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_InsertTextString.Size = new System.Drawing.Size(173, 22);
             this.MenuItem_InsertTextString.Text = "Insert Text String";
             this.MenuItem_InsertTextString.Click += new System.EventHandler(this.MenuItem_InsertTextString_Click);
             // 
@@ -360,41 +367,42 @@ namespace EuroTextEditor
             // 
             // ToolButton_Cut
             // 
-            this.ToolButton_Cut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ToolButton_Cut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolButton_Cut.ForeColor = System.Drawing.SystemColors.ControlText;
             this.ToolButton_Cut.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_Cut.Image")));
             this.ToolButton_Cut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolButton_Cut.Name = "ToolButton_Cut";
-            this.ToolButton_Cut.Size = new System.Drawing.Size(30, 22);
+            this.ToolButton_Cut.Size = new System.Drawing.Size(23, 22);
             this.ToolButton_Cut.Text = "Cut";
             this.ToolButton_Cut.Click += new System.EventHandler(this.ToolButton_Cut_Click);
             // 
             // ToolButton_Copy
             // 
-            this.ToolButton_Copy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ToolButton_Copy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ToolButton_Copy.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_Copy.Image")));
             this.ToolButton_Copy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolButton_Copy.Name = "ToolButton_Copy";
-            this.ToolButton_Copy.Size = new System.Drawing.Size(39, 22);
+            this.ToolButton_Copy.Size = new System.Drawing.Size(23, 22);
             this.ToolButton_Copy.Text = "Copy";
             this.ToolButton_Copy.Click += new System.EventHandler(this.ToolButton_Copy_Click);
             // 
             // ToolButton_Paste
             // 
-            this.ToolButton_Paste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ToolButton_Paste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ToolButton_Paste.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_Paste.Image")));
             this.ToolButton_Paste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolButton_Paste.Name = "ToolButton_Paste";
-            this.ToolButton_Paste.Size = new System.Drawing.Size(39, 22);
+            this.ToolButton_Paste.Size = new System.Drawing.Size(23, 22);
             this.ToolButton_Paste.Text = "Paste";
             this.ToolButton_Paste.Click += new System.EventHandler(this.ToolButton_Paste_Click);
             // 
             // ToolButton_Delete
             // 
-            this.ToolButton_Delete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ToolButton_Delete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ToolButton_Delete.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_Delete.Image")));
             this.ToolButton_Delete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolButton_Delete.Name = "ToolButton_Delete";
-            this.ToolButton_Delete.Size = new System.Drawing.Size(44, 22);
+            this.ToolButton_Delete.Size = new System.Drawing.Size(23, 22);
             this.ToolButton_Delete.Text = "Delete";
             this.ToolButton_Delete.Click += new System.EventHandler(this.ToolButton_Delete_Click);
             // 
@@ -405,21 +413,21 @@ namespace EuroTextEditor
             // 
             // ToolButton_Undo
             // 
-            this.ToolButton_Undo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ToolButton_Undo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ToolButton_Undo.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_Undo.Image")));
             this.ToolButton_Undo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolButton_Undo.Name = "ToolButton_Undo";
-            this.ToolButton_Undo.Size = new System.Drawing.Size(40, 22);
+            this.ToolButton_Undo.Size = new System.Drawing.Size(23, 22);
             this.ToolButton_Undo.Text = "Undo";
             this.ToolButton_Undo.Click += new System.EventHandler(this.ToolButton_Undo_Click);
             // 
             // ToolButton_Redo
             // 
-            this.ToolButton_Redo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ToolButton_Redo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ToolButton_Redo.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_Redo.Image")));
             this.ToolButton_Redo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolButton_Redo.Name = "ToolButton_Redo";
-            this.ToolButton_Redo.Size = new System.Drawing.Size(38, 22);
+            this.ToolButton_Redo.Size = new System.Drawing.Size(23, 22);
             this.ToolButton_Redo.Text = "Redo";
             this.ToolButton_Redo.Click += new System.EventHandler(this.ToolButton_Redo_Click);
             // 
@@ -430,11 +438,11 @@ namespace EuroTextEditor
             // 
             // ToolButton_SelectAll
             // 
-            this.ToolButton_SelectAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ToolButton_SelectAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ToolButton_SelectAll.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_SelectAll.Image")));
             this.ToolButton_SelectAll.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolButton_SelectAll.Name = "ToolButton_SelectAll";
-            this.ToolButton_SelectAll.Size = new System.Drawing.Size(59, 22);
+            this.ToolButton_SelectAll.Size = new System.Drawing.Size(23, 22);
             this.ToolButton_SelectAll.Text = "Select All";
             this.ToolButton_SelectAll.Click += new System.EventHandler(this.ToolButton_SelectAll_Click);
             // 
@@ -445,11 +453,11 @@ namespace EuroTextEditor
             // 
             // ToolButton_FontSize
             // 
-            this.ToolButton_FontSize.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ToolButton_FontSize.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ToolButton_FontSize.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_FontSize.Image")));
             this.ToolButton_FontSize.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolButton_FontSize.Name = "ToolButton_FontSize";
-            this.ToolButton_FontSize.Size = new System.Drawing.Size(35, 22);
+            this.ToolButton_FontSize.Size = new System.Drawing.Size(23, 22);
             this.ToolButton_FontSize.Text = "Font";
             this.ToolButton_FontSize.Click += new System.EventHandler(this.ToolButton_FontSize_Click);
             // 
@@ -546,13 +554,6 @@ namespace EuroTextEditor
             this.MenuItem_Font.Index = 10;
             this.MenuItem_Font.Text = "Font";
             this.MenuItem_Font.Click += new System.EventHandler(this.MenuItem_Font_Click);
-            // 
-            // MenuItem_Tab
-            // 
-            this.MenuItem_Tab.Name = "MenuItem_Tab";
-            this.MenuItem_Tab.Size = new System.Drawing.Size(180, 22);
-            this.MenuItem_Tab.Text = "Insert Tab";
-            this.MenuItem_Tab.Click += new System.EventHandler(this.MenuItem_Tab_Click);
             // 
             // UserControl_TextEditor
             // 

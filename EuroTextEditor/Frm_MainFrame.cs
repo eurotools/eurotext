@@ -13,69 +13,23 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class Frm_MainFrame : Form
     {
-        internal readonly Frm_ListBoxHashCodes hashCodes;
-        internal readonly Frm_ListBox_TextSections textSections;
-        internal readonly Frm_ListBox_TextGroups textGroups;
+        internal Frm_ListBoxHashCodes hashCodes;
+        internal Frm_ListBox_TextSections textSections;
+        internal Frm_ListBox_TextGroups textGroups;
+        internal MostRecentFilesMenu RecentFilesMenu;
 
         //-------------------------------------------------------------------------------------------------------------------------------
         public Frm_MainFrame()
         {
             InitializeComponent();
-
-            //Initialize forms
-            hashCodes = new Frm_ListBoxHashCodes(MenuItem_HashCodesForm);
-            textSections = new Frm_ListBox_TextSections(MenuItem_TextSectionsForm);
-            textGroups = new Frm_ListBox_TextGroups(MenuItem_TextGroupsForm);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_MainFrame_Shown(object sender, EventArgs e)
         {
-            //Show forms
-            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsMainForm.xml");
-            if (File.Exists(configFile))
-            {
-                DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
-                dockPanel.LoadFromXml(configFile, _deserializeDockContent);
-            }
-            else
-            {
-                hashCodes.Show(dockPanel, DockState.Document);
-                textSections.Show(dockPanel, DockState.DockLeft);
-                textGroups.Show(textSections.Pane, DockAlignment.Bottom, 0.5);
-            }
-
-            //Update menus
-            if (textGroups != null && textGroups.IsHidden)
-            {
-                MenuItem_TextGroupsForm.Checked = false;
-            }
-            if (textSections != null && textSections.IsHidden)
-            {
-                MenuItem_TextSectionsForm.Checked = false;
-            }
-            if (hashCodes != null && hashCodes.IsHidden)
-            {
-                MenuItem_HashCodesForm.Checked = false;
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private IDockContent DeserializeDockContent(string persistString)
-        {
-            if (persistString == typeof(Frm_ListBoxHashCodes).ToString())
-            {
-                return hashCodes;
-            }
-            if (persistString == typeof(Frm_ListBox_TextSections).ToString())
-            {
-                return textSections;
-            }
-            if (persistString == typeof(Frm_ListBox_TextGroups).ToString())
-            {
-                return textGroups;
-            }
-            return null;
+            //Recen files
+            RecentFilesMenu.AddFile(GlobalVariables.WorkingDirectory);
+            RecentFilesMenu.SaveToIniFile();
         }
 
         //-------------------------------------------------------------------------------------------
@@ -110,6 +64,25 @@ namespace EuroTextEditor
                 //Restart application
                 Process.Start(Application.ExecutablePath);
                 Application.Exit();
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal void MenuItemFile_Recent_Click(int number, string filename)
+        {
+            if (Directory.Exists(filename))
+            {
+                //Update Global variable and restart
+                GlobalVariables.WorkingDirectory = filename;
+
+                //Restart application
+                Process.Start(Application.ExecutablePath);
+                Application.Exit();
+            }
+            else
+            {
+                MessageBox.Show("Project Directory Not Found " + filename, "EuroText Load Project Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                RecentFilesMenu.RemoveFile(number);
             }
         }
 

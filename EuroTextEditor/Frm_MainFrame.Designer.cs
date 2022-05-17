@@ -39,6 +39,7 @@ namespace EuroTextEditor
             this.MenuItem_NewProject = new System.Windows.Forms.MenuItem();
             this.MenuItem_Divider1 = new System.Windows.Forms.MenuItem();
             this.MenuItem_RecentProjects = new System.Windows.Forms.MenuItem();
+            this.MenuItem_RecentFiles = new System.Windows.Forms.MenuItem();
             this.MenuItem_Divider2 = new System.Windows.Forms.MenuItem();
             this.MenuItem_ResetSettings = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
@@ -135,7 +136,14 @@ namespace EuroTextEditor
             // MenuItem_RecentProjects
             // 
             this.MenuItem_RecentProjects.Index = 3;
+            this.MenuItem_RecentProjects.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.MenuItem_RecentFiles});
             this.MenuItem_RecentProjects.Text = "Recent Projects";
+            // 
+            // MenuItem_RecentFiles
+            // 
+            this.MenuItem_RecentFiles.Index = 0;
+            this.MenuItem_RecentFiles.Text = "";
             // 
             // MenuItem_Divider2
             // 
@@ -415,7 +423,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.MenuItem MenuItem_File;
         private System.Windows.Forms.MenuItem MenuItem_OpenProject;
         private System.Windows.Forms.MenuItem MenuItem_NewProject;
-        private System.Windows.Forms.MenuItem MenuItem_RecentProjects;
         private System.Windows.Forms.MenuItem MenuItem_Help;
         private System.Windows.Forms.MenuItem MenuItem_About;
         private System.Windows.Forms.Button Button_GetGroups;
@@ -437,13 +444,15 @@ namespace EuroTextEditor
         private System.Windows.Forms.Button Button_GetSections;
         private System.Windows.Forms.Label Label_OutputName;
         protected internal System.Windows.Forms.TextBox Textbox_FileName;
-        private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
         protected internal System.Windows.Forms.MenuItem menuItem1;
         protected internal System.Windows.Forms.MenuItem MenuItem_TextGroupsForm;
         protected internal System.Windows.Forms.MenuItem MenuItem_TextSectionsForm;
         protected internal System.Windows.Forms.MenuItem MenuItem_HashCodesForm;
         private System.Windows.Forms.MenuItem MenuItem_ResetSettings;
         private System.Windows.Forms.MenuItem menuItem2;
+        protected internal System.Windows.Forms.MenuItem MenuItem_RecentFiles;
+        protected internal System.Windows.Forms.MenuItem MenuItem_RecentProjects;
+        protected internal WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
     }
 }
 

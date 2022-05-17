@@ -200,6 +200,51 @@ namespace EuroTextEditor
 
             return projData;
         }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal EuroText_TextGroups ReadTextGroupsFile(string projectFilePath)
+        {
+            //Create project file
+            EuroText_TextGroups projData = new EuroText_TextGroups();
+
+            //Create reader
+            XmlDocument reader = new XmlDocument();
+            reader.Load(projectFilePath);
+
+            //Ensure that is a valid file
+            if (reader.DocumentElement.Attributes["type"].Value.Equals("TEXTGROUPSFILE"))
+            {
+                //Read Basic Info
+                XmlNodeList infoNodes = reader.SelectNodes("ETXML/Info/*");
+                foreach (XmlNode node in infoNodes)
+                {
+                    switch (node.Name)
+                    {
+                        case "FirstCreated":
+                            projData.FirstCreated = node.InnerText;
+                            break;
+                        case "CreatedBy":
+                            projData.CreatedBy = node.InnerText;
+                            break;
+                        case "LastModified":
+                            projData.LastModified = node.InnerText;
+                            break;
+                        case "LastModifiedBy":
+                            projData.LastModifiedBy = node.InnerText;
+                            break;
+                    }
+                }
+
+                //Read parameters section
+                XmlNodeList paremetersNodes = reader.SelectNodes("ETXML/TextGroups/*");
+                foreach (XmlNode node in paremetersNodes)
+                {
+                    projData.TextGroups.Add(node.InnerText);
+                }
+            }
+
+            return projData;
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

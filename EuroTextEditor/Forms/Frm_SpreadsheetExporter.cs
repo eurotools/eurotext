@@ -53,16 +53,17 @@ namespace EuroTextEditor
             {
                 IWorkbook workbook = new HSSFWorkbook();
                 ExcelWritters writters = new ExcelWritters();
+                ETXML_Reader projectFileReader = new ETXML_Reader();
 
                 //Output groups and levels
-                string[] textGroup = File.ReadAllLines(@"C: \Users\Jordi Martinez\Desktop\EuroTextEditor\SystemFiles\Groups.txt");
+                EuroText_TextGroups textGroupsData = projectFileReader.ReadTextGroupsFile(Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextGroups.etf"));
+                string[] textGroup = textGroupsData.TextGroups.ToArray();
 
                 //Create or update the TextSections file
                 EuroText_TextSections sectionsFileText = new EuroText_TextSections();
                 string projectFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
                 if (File.Exists(projectFilePath))
                 {
-                    ETXML_Reader projectFileReader = new ETXML_Reader();
                     sectionsFileText = projectFileReader.ReadTextSectionsFile(projectFilePath);
                 }
 
