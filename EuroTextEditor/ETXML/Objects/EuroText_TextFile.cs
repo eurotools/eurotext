@@ -10,6 +10,7 @@ namespace EuroTextEditor
     {
         //Only used in the editor
         public Color RowColor;
+        public string Notes = string.Empty;
 
         //Info
         public string FirstCreated = string.Empty;

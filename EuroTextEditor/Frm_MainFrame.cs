@@ -1,11 +1,8 @@
 ﻿using EuroTextEditor.Classes;
-using ExcelDataReader;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -160,7 +157,7 @@ namespace EuroTextEditor
                 Frm_SpreadsheetExporter exporterTask = new Frm_SpreadsheetExporter(this, Path.Combine(GlobalVariables.CurrentProject.SpreadSheetsDirectory, Textbox_FileName.Text), Checkbox_FormatInfo.Checked, Checkbox_DataInfoSheet.Checked);
                 exporterTask.ShowDialog();
             }
-        }       
+        }
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_TextStore_Click(object sender, EventArgs e)
@@ -168,7 +165,7 @@ namespace EuroTextEditor
             if (hashCodes != null && !hashCodes.IsHidden)
             {
                 List<string> filesToModify = new List<string>();
-                foreach (ListViewItem Item in hashCodes.ListView_HashCodes.SelectedItems)
+                foreach (ListViewItem Item in hashCodes.UserControl_HashCodesListView.ListView_HashCodes.SelectedItems)
                 {
                     filesToModify.Add(Item.Text.ToString());
                 }
@@ -186,9 +183,9 @@ namespace EuroTextEditor
                 if (File.Exists(GlobalVariables.HashtablesAdminPath))
                 {
                     Queue<string> hashcodes = new Queue<string>();
-                    for (int i = 0; i < hashCodes.ListView_HashCodes.Items.Count; i++)
+                    for (int i = 0; i < hashCodes.UserControl_HashCodesListView.ListView_HashCodes.Items.Count; i++)
                     {
-                        hashcodes.Enqueue(hashCodes.ListView_HashCodes.Items[i].Text.ToString());
+                        hashcodes.Enqueue(hashCodes.UserControl_HashCodesListView.ListView_HashCodes.Items[i].Text.ToString());
                     }
 
                     while (hashcodes.Count > 0)

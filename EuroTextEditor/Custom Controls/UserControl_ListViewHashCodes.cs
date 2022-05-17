@@ -4,52 +4,28 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
 
-namespace EuroTextEditor
+namespace EuroTextEditor.Custom_Controls
 {
     //-------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
-    public partial class Frm_ListBoxHashCodes : DockContent
+    public partial class UserControl_ListViewHashCodes : UserControl
     {
-        private readonly MenuItem formMenuItem;
-
         //-------------------------------------------------------------------------------------------
         //  FORM EVENTS
         //-------------------------------------------------------------------------------------------
-        public Frm_ListBoxHashCodes(MenuItem parentMainForm)
+        public UserControl_ListViewHashCodes()
         {
             InitializeComponent();
-            formMenuItem = parentMainForm;
-
-            //Menu Item
-            formMenuItem.Click += (se, ev) => { if (IsHidden) { Show(); formMenuItem.Checked = true; } };
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void Frm_ListBoxHashCodes_Shown(object sender, EventArgs e)
-        {
-            UserControl_HashCodesListView.ListView_HashCodes.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void Frm_ListBoxHashCodes_VisibleChanged(object sender, EventArgs e)
-        {
-            if (IsHidden)
-            {
-                formMenuItem.Checked = false;
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------
-        //  LISTBOX HASHCODES
-        //-------------------------------------------------------------------------------------------
         private void ListView_HashCodes_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (UserControl_HashCodesListView.ListView_HashCodes.SelectedItems.Count == 1)
+            if (ListView_HashCodes.SelectedItems.Count == 1)
             {
-                CommonFunctions.EditHashCode(UserControl_HashCodesListView.ListView_HashCodes.SelectedItems[0]);
+                CommonFunctions.EditHashCode(ListView_HashCodes.SelectedItems[0]);
             }
         }
 
@@ -58,9 +34,9 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         private void MenuItem_Edit_Click(object sender, EventArgs e)
         {
-            if (UserControl_HashCodesListView.ListView_HashCodes.SelectedItems.Count == 1)
+            if (ListView_HashCodes.SelectedItems.Count == 1)
             {
-                CommonFunctions.EditHashCode(UserControl_HashCodesListView.ListView_HashCodes.SelectedItems[0]);
+                CommonFunctions.EditHashCode(ListView_HashCodes.SelectedItems[0]);
             }
         }
 
@@ -97,9 +73,9 @@ namespace EuroTextEditor
                     }
 
                     //Add item to the listbox
-                    UserControl_HashCodesListView.ListView_HashCodes.BeginUpdate();
-                    UserControl_HashCodesListView.ListView_HashCodes.Items.Add(new ListViewItem(new[] { frmTextFileName.ReturnValue, newTextFile.FirstCreated, newTextFile.CreatedBy, newTextFile.LastModified, newTextFile.LastModifiedBy }));
-                    UserControl_HashCodesListView.ListView_HashCodes.EndUpdate();
+                    ListView_HashCodes.BeginUpdate();
+                    ListView_HashCodes.Items.Add(new ListViewItem(new[] { frmTextFileName.ReturnValue, newTextFile.FirstCreated, newTextFile.CreatedBy, newTextFile.LastModified, newTextFile.LastModifiedBy }));
+                    ListView_HashCodes.EndUpdate();
 
                     //Write file
                     ETXML_Writter filesWriter = new ETXML_Writter();
@@ -115,10 +91,10 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_Delete_Click(object sender, EventArgs e)
         {
-            if (UserControl_HashCodesListView.ListView_HashCodes.SelectedItems.Count > 0)
+            if (ListView_HashCodes.SelectedItems.Count > 0)
             {
                 List<string> itemsToDelete = new List<string>();
-                foreach (ListViewItem Item in UserControl_HashCodesListView.ListView_HashCodes.SelectedItems)
+                foreach (ListViewItem Item in ListView_HashCodes.SelectedItems)
                 {
                     itemsToDelete.Add(Item.Text.ToString());
                 }
@@ -130,16 +106,16 @@ namespace EuroTextEditor
                     string trashFolder = Path.Combine(GlobalVariables.WorkingDirectory, "Messages_Trash");
                     Directory.CreateDirectory(trashFolder);
 
-                    foreach (ListViewItem itemToRemove in UserControl_HashCodesListView.ListView_HashCodes.SelectedItems)
+                    foreach (ListViewItem itemToRemove in ListView_HashCodes.SelectedItems)
                     {
                         //Remove EuroTextFile
                         string filePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", itemToRemove.Text + ".etf");
                         File.Move(filePath, Path.Combine(trashFolder, itemToRemove.Text + ".etf"));
 
                         //Remove item from listview
-                        UserControl_HashCodesListView.ListView_HashCodes.BeginUpdate();
-                        UserControl_HashCodesListView.ListView_HashCodes.Items.Remove(itemToRemove);
-                        UserControl_HashCodesListView.ListView_HashCodes.EndUpdate();
+                        ListView_HashCodes.BeginUpdate();
+                        ListView_HashCodes.Items.Remove(itemToRemove);
+                        ListView_HashCodes.EndUpdate();
                     }
                 }
             }
@@ -148,7 +124,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_Rename_Click(object sender, EventArgs e)
         {
-            if (UserControl_HashCodesListView.ListView_HashCodes.SelectedItems.Count == 1)
+            if (ListView_HashCodes.SelectedItems.Count == 1)
             {
                 Frm_InputBox frmTextFileName = new Frm_InputBox("Rename", "Enter New Name", "");
                 if (frmTextFileName.ShowDialog() == DialogResult.OK)
@@ -172,9 +148,9 @@ namespace EuroTextEditor
                         }
                         else
                         {
-                            string sourceFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", UserControl_HashCodesListView.ListView_HashCodes.SelectedItems[0].Text + ".etf");
+                            string sourceFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", ListView_HashCodes.SelectedItems[0].Text + ".etf");
                             File.Move(sourceFilePath, newFilePath);
-                            UserControl_HashCodesListView.ListView_HashCodes.SelectedItems[0].Text = frmTextFileName.ReturnValue;
+                            ListView_HashCodes.SelectedItems[0].Text = frmTextFileName.ReturnValue;
                         }
                     }
                     else
@@ -205,7 +181,7 @@ namespace EuroTextEditor
                     ETXML_Writter filesWriter = new ETXML_Writter();
 
                     //Update all text files
-                    foreach (ListViewItem selectedItem in UserControl_HashCodesListView.ListView_HashCodes.SelectedItems)
+                    foreach (ListViewItem selectedItem in ListView_HashCodes.SelectedItems)
                     {
                         string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", selectedItem.Text + ".etf");
                         if (File.Exists(textFilePath))
@@ -232,7 +208,7 @@ namespace EuroTextEditor
         private void MenuItem_MultiEditor_Click(object sender, EventArgs e)
         {
             List<string> filesToModify = new List<string>();
-            foreach (ListViewItem Item in UserControl_HashCodesListView.ListView_HashCodes.SelectedItems)
+            foreach (ListViewItem Item in ListView_HashCodes.SelectedItems)
             {
                 filesToModify.Add(Item.Text.ToString());
             }
@@ -244,11 +220,11 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_SetColor_Click(object sender, EventArgs e)
         {
-            if (UserControl_HashCodesListView.ColorPicker_HashCodes.ShowDialog() == DialogResult.OK)
+            if (ColorPicker_HashCodes.ShowDialog() == DialogResult.OK)
             {
-                foreach (ListViewItem itemToModify in UserControl_HashCodesListView.ListView_HashCodes.SelectedItems)
+                foreach (ListViewItem itemToModify in ListView_HashCodes.SelectedItems)
                 {
-                    itemToModify.BackColor = UserControl_HashCodesListView.ColorPicker_HashCodes.Color;
+                    itemToModify.BackColor = ColorPicker_HashCodes.Color;
 
                     //Update TextFile
                     ETXML_Reader filesReader = new ETXML_Reader();
@@ -259,7 +235,7 @@ namespace EuroTextEditor
                     {
                         //Update property
                         EuroText_TextFile textObjectData = filesReader.ReadTextFile(textFilePath);
-                        textObjectData.RowColor = UserControl_HashCodesListView.ColorPicker_HashCodes.Color;
+                        textObjectData.RowColor = ColorPicker_HashCodes.Color;
 
                         //Write file again
                         filesWriter.WriteTextFile(textFilePath, textObjectData);
@@ -271,7 +247,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_RemoveColor_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem itemToModify in UserControl_HashCodesListView.ListView_HashCodes.SelectedItems)
+            foreach (ListViewItem itemToModify in ListView_HashCodes.SelectedItems)
             {
                 itemToModify.BackColor = SystemColors.Window;
 
@@ -295,39 +271,38 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_Refresh_Click(object sender, EventArgs e)
         {
-            CommonFunctions.LoadEuroTextFiles(UserControl_HashCodesListView.ListView_HashCodes);
+            CommonFunctions.LoadEuroTextFiles(ListView_HashCodes);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void Button_Search_Click(object sender, EventArgs e)
+        private void MenuItem_EditNote_Click(object sender, EventArgs e)
         {
-            List<ListViewItem> results = new List<ListViewItem>();
-            foreach (ListViewItem item in UserControl_HashCodesListView.ListView_HashCodes.Items)
+            if (ListView_HashCodes.SelectedItems.Count == 1)
             {
-                if (CheckBox_ExactMatch.Checked)
-                {
-                    if (item.Equals(Textbox_SearchBarHashCodes.Text))
-                    {
-                        results.Add((ListViewItem)item.Clone());
-                    }
-                }
-                else
-                {
-                    if (item.Text.IndexOf(Textbox_SearchBarHashCodes.Text, StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        results.Add((ListViewItem)item.Clone());
-                    }
-                }
-            }
+                ListViewItem itemToModify = ListView_HashCodes.SelectedItems[0];
 
-            if (results.Count > 0)
-            {
-                Frm_SearchResults resultsForm = new Frm_SearchResults(results.ToArray());
-                resultsForm.ShowDialog();
-            }
-            else
-            {
-                MessageBox.Show("No results", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //Show input dialog form
+                Frm_InputBox inputText = new Frm_InputBox("Edit Note", "Enter note text", itemToModify.SubItems[5].Text);
+                if (inputText.ShowDialog() == DialogResult.OK)
+                {
+                    //Update UI
+                    itemToModify.SubItems[5].Text = inputText.ReturnValue;
+
+                    //Update TextFile
+                    string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", itemToModify.Text + ".etf");
+                    if (File.Exists(textFilePath))
+                    {
+                        ETXML_Reader filesReader = new ETXML_Reader();
+                        ETXML_Writter filesWriter = new ETXML_Writter();
+
+                        //Update property
+                        EuroText_TextFile textObjectData = filesReader.ReadTextFile(textFilePath);
+                        textObjectData.Notes = inputText.ReturnValue;
+
+                        //Write file again
+                        filesWriter.WriteTextFile(textFilePath, textObjectData);
+                    }
+                }
             }
         }
     }

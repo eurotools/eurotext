@@ -2,7 +2,6 @@
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 
@@ -555,7 +554,7 @@ namespace EuroTextEditor
                 ICell langCell = headerRow.CreateCell(lastColIndex++);
                 langCell.CellStyle = blueBackground;
                 string language = GlobalVariables.CurrentProject.Languages[i];
-                if(language.Equals("Japan", StringComparison.OrdinalIgnoreCase))
+                if (language.Equals("Japan", StringComparison.OrdinalIgnoreCase))
                 {
                     language = "JAPANESE";
                 }
@@ -708,7 +707,7 @@ namespace EuroTextEditor
                                 }
 
                                 //Print languages
-                                foreach(string languageToPrint in GlobalVariables.CurrentProject.Languages)
+                                foreach (string languageToPrint in GlobalVariables.CurrentProject.Languages)
                                 {
                                     ICell langCell = headerRow.CreateCell(lastColIndex++);
                                     langCell.CellStyle = textLangsStyle;

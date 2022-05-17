@@ -53,6 +53,9 @@ namespace EuroTextEditor
                         case "Color":
                             textObject.RowColor = ColorTranslator.FromHtml(node.InnerText);
                             break;
+                        case "Notes":
+                            textObject.Notes = node.InnerText;
+                            break;
                     }
                 }
 

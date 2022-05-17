@@ -63,7 +63,7 @@ namespace EuroTextEditor
                     mainform.Text = "EuroText: \"" + GlobalVariables.WorkingDirectory + "\"";
 
                     //Get text files
-                    mainform.hashCodes.LoadEuroTextFiles();
+                    CommonFunctions.LoadEuroTextFiles(mainform.hashCodes.UserControl_HashCodesListView.ListView_HashCodes);
                     mainform.textGroups.ReadTextGroups();
                     mainform.textSections.LoadTextSections();
                 }

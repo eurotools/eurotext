@@ -32,6 +32,7 @@ namespace EuroTextEditor
                 textWriter.WriteEndElement();
                 textWriter.WriteStartElement("RowInfo");
                 textWriter.WriteElementString("Color", ColorTranslator.ToHtml(textObj.RowColor));
+                textWriter.WriteElementString("Notes", textObj.Notes);
                 textWriter.WriteEndElement();
                 textWriter.WriteStartElement("Properties");
                 textWriter.WriteElementString("Group", textObj.Group);

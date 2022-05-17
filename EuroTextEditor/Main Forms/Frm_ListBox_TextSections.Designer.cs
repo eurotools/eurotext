@@ -53,6 +53,7 @@ namespace EuroTextEditor
             this.ListView_SectionsAndLevels.TabIndex = 0;
             this.ListView_SectionsAndLevels.UseCompatibleStateImageBehavior = false;
             this.ListView_SectionsAndLevels.View = System.Windows.Forms.View.Details;
+            this.ListView_SectionsAndLevels.DoubleClick += new System.EventHandler(this.ListView_SectionsAndLevels_DoubleClick);
             // 
             // Col_TextSection
             // 

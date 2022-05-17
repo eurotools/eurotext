@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -101,6 +102,42 @@ namespace EuroTextEditor
             else
             {
                 MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ListView_SectionsAndLevels_DoubleClick(object sender, System.EventArgs e)
+        {
+            if (ListView_SectionsAndLevels.SelectedItems.Count == 1)
+            {
+                ETXML_Reader filesReader = new ETXML_Reader();
+                HashSet<string> hashCodesInThisGroup = new HashSet<string>();
+                string selectedSection = ListView_SectionsAndLevels.SelectedItems[0].Text;
+
+                //Search hashcodes that are in this group
+                string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
+                for (int i = 0; i < filesToAdd.Length; i++)
+                {
+                    //Get message text and ensure that the source file exists
+                    if (File.Exists(filesToAdd[i]))
+                    {
+                        //Read object
+                        EuroText_TextFile objText = filesReader.ReadTextFile(filesToAdd[i]);
+
+                        //Add items
+                        if (objText.OutputSection.Equals(selectedSection, System.StringComparison.OrdinalIgnoreCase))
+                        {
+                            hashCodesInThisGroup.Add(Path.GetFileName(filesToAdd[i]));
+                        }
+                    }
+                }
+
+                //Show form
+                Frm_GroupsViewer groupsViewer = new Frm_GroupsViewer(hashCodesInThisGroup.ToArray())
+                {
+                    Text = selectedSection
+                };
+                groupsViewer.ShowDialog();
             }
         }
 

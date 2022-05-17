@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace EuroTextEditor
 {
@@ -77,6 +78,63 @@ namespace EuroTextEditor
             }
             filesListToDelete += Environment.NewLine + "Total Files: " + itemsToDelete.Length;
             return filesListToDelete;
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  OBJECTS
+        //-------------------------------------------------------------------------------------------
+        internal static void EditHashCode(ListViewItem itemToModify)
+        {
+            string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", itemToModify.Text + ".etf");
+            if (!File.Exists(textFilePath))
+            {
+                DialogResult answer = MessageBox.Show(string.Join(" ", "", "Source file not found:", textFilePath, "\n\nDo you want to create it now?"), "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (answer == DialogResult.Yes)
+                {
+                    //Create object
+                    EuroText_TextFile newTextFile = new EuroText_TextFile();
+
+                    //Write Object
+                    ETXML_Writter filesWriter = new ETXML_Writter();
+                    filesWriter.WriteTextFile(textFilePath, newTextFile);
+                }
+            }
+
+            //Show form
+            if (File.Exists(textFilePath))
+            {
+                Frm_TextEditor textEditor = new Frm_TextEditor(textFilePath, itemToModify)
+                {
+                    Text = itemToModify.Text
+                };
+                textEditor.ShowDialog();
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal static void LoadEuroTextFiles(ListView ListView_HashCodes)
+        {
+            //Get text files
+            string messagesFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages");
+            if (Directory.Exists(messagesFilePath))
+            {
+                string[] filesToAdd = Directory.GetFiles(messagesFilePath, "*.etf", SearchOption.TopDirectoryOnly);
+                ETXML_Reader filesReader = new ETXML_Reader();
+
+                ListView_HashCodes.BeginUpdate();
+                ListView_HashCodes.Items.Clear();
+                for (int i = 0; i < filesToAdd.Length; i++)
+                {
+                    EuroText_TextFile objTextData = filesReader.ReadTextFile(filesToAdd[i]);
+
+                    //Update control
+                    ListViewItem HashCodeItem = ListView_HashCodes.Items.Add(new ListViewItem(new[] { Path.GetFileNameWithoutExtension(filesToAdd[i]).ToString(), objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                    HashCodeItem.BackColor = objTextData.RowColor;
+
+                }
+                ListView_HashCodes.EndUpdate();
+            }
+
         }
     }
 

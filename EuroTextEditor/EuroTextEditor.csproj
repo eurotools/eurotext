@@ -96,6 +96,12 @@
     <Compile Include="Classes\GlobalVariables.cs" />
     <Compile Include="Classes\IniFile.cs" />
     <Compile Include="Classes\MostRecentFilesMenu.cs" />
+    <Compile Include="Custom Controls\UserControl_ListViewHashCodes.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Custom Controls\UserControl_ListViewHashCodes.Designer.cs">
+      <DependentUpon>UserControl_ListViewHashCodes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Frm_SearchResults.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,11 +190,11 @@
     <Compile Include="Forms\Frm_GroupsViewer.Designer.cs">
       <DependentUpon>Frm_GroupsViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Frm_TextStore.cs">
+    <Compile Include="Forms\Frm_MultiEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Frm_TextStore.Designer.cs">
-      <DependentUpon>Frm_TextStore.cs</DependentUpon>
+    <Compile Include="Forms\Frm_MultiEditor.Designer.cs">
+      <DependentUpon>Frm_MultiEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Frm_MainFrame.cs">
       <SubType>Form</SubType>
@@ -245,6 +251,9 @@
     <Compile Include="Forms\UserControl_TextEditor.Designer.cs">
       <DependentUpon>UserControl_TextEditor.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Custom Controls\UserControl_ListViewHashCodes.resx">
+      <DependentUpon>UserControl_ListViewHashCodes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Editor\SubForms\Frm_HashCodesSelector.resx">
       <DependentUpon>Frm_HashCodesSelector.cs</DependentUpon>
     </EmbeddedResource>
@@ -281,8 +290,8 @@
     <EmbeddedResource Include="Forms\Frm_GroupsViewer.resx">
       <DependentUpon>Frm_GroupsViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Frm_TextStore.resx">
-      <DependentUpon>Frm_TextStore.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Frm_MultiEditor.resx">
+      <DependentUpon>Frm_MultiEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_MainFrame.resx">
       <DependentUpon>Frm_MainFrame.cs</DependentUpon>

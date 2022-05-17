@@ -31,13 +31,8 @@ namespace EuroTextEditor
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_SearchResults));
             this.GroupBox_Results = new System.Windows.Forms.GroupBox();
-            this.ListView_HashCodes = new System.Windows.Forms.ListView();
-            this.Col_HashCodes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_FirstCreated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_FirstCreatedBy = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_LastModify = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_LastModifyBy = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Button_OK = new System.Windows.Forms.Button();
+            this.UserControl_HashCodes = new EuroTextEditor.Custom_Controls.UserControl_ListViewHashCodes();
             this.GroupBox_Results.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,57 +41,13 @@ namespace EuroTextEditor
             this.GroupBox_Results.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.GroupBox_Results.Controls.Add(this.ListView_HashCodes);
+            this.GroupBox_Results.Controls.Add(this.UserControl_HashCodes);
             this.GroupBox_Results.Location = new System.Drawing.Point(12, 12);
             this.GroupBox_Results.Name = "GroupBox_Results";
             this.GroupBox_Results.Size = new System.Drawing.Size(758, 485);
             this.GroupBox_Results.TabIndex = 1;
             this.GroupBox_Results.TabStop = false;
             this.GroupBox_Results.Text = "50 Results:";
-            // 
-            // ListView_HashCodes
-            // 
-            this.ListView_HashCodes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Col_HashCodes,
-            this.Col_FirstCreated,
-            this.Col_FirstCreatedBy,
-            this.Col_LastModify,
-            this.Col_LastModifyBy});
-            this.ListView_HashCodes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ListView_HashCodes.FullRowSelect = true;
-            this.ListView_HashCodes.GridLines = true;
-            this.ListView_HashCodes.HideSelection = false;
-            this.ListView_HashCodes.Location = new System.Drawing.Point(3, 16);
-            this.ListView_HashCodes.Name = "ListView_HashCodes";
-            this.ListView_HashCodes.Size = new System.Drawing.Size(752, 466);
-            this.ListView_HashCodes.TabIndex = 8;
-            this.ListView_HashCodes.UseCompatibleStateImageBehavior = false;
-            this.ListView_HashCodes.View = System.Windows.Forms.View.Details;
-            // 
-            // Col_HashCodes
-            // 
-            this.Col_HashCodes.Text = "HashCode";
-            this.Col_HashCodes.Width = 200;
-            // 
-            // Col_FirstCreated
-            // 
-            this.Col_FirstCreated.Text = "First Created";
-            this.Col_FirstCreated.Width = 130;
-            // 
-            // Col_FirstCreatedBy
-            // 
-            this.Col_FirstCreatedBy.Text = "Created By";
-            this.Col_FirstCreatedBy.Width = 130;
-            // 
-            // Col_LastModify
-            // 
-            this.Col_LastModify.Text = "Last Modify";
-            this.Col_LastModify.Width = 130;
-            // 
-            // Col_LastModifyBy
-            // 
-            this.Col_LastModifyBy.Text = "Last Modify By";
-            this.Col_LastModifyBy.Width = 130;
             // 
             // Button_OK
             // 
@@ -108,6 +59,14 @@ namespace EuroTextEditor
             this.Button_OK.Text = "OK";
             this.Button_OK.UseVisualStyleBackColor = true;
             this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
+            // 
+            // userControl_ListViewHashCodes1
+            // 
+            this.UserControl_HashCodes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.UserControl_HashCodes.Location = new System.Drawing.Point(3, 16);
+            this.UserControl_HashCodes.Name = "userControl_ListViewHashCodes1";
+            this.UserControl_HashCodes.Size = new System.Drawing.Size(752, 466);
+            this.UserControl_HashCodes.TabIndex = 0;
             // 
             // Frm_SearchResults
             // 
@@ -132,11 +91,6 @@ namespace EuroTextEditor
         #endregion
         private System.Windows.Forms.GroupBox GroupBox_Results;
         private System.Windows.Forms.Button Button_OK;
-        protected internal System.Windows.Forms.ListView ListView_HashCodes;
-        private System.Windows.Forms.ColumnHeader Col_HashCodes;
-        private System.Windows.Forms.ColumnHeader Col_FirstCreated;
-        private System.Windows.Forms.ColumnHeader Col_FirstCreatedBy;
-        private System.Windows.Forms.ColumnHeader Col_LastModify;
-        private System.Windows.Forms.ColumnHeader Col_LastModifyBy;
+        private Custom_Controls.UserControl_ListViewHashCodes UserControl_HashCodes;
     }
 }

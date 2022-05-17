@@ -20,7 +20,9 @@ namespace EuroTextEditor
             textFilesToEdit = filesToModify;
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------
+        //  FORM EVENTS
+        //-------------------------------------------------------------------------------------------
         private void Frm_TextStore_Shown(object sender, EventArgs e)
         {
             ETXML_Reader filesReader = new ETXML_Reader();
@@ -60,6 +62,7 @@ namespace EuroTextEditor
 
                     //Add item to listview
                     ListView_TextStore.Items.Add(item);
+                    item.BackColor = objText.RowColor;
                 }
             }
             ListView_TextStore.EndUpdate();
@@ -106,6 +109,71 @@ namespace EuroTextEditor
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void ListView_TextStore_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            EditTextObjects();
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  CONTEXT MENU
+        //-------------------------------------------------------------------------------------------
+        private void MenuItem_Edit_Click(object sender, EventArgs e)
+        {
+            EditTextObjects();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_SetGroup_Click(object sender, EventArgs e)
+        {
+            string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "Groups.txt");
+            if (File.Exists(textGroupsFilePath))
+            {
+                string[] availableGroups = File.ReadAllLines(textGroupsFilePath);
+
+                //Show form
+                Frm_SetTextGroup setGroup = new Frm_SetTextGroup(availableGroups);
+                if (setGroup.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the group that use user has selected
+                    string selectedGroup = setGroup.selectedTextGroup;
+
+                    //Call reader lib
+                    ETXML_Reader filesReader = new ETXML_Reader();
+                    ETXML_Writter filesWriter = new ETXML_Writter();
+
+                    //Update all text files
+                    foreach (ListViewItem selectedItem in ListView_TextStore.SelectedItems)
+                    {
+                        string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", selectedItem.Text + ".etf");
+                        if (File.Exists(textFilePath))
+                        {
+                            //Update property
+                            EuroText_TextFile textObjectData = filesReader.ReadTextFile(textFilePath);
+                            textObjectData.LastModified = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+                            textObjectData.LastModifiedBy = GlobalVariables.EuroTextUser;
+                            textObjectData.Group = selectedGroup;
+
+                            //Update listview
+                            selectedItem.SubItems[3].Text = textObjectData.LastModified;
+                            selectedItem.SubItems[4].Text = textObjectData.LastModifiedBy;
+
+                            //Write file again
+                            filesWriter.WriteTextFile(textFilePath, textObjectData);
+                        }
+                    }
+                }
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_SetSection_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  FUNCTIONS
+        //-------------------------------------------------------------------------------------------
+        private void EditTextObjects()
         {
             if (ListView_TextStore.SelectedItems.Count == 1)
             {

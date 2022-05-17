@@ -32,11 +32,16 @@ namespace EuroTextEditor
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_TextStore));
             this.Label_Language = new System.Windows.Forms.Label();
             this.Combobox_Section = new System.Windows.Forms.ComboBox();
+            this.ContextMenu_MultiEditor = new System.Windows.Forms.ContextMenu();
+            this.MenuItem_Edit = new System.Windows.Forms.MenuItem();
+            this.MenuItem_SetGroup = new System.Windows.Forms.MenuItem();
             this.ListView_TextStore = new EuroTextEditor.Custom_Controls.ListView_ColumnSortingClick();
             this.Col_HashCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Section = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Group = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Audio = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.MenuItem_SetSection = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.SuspendLayout();
             // 
             // Label_Language
@@ -60,6 +65,26 @@ namespace EuroTextEditor
             this.Combobox_Section.TabIndex = 2;
             this.Combobox_Section.SelectionChangeCommitted += new System.EventHandler(this.Combobox_Section_SelectionChangeCommitted);
             // 
+            // ContextMenu_MultiEditor
+            // 
+            this.ContextMenu_MultiEditor.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.MenuItem_Edit,
+            this.menuItem2,
+            this.MenuItem_SetGroup,
+            this.MenuItem_SetSection});
+            // 
+            // MenuItem_Edit
+            // 
+            this.MenuItem_Edit.Index = 0;
+            this.MenuItem_Edit.Text = "Edit";
+            this.MenuItem_Edit.Click += new System.EventHandler(this.MenuItem_Edit_Click);
+            // 
+            // MenuItem_SetGroup
+            // 
+            this.MenuItem_SetGroup.Index = 2;
+            this.MenuItem_SetGroup.Text = "Set Group";
+            this.MenuItem_SetGroup.Click += new System.EventHandler(this.MenuItem_SetGroup_Click);
+            // 
             // ListView_TextStore
             // 
             this.ListView_TextStore.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -70,12 +95,13 @@ namespace EuroTextEditor
             this.Col_Section,
             this.Col_Group,
             this.Col_Audio});
+            this.ListView_TextStore.ContextMenu = this.ContextMenu_MultiEditor;
             this.ListView_TextStore.FullRowSelect = true;
             this.ListView_TextStore.GridLines = true;
             this.ListView_TextStore.HideSelection = false;
             this.ListView_TextStore.Location = new System.Drawing.Point(12, 39);
             this.ListView_TextStore.Name = "ListView_TextStore";
-            this.ListView_TextStore.Size = new System.Drawing.Size(580, 487);
+            this.ListView_TextStore.Size = new System.Drawing.Size(586, 466);
             this.ListView_TextStore.TabIndex = 5;
             this.ListView_TextStore.UseCompatibleStateImageBehavior = false;
             this.ListView_TextStore.View = System.Windows.Forms.View.Details;
@@ -98,11 +124,22 @@ namespace EuroTextEditor
             // 
             this.Col_Audio.Text = "Audio";
             // 
+            // MenuItem_SetSection
+            // 
+            this.MenuItem_SetSection.Index = 3;
+            this.MenuItem_SetSection.Text = "Set Section";
+            this.MenuItem_SetSection.Click += new System.EventHandler(this.MenuItem_SetSection_Click);
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 1;
+            this.menuItem2.Text = "-";
+            // 
             // Frm_TextStore
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(604, 538);
+            this.ClientSize = new System.Drawing.Size(610, 517);
             this.Controls.Add(this.ListView_TextStore);
             this.Controls.Add(this.Combobox_Section);
             this.Controls.Add(this.Label_Language);
@@ -124,5 +161,10 @@ namespace EuroTextEditor
         private System.Windows.Forms.ColumnHeader Col_Section;
         private System.Windows.Forms.ColumnHeader Col_Group;
         private System.Windows.Forms.ColumnHeader Col_Audio;
+        private System.Windows.Forms.ContextMenu ContextMenu_MultiEditor;
+        private System.Windows.Forms.MenuItem MenuItem_Edit;
+        private System.Windows.Forms.MenuItem MenuItem_SetGroup;
+        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem MenuItem_SetSection;
     }
 }

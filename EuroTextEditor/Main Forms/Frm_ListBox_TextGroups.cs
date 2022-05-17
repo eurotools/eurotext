@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -112,25 +111,24 @@ namespace EuroTextEditor
         {
             if (ListBox_TextGroups.SelectedItems.Count == 1)
             {
+                ETXML_Reader filesReader = new ETXML_Reader();
                 HashSet<string> hashCodesInThisGroup = new HashSet<string>();
                 string groupToSearch = ListBox_TextGroups.SelectedItem.ToString();
 
                 //Search hashcodes that are in this group
-                string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly).Select(fileName => Path.GetFileNameWithoutExtension(fileName)).ToArray();
+                string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
                 for (int i = 0; i < filesToAdd.Length; i++)
                 {
                     //Get message text and ensure that the source file exists
-                    string filePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", filesToAdd[i] + ".etf");
-                    if (File.Exists(filePath))
+                    if (File.Exists(filesToAdd[i]))
                     {
                         //Read object
-                        ETXML_Reader filesReader = new ETXML_Reader();
-                        EuroText_TextFile objText = filesReader.ReadTextFile(filePath);
+                        EuroText_TextFile objText = filesReader.ReadTextFile(filesToAdd[i]);
 
                         //Add items
                         if (objText.Group.Equals(groupToSearch))
                         {
-                            hashCodesInThisGroup.Add(filesToAdd[i].ToString());
+                            hashCodesInThisGroup.Add(Path.GetFileName(filesToAdd[i]));
                         }
                     }
                 }
