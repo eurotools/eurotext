@@ -106,11 +106,23 @@
       <DependentUpon>UserControl_ListViewHashCodes.cs</DependentUpon>
     </Compile>
     <Compile Include="ETXML\Objects\EuroText_TextGroups.cs" />
+    <Compile Include="Main Forms\Frm_Searcher.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main Forms\Frm_Searcher.Designer.cs">
+      <DependentUpon>Frm_Searcher.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Frm_SearchResults.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Frm_SearchResults.Designer.cs">
       <DependentUpon>Frm_SearchResults.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Frm_About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm_About.Designer.cs">
+      <DependentUpon>Frm_About.cs</DependentUpon>
     </Compile>
     <Compile Include="Frm_MainFrame_Functions.cs">
       <SubType>Form</SubType>
@@ -219,9 +231,6 @@
     <Compile Include="Forms\Frm_ProjectForm.Designer.cs">
       <DependentUpon>Frm_ProjectForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Frm_MainFrame_Tests.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Frm_Splash.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -246,6 +255,12 @@
     </Compile>
     <Compile Include="Main Forms\Frm_ListBox_TextSections.Designer.cs">
       <DependentUpon>Frm_ListBox_TextSections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main Forms\Frm_SpreadSheets_Extractor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main Forms\Frm_SpreadSheets_Extractor.Designer.cs">
+      <DependentUpon>Frm_SpreadSheets_Extractor.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -282,6 +297,9 @@
     <EmbeddedResource Include="Forms\Frm_Exporter.resx">
       <DependentUpon>Frm_Exporter.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Main Forms\Frm_Searcher.resx">
+      <DependentUpon>Frm_Searcher.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Frm_SearchResults.resx">
       <DependentUpon>Frm_SearchResults.cs</DependentUpon>
     </EmbeddedResource>
@@ -296,6 +314,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Frm_MultiEditor.resx">
       <DependentUpon>Frm_MultiEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frm_About.resx">
+      <DependentUpon>Frm_About.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_MainFrame.resx">
       <DependentUpon>Frm_MainFrame.cs</DependentUpon>
@@ -317,6 +338,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Main Forms\Frm_ListBox_TextSections.resx">
       <DependentUpon>Frm_ListBox_TextSections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main Forms\Frm_SpreadSheets_Extractor.resx">
+      <DependentUpon>Frm_SpreadSheets_Extractor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

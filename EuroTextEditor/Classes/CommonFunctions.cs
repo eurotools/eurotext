@@ -136,6 +136,28 @@ namespace EuroTextEditor
             }
 
         }
+
+        //-------------------------------------------------------------------------------------------
+        //  FORMS
+        //-------------------------------------------------------------------------------------------
+        internal static bool FormIsOpened(string formName)
+        {
+            bool formOpened = false;
+
+            //Check if the form is already opened
+            FormCollection fc = Application.OpenForms;
+            foreach (Form frm in fc)
+            {
+                if (frm.Name.Equals(formName))
+                {
+                    frm.Focus();
+                    formOpened = true;
+                    break;
+                }
+            }
+
+            return formOpened;
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

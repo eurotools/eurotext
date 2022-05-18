@@ -14,7 +14,7 @@ namespace EuroTextEditor
         private readonly string filePath;
         private readonly ListViewItem listViewItemMainForm;
         private EuroText_TextFile objText;
-        private UserControl_TextEditor[] languageEditors;
+        private List<UserControl_TextEditor> languageEditors;
         private int languageEditorsIndex = 0;
         private readonly string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsTextEditor.xml");
 
@@ -77,9 +77,33 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_TextEditor_Shown(object sender, EventArgs e)
         {
+            languageEditors = new List<UserControl_TextEditor>();
+
+            //Add notes
+            MenuItem notesMenuItem = MenuItem_Windows.MenuItems.Add("Notes");
+            notesMenuItem.Name = "MenuItem_Frm_Notes";
+            notesMenuItem.Checked = true;
+
+            //Create a new language editor
+            UserControl_TextEditor notesEditor = new UserControl_TextEditor(notesMenuItem)
+            {
+                Text = "Notes",
+                TabText = "Notes",
+                Name = "Frm_Notes"
+            };
+
+            //Add text to this language editor
+            notesEditor.Textbox.Text = objText.Notes;
+
+            languageEditors.Add(notesEditor);
+            if (!File.Exists(configFile))
+            {
+                notesEditor.Show(dockPanel, DockState.Document);
+            }
+
+            //Add languages Stuff
             if (GlobalVariables.CurrentProject.Languages.Count > 0)
             {
-                languageEditors = new UserControl_TextEditor[GlobalVariables.CurrentProject.Languages.Count];
                 for (int i = 0; i < GlobalVariables.CurrentProject.Languages.Count; i++)
                 {
                     string currentLanguage = GlobalVariables.CurrentProject.Languages[i];
@@ -103,33 +127,33 @@ namespace EuroTextEditor
                         newLangEditor.Textbox.Text = objText.Messages[currentLanguage];
                     }
 
-                    languageEditors[i] = newLangEditor;
+                    languageEditors.Add(newLangEditor);
                     if (!File.Exists(configFile))
                     {
                         newLangEditor.Show(dockPanel, DockState.Document);
                     }
                 }
+            }
 
-                //Show forms
-                if (File.Exists(configFile))
-                {
-                    DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
-                    dockPanel.LoadFromXml(configFile, _deserializeDockContent);
-                }
+            //Show forms
+            if (File.Exists(configFile))
+            {
+                DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
+                dockPanel.LoadFromXml(configFile, _deserializeDockContent);
+            }
 
-                //Update menus
-                for (int i = 0; i < languageEditors.Length; i++)
+            //Update menus
+            for (int i = 0; i < languageEditors.Count; i++)
+            {
+                if (languageEditors[i].IsHidden)
                 {
-                    if (languageEditors[i] != null && languageEditors[i].IsHidden)
+                    for (int j = 0; j < MenuItem_Windows.MenuItems.Count; j++)
                     {
-                        for (int j = 0; j < MenuItem_Windows.MenuItems.Count; j++)
+                        if (MenuItem_Windows.MenuItems[j].Name.Equals("MenuItem_" + languageEditors[i].Name))
                         {
-                            if (MenuItem_Windows.MenuItems[j].Name.Equals("MenuItem_" + languageEditors[i].Name))
-                            {
-                                MenuItem_Windows.MenuItems[j].Checked = false;
-                                languageEditors[i].DockPanel = dockPanel;
-                                break;
-                            }
+                            MenuItem_Windows.MenuItems[j].Checked = false;
+                            languageEditors[i].DockPanel = dockPanel;
+                            break;
                         }
                     }
                 }
@@ -139,7 +163,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private IDockContent DeserializeDockContent(string persistString)
         {
-            if (languageEditorsIndex < languageEditors.Length)
+            if (languageEditorsIndex < languageEditors.Count)
             {
                 if (persistString == typeof(UserControl_TextEditor).ToString())
                 {
@@ -159,7 +183,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_ResetPanels_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < languageEditors.Length; i++)
+            for (int i = 0; i < languageEditors.Count; i++)
             {
                 //Update properties
                 languageEditors[i].IsFloat = false;
@@ -173,20 +197,27 @@ namespace EuroTextEditor
         private void Button_OK_Click(object sender, EventArgs e)
         {
             //Update text
-            for (int i = 0; i < languageEditors.Length; i++)
+            for (int i = 0; i < languageEditors.Count; i++)
             {
                 //Get message data
                 string language = languageEditors[i].Text;
                 string messageData = languageEditors[i].Textbox.Text;
 
-                //Update controls
-                if (objText.Messages.ContainsKey(language))
+                if (languageEditors[i].Name.Equals("Frm_Notes"))
                 {
-                    objText.Messages[language] = messageData;
+                    objText.Notes = messageData;
                 }
                 else
                 {
-                    objText.Messages.Add(language, messageData);
+                    //Update controls
+                    if (objText.Messages.ContainsKey(language))
+                    {
+                        objText.Messages[language] = messageData;
+                    }
+                    else
+                    {
+                        objText.Messages.Add(language, messageData);
+                    }
                 }
             }
 
@@ -209,6 +240,7 @@ namespace EuroTextEditor
             objText.LastModifiedBy = GlobalVariables.EuroTextUser;
             listViewItemMainForm.SubItems[3].Text = objText.LastModified;
             listViewItemMainForm.SubItems[4].Text = objText.LastModifiedBy;
+            listViewItemMainForm.SubItems[5].Text = objText.Notes;
 
             ETXML_Writter filesWriter = new ETXML_Writter();
             filesWriter.WriteTextFile(filePath, objText);

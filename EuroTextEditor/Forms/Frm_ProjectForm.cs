@@ -55,7 +55,15 @@ namespace EuroTextEditor
             folderBrowserDialog.Description = "Set messages folder.";
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                Textbox_MessagesDir.Text = folderBrowserDialog.SelectedPath;
+                //Ensure that the messages folder exists
+                if (Directory.Exists(Path.Combine(folderBrowserDialog.SelectedPath, "Messages")))
+                {
+                    Textbox_MessagesDir.Text = folderBrowserDialog.SelectedPath;
+                }
+                else
+                {
+                    MessageBox.Show("Messages folder not found under the selected path, please choose another path.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -141,7 +149,7 @@ namespace EuroTextEditor
             projectFileReader.WriteProjectFile(Path.Combine(GlobalVariables.WorkingDirectory, "Project.etp"), GlobalVariables.CurrentProject);
 
             //Update application INI
-            IniFile applicationIni = new IniFile(Path.Combine(Application.StartupPath, "EuroText.ini"));
+            IniFile applicationIni = new IniFile(GlobalVariables.EuroTextIni);
             applicationIni.Write("HashTablesAdmin_Path", GlobalVariables.HashtablesAdminPath, "Settings");
             applicationIni.Write("UserName", GlobalVariables.EuroTextUser, "Misc");
 

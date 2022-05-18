@@ -67,7 +67,7 @@ namespace EuroTextEditor
             this.GroupBox_Settings.Controls.Add(this.Label_MaxNumOfChars);
             this.GroupBox_Settings.Location = new System.Drawing.Point(12, 1);
             this.GroupBox_Settings.Name = "GroupBox_Settings";
-            this.GroupBox_Settings.Size = new System.Drawing.Size(742, 44);
+            this.GroupBox_Settings.Size = new System.Drawing.Size(744, 44);
             this.GroupBox_Settings.TabIndex = 0;
             this.GroupBox_Settings.TabStop = false;
             this.GroupBox_Settings.Text = "Settings:";
@@ -140,7 +140,7 @@ namespace EuroTextEditor
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Button_OK.Location = new System.Drawing.Point(598, 538);
+            this.Button_OK.Location = new System.Drawing.Point(600, 570);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 3;
@@ -151,7 +151,7 @@ namespace EuroTextEditor
             // Button_Cancel
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Cancel.Location = new System.Drawing.Point(679, 538);
+            this.Button_Cancel.Location = new System.Drawing.Point(681, 570);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 4;
@@ -170,8 +170,8 @@ namespace EuroTextEditor
             this.dockPanel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.dockPanel.Location = new System.Drawing.Point(12, 51);
             this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(742, 481);
-            this.dockPanel.TabIndex = 6;
+            this.dockPanel.Size = new System.Drawing.Size(744, 513);
+            this.dockPanel.TabIndex = 1;
             // 
             // mainMenu1
             // 
@@ -225,7 +225,7 @@ namespace EuroTextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(766, 573);
+            this.ClientSize = new System.Drawing.Size(768, 605);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Button_OK);

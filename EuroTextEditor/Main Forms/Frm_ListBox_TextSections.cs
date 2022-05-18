@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -106,6 +107,12 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Refresh_Click(object sender, System.EventArgs e)
+        {
+            LoadTextSections();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void ListView_SectionsAndLevels_DoubleClick(object sender, System.EventArgs e)
         {
             if (ListView_SectionsAndLevels.SelectedItems.Count == 1)
@@ -138,6 +145,10 @@ namespace EuroTextEditor
                     Text = selectedSection
                 };
                 groupsViewer.ShowDialog();
+            }
+            else
+            {
+                SystemSounds.Exclamation.Play();
             }
         }
 

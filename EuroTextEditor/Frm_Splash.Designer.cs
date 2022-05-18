@@ -43,7 +43,7 @@ namespace EuroTextEditor
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(680, 520);
+            this.pictureBox1.Size = new System.Drawing.Size(720, 480);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -51,11 +51,11 @@ namespace EuroTextEditor
             // 
             this.Label_Version.BackColor = System.Drawing.SystemColors.Control;
             this.Label_Version.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Version.Location = new System.Drawing.Point(517, 461);
+            this.Label_Version.Location = new System.Drawing.Point(576, 447);
             this.Label_Version.Name = "Label_Version";
             this.Label_Version.Size = new System.Drawing.Size(132, 24);
             this.Label_Version.TabIndex = 3;
-            this.Label_Version.Text = "Version: 2";
+            this.Label_Version.Text = "Version: 1";
             // 
             // TimerSplash
             // 
@@ -66,7 +66,7 @@ namespace EuroTextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(680, 520);
+            this.ClientSize = new System.Drawing.Size(720, 480);
             this.Controls.Add(this.Label_Version);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

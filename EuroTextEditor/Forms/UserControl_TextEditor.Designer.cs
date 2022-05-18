@@ -72,7 +72,7 @@ namespace EuroTextEditor
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolButton_FontSize = new System.Windows.Forms.ToolStripButton();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.colorPicker = new System.Windows.Forms.ColorDialog();
             this.Textbox = new System.Windows.Forms.RichTextBox();
             this.ContextMenu_RichTextbox = new System.Windows.Forms.ContextMenu();
             this.MenuItem_Cut = new System.Windows.Forms.MenuItem();
@@ -605,7 +605,7 @@ namespace EuroTextEditor
         private System.Windows.Forms.ToolStripDropDownButton DropDown_Button;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_FontColour;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_FontType;
-        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.ColorDialog colorPicker;
         protected internal System.Windows.Forms.RichTextBox Textbox;
         private System.Windows.Forms.ToolStripDropDownButton DropDown_Effect;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_EffectString;

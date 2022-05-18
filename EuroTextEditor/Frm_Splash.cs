@@ -31,12 +31,16 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_Splash_Shown(object sender, EventArgs e)
         {
+            //Initialize forms
+            mainform.hashCodes = new Frm_ListBoxHashCodes(mainform.MenuItem_HashCodesForm);
+            mainform.textSections = new Frm_ListBox_TextSections(mainform.MenuItem_TextSectionsForm);
+            mainform.textGroups = new Frm_ListBox_TextGroups(mainform.MenuItem_TextGroupsForm);
+
             //Check for ini file
-            string iniFilePath = Path.Combine(Application.StartupPath, "EuroText.ini");
-            if (File.Exists(iniFilePath))
+            if (File.Exists(GlobalVariables.EuroTextIni))
             {
                 //Read ini file
-                IniFile euroTextIni = new IniFile(iniFilePath);
+                IniFile euroTextIni = new IniFile(GlobalVariables.EuroTextIni);
                 GlobalVariables.EuroTextUser = euroTextIni.Read("UserName", "Misc");
                 GlobalVariables.WorkingDirectory = euroTextIni.Read("Last_Project_Opened", "Misc");
                 GlobalVariables.HashtablesAdminPath = euroTextIni.Read("HashTablesAdmin_Path", "Settings");
@@ -52,6 +56,12 @@ namespace EuroTextEditor
                     mainform.Checkbox_FormatInfo.Checked = Convert.ToBoolean(tempVar);
                 }
 
+                //Ask for userName if required
+                if (string.IsNullOrEmpty(GlobalVariables.EuroTextUser))
+                {
+                    GlobalVariables.EuroTextUser = CommonFunctions.AskForUserName("MyName");
+                }
+
                 //Read EuroText Project file
                 ETXML_Reader projectFileReader = new ETXML_Reader();
                 string projectFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Project.etp");
@@ -63,34 +73,12 @@ namespace EuroTextEditor
                     //Update form text
                     mainform.Text = "EuroText: \"" + GlobalVariables.WorkingDirectory + "\"";
 
-                    //Initialize forms
-                    mainform.hashCodes = new Frm_ListBoxHashCodes(mainform.MenuItem_HashCodesForm);
-                    mainform.textSections = new Frm_ListBox_TextSections(mainform.MenuItem_TextSectionsForm);
-                    mainform.textGroups = new Frm_ListBox_TextGroups(mainform.MenuItem_TextGroupsForm);
-
                     //Load content
                     CommonFunctions.LoadEuroTextFiles(mainform.hashCodes.UserControl_HashCodesListView.ListView_HashCodes);
                     mainform.textGroups.ReadTextGroups();
                     mainform.textSections.LoadTextSections();
 
-                    //Show/dock forms
-                    string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsMainForm.xml");
-                    if (File.Exists(configFile))
-                    {
-                        DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
-                        mainform.dockPanel.LoadFromXml(configFile, _deserializeDockContent);
-                    }
-                    else
-                    {
-                        mainform.hashCodes.Show(mainform.dockPanel, DockState.Document);
-                        mainform.textSections.Show(mainform.dockPanel, DockState.DockLeft);
-                        mainform.textGroups.Show(mainform.textSections.Pane, DockAlignment.Bottom, 0.5);
-                    }
 
-                    //Update menus
-                    mainform.MenuItem_TextGroupsForm.Checked = !mainform.textGroups.IsHidden;
-                    mainform.MenuItem_TextSectionsForm.Checked = !mainform.textSections.IsHidden;
-                    mainform.MenuItem_HashCodesForm.Checked = !mainform.hashCodes.IsHidden;
                 }
                 else
                 {
@@ -98,8 +86,27 @@ namespace EuroTextEditor
                 }
             }
 
+            //Show/dock forms
+            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsMainForm.xml");
+            if (File.Exists(configFile))
+            {
+                DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
+                mainform.dockPanel.LoadFromXml(configFile, _deserializeDockContent);
+            }
+            else
+            {
+                mainform.hashCodes.Show(mainform.dockPanel, DockState.Document);
+                mainform.textSections.Show(mainform.dockPanel, DockState.DockLeft);
+                mainform.textGroups.Show(mainform.textSections.Pane, DockAlignment.Bottom, 0.5);
+            }
+
+            //Update menus
+            mainform.MenuItem_TextGroupsForm.Checked = !mainform.textGroups.IsHidden;
+            mainform.MenuItem_TextSectionsForm.Checked = !mainform.textSections.IsHidden;
+            mainform.MenuItem_HashCodesForm.Checked = !mainform.hashCodes.IsHidden;
+
             //Get recent files
-            mainform.RecentFilesMenu = new MruStripMenuInline(mainform.MenuItem_RecentProjects, mainform.MenuItem_RecentFiles, new MostRecentFilesMenu.ClickedHandler(mainform.MenuItemFile_Recent_Click), iniFilePath, 5);
+            mainform.RecentFilesMenu = new MruStripMenuInline(mainform.MenuItem_RecentProjects, mainform.MenuItem_RecentFiles, new MostRecentFilesMenu.ClickedHandler(mainform.MenuItemFile_Recent_Click), GlobalVariables.EuroTextIni, 5);
             mainform.RecentFilesMenu.LoadFromIniFile();
 
             //Start timer
@@ -120,6 +127,14 @@ namespace EuroTextEditor
             if (persistString == typeof(Frm_ListBox_TextGroups).ToString())
             {
                 return mainform.textGroups;
+            }
+            if (persistString == typeof(Frm_SpreadSheets_Extractor).ToString())
+            {
+                return new Frm_SpreadSheets_Extractor();
+            }
+            if(persistString == typeof(Frm_Searcher).ToString())
+            {
+                return new Frm_Searcher();
             }
             return null;
         }

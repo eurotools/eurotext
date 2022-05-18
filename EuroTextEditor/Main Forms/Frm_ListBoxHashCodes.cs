@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Media;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
@@ -30,7 +31,10 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_ListBoxHashCodes_Shown(object sender, EventArgs e)
         {
-            UserControl_HashCodesListView.ListView_HashCodes.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
+            if (UserControl_HashCodesListView.ListView_HashCodes.Items.Count > 0)
+            {
+                UserControl_HashCodesListView.ListView_HashCodes.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -51,6 +55,10 @@ namespace EuroTextEditor
             {
                 CommonFunctions.EditHashCode(UserControl_HashCodesListView.ListView_HashCodes.SelectedItems[0]);
             }
+            else
+            {
+                SystemSounds.Exclamation.Play();
+            }
         }
 
         //-------------------------------------------------------------------------------------------
@@ -61,6 +69,10 @@ namespace EuroTextEditor
             if (UserControl_HashCodesListView.ListView_HashCodes.SelectedItems.Count == 1)
             {
                 CommonFunctions.EditHashCode(UserControl_HashCodesListView.ListView_HashCodes.SelectedItems[0]);
+            }
+            else
+            {
+                SystemSounds.Exclamation.Play();
             }
         }
 
@@ -183,6 +195,10 @@ namespace EuroTextEditor
                     }
                 }
             }
+            else
+            {
+                SystemSounds.Exclamation.Play();
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -296,39 +312,6 @@ namespace EuroTextEditor
         private void MenuItem_Refresh_Click(object sender, EventArgs e)
         {
             CommonFunctions.LoadEuroTextFiles(UserControl_HashCodesListView.ListView_HashCodes);
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void Button_Search_Click(object sender, EventArgs e)
-        {
-            List<ListViewItem> results = new List<ListViewItem>();
-            foreach (ListViewItem item in UserControl_HashCodesListView.ListView_HashCodes.Items)
-            {
-                if (CheckBox_ExactMatch.Checked)
-                {
-                    if (item.Equals(Textbox_SearchBarHashCodes.Text))
-                    {
-                        results.Add((ListViewItem)item.Clone());
-                    }
-                }
-                else
-                {
-                    if (item.Text.IndexOf(Textbox_SearchBarHashCodes.Text, StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        results.Add((ListViewItem)item.Clone());
-                    }
-                }
-            }
-
-            if (results.Count > 0)
-            {
-                Frm_SearchResults resultsForm = new Frm_SearchResults(results.ToArray());
-                resultsForm.ShowDialog();
-            }
-            else
-            {
-                MessageBox.Show("No results", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
         }
     }
 

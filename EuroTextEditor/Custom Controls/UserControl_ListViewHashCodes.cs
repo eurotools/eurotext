@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Media;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -27,6 +28,10 @@ namespace EuroTextEditor.Custom_Controls
             {
                 CommonFunctions.EditHashCode(ListView_HashCodes.SelectedItems[0]);
             }
+            else
+            {
+                SystemSounds.Exclamation.Play();
+            }
         }
 
         //-------------------------------------------------------------------------------------------
@@ -37,6 +42,10 @@ namespace EuroTextEditor.Custom_Controls
             if (ListView_HashCodes.SelectedItems.Count == 1)
             {
                 CommonFunctions.EditHashCode(ListView_HashCodes.SelectedItems[0]);
+            }
+            else
+            {
+                SystemSounds.Exclamation.Play();
             }
         }
 
@@ -159,6 +168,10 @@ namespace EuroTextEditor.Custom_Controls
                     }
                 }
             }
+            else
+            {
+                SystemSounds.Exclamation.Play();
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -272,6 +285,10 @@ namespace EuroTextEditor.Custom_Controls
         private void MenuItem_Refresh_Click(object sender, EventArgs e)
         {
             CommonFunctions.LoadEuroTextFiles(ListView_HashCodes);
+            if (ListView_HashCodes.Items.Count > 0)
+            {
+                ListView_HashCodes.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------

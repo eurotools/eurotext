@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using static System.Windows.Forms.ListBox;
@@ -121,6 +122,12 @@ namespace EuroTextEditor
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Refresh_Click(object sender, EventArgs e)
+        {
+            ReadTextGroups();
+        }
+
         //-------------------------------------------------------------------------------------------
         //  FUNCTIONS
         //-------------------------------------------------------------------------------------------
@@ -156,6 +163,10 @@ namespace EuroTextEditor
                     Text = groupToSearch
                 };
                 groupsViewer.ShowDialog();
+            }
+            else
+            {
+                SystemSounds.Exclamation.Play();
             }
         }
 

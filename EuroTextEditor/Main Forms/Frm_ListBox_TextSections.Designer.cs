@@ -35,6 +35,7 @@ namespace EuroTextEditor
             this.Col_OutputLevel = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ContextMenu_TextSections = new System.Windows.Forms.ContextMenu();
             this.MenuItem_NewSection = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Refresh = new System.Windows.Forms.MenuItem();
             this.SuspendLayout();
             // 
             // ListView_SectionsAndLevels
@@ -68,13 +69,20 @@ namespace EuroTextEditor
             // ContextMenu_TextSections
             // 
             this.ContextMenu_TextSections.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.MenuItem_NewSection});
+            this.MenuItem_NewSection,
+            this.MenuItem_Refresh});
             // 
             // MenuItem_NewSection
             // 
             this.MenuItem_NewSection.Index = 0;
             this.MenuItem_NewSection.Text = "Create New Section";
             this.MenuItem_NewSection.Click += new System.EventHandler(this.MenuItem_NewSection_Click);
+            // 
+            // MenuItem_Refresh
+            // 
+            this.MenuItem_Refresh.Index = 1;
+            this.MenuItem_Refresh.Text = "Refresh";
+            this.MenuItem_Refresh.Click += new System.EventHandler(this.MenuItem_Refresh_Click);
             // 
             // Frm_ListBox_TextSections
             // 
@@ -98,5 +106,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.ColumnHeader Col_OutputLevel;
         private System.Windows.Forms.ContextMenu ContextMenu_TextSections;
         private System.Windows.Forms.MenuItem MenuItem_NewSection;
+        private System.Windows.Forms.MenuItem MenuItem_Refresh;
     }
 }

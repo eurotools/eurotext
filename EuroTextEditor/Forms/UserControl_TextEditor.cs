@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EuroTextEditor.Classes;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -270,21 +272,40 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         private void MenuItem_FontColour_Click(object sender, EventArgs e)
         {
-            DialogResult diagResult = colorDialog1.ShowDialog();
+            //Load custom colors
+            List<int> savedColors = new List<int>();
+            IniFile applicationIni = new IniFile(GlobalVariables.EuroTextIni);
+            for (int i = 0; i < 16; i++)
+            {
+                string color = applicationIni.Read("Col" + i, "CustomColors");
+                if (!string.IsNullOrEmpty(color))
+                {
+                    savedColors.Add(Convert.ToInt32(color));
+                }
+            }
+
+            //Show color picker
+            colorPicker.CustomColors = savedColors.ToArray();
+            DialogResult diagResult = colorPicker.ShowDialog();
             if (diagResult == DialogResult.OK)
             {
                 //Add tags
                 string replacedText;
                 if (Textbox.SelectedText.Length > 0)
                 {
-                    replacedText = string.Format("<FC {0},{1},{2}>{3}<END FC>", colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B, Textbox.SelectedText);
+                    replacedText = string.Format("<FC {0},{1},{2}>{3}<END FC>", colorPicker.Color.R, colorPicker.Color.G, colorPicker.Color.B, Textbox.SelectedText);
                 }
                 else
                 {
-                    replacedText = string.Format("<FC {0},{1},{2}>{3}", colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B, Textbox.SelectedText);
+                    replacedText = string.Format("<FC {0},{1},{2}>{3}", colorPicker.Color.R, colorPicker.Color.G, colorPicker.Color.B, Textbox.SelectedText);
                 }
-
                 Textbox.SelectedText = replacedText;
+
+                //Save custom colors
+                for (int i = 0; i < colorPicker.CustomColors.Length; i++)
+                {
+                    applicationIni.Write("Col" + i, colorPicker.CustomColors[i].ToString(), "CustomColors");
+                }
             }
         }
 
@@ -485,9 +506,12 @@ namespace EuroTextEditor
                             colorTextLength = match.Groups[1].Value.Length;
                         }
                     }
-
                     Textbox.Select(match.Groups[1].Index + startTagEnd, colorTextLength - startTagEnd);
-                    Textbox.SelectionColor = Color.FromArgb(1, Convert.ToInt32(match.Groups[2].Value), Convert.ToInt32(match.Groups[3].Value), Convert.ToInt32(match.Groups[4].Value));
+
+                    int red = Math.Min(Convert.ToInt32(match.Groups[2].Value) * 2, 255);
+                    int green = Math.Min(Convert.ToInt32(match.Groups[3].Value) * 2, 255);
+                    int blue = Math.Min(Convert.ToInt32(match.Groups[4].Value) * 2, 255);
+                    Textbox.SelectionColor = Color.FromArgb(1, red, green, blue);
                 }
             }
             catch (Exception ex)
