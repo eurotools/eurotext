@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -68,7 +63,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_StopSearch_Click(object sender, EventArgs e)
         {
-            if(AsyncWorker.IsBusy)
+            if (AsyncWorker.IsBusy)
             {
                 AsyncWorker.CancelAsync();
             }
@@ -99,13 +94,13 @@ namespace EuroTextEditor
             //Section to search
             string language = string.Empty;
             Combobox_LookIn.Invoke((MethodInvoker)delegate
-            { 
+            {
                 language = Combobox_LookIn.SelectedItem.ToString();
             });
 
             int mode = 0;
             Combobox_LookIn.Invoke((MethodInvoker)delegate
-            { 
+            {
                 mode = Combobox_LookIn.SelectedIndex;
             });
 

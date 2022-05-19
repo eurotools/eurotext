@@ -1,9 +1,7 @@
 ﻿using EuroTextEditor.Classes;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -15,8 +13,6 @@ namespace EuroTextEditor
     public partial class UserControl_TextEditor : DockContent
     {
         //-------------------------------------------------------------------------------------------------------------------------------
-        //private readonly string tagsPattern = @"<.*?>";
-        private readonly string fontColorRegexPattern = @"(?s)(?=(<FC\s+([0-9]+)\s?,\s?([0-9]+)\s?,\s?([0-9]+)\s?>(?<inner>(?>(?!<FC\b|<END FC>).|(?<c>)<FC\b|(?<b-c>)<END FC>)*)(<END FC>|.*)))";
         private readonly MenuItem formMenuItem;
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -33,6 +29,7 @@ namespace EuroTextEditor
         private void UserControl_TextEditor_Load(object sender, EventArgs e)
         {
             Textbox.AutoWordSelection = false;
+            MenuItem_Factor.Text = Convert.ToString(Textbox.ZoomFactor * 100);
         }
 
         //-------------------------------------------------------------------------------------------
@@ -476,79 +473,6 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         //  EVENTS
         //-------------------------------------------------------------------------------------------
-        private void Textbox_TextChanged(object sender, EventArgs e)
-        {
-            UpdateWordsInColor();
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        public void UpdateWordsInColor()
-        {
-            int prevPosition = Textbox.SelectionStart;
-
-            //Reset words colors
-            Textbox.Select(0, Textbox.TextLength);
-            Textbox.SelectionColor = Textbox.ForeColor;
-
-            //Update words colors
-            MatchCollection stringMatches = Regex.Matches(Textbox.Text, fontColorRegexPattern);
-            try
-            {
-                foreach (Match match in stringMatches)
-                {
-                    int startTagEnd = match.Groups[1].Value.IndexOf('>') + 1;
-                    int colorTextLength = match.Groups[1].Value.IndexOf("<END FC>", startTagEnd);
-                    if (colorTextLength == -1)
-                    {
-                        colorTextLength = match.Groups[1].Value.IndexOf("<FC ", startTagEnd);
-                        if (colorTextLength == -1)
-                        {
-                            colorTextLength = match.Groups[1].Value.Length;
-                        }
-                    }
-                    Textbox.Select(match.Groups[1].Index + startTagEnd, colorTextLength - startTagEnd);
-
-                    int red = Math.Min(Convert.ToInt32(match.Groups[2].Value) * 2, 255);
-                    int green = Math.Min(Convert.ToInt32(match.Groups[3].Value) * 2, 255);
-                    int blue = Math.Min(Convert.ToInt32(match.Groups[4].Value) * 2, 255);
-                    Textbox.SelectionColor = Color.FromArgb(1, red, green, blue);
-                }
-            }
-            catch (Exception ex)
-            {
-                Textbox.Undo();
-                MessageBox.Show(ex.Message, "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            Textbox.Select(Textbox.TextLength, 0);
-            Textbox.SelectionColor = Textbox.ForeColor;
-
-            //Tags
-            /*stringMatches = Regex.Matches(Textbox.Text, tagsPattern);
-            foreach (Match match in stringMatches)
-            {
-                Textbox.Select(match.Index, match.Length);
-                Textbox.SelectionFont = new Font(Textbox.Font, FontStyle.Bold | FontStyle.Italic);
-            }
-            Textbox.Select(Textbox.TextLength, 0);
-            Textbox.SelectionFont = new Font(Textbox.Font, FontStyle.Regular);*/
-
-            //Clear selection
-            Textbox.DeselectAll();
-            Textbox.SelectionStart = prevPosition;
-            Textbox.Focus();
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void Textbox_VisibleChanged(object sender, EventArgs e)
-        {
-            if (Visible)
-            {
-                UpdateWordsInColor();
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
         private void ToolButton_TimerTest_Click(object sender, EventArgs e)
         {
             int charCount = 0, timeFor30;
@@ -586,6 +510,60 @@ namespace EuroTextEditor
             {
                 formMenuItem.Checked = false;
             }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_ZoomIn_Click(object sender, EventArgs e)
+        {
+            if (Textbox.ZoomFactor < 64.0f - 0.20f)
+            {
+                Textbox.ZoomFactor += 0.20f;
+                MenuItem_Factor.Text = string.Format("{0:F0}", Textbox.ZoomFactor * 100);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_ZoomOut_Click(object sender, EventArgs e)
+        {
+            if (Textbox.ZoomFactor > 0.16f + 0.20f)
+            {
+                Textbox.ZoomFactor -= 0.20f;
+                MenuItem_Factor.Text = string.Format("{0:F0}", Textbox.ZoomFactor * 100);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Factor_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                Textbox.ZoomFactor = Convert.ToSingle(MenuItem_Factor.Text) / 100;
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Enter valid number", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MenuItem_Factor.Focus();
+                MenuItem_Factor.SelectAll();
+            }
+            catch (OverflowException)
+            {
+                MessageBox.Show("Enter valid number", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MenuItem_Factor.Focus();
+                MenuItem_Factor.SelectAll();
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Zoom factor should be between 20% and 6400%", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MenuItem_Factor.Focus();
+                MenuItem_Factor.SelectAll();
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_Preview_Click(object sender, EventArgs e)
+        {
+            Frm_Preview previewForm = new Frm_Preview(Textbox.Text);
+            previewForm.ShowDialog();
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------

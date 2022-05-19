@@ -106,6 +106,12 @@
       <DependentUpon>UserControl_ListViewHashCodes.cs</DependentUpon>
     </Compile>
     <Compile Include="ETXML\Objects\EuroText_TextGroups.cs" />
+    <Compile Include="Forms\Frm_Preview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Frm_Preview.Designer.cs">
+      <DependentUpon>Frm_Preview.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main Forms\Frm_Searcher.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -297,6 +303,9 @@
     <EmbeddedResource Include="Forms\Frm_Exporter.resx">
       <DependentUpon>Frm_Exporter.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Frm_Preview.resx">
+      <DependentUpon>Frm_Preview.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main Forms\Frm_Searcher.resx">
       <DependentUpon>Frm_Searcher.cs</DependentUpon>
     </EmbeddedResource>
@@ -369,6 +378,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="address_book_pad.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleControl\ConsoleControl.csproj">
+      <Project>{a498c578-3023-4e5e-ae72-d240d7f01e82}</Project>
+      <Name>ConsoleControl</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.6.1\build\Fody.targets" Condition="Exists('..\packages\Fody.6.6.1\build\Fody.targets')" />

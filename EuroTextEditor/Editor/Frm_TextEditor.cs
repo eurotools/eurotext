@@ -80,26 +80,7 @@ namespace EuroTextEditor
             languageEditors = new List<UserControl_TextEditor>();
 
             //Add notes
-            MenuItem notesMenuItem = MenuItem_Windows.MenuItems.Add("Notes");
-            notesMenuItem.Name = "MenuItem_Frm_Notes";
-            notesMenuItem.Checked = true;
-
-            //Create a new language editor
-            UserControl_TextEditor notesEditor = new UserControl_TextEditor(notesMenuItem)
-            {
-                Text = "Notes",
-                TabText = "Notes",
-                Name = "Frm_Notes"
-            };
-
-            //Add text to this language editor
-            notesEditor.Textbox.Text = objText.Notes;
-
-            languageEditors.Add(notesEditor);
-            if (!File.Exists(configFile))
-            {
-                notesEditor.Show(dockPanel, DockState.Document);
-            }
+            AddNewForm("Notes", objText.Notes);
 
             //Add languages Stuff
             if (GlobalVariables.CurrentProject.Languages.Count > 0)
@@ -108,30 +89,13 @@ namespace EuroTextEditor
                 {
                     string currentLanguage = GlobalVariables.CurrentProject.Languages[i];
 
-                    //Add menu item
-                    MenuItem newMenuItem = MenuItem_Windows.MenuItems.Add(currentLanguage);
-                    newMenuItem.Name = "MenuItem_Frm_" + currentLanguage;
-                    newMenuItem.Checked = true;
-
-                    //Create a new language editor
-                    UserControl_TextEditor newLangEditor = new UserControl_TextEditor(newMenuItem)
-                    {
-                        Text = currentLanguage,
-                        TabText = currentLanguage,
-                        Name = "Frm_" + currentLanguage
-                    };
-
-                    //Add text to this language editor
+                    string textToDisplay = string.Empty;
                     if (objText.Messages.ContainsKey(currentLanguage))
                     {
-                        newLangEditor.Textbox.Text = objText.Messages[currentLanguage];
+                        textToDisplay = objText.Messages[currentLanguage];
                     }
 
-                    languageEditors.Add(newLangEditor);
-                    if (!File.Exists(configFile))
-                    {
-                        newLangEditor.Show(dockPanel, DockState.Document);
-                    }
+                    AddNewForm(currentLanguage, textToDisplay);
                 }
             }
 
@@ -252,6 +216,32 @@ namespace EuroTextEditor
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void AddNewForm(string formName, string tabText)
+        {
+            //Add notes
+            MenuItem formMenuItem = MenuItem_Windows.MenuItems.Add(formName);
+            formMenuItem.Name = "MenuItem_Frm_Notes";
+            formMenuItem.Checked = true;
+
+            //Create a new language editor
+            UserControl_TextEditor notesEditor = new UserControl_TextEditor(formMenuItem)
+            {
+                Text = formName,
+                TabText = formName,
+                Name = "Frm_" + formName
+            };
+
+            //Add text to this language editor
+            notesEditor.Textbox.Text = tabText;
+
+            languageEditors.Add(notesEditor);
+            if (!File.Exists(configFile))
+            {
+                notesEditor.Show(dockPanel, DockState.Document);
+            }
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------

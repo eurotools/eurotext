@@ -86,6 +86,11 @@ namespace EuroTextEditor
             this.MenuItem_SelectAll = new System.Windows.Forms.MenuItem();
             this.MenuItem_Separator2 = new System.Windows.Forms.MenuItem();
             this.MenuItem_Font = new System.Windows.Forms.MenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.ToolButton_ZoomIn = new System.Windows.Forms.ToolStripButton();
+            this.ToolButton_ZoomOut = new System.Windows.Forms.ToolStripButton();
+            this.MenuItem_Factor = new System.Windows.Forms.ToolStripTextBox();
+            this.ToolButton_Preview = new System.Windows.Forms.ToolStripButton();
             this.Toolbar1.SuspendLayout();
             this.Toolbar2.SuspendLayout();
             this.SuspendLayout();
@@ -99,7 +104,8 @@ namespace EuroTextEditor
             this.DropDown_Effect,
             this.DropDown_GamePad,
             this.DropDown_Others,
-            this.ToolButton_TimerTest});
+            this.ToolButton_TimerTest,
+            this.ToolButton_Preview});
             this.Toolbar1.Location = new System.Drawing.Point(0, 0);
             this.Toolbar1.Name = "Toolbar1";
             this.Toolbar1.Size = new System.Drawing.Size(547, 25);
@@ -358,7 +364,11 @@ namespace EuroTextEditor
             this.toolStripSeparator3,
             this.ToolButton_SelectAll,
             this.toolStripSeparator2,
-            this.ToolButton_FontSize});
+            this.ToolButton_FontSize,
+            this.toolStripSeparator4,
+            this.ToolButton_ZoomIn,
+            this.ToolButton_ZoomOut,
+            this.MenuItem_Factor});
             this.Toolbar2.Location = new System.Drawing.Point(0, 25);
             this.Toolbar2.Name = "Toolbar2";
             this.Toolbar2.Size = new System.Drawing.Size(547, 25);
@@ -463,6 +473,7 @@ namespace EuroTextEditor
             // 
             // Textbox
             // 
+            this.Textbox.AcceptsTab = true;
             this.Textbox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -474,8 +485,6 @@ namespace EuroTextEditor
             this.Textbox.Size = new System.Drawing.Size(547, 301);
             this.Textbox.TabIndex = 2;
             this.Textbox.Text = "";
-            this.Textbox.TextChanged += new System.EventHandler(this.Textbox_TextChanged);
-            this.Textbox.VisibleChanged += new System.EventHandler(this.Textbox_VisibleChanged);
             // 
             // ContextMenu_RichTextbox
             // 
@@ -554,6 +563,48 @@ namespace EuroTextEditor
             this.MenuItem_Font.Index = 10;
             this.MenuItem_Font.Text = "Font";
             this.MenuItem_Font.Click += new System.EventHandler(this.MenuItem_Font_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // ToolButton_ZoomIn
+            // 
+            this.ToolButton_ZoomIn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolButton_ZoomIn.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_ZoomIn.Image")));
+            this.ToolButton_ZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolButton_ZoomIn.Name = "ToolButton_ZoomIn";
+            this.ToolButton_ZoomIn.Size = new System.Drawing.Size(23, 22);
+            this.ToolButton_ZoomIn.Text = "toolStripButton1";
+            this.ToolButton_ZoomIn.Click += new System.EventHandler(this.ToolButton_ZoomIn_Click);
+            // 
+            // ToolButton_ZoomOut
+            // 
+            this.ToolButton_ZoomOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolButton_ZoomOut.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_ZoomOut.Image")));
+            this.ToolButton_ZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolButton_ZoomOut.Name = "ToolButton_ZoomOut";
+            this.ToolButton_ZoomOut.Size = new System.Drawing.Size(23, 22);
+            this.ToolButton_ZoomOut.Text = "toolStripButton1";
+            this.ToolButton_ZoomOut.Click += new System.EventHandler(this.ToolButton_ZoomOut_Click);
+            // 
+            // MenuItem_Factor
+            // 
+            this.MenuItem_Factor.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.MenuItem_Factor.Name = "MenuItem_Factor";
+            this.MenuItem_Factor.Size = new System.Drawing.Size(30, 25);
+            this.MenuItem_Factor.Leave += new System.EventHandler(this.MenuItem_Factor_Leave);
+            // 
+            // ToolButton_Preview
+            // 
+            this.ToolButton_Preview.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolButton_Preview.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_Preview.Image")));
+            this.ToolButton_Preview.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolButton_Preview.Name = "ToolButton_Preview";
+            this.ToolButton_Preview.Size = new System.Drawing.Size(23, 22);
+            this.ToolButton_Preview.Text = "Preview";
+            this.ToolButton_Preview.Click += new System.EventHandler(this.ToolButton_Preview_Click);
             // 
             // UserControl_TextEditor
             // 
@@ -637,5 +688,10 @@ namespace EuroTextEditor
         private System.Windows.Forms.ToolStripButton ToolButton_SelectAll;
         private System.Windows.Forms.ToolStripButton ToolButton_TimerTest;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Tab;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripButton ToolButton_ZoomIn;
+        private System.Windows.Forms.ToolStripButton ToolButton_ZoomOut;
+        private System.Windows.Forms.ToolStripTextBox MenuItem_Factor;
+        private System.Windows.Forms.ToolStripButton ToolButton_Preview;
     }
 }

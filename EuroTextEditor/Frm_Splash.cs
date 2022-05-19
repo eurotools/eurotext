@@ -132,7 +132,7 @@ namespace EuroTextEditor
             {
                 return new Frm_SpreadSheets_Extractor();
             }
-            if(persistString == typeof(Frm_Searcher).ToString())
+            if (persistString == typeof(Frm_Searcher).ToString())
             {
                 return new Frm_Searcher();
             }

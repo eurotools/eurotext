@@ -34,7 +34,7 @@ namespace EuroTextEditor
                 Groupbox_Output.Enabled = false;
             }
             else
-            { 
+            {
                 RecentFilesMenu.AddFile(GlobalVariables.WorkingDirectory);
                 RecentFilesMenu.SaveToIniFile();
             }
