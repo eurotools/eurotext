@@ -122,7 +122,7 @@ namespace EuroTextEditor
                 string selectedSection = ListView_SectionsAndLevels.SelectedItems[0].Text;
 
                 //Search hashcodes that are in this group
-                string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
+                string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
                 for (int i = 0; i < filesToAdd.Length; i++)
                 {
                     //Get message text and ensure that the source file exists
@@ -171,6 +171,16 @@ namespace EuroTextEditor
                     ListView_SectionsAndLevels.Items.Add(new ListViewItem(new[] { textSectionItem.Key, textSectionItem.Value.ToString() }));
                 }
                 ListView_SectionsAndLevels.EndUpdate();
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_EditSections_Click(object sender, System.EventArgs e)
+        {
+            Frm_ListBox_TextSections_Editor textSectionsEditor = new Frm_ListBox_TextSections_Editor();
+            if (textSectionsEditor.ShowDialog() == DialogResult.OK)
+            {
+                LoadTextSections();
             }
         }
     }

@@ -97,10 +97,10 @@ namespace EuroTextEditor
             if (DataGridView_ExcelSheet.Rows.Count > 0)
             {
                 Dictionary<string, int> Markers = new Dictionary<string, int>();
-                for(int i = 0; i < DataGridView_ExcelSheet.Columns.Count; i++)
+                for (int i = 0; i < DataGridView_ExcelSheet.Columns.Count; i++)
                 {
                     string cellValue = DataGridView_ExcelSheet.Rows[2].Cells[i].Value.ToString();
-                    if(cellValue.StartsWith("MARKER_"))
+                    if (cellValue.StartsWith("MARKER_"))
                     {
                         Markers.Add(cellValue, i);
                     }
@@ -145,7 +145,7 @@ namespace EuroTextEditor
                         //Get text content
                         foreach (KeyValuePair<string, int> markerObj in Markers)
                         {
-                            switch(markerObj.Key)
+                            switch (markerObj.Key)
                             {
                                 case "MARKER_HASHCODE":
                                     textObj.HashCode = rowToInspect.Cells[markerObj.Value].Value.ToString();
@@ -176,7 +176,7 @@ namespace EuroTextEditor
                         }
 
                         //Calculate file path
-                        string filePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", textObj.HashCode + ".etf");
+                        string filePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", textObj.HashCode + ".etf");
                         if (!string.IsNullOrEmpty(textObj.HashCode))
                         {
                             ETXML_Writter filesWriter = new ETXML_Writter();

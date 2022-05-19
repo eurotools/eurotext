@@ -112,7 +112,7 @@ namespace EuroTextEditor
             ETXML_Reader filesReader = new ETXML_Reader();
 
             //Get text messages 
-            string[] textMessages = Directory.GetFiles(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
+            string[] textMessages = Directory.GetFiles(Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
             for (int i = 0; i < textMessages.Length; i++)
             {
                 //Check if we have to stop

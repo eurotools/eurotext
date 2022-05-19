@@ -94,9 +94,9 @@ namespace EuroTextEditor
                 textWriter.WriteElementString("LastModifiedBy", GlobalVariables.EuroTextUser);
                 textWriter.WriteEndElement();
                 textWriter.WriteStartElement("Properties");
-                textWriter.WriteElementString("MessagesDirectory", GlobalVariables.CurrentProject.MessagesDirectory);
-                textWriter.WriteElementString("SpreadSheetsDirectory", GlobalVariables.CurrentProject.SpreadSheetsDirectory);
-                textWriter.WriteElementString("ELHashCodesServerPath", GlobalVariables.CurrentProject.EuroLandHahCodesServPath);
+                textWriter.WriteElementString("MessagesDirectory", projObj.MessagesDirectory);
+                textWriter.WriteElementString("SpreadSheetsDirectory", projObj.SpreadSheetsDirectory);
+                textWriter.WriteElementString("ELHashCodesServerPath", projObj.EuroLandHahCodesServPath);
                 textWriter.WriteEndElement();
                 textWriter.WriteStartElement("Languages");
                 foreach (string language in projObj.Languages)

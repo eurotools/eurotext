@@ -85,7 +85,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         internal static void EditHashCode(ListViewItem itemToModify)
         {
-            string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", itemToModify.Text + ".etf");
+            string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", itemToModify.Text + ".etf");
             if (!File.Exists(textFilePath))
             {
                 DialogResult answer = MessageBox.Show(string.Join(" ", "", "Source file not found:", textFilePath, "\n\nDo you want to create it now?"), "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -115,7 +115,7 @@ namespace EuroTextEditor
         internal static void LoadEuroTextFiles(ListView ListView_HashCodes)
         {
             //Get text files
-            string messagesFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages");
+            string messagesFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages");
             if (Directory.Exists(messagesFilePath))
             {
                 string[] filesToAdd = Directory.GetFiles(messagesFilePath, "*.etf", SearchOption.TopDirectoryOnly);

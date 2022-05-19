@@ -43,6 +43,19 @@ namespace EuroTextEditor.Custom_Controls
             {
                 CommonFunctions.EditHashCode(ListView_HashCodes.SelectedItems[0]);
             }
+            else if (ListView_HashCodes.SelectedItems.Count > 1)
+            {
+                //Get all selected items
+                List<string> fileNames = new List<string>();
+                for (int i = 0; i < ListView_HashCodes.SelectedItems.Count; i++)
+                {
+                    fileNames.Add(ListView_HashCodes.SelectedItems[i].Text);
+                }
+
+                //Show multi editor
+                Frm_TextEditor_Multi multiEditor = new Frm_TextEditor_Multi(fileNames.ToArray());
+                multiEditor.ShowDialog();
+            }
             else
             {
                 SystemSounds.Exclamation.Play();
@@ -65,7 +78,7 @@ namespace EuroTextEditor.Custom_Controls
                     }
 
                     //Get file path and create a new object
-                    string projectFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", frmTextFileName.ReturnValue + ".etf");
+                    string projectFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", frmTextFileName.ReturnValue + ".etf");
                     EuroText_TextFile newTextFile = new EuroText_TextFile
                     {
                         FirstCreated = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
@@ -112,13 +125,13 @@ namespace EuroTextEditor.Custom_Controls
                 if (answerQuestion == DialogResult.Yes)
                 {
                     //Crate trash folder
-                    string trashFolder = Path.Combine(GlobalVariables.WorkingDirectory, "Messages_Trash");
+                    string trashFolder = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages_Trash");
                     Directory.CreateDirectory(trashFolder);
 
                     foreach (ListViewItem itemToRemove in ListView_HashCodes.SelectedItems)
                     {
                         //Remove EuroTextFile
-                        string filePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", itemToRemove.Text + ".etf");
+                        string filePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", itemToRemove.Text + ".etf");
                         File.Move(filePath, Path.Combine(trashFolder, itemToRemove.Text + ".etf"));
 
                         //Remove item from listview
@@ -148,7 +161,7 @@ namespace EuroTextEditor.Custom_Controls
                         }
 
                         //Get file path and create a new object
-                        string newFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", frmTextFileName.ReturnValue + ".etf");
+                        string newFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", frmTextFileName.ReturnValue + ".etf");
 
                         //Move file
                         if (File.Exists(newFilePath))
@@ -157,7 +170,7 @@ namespace EuroTextEditor.Custom_Controls
                         }
                         else
                         {
-                            string sourceFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", ListView_HashCodes.SelectedItems[0].Text + ".etf");
+                            string sourceFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", ListView_HashCodes.SelectedItems[0].Text + ".etf");
                             File.Move(sourceFilePath, newFilePath);
                             ListView_HashCodes.SelectedItems[0].Text = frmTextFileName.ReturnValue;
                         }
@@ -196,7 +209,7 @@ namespace EuroTextEditor.Custom_Controls
                     //Update all text files
                     foreach (ListViewItem selectedItem in ListView_HashCodes.SelectedItems)
                     {
-                        string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", selectedItem.Text + ".etf");
+                        string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", selectedItem.Text + ".etf");
                         if (File.Exists(textFilePath))
                         {
                             //Update property
@@ -243,7 +256,7 @@ namespace EuroTextEditor.Custom_Controls
                     ETXML_Reader filesReader = new ETXML_Reader();
                     ETXML_Writter filesWriter = new ETXML_Writter();
 
-                    string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", itemToModify.Text + ".etf");
+                    string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", itemToModify.Text + ".etf");
                     if (File.Exists(textFilePath))
                     {
                         //Update property
@@ -268,7 +281,7 @@ namespace EuroTextEditor.Custom_Controls
                 ETXML_Reader filesReader = new ETXML_Reader();
                 ETXML_Writter filesWriter = new ETXML_Writter();
 
-                string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", itemToModify.Text + ".etf");
+                string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", itemToModify.Text + ".etf");
                 if (File.Exists(textFilePath))
                 {
                     //Update property
@@ -306,7 +319,7 @@ namespace EuroTextEditor.Custom_Controls
                     itemToModify.SubItems[5].Text = inputText.ReturnValue;
 
                     //Update TextFile
-                    string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", itemToModify.Text + ".etf");
+                    string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", itemToModify.Text + ".etf");
                     if (File.Exists(textFilePath))
                     {
                         ETXML_Reader filesReader = new ETXML_Reader();

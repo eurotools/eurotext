@@ -44,7 +44,7 @@ namespace EuroTextEditor
             for (int i = 0; i < textFilesToEdit.Length; i++)
             {
                 //Read file
-                string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", textFilesToEdit[i] + ".etf");
+                string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", textFilesToEdit[i] + ".etf");
                 if (File.Exists(textFilePath))
                 {
                     EuroText_TextFile objText = filesReader.ReadTextFile(textFilePath);
@@ -143,7 +143,7 @@ namespace EuroTextEditor
                     //Update all text files
                     foreach (ListViewItem selectedItem in ListView_TextStore.SelectedItems)
                     {
-                        string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", selectedItem.Text + ".etf");
+                        string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", selectedItem.Text + ".etf");
                         if (File.Exists(textFilePath))
                         {
                             //Update property
@@ -180,7 +180,7 @@ namespace EuroTextEditor
                 ETXML_Reader filesReader = new ETXML_Reader();
 
                 //Read text file and show the editor
-                string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", ListView_TextStore.SelectedItems[0].SubItems[0].Text + ".etf");
+                string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", ListView_TextStore.SelectedItems[0].SubItems[0].Text + ".etf");
                 if (File.Exists(textFilePath))
                 {
                     Frm_TextEditor textEditor = new Frm_TextEditor(textFilePath, ListView_TextStore.SelectedItems[0])

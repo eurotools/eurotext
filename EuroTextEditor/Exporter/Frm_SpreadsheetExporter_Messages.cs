@@ -636,12 +636,12 @@ namespace EuroTextEditor
 
             //Get all messages
             ETXML_Reader textReader = new ETXML_Reader();
-            string[] messagesToPrint = Directory.GetFiles(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
+            string[] messagesToPrint = Directory.GetFiles(Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
 
             List<EuroText_TextFile> uncategorizedTexts = new List<EuroText_TextFile>();
             Dictionary<string, List<EuroText_TextFile>> messagesCategorizes = new Dictionary<string, List<EuroText_TextFile>>();
 
-            for(int i = 0; i < messagesToPrint.Length; i++)
+            for (int i = 0; i < messagesToPrint.Length; i++)
             {
                 EuroText_TextFile textObj = textReader.ReadTextFile(messagesToPrint[i]);
                 textObj.HashCode = Path.GetFileNameWithoutExtension(messagesToPrint[i]);
@@ -671,7 +671,7 @@ namespace EuroTextEditor
                 }
             }
 
-            foreach(KeyValuePair<string, List<EuroText_TextFile>> groupToPrint in messagesCategorizes)
+            foreach (KeyValuePair<string, List<EuroText_TextFile>> groupToPrint in messagesCategorizes)
             {
                 if (BackgroundWorker.CancellationPending)
                 {
@@ -777,7 +777,7 @@ namespace EuroTextEditor
                             }
 
                             lastColIndex = 0;
-                            
+
                         }
 
                         Thread.Sleep(1);
@@ -787,7 +787,7 @@ namespace EuroTextEditor
                     PrintTextGroup(SpreadSheetColsCount, grayBackground, headerRow, groupToPrint.Key);
                 }
             }
-        
+
             //End generic group
             headerRow = Messages.CreateRow(rowIndex++);
             PrintTextGroup(SpreadSheetColsCount, grayBackground, headerRow, "M_TEXT_ALL");

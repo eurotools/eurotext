@@ -111,6 +111,18 @@
     <Compile Include="Custom Controls\UserControl_ListViewHashCodes.Designer.cs">
       <DependentUpon>UserControl_ListViewHashCodes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Custom Controls\UserControl_TextOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Custom Controls\UserControl_TextOptions.Designer.cs">
+      <DependentUpon>UserControl_TextOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\Frm_TextEditor_Multi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\Frm_TextEditor_Multi.Designer.cs">
+      <DependentUpon>Frm_TextEditor_Multi.cs</DependentUpon>
+    </Compile>
     <Compile Include="ETXML\Objects\EuroText_TextGroups.cs" />
     <Compile Include="Exporter\Frm_SpreadsheetExporter_ConfigSheet.cs">
       <SubType>Form</SubType>
@@ -129,6 +141,12 @@
     </Compile>
     <Compile Include="Exporter\Frm_SpreadsheetExporter_Messages.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main Forms\Frm_ListBox_TextSections_Editor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main Forms\Frm_ListBox_TextSections_Editor.Designer.cs">
+      <DependentUpon>Frm_ListBox_TextSections_Editor.cs</DependentUpon>
     </Compile>
     <Compile Include="Main Forms\Frm_Searcher.cs">
       <SubType>Form</SubType>
@@ -293,6 +311,12 @@
     <EmbeddedResource Include="Custom Controls\UserControl_ListViewHashCodes.resx">
       <DependentUpon>UserControl_ListViewHashCodes.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Custom Controls\UserControl_TextOptions.resx">
+      <DependentUpon>UserControl_TextOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\Frm_TextEditor_Multi.resx">
+      <DependentUpon>Frm_TextEditor_Multi.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Editor\SubForms\Frm_HashCodesSelector.resx">
       <DependentUpon>Frm_HashCodesSelector.cs</DependentUpon>
     </EmbeddedResource>
@@ -319,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Frm_Preview.resx">
       <DependentUpon>Frm_Preview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main Forms\Frm_ListBox_TextSections_Editor.resx">
+      <DependentUpon>Frm_ListBox_TextSections_Editor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main Forms\Frm_Searcher.resx">
       <DependentUpon>Frm_Searcher.cs</DependentUpon>

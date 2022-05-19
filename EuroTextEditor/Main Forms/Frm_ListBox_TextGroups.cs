@@ -140,7 +140,7 @@ namespace EuroTextEditor
                 string groupToSearch = ListBox_TextGroups.SelectedItem.ToString();
 
                 //Search hashcodes that are in this group
-                string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
+                string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
                 for (int i = 0; i < filesToAdd.Length; i++)
                 {
                     //Get message text and ensure that the source file exists

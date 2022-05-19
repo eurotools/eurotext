@@ -16,6 +16,7 @@ namespace EuroTextEditor
         private EuroText_TextFile objText;
         private List<UserControl_TextEditor> languageEditors;
         private int languageEditorsIndex = 0;
+        private bool PromptSave = true;
         private readonly string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsTextEditor.xml");
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -29,49 +30,30 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_TextEditor_Load(object sender, EventArgs e)
         {
-            //Get all groups
-            string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextGroups.etf");
-            if (File.Exists(textGroupsFilePath))
-            {
-                ETXML_Reader projectFileReader = new ETXML_Reader();
-                EuroText_TextGroups textGroupsData = projectFileReader.ReadTextGroupsFile(textGroupsFilePath);
-                Combobox_Group.BeginUpdate();
-                Combobox_Group.Items.Add("");
-                Combobox_Group.Items.AddRange(textGroupsData.TextGroups.ToArray());
-                Combobox_Group.EndUpdate();
-                if (Combobox_Group.Items.Count > 0)
-                {
-                    Combobox_Group.SelectedIndex = 0;
-                }
-            }
-
-            //Get all output levels and sections
-            string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
-            if (File.Exists(textSectionsFilePath))
-            {
-                ETXML_Reader projectFileReader = new ETXML_Reader();
-                EuroText_TextSections sectionsFileText = projectFileReader.ReadTextSectionsFile(textSectionsFilePath);
-                Dictionary<string, string> sectionsAndLevels = new Dictionary<string, string> { { "", "" } };
-                foreach (KeyValuePair<string, string> entry in sectionsFileText.TextSections)
-                {
-                    sectionsAndLevels.Add(entry.Key, entry.Value);
-                }
-                Combobox_OutputSection.DataSource = new BindingSource(sectionsAndLevels, null);
-                Combobox_OutputSection.DisplayMember = "Value";
-                Combobox_OutputSection.ValueMember = "Key";
-            }
-
             //New object
             ETXML_Reader filesReader = new ETXML_Reader();
             objText = filesReader.ReadTextFile(filePath);
 
             //Group and Output Section
-            Combobox_Group.SelectedItem = objText.Group;
-            Combobox_OutputSection.SelectedValue = objText.OutputSection;
+            UserControl_TextOptions.Combobox_Group.SelectedItem = objText.Group;
+            UserControl_TextOptions.Combobox_OutputSection.SelectedValue = objText.OutputSection;
 
             //Others
-            CheckBox_TextDead.Checked = Convert.ToBoolean(objText.DeadText);
-            Numeric_MaxChars.Value = objText.MaxNumOfChars;
+            UserControl_TextOptions.CheckBox_TextDead.Checked = Convert.ToBoolean(objText.DeadText);
+            UserControl_TextOptions.Numeric_MaxChars.Value = objText.MaxNumOfChars;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Frm_TextEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (PromptSave)
+            {
+                DialogResult diagResult = MessageBox.Show("Are you sure you wish to quit without saving?", "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (diagResult == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -145,6 +127,12 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Save_Click(object sender, EventArgs e)
+        {
+            SaveFile();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_ResetPanels_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < languageEditors.Count; i++)
@@ -157,8 +145,55 @@ namespace EuroTextEditor
             }
         }
 
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Exit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_OK_Click(object sender, EventArgs e)
+        {
+            PromptSave = false;
+            SaveFile();
+            Close();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Button_Cancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        private void AddNewForm(string formName, string tabText)
+        {
+            //Add notes
+            MenuItem formMenuItem = MenuItem_Windows.MenuItems.Add(formName);
+            formMenuItem.Name = "MenuItem_Frm_" + formName;
+            formMenuItem.Checked = true;
+
+            //Create a new language editor
+            UserControl_TextEditor notesEditor = new UserControl_TextEditor(formMenuItem, dockPanel, DockState.Document)
+            {
+                Text = formName,
+                TabText = formName,
+                Name = "Frm_" + formName
+            };
+
+            //Add text to this language editor
+            notesEditor.Textbox.Text = tabText;
+
+            languageEditors.Add(notesEditor);
+            if (!File.Exists(configFile))
+            {
+                notesEditor.Show(dockPanel, DockState.Document);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void SaveFile()
         {
             //Update text
             for (int i = 0; i < languageEditors.Count; i++)
@@ -186,18 +221,18 @@ namespace EuroTextEditor
             }
 
             //Group and Output Section
-            if (Combobox_Group.SelectedItem != null)
+            if (UserControl_TextOptions.Combobox_Group.SelectedItem != null)
             {
-                objText.Group = Combobox_Group.SelectedItem.ToString();
+                objText.Group = UserControl_TextOptions.Combobox_Group.SelectedItem.ToString();
             }
-            if (Combobox_OutputSection.SelectedValue != null)
+            if (UserControl_TextOptions.Combobox_OutputSection.SelectedValue != null)
             {
-                objText.OutputSection = Combobox_OutputSection.SelectedValue.ToString();
+                objText.OutputSection = UserControl_TextOptions.Combobox_OutputSection.SelectedValue.ToString();
             }
 
             //Others
-            objText.DeadText = Convert.ToInt32(CheckBox_TextDead.Checked);
-            objText.MaxNumOfChars = (int)Numeric_MaxChars.Value;
+            objText.DeadText = Convert.ToInt32(UserControl_TextOptions.CheckBox_TextDead.Checked);
+            objText.MaxNumOfChars = (int)UserControl_TextOptions.Numeric_MaxChars.Value;
 
             //Update properties and listview
             objText.LastModified = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
@@ -208,40 +243,6 @@ namespace EuroTextEditor
 
             ETXML_Writter filesWriter = new ETXML_Writter();
             filesWriter.WriteTextFile(filePath, objText);
-
-            Close();
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void Button_Cancel_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void AddNewForm(string formName, string tabText)
-        {
-            //Add notes
-            MenuItem formMenuItem = MenuItem_Windows.MenuItems.Add(formName);
-            formMenuItem.Name = "MenuItem_Frm_" + formName;
-            formMenuItem.Checked = true;
-
-            //Create a new language editor
-            UserControl_TextEditor notesEditor = new UserControl_TextEditor(formMenuItem, dockPanel, DockState.Document)
-            {
-                Text = formName,
-                TabText = formName,
-                Name = "Frm_" + formName
-            };
-
-            //Add text to this language editor
-            notesEditor.Textbox.Text = tabText;
-
-            languageEditors.Add(notesEditor);
-            if (!File.Exists(configFile))
-            {
-                notesEditor.Show(dockPanel, DockState.Document);
-            }
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------

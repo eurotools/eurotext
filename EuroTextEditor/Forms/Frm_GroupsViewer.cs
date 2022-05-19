@@ -38,7 +38,7 @@ namespace EuroTextEditor
             UserControl_HashCodes.ListView_HashCodes.BeginUpdate();
             for (int i = 0; i < hashCodes.Length; i++)
             {
-                string textFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", hashCodes[i]);
+                string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", hashCodes[i]);
                 EuroText_TextFile objTextData = filesReader.ReadTextFile(textFilePath);
 
                 //Update control
