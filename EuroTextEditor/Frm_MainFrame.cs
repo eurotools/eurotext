@@ -52,6 +52,7 @@ namespace EuroTextEditor
             applicationIni.Write("HashTablesAdmin_Path", GlobalVariables.HashtablesAdminPath, "Settings");
             applicationIni.Write("includeDataInfoSheet", Checkbox_DataInfoSheet.Checked.ToString(), "MainForm");
             applicationIni.Write("includeFormatInfoSheet", Checkbox_FormatInfo.Checked.ToString(), "MainForm");
+            applicationIni.Write("includeNoSectionedHashCodes", Checkbox_IncludeHashCodesWithNoSection.Checked.ToString(), "MainForm");
             applicationIni.Write("OutputFileName", Textbox_FileName.Text, "MainForm");
 
             //Dock conifg
@@ -103,11 +104,19 @@ namespace EuroTextEditor
                 GlobalVariables.WorkingDirectory = FolderBrowserDialog.SelectedPath;
 
                 //Create Folders
+                string messagesDirectory = Path.Combine(GlobalVariables.WorkingDirectory, "Messages");
+                string outputDirectory = Path.Combine(GlobalVariables.WorkingDirectory, "Output");
                 Directory.CreateDirectory(Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles"));
-                Directory.CreateDirectory(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"));
+                Directory.CreateDirectory(outputDirectory);
+                Directory.CreateDirectory(messagesDirectory);
 
                 //Write file
-                EuroText_ProjectFile projFile = new EuroText_ProjectFile();
+                EuroText_ProjectFile projFile = new EuroText_ProjectFile
+                {
+                    MessagesDirectory = messagesDirectory,
+                    SpreadSheetsDirectory = outputDirectory
+                };
+
                 ETXML_Writter filesWriter = new ETXML_Writter();
                 filesWriter.WriteProjectFile(Path.Combine(GlobalVariables.WorkingDirectory, "Project.etp"), projFile);
 
@@ -175,7 +184,8 @@ namespace EuroTextEditor
                     }
 
                     //Start output
-                    Frm_SpreadsheetExporter exporterTask = new Frm_SpreadsheetExporter(this, Path.Combine(GlobalVariables.CurrentProject.SpreadSheetsDirectory, fileName), Checkbox_FormatInfo.Checked, Checkbox_DataInfoSheet.Checked);
+                    string outpuSpeadSheetsFilePath = Path.Combine(GlobalVariables.CurrentProject.SpreadSheetsDirectory, fileName);
+                    Frm_SpreadsheetExporter exporterTask = new Frm_SpreadsheetExporter(this, outpuSpeadSheetsFilePath, Checkbox_FormatInfo.Checked, Checkbox_DataInfoSheet.Checked, Checkbox_IncludeHashCodesWithNoSection.Checked);
                     exporterTask.ShowDialog();
                 }
                 else

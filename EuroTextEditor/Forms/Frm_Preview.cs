@@ -34,23 +34,27 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void asyncWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void AsyncWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            bool insideTag = false;
+            bool insideTag = false, centerText = false;
             string tagName = string.Empty;
+            int carrotPosition = 2;
 
             for (int i = 0; i < textToPreview.Length; i++)
             {
+                //We entered in a tag, get chars
                 if (textToPreview[i] == '<')
                 {
                     insideTag = true;
                 }
 
+                //Get tag
                 if (insideTag)
                 {
                     tagName += textToPreview[i];
                 }
 
+                //Print "normal" chars
                 if (!insideTag)
                 {
                     consoleControl1.Write(textToPreview[i]);
@@ -60,17 +64,24 @@ namespace EuroTextEditor
                     }
                 }
 
+                //We exited from a tag, check it
                 if (textToPreview[i] == '>')
                 {
                     if (tagName.Equals("<N>"))
                     {
                         Location currentPosition = consoleControl1.GetCursorPosition();
-                        consoleControl1.SetCursorPosition(currentPosition.Row + 1, 0);
+                        consoleControl1.SetCursorPosition(currentPosition.Row + 1, GetStartColumnCenter(i, centerText));
+                    }
+                    if (tagName.StartsWith("<PC 1>"))
+                    {
+                        carrotPosition = 40;
                     }
                     if (tagName.StartsWith("<B"))
                     {
                         Location currentPosition = consoleControl1.GetCursorPosition();
-                        consoleControl1.SetCursorPosition(currentPosition.Row, 2);
+                        consoleControl1.SetCursorPosition(currentPosition.Row, GetStartColumnCenter(i, centerText) + carrotPosition);
+                        consoleControl1.Write("•");
+                        carrotPosition = 2;
                     }
                     if (tagName.StartsWith("<FC "))
                     {
@@ -94,7 +105,7 @@ namespace EuroTextEditor
                     }
                     if (tagName.Equals("<P>"))
                     {
-                        Invoke(new Action(() => 
+                        Invoke(new Action(() =>
                         {
                             DialogResult diagResult = MessageBox.Show("Do you want to show the next page?", "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                             if (diagResult == DialogResult.Yes)
@@ -102,8 +113,27 @@ namespace EuroTextEditor
                                 disableTeletype = false;
                                 consoleControl1.Clear();
                             }
+                            else
+                            {
+                                Close();
+                            }
                         }));
                     }
+                    if (tagName.Equals("<CNTR>"))
+                    {
+                        centerText = true;
+
+                        Location currentPosition = consoleControl1.GetCursorPosition();
+                        consoleControl1.SetCursorPosition(currentPosition.Row, GetStartColumnCenter(i, centerText));
+                    }
+                    if (tagName.Equals("<END CNTR>"))
+                    {
+                        centerText = false;
+
+                        Location currentPosition = consoleControl1.GetCursorPosition();
+                        consoleControl1.SetCursorPosition(currentPosition.Row, GetStartColumnCenter(i, centerText));
+                    }
+
 
                     tagName = string.Empty;
                     insideTag = false;
@@ -112,15 +142,74 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void consoleControl1_Click(object sender, EventArgs e)
+        private void ConsoleControl1_Click(object sender, EventArgs e)
         {
             disableTeletype = true;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void consoleControl1_KeyDown(object sender, KeyEventArgs e)
+        private void ConsoleControl1_KeyDown(object sender, KeyEventArgs e)
         {
             disableTeletype = true;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private int GetStartColumnCenter(int startPos, bool centerText)
+        {
+            int consoleMiddle = 40;
+            int textStartPos = 0;
+            if (centerText)
+            {
+                textStartPos = Clamp(consoleMiddle - (GetRemainingLength(startPos) / 2), 0, 80);
+            }
+            return textStartPos;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private int Clamp(int value, int min, int max)
+        {
+            if (value < min) { return min; }
+            if (value > max) { return max; }
+            return value;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private int GetRemainingLength(int startpos)
+        {
+            int remainingLength = 0;
+            string tagName = string.Empty;
+            bool betweenTag = false;
+
+            for (int i = startpos; i < textToPreview.Length; i++)
+            {
+                if (textToPreview[i] == '<')
+                {
+                    betweenTag = true;
+                }
+                if (betweenTag)
+                {
+                    tagName += textToPreview[i];
+                }
+                if (!betweenTag)
+                {
+                    remainingLength += 1;
+                }
+                if (textToPreview[i] == '>')
+                {
+                    betweenTag = false;
+                    if (tagName.Equals("<P>"))
+                    {
+                        break;
+                    }
+                    if (tagName.Equals("<N>"))
+                    {
+                        break;
+                    }
+                    tagName = string.Empty;
+                }
+            }
+
+            return remainingLength;
         }
     }
 

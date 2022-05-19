@@ -16,13 +16,13 @@ namespace EuroTextEditor
         private readonly MenuItem formMenuItem;
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        public UserControl_TextEditor(MenuItem parentMainForm)
+        public UserControl_TextEditor(MenuItem parentMainForm, DockPanel defaultPanel, DockState defaultDockState)
         {
             InitializeComponent();
             formMenuItem = parentMainForm;
 
             //Menu Item
-            formMenuItem.Click += (se, ev) => { if (IsHidden) { Show(); formMenuItem.Checked = true; } };
+            formMenuItem.Click += (se, ev) => { if (IsHidden) { Show(defaultPanel, defaultDockState); formMenuItem.Checked = true; } };
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------

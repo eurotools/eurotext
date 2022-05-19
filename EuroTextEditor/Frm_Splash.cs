@@ -55,6 +55,11 @@ namespace EuroTextEditor
                 {
                     mainform.Checkbox_FormatInfo.Checked = Convert.ToBoolean(tempVar);
                 }
+                tempVar = euroTextIni.Read("includeNoSectionedHashCodes", "MainForm");
+                if (!string.IsNullOrEmpty(tempVar))
+                {
+                    mainform.Checkbox_IncludeHashCodesWithNoSection.Checked = Convert.ToBoolean(tempVar);
+                }
 
                 //Ask for userName if required
                 if (string.IsNullOrEmpty(GlobalVariables.EuroTextUser))

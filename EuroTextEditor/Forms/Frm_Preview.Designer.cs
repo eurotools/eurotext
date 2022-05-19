@@ -29,6 +29,7 @@ namespace EuroTextEditor
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Preview));
             this.consoleControl1 = new ConsoleControl.ConsoleControl();
             this.asyncWorker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
@@ -50,19 +51,21 @@ namespace EuroTextEditor
             this.consoleControl1.ShowCursor = true;
             this.consoleControl1.Size = new System.Drawing.Size(646, 377);
             this.consoleControl1.TabIndex = 0;
-            this.consoleControl1.Click += new System.EventHandler(this.consoleControl1_Click);
-            this.consoleControl1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.consoleControl1_KeyDown);
+            this.consoleControl1.Click += new System.EventHandler(this.ConsoleControl1_Click);
+            this.consoleControl1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConsoleControl1_KeyDown);
             // 
             // asyncWorker
             // 
-            this.asyncWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.asyncWorker_DoWork);
+            this.asyncWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.AsyncWorker_DoWork);
             // 
             // Frm_Preview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(647, 376);
+            this.ClientSize = new System.Drawing.Size(648, 377);
             this.Controls.Add(this.consoleControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Frm_Preview";

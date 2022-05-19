@@ -7,10 +7,10 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
-    partial class ExcelWritters
+    public partial class Frm_SpreadsheetExporter : Frm_Exporter
     {
         //-------------------------------------------------------------------------------------------------------------------------------
-        internal void CreateDataInfo(ISheet FormatInfo, IWorkbook workbook, DoWorkEventArgs e, BackgroundWorker asyncWorker)
+        internal void CreateDataInfo(ISheet FormatInfo, IWorkbook workbook)
         {
             //-------------------------------------------------------------------------------------------
             //  Fonts
@@ -202,7 +202,7 @@ namespace EuroTextEditor
                 markerDesc.CellStyle = borderedCellStyle;
                 markerDesc.SetCellValue(formatCodes[i, 1]);
 
-                asyncWorker.ReportProgress((i * 100) / formatCodes.GetLength(0), string.Join(" ", "Effect Format Codes:", formatCodes[i, 0], formatCodes[i, 1]));
+                BackgroundWorker.ReportProgress((i * 100) / formatCodes.GetLength(0), string.Join(" ", "Effect Format Codes:", formatCodes[i, 0], formatCodes[i, 1]));
             }
 
             //Set size
@@ -210,5 +210,6 @@ namespace EuroTextEditor
             FormatInfo.AutoSizeColumn(1);
         }
     }
+
     //-------------------------------------------------------------------------------------------------------------------------------
 }

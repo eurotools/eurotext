@@ -7,10 +7,10 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
-    partial class ExcelWritters
+    public partial class Frm_SpreadsheetExporter
     {
         //-------------------------------------------------------------------------------------------------------------------------------
-        internal void CreateFormatInfoSheet(ISheet FormatInfo, IWorkbook workbook, DoWorkEventArgs e, BackgroundWorker asyncWorker)
+        internal void CreateFormatInfoSheet(ISheet FormatInfo, IWorkbook workbook)
         {
             //-------------------------------------------------------------------------------------------
             //  Fonts
@@ -102,7 +102,7 @@ namespace EuroTextEditor
                 markerDesc.CellStyle = borderedCellStyle;
                 markerDesc.SetCellValue(positionMarkers[i, 1]);
 
-                asyncWorker.ReportProgress((i * 100) / positionMarkers.GetLength(0), string.Join(" ", "Position markers:", positionMarkers[i, 0], positionMarkers[i, 1]));
+                BackgroundWorker.ReportProgress((i * 100) / positionMarkers.GetLength(0), string.Join(" ", "Position markers:", positionMarkers[i, 0], positionMarkers[i, 1]));
             }
 
             //Empty Row
@@ -158,7 +158,7 @@ namespace EuroTextEditor
                 markerDesc.CellStyle = borderedCellStyle;
                 markerDesc.SetCellValue(DataTypeMarkers[i, 1]);
 
-                asyncWorker.ReportProgress((i * 100) / DataTypeMarkers.GetLength(0), string.Join(" ", "Data Type markers:", DataTypeMarkers[i, 0], DataTypeMarkers[i, 1]));
+                BackgroundWorker.ReportProgress((i * 100) / DataTypeMarkers.GetLength(0), string.Join(" ", "Data Type markers:", DataTypeMarkers[i, 0], DataTypeMarkers[i, 1]));
             }
 
             //Empty Row
@@ -244,7 +244,7 @@ namespace EuroTextEditor
                 markerDesc.CellStyle = borderedCellStyle;
                 markerDesc.SetCellValue(languageMarkers[i, 1]);
 
-                asyncWorker.ReportProgress((i * 100) / languageMarkers.GetLength(0), string.Join(" ", "Language Markers:", languageMarkers[i, 0], languageMarkers[i, 1]));
+                BackgroundWorker.ReportProgress((i * 100) / languageMarkers.GetLength(0), string.Join(" ", "Language Markers:", languageMarkers[i, 0], languageMarkers[i, 1]));
             }
 
             //Create gray line

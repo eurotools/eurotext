@@ -223,11 +223,11 @@ namespace EuroTextEditor
         {
             //Add notes
             MenuItem formMenuItem = MenuItem_Windows.MenuItems.Add(formName);
-            formMenuItem.Name = "MenuItem_Frm_Notes";
+            formMenuItem.Name = "MenuItem_Frm_" + formName;
             formMenuItem.Checked = true;
 
             //Create a new language editor
-            UserControl_TextEditor notesEditor = new UserControl_TextEditor(formMenuItem)
+            UserControl_TextEditor notesEditor = new UserControl_TextEditor(formMenuItem, dockPanel, DockState.Document)
             {
                 Text = formName,
                 TabText = formName,

@@ -99,6 +99,12 @@
     <Compile Include="Classes\GlobalVariables.cs" />
     <Compile Include="Classes\IniFile.cs" />
     <Compile Include="Classes\MostRecentFilesMenu.cs" />
+    <Compile Include="Custom Controls\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Custom Controls\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Custom Controls\UserControl_ListViewHashCodes.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -106,11 +112,23 @@
       <DependentUpon>UserControl_ListViewHashCodes.cs</DependentUpon>
     </Compile>
     <Compile Include="ETXML\Objects\EuroText_TextGroups.cs" />
+    <Compile Include="Exporter\Frm_SpreadsheetExporter_ConfigSheet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Exporter\Frm_SpreadsheetExporter_DataInfoSheet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Exporter\Frm_SpreadsheetExporter_InfoSheet.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\Frm_Preview.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Frm_Preview.Designer.cs">
       <DependentUpon>Frm_Preview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Exporter\Frm_SpreadsheetExporter_Messages.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Main Forms\Frm_Searcher.cs">
       <SubType>Form</SubType>
@@ -170,10 +188,6 @@
     <Compile Include="Custom Controls\UserControl_HashCodesSelector.Designer.cs">
       <DependentUpon>UserControl_HashCodesSelector.cs</DependentUpon>
     </Compile>
-    <Compile Include="Classes\Excel Writers\Excel_Writters_ConfigSheet.cs" />
-    <Compile Include="Classes\Excel Writers\Excel_Writters_DataInfo.cs" />
-    <Compile Include="Classes\Excel Writers\Excel_Writters_FormatSheet.cs" />
-    <Compile Include="Classes\Excel Writers\Excel_Writters_MessagesSheet.cs" />
     <Compile Include="Editor\SubForms\Frm_FadeIn.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -200,10 +214,10 @@
     <Compile Include="Forms\Frm_SetTextGroup.Designer.cs">
       <DependentUpon>Frm_SetTextGroup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Frm_SpreadsheetExporter.cs">
+    <Compile Include="Exporter\Frm_SpreadsheetExporter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Frm_SpreadsheetExporter.Designer.cs">
+    <Compile Include="Exporter\Frm_SpreadsheetExporter.Designer.cs">
       <DependentUpon>Frm_SpreadsheetExporter.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Frm_GroupsViewer.cs">
@@ -315,7 +329,7 @@
     <EmbeddedResource Include="Forms\Frm_SetTextGroup.resx">
       <DependentUpon>Frm_SetTextGroup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Frm_SpreadsheetExporter.resx">
+    <EmbeddedResource Include="Exporter\Frm_SpreadsheetExporter.resx">
       <DependentUpon>Frm_SpreadsheetExporter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Frm_GroupsViewer.resx">

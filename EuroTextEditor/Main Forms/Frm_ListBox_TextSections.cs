@@ -165,6 +165,7 @@ namespace EuroTextEditor
             {
                 EuroText_TextSections sectionsFileText = projectFileReader.ReadTextSectionsFile(textSectionsFilePath);
                 ListView_SectionsAndLevels.BeginUpdate();
+                ListView_SectionsAndLevels.Items.Clear();
                 foreach (KeyValuePair<string, string> textSectionItem in sectionsFileText.TextSections)
                 {
                     ListView_SectionsAndLevels.Items.Add(new ListViewItem(new[] { textSectionItem.Key, textSectionItem.Value.ToString() }));

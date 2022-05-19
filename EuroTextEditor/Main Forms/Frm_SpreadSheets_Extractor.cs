@@ -86,7 +86,7 @@ namespace EuroTextEditor
                     filesWriter.WriteTextGroups(SaveFileDialog.FileName, textGroupObj);
 
                     //Inform
-                    MessageBox.Show(string.Join(" ", "Finished, readed", rowNumber, "lines"), "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(string.Join(" ", "Finished, readed", textGroupObj.TextGroups.Count, "text groups"), "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
@@ -96,119 +96,94 @@ namespace EuroTextEditor
         {
             if (DataGridView_ExcelSheet.Rows.Count > 0)
             {
-                int rowNumber = 0;
-                string TextGroup = string.Empty;
-                ETXML_Writter filesWriter = new ETXML_Writter();
-
-                List<string> spreadSheetsLanguages = new List<string>();
-                int startSection = 50;
-                int endSections = 90;
-
-                //Get the count of the levels defined in the spreadsheet
-                for (int i = 0; i < DataGridView_ExcelSheet.Rows[2].Cells.Count; i++)
+                Dictionary<string, int> Markers = new Dictionary<string, int>();
+                for(int i = 0; i < DataGridView_ExcelSheet.Columns.Count; i++)
                 {
-                    if (DataGridView_ExcelSheet.Rows[2].Cells[i].Value.Equals("MARKER_LEVEL_START"))
+                    string cellValue = DataGridView_ExcelSheet.Rows[2].Cells[i].Value.ToString();
+                    if(cellValue.StartsWith("MARKER_"))
                     {
-                        startSection = i + 1;
-                    }
-                    if (DataGridView_ExcelSheet.Rows[2].Cells[i].Value.Equals("MARKER_LEVEL_END"))
-                    {
-                        endSections = i;
+                        Markers.Add(cellValue, i);
                     }
                 }
 
-                //Get languages
-                bool readingLanguages = false;
-                for (int i = 0; i < DataGridView_ExcelSheet.Rows[2].Cells.Count; i++)
+                int rowsToSkip = 0;
+                string currentGroup = string.Empty;
+                foreach (DataGridViewRow rowToInspect in DataGridView_ExcelSheet.Rows)
                 {
-                    if (readingLanguages)
+                    if (rowsToSkip > 3)
                     {
-                        string currentLanguage = DataGridView_ExcelSheet.Rows[1].Cells[i].Value.ToString();
-                        if (!string.IsNullOrEmpty(currentLanguage))
+                        if (!string.IsNullOrEmpty(rowToInspect.Cells[0].Value.ToString()))
                         {
-                            spreadSheetsLanguages.Add(currentLanguage);
+                            currentGroup = rowToInspect.Cells[0].Value.ToString();
                         }
-                    }
-                    if (DataGridView_ExcelSheet.Rows[2].Cells[i].Value.Equals("MARKER_LANGUAGE_START"))
-                    {
-                        readingLanguages = true;
-                    }
-                    if (DataGridView_ExcelSheet.Rows[2].Cells[i].Value.Equals("MARKER_LANGUAGE_END"))
-                    {
-                        break;
-                    }
-                }
 
-                //Write file
-                FolderBrowserDialog.SelectedPath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages");
-                if (FolderBrowserDialog.ShowDialog() == DialogResult.OK)
-                {
-                    foreach (DataGridViewRow row in DataGridView_ExcelSheet.Rows)
-                    {
-                        if (rowNumber > 3 && row.Cells.Count > 2)
+                        //Create a text object
+                        EuroText_TextFile textObj = new EuroText_TextFile
                         {
-                            if (row.Cells[3].Value != null)
+                            FirstCreated = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
+                            CreatedBy = GlobalVariables.EuroTextUser,
+                            LastModified = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
+                            LastModifiedBy = GlobalVariables.EuroTextUser,
+                            Group = currentGroup
+                        };
+
+                        //Convert values
+                        if (Markers["MARKER_HASHCODE"] > 2)
+                        {
+                            string MaxNumsChar = rowToInspect.Cells[1].Value.ToString();
+                            string textIsDeat = rowToInspect.Cells[2].Value.ToString();
+                            if (!string.IsNullOrEmpty(MaxNumsChar))
                             {
-                                //Get text group
-                                if (!string.IsNullOrEmpty(row.Cells[0].Value.ToString()))
-                                {
-                                    TextGroup = row.Cells[0].Value.ToString();
-                                }
-
-                                //Get Message info
-                                string TextHashCode = row.Cells[3].Value.ToString();
-                                if (TextHashCode.StartsWith("HT_Text_"))
-                                {
-                                    //Get basic parameters
-                                    EuroText_TextFile textobj = new EuroText_TextFile
-                                    {
-                                        FirstCreated = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
-                                        CreatedBy = GlobalVariables.EuroTextUser,
-                                        LastModified = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
-                                        LastModifiedBy = GlobalVariables.EuroTextUser,
-                                        Group = TextGroup,
-                                        DeadText = Convert.ToInt32(row.Cells[2].Value.ToString().Equals("1")),
-                                    };
-
-                                    string HashCode = row.Cells[3].Value.ToString();
-
-                                    //Check if there is a char limitation
-                                    if (!string.IsNullOrEmpty(row.Cells[1].Value.ToString()))
-                                    {
-                                        textobj.MaxNumOfChars = Convert.ToInt32(row.Cells[1].Value);
-                                    }
-
-                                    //Get text in all languages
-                                    for (int i = 0; i < spreadSheetsLanguages.Count; i++)
-                                    {
-                                        string languages = spreadSheetsLanguages[i];
-                                        string languageData = row.Cells[5 + i].Value.ToString();
-
-                                        textobj.Messages.Add(languages, languageData);
-                                    }
-
-                                    //Get output section
-                                    for (int i = 0; i < endSections - startSection; i++)
-                                    {
-                                        if (row.Cells[startSection + i].Value.ToString().Equals("1"))
-                                        {
-                                            textobj.OutputSection = DataGridView_ExcelSheet.Rows[1].Cells[15 + i].Value.ToString();
-                                        }
-                                    }
-
-                                    //Print EXText to text file
-                                    string textFilePath = Path.Combine(FolderBrowserDialog.SelectedPath, HashCode + ".etf");
-                                    filesWriter.WriteTextFile(textFilePath, textobj);
-                                }
+                                textObj.MaxNumOfChars = Convert.ToInt32(MaxNumsChar);
+                            }
+                            if (!string.IsNullOrEmpty(textIsDeat))
+                            {
+                                textObj.DeadText = Convert.ToInt32(textIsDeat);
                             }
                         }
 
-                        //Increment lines count
-                        rowNumber++;
-                    }
+                        //Get text content
+                        foreach (KeyValuePair<string, int> markerObj in Markers)
+                        {
+                            switch(markerObj.Key)
+                            {
+                                case "MARKER_HASHCODE":
+                                    textObj.HashCode = rowToInspect.Cells[markerObj.Value].Value.ToString();
+                                    break;
+                                case "MARKER_LANGUAGE_START":
+                                    int startPosition = markerObj.Value + 1;
+                                    int numOfLanguages = Markers["MARKER_LANGUAGE_END"] - (startPosition + 1);
+                                    for (int i = 0; i < numOfLanguages; i++)
+                                    {
+                                        string languageName = DataGridView_ExcelSheet.Rows[1].Cells[startPosition + i].Value.ToString();
+                                        string languageValue = rowToInspect.Cells[startPosition + i].Value.ToString();
+                                        textObj.Messages.Add(languageName, languageValue);
+                                    }
+                                    break;
+                                case "MARKER_LEVEL_START":
+                                    startPosition = markerObj.Value + 1;
+                                    int numOfLevels = Markers["MARKER_LEVEL_END"] - (startPosition + 1);
+                                    for (int i = 0; i < numOfLevels; i++)
+                                    {
+                                        string value = rowToInspect.Cells[startPosition + i].Value.ToString();
+                                        if (!string.IsNullOrEmpty(value))
+                                        {
+                                            textObj.OutputSection = DataGridView_ExcelSheet.Rows[1].Cells[startPosition + i].Value.ToString();
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
 
-                    //Inform
-                    MessageBox.Show(string.Join(" ", "Finished, readed", rowNumber, "lines"), "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        //Calculate file path
+                        string filePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", textObj.HashCode + ".etf");
+                        if (!string.IsNullOrEmpty(textObj.HashCode))
+                        {
+                            ETXML_Writter filesWriter = new ETXML_Writter();
+                            filesWriter.WriteTextFile(filePath, textObj);
+                        }
+                    }
+                    rowsToSkip++;
                 }
             }
         }
@@ -248,6 +223,10 @@ namespace EuroTextEditor
                 {
                     ETXML_Writter filesWriter = new ETXML_Writter();
                     filesWriter.WriteTextSections(SaveFileDialog.FileName, textSectionsDemo);
+
+
+                    //Inform
+                    MessageBox.Show(string.Join(" ", "Finished, readed", textSectionsDemo.TextSections.Count, "text sections"), "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }

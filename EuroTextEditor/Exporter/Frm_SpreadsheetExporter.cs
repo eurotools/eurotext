@@ -17,16 +17,18 @@ namespace EuroTextEditor
         private readonly string outputFilePath;
         private readonly bool includeFormatInfoSheet;
         private readonly bool includeInfoSheet;
+        private readonly bool includeHashCodesNoSection;
         private readonly Form parentMainFrame;
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        public Frm_SpreadsheetExporter(Frm_MainFrame parentForm, string outputFile, bool IncludeFormatInfo, bool includeInfo)
+        public Frm_SpreadsheetExporter(Frm_MainFrame parentForm, string outputFile, bool IncludeFormatInfo, bool includeInfo, bool IncludeHashCodesNoSection)
         {
             InitializeComponent();
             outputFilePath = outputFile;
             includeFormatInfoSheet = IncludeFormatInfo;
             includeInfoSheet = includeInfo;
             parentMainFrame = parentForm;
+            includeHashCodesNoSection = IncludeHashCodesNoSection;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -52,12 +54,7 @@ namespace EuroTextEditor
             using (FileStream fs = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write))
             {
                 IWorkbook workbook = new HSSFWorkbook();
-                ExcelWritters writters = new ExcelWritters();
                 ETXML_Reader projectFileReader = new ETXML_Reader();
-
-                //Output groups and levels
-                EuroText_TextGroups textGroupsData = projectFileReader.ReadTextGroupsFile(Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextGroups.etf"));
-                string[] textGroup = textGroupsData.TextGroups.ToArray();
 
                 //Create or update the TextSections file
                 EuroText_TextSections sectionsFileText = new EuroText_TextSections();
@@ -69,21 +66,21 @@ namespace EuroTextEditor
 
                 //Create sheet
                 ISheet Messages = workbook.CreateSheet("Messages");
-                writters.CreateMessagesSheet(Messages, workbook, sectionsFileText.TextSections.Values.ToArray(), textGroup, sectionsFileText.TextSections.Keys.ToArray(), BackgroundWorker);
+                CreateMessagesSheet(Messages, workbook, sectionsFileText.TextSections.Values.ToArray(), sectionsFileText.TextSections.Keys.ToArray(), includeHashCodesNoSection);
 
                 if (includeFormatInfoSheet)
                 {
                     ISheet FormatInfo = workbook.CreateSheet("Format Info");
-                    writters.CreateFormatInfoSheet(FormatInfo, workbook, e, BackgroundWorker);
+                    CreateFormatInfoSheet(FormatInfo, workbook);
                 }
 
                 ISheet Config = workbook.CreateSheet("Config");
-                writters.CreateConfigSheet(Config, workbook);
+                CreateConfigSheet(Config, workbook);
 
                 if (includeInfoSheet)
                 {
                     ISheet DataInfo = workbook.CreateSheet("Data Info");
-                    writters.CreateDataInfo(DataInfo, workbook, e, BackgroundWorker);
+                    CreateDataInfo(DataInfo, workbook);
                 }
 
                 //Write file

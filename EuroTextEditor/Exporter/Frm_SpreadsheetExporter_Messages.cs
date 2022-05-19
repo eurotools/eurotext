@@ -2,18 +2,20 @@
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Threading;
 
 namespace EuroTextEditor
 {
     //-------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
-    partial class ExcelWritters
+    public partial class Frm_SpreadsheetExporter
     {
         //-------------------------------------------------------------------------------------------------------------------------------
-        internal void CreateMessagesSheet(ISheet Messages, IWorkbook workbook, string[] outLevels, string[] textGroup, string[] textSections, BackgroundWorker asyncWorker)
+        internal void CreateMessagesSheet(ISheet Messages, IWorkbook workbook, string[] outLevels, string[] textSections, bool hashcodesWithNoSection)
         {
             //-------------------------------------------------------------------------------------------
             //  Fonts
@@ -636,134 +638,156 @@ namespace EuroTextEditor
             ETXML_Reader textReader = new ETXML_Reader();
             string[] messagesToPrint = Directory.GetFiles(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
 
-            //Print other groups
-            int totalItems = messagesToPrint.Length * textGroup.Length;
-            int currentCount = 0;
+            List<EuroText_TextFile> uncategorizedTexts = new List<EuroText_TextFile>();
+            Dictionary<string, List<EuroText_TextFile>> messagesCategorizes = new Dictionary<string, List<EuroText_TextFile>>();
 
-            for (int i = 0; i < textGroup.Length; i++)
+            for(int i = 0; i < messagesToPrint.Length; i++)
             {
-                if (asyncWorker.CancellationPending)
+                EuroText_TextFile textObj = textReader.ReadTextFile(messagesToPrint[i]);
+                textObj.HashCode = Path.GetFileNameWithoutExtension(messagesToPrint[i]);
+
+                if (hashcodesWithNoSection && string.IsNullOrEmpty(textObj.OutputSection))
+                {
+                    continue;
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(textObj.Group))
+                    {
+                        uncategorizedTexts.Add(textObj);
+                    }
+                    else
+                    {
+                        if (messagesCategorizes.ContainsKey(textObj.Group))
+                        {
+                            messagesCategorizes[textObj.Group].Add(textObj);
+                        }
+                        else
+                        {
+                            messagesCategorizes.Add(textObj.Group, new List<EuroText_TextFile>());
+                            messagesCategorizes[textObj.Group].Add(textObj);
+                        }
+                    }
+                }
+            }
+
+            foreach(KeyValuePair<string, List<EuroText_TextFile>> groupToPrint in messagesCategorizes)
+            {
+                if (BackgroundWorker.CancellationPending)
                 {
                     break;
                 }
                 else
                 {
                     headerRow = Messages.CreateRow(rowIndex++);
-                    PrintTextGroup(SpreadSheetColsCount, grayBackground, headerRow, textGroup[i]);
+                    PrintTextGroup(SpreadSheetColsCount, grayBackground, headerRow, groupToPrint.Key);
 
-                    for (int j = 0; j < messagesToPrint.Length; j++)
+                    for (int i = 0; i < groupToPrint.Value.Count; i++)
                     {
-                        if (asyncWorker.CancellationPending)
+                        if (BackgroundWorker.CancellationPending)
                         {
                             break;
                         }
                         else
                         {
                             //Read text object
-                            EuroText_TextFile textObj = textReader.ReadTextFile(messagesToPrint[j]);
-                            string textObjHashCode = Path.GetFileNameWithoutExtension(messagesToPrint[j]);
+                            EuroText_TextFile textObj = groupToPrint.Value[i];
 
                             //Report progress
-                            currentCount++;
-                            asyncWorker.ReportProgress((currentCount * 100) / totalItems, string.Join(" ", "Text Group:", textGroup[i], "Checking:", textObjHashCode));
+                            BackgroundWorker.ReportProgress((i * 100) / groupToPrint.Value.Count, string.Join(" ", "Text Group:", groupToPrint.Key, "Writting:", textObj.HashCode));
 
-                            //Ensure that this messsage is in the group
-                            if (!textObj.Group.Equals(textGroup[i]))
+                            //Create a new row
+                            headerRow = Messages.CreateRow(rowIndex++);
+
+                            //Print basic config
+                            for (int l = 0; l < 5; l++)
                             {
-                                continue;
+                                ICell infoCell = headerRow.CreateCell(lastColIndex++);
+                                infoCell.CellStyle = normalStyle;
+                                switch (l)
+                                {
+                                    case 1:
+                                        if (textObj.MaxNumOfChars > 0)
+                                        {
+                                            infoCell.SetCellValue(textObj.MaxNumOfChars);
+                                        }
+                                        break;
+                                    case 2:
+                                        if (textObj.DeadText > 0)
+                                        {
+                                            infoCell.SetCellValue(textObj.DeadText);
+                                        }
+                                        break;
+                                    case 3:
+                                        infoCell.SetCellValue(textObj.HashCode);
+                                        infoCell.CellStyle = normalStyleLeft;
+                                        break;
+                                    case 4:
+                                        infoCell.CellStyle = grayBackground;
+                                        break;
+                                }
                             }
-                            else
+
+                            //Print languages
+                            foreach (string languageToPrint in GlobalVariables.CurrentProject.Languages)
                             {
-                                //Create a new row
-                                headerRow = Messages.CreateRow(rowIndex++);
-
-                                //Print basic config
-                                for (int l = 0; l < 5; l++)
+                                ICell langCell = headerRow.CreateCell(lastColIndex++);
+                                langCell.CellStyle = textLangsStyle;
+                                if (textObj.Messages.ContainsKey(languageToPrint))
                                 {
-                                    ICell infoCell = headerRow.CreateCell(lastColIndex++);
-                                    infoCell.CellStyle = normalStyle;
-                                    switch (l)
-                                    {
-                                        case 1:
-                                            if (textObj.MaxNumOfChars > 0)
-                                            {
-                                                infoCell.SetCellValue(textObj.MaxNumOfChars);
-                                            }
-                                            break;
-                                        case 2:
-                                            if (textObj.DeadText > 0)
-                                            {
-                                                infoCell.SetCellValue(textObj.DeadText);
-                                            }
-                                            break;
-                                        case 3:
-                                            infoCell.SetCellValue(textObjHashCode);
-                                            infoCell.CellStyle = normalStyleLeft;
-                                            break;
-                                        case 4:
-                                            infoCell.CellStyle = grayBackground;
-                                            break;
-                                    }
+                                    langCell.SetCellValue(textObj.Messages[languageToPrint]);
                                 }
+                                langCell.CellStyle.WrapText = true;
+                            }
 
-                                //Print languages
-                                foreach (string languageToPrint in GlobalVariables.CurrentProject.Languages)
+                            //Empty section
+                            for (int l = 0; l < 2; l++)
+                            {
+                                ICell emtpyCell = headerRow.CreateCell(lastColIndex++);
+                                emtpyCell.CellStyle = grayBackground;
+                            }
+
+                            //Print Section
+                            PrintColorsSection(ref lastColIndex, outLevels, orangeLightBackground, colorsLevels, headerRow);
+
+                            //Set bit to the output group
+                            if (!string.IsNullOrEmpty(textObj.OutputSection))
+                            {
+                                int bitPosition = Array.IndexOf(textSections, textObj.OutputSection);
+                                int colIndex = 7 + GlobalVariables.CurrentProject.Languages.Count + bitPosition;
+                                ICell textSectionCell = headerRow.GetCell(colIndex);
+                                if (textSectionCell != null)
                                 {
-                                    ICell langCell = headerRow.CreateCell(lastColIndex++);
-                                    langCell.CellStyle = textLangsStyle;
-                                    if (textObj.Messages.ContainsKey(languageToPrint))
-                                    {
-                                        langCell.SetCellValue(textObj.Messages[languageToPrint]);
-                                    }
-                                    langCell.CellStyle.WrapText = true;
+                                    textSectionCell.SetCellValue(1);
                                 }
+                            }
 
-                                //Empty section
-                                for (int l = 0; l < 2; l++)
+                            //Print game data and sound information
+                            for (int l = 0; l < 9; l++)
+                            {
+                                ICell emtpyCell = headerRow.CreateCell(lastColIndex++);
+                                if (l == 4 || l == 5)
                                 {
-                                    ICell emtpyCell = headerRow.CreateCell(lastColIndex++);
+                                    emtpyCell.CellStyle = normalStyle;
+                                }
+                                else
+                                {
                                     emtpyCell.CellStyle = grayBackground;
                                 }
-
-                                //Print Section
-                                PrintColorsSection(ref lastColIndex, outLevels, orangeLightBackground, colorsLevels, headerRow);
-
-                                //Set bit to the output group
-                                if (!string.IsNullOrEmpty(textObj.OutputSection))
-                                {
-                                    int bitPosition = Array.IndexOf(textSections, textObj.OutputSection);
-                                    int colIndex = 7 + GlobalVariables.CurrentProject.Languages.Count + bitPosition;
-                                    ICell textSectionCell = headerRow.GetCell(colIndex);
-                                    if (textSectionCell != null)
-                                    {
-                                        textSectionCell.SetCellValue(1);
-                                    }
-                                }
-
-                                //Print game data and sound information
-                                for (int l = 0; l < 9; l++)
-                                {
-                                    ICell emtpyCell = headerRow.CreateCell(lastColIndex++);
-                                    if (l == 4 || l == 5)
-                                    {
-                                        emtpyCell.CellStyle = normalStyle;
-                                    }
-                                    else
-                                    {
-                                        emtpyCell.CellStyle = grayBackground;
-                                    }
-                                }
-
-                                lastColIndex = 0;
                             }
+
+                            lastColIndex = 0;
+                            
                         }
+
+                        Thread.Sleep(1);
                     }
 
                     headerRow = Messages.CreateRow(rowIndex++);
-                    PrintTextGroup(SpreadSheetColsCount, grayBackground, headerRow, textGroup[i]);
+                    PrintTextGroup(SpreadSheetColsCount, grayBackground, headerRow, groupToPrint.Key);
                 }
             }
-
+        
             //End generic group
             headerRow = Messages.CreateRow(rowIndex++);
             PrintTextGroup(SpreadSheetColsCount, grayBackground, headerRow, "M_TEXT_ALL");

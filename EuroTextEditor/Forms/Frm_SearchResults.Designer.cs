@@ -91,6 +91,6 @@ namespace EuroTextEditor
         #endregion
         private System.Windows.Forms.GroupBox GroupBox_Results;
         private System.Windows.Forms.Button Button_OK;
-        private Custom_Controls.UserControl_ListViewHashCodes UserControl_HashCodes;
+        private EuroTextEditor.Custom_Controls.UserControl_ListViewHashCodes UserControl_HashCodes;
     }
 }

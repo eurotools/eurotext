@@ -50,8 +50,6 @@ namespace ConsoleControl
         /// </summary>
         public bool EchoInput { get; set; }
 
-        private Timer _readLineTimer;
-
         public Color CurrentForegroundColor { get; set; }
         public Color CurrentBackgroundColor { get; set; }
 
@@ -241,8 +239,7 @@ namespace ConsoleControl
 
                 _commandBuffer.Add(s.Trim('\r', '\n'));
                 _commandBufferIndex = _commandBuffer.Count;
-                if (LineEntered != null)
-                    LineEntered(this, s);
+                LineEntered?.Invoke(this, s);
             }
             Invalidate();
         }

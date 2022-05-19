@@ -30,7 +30,7 @@ namespace EuroTextEditor
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_ListBox_TextSections));
-            this.ListView_SectionsAndLevels = new System.Windows.Forms.ListView();
+            this.ListView_SectionsAndLevels = new EuroTextEditor.Custom_Controls.ListView_ColumnSortingClick();
             this.Col_TextSection = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_OutputLevel = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ContextMenu_TextSections = new System.Windows.Forms.ContextMenu();
@@ -101,7 +101,7 @@ namespace EuroTextEditor
         }
 
         #endregion
-        protected internal System.Windows.Forms.ListView ListView_SectionsAndLevels;
+        protected internal EuroTextEditor.Custom_Controls.ListView_ColumnSortingClick ListView_SectionsAndLevels;
         private System.Windows.Forms.ColumnHeader Col_TextSection;
         private System.Windows.Forms.ColumnHeader Col_OutputLevel;
         private System.Windows.Forms.ContextMenu ContextMenu_TextSections;

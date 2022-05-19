@@ -99,9 +99,9 @@ namespace EuroTextEditor
             });
 
             int mode = 0;
-            Combobox_LookIn.Invoke((MethodInvoker)delegate
+            Combobox_LookField.Invoke((MethodInvoker)delegate
             {
-                mode = Combobox_LookIn.SelectedIndex;
+                mode = Combobox_LookField.SelectedIndex;
             });
 
             //Chars options

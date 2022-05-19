@@ -181,6 +181,7 @@ namespace EuroTextEditor
                 EuroText_TextGroups textGroupsData = projectFileReader.ReadTextGroupsFile(textGroupsFilePath);
 
                 ListBox_TextGroups.BeginUpdate();
+                ListBox_TextGroups.Items.Clear();
                 ListBox_TextGroups.Items.AddRange(textGroupsData.TextGroups.ToArray());
                 ListBox_TextGroups.EndUpdate();
             }
