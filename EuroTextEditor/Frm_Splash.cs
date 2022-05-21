@@ -33,8 +33,8 @@ namespace EuroTextEditor
         {
             //Initialize forms
             mainform.hashCodes = new Frm_ListBoxHashCodes(mainform.MenuItem_HashCodesForm);
-            mainform.textSections = new Frm_ListBox_TextSections(mainform.MenuItem_TextSectionsForm);
-            mainform.textGroups = new Frm_ListBox_TextGroups(mainform.MenuItem_TextGroupsForm);
+            mainform.textSections = new Frm_ListBox_TextSections(mainform.MenuItem_TextSectionsForm, mainform.hashCodes);
+            mainform.textGroups = new Frm_ListBox_TextGroups(mainform.MenuItem_TextGroupsForm, mainform.hashCodes);
 
             //Check for ini file
             if (File.Exists(GlobalVariables.EuroTextIni))

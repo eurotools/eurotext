@@ -10,12 +10,14 @@ namespace EuroTextEditor
     public partial class Frm_GroupsViewer : Form
     {
         private readonly string[] hashCodes;
+        private readonly Frm_ListBoxHashCodes parentHashCodesForm;
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        public Frm_GroupsViewer(string[] hashCodesGroup)
+        public Frm_GroupsViewer(string[] hashCodesGroup, Frm_ListBoxHashCodes parentForm)
         {
             InitializeComponent();
             hashCodes = hashCodesGroup;
+            parentHashCodesForm = parentForm;
 
             //Hide other menu options
             UserControl_HashCodes.MenuItem_New.Visible = false;
@@ -32,6 +34,7 @@ namespace EuroTextEditor
             ETXML_Reader filesReader = new ETXML_Reader();
 
             //Update listbox
+            UserControl_HashCodes.parentFormToSync = parentHashCodesForm;
             UserControl_HashCodes.ListView_HashCodes.BeginUpdate();
             for (int i = 0; i < hashCodes.Length; i++)
             {
