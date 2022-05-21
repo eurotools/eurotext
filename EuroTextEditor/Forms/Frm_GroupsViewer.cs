@@ -18,15 +18,12 @@ namespace EuroTextEditor
             hashCodes = hashCodesGroup;
 
             //Hide other menu options
-            UserControl_HashCodes.MenuItem_Color.Visible = false;
             UserControl_HashCodes.MenuItem_New.Visible = false;
             UserControl_HashCodes.MenuItem_Delete.Visible = false;
             UserControl_HashCodes.MenuItem_Rename.Visible = false;
-            UserControl_HashCodes.MenuItem_Separator1.Visible = false;
             UserControl_HashCodes.MenuItem_SetGroup.Visible = false;
             UserControl_HashCodes.MenuItem_Separator2.Visible = false;
             UserControl_HashCodes.MenuItem_Refresh.Visible = false;
-            UserControl_HashCodes.MenuItem_EditNote.Visible = false;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -42,13 +39,11 @@ namespace EuroTextEditor
                 EuroText_TextFile objTextData = filesReader.ReadTextFile(textFilePath);
 
                 //Update control
-                ListViewItem HashCodeItem = UserControl_HashCodes.ListView_HashCodes.Items.Add(new ListViewItem(new[] { Path.GetFileNameWithoutExtension(hashCodes[i]).ToString(), objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                ListViewItem HashCodeItem = UserControl_HashCodes.ListView_HashCodes.Items.Add(new ListViewItem(new[] { Path.GetFileNameWithoutExtension(hashCodes[i]).ToString(), objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                 HashCodeItem.BackColor = objTextData.RowColor;
             }
             UserControl_HashCodes.ListView_HashCodes.EndUpdate();
-
-            //Update total
-            Groupbox_hashCodes.Text = UserControl_HashCodes.ListView_HashCodes.Items.Count + " Items";
+            UserControl_HashCodes.StatusLabel_TotalItems.Text = UserControl_HashCodes.ListView_HashCodes.Items.Count + " Items";
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------

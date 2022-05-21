@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EuroTextEditor.Classes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -12,17 +13,22 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class Frm_Searcher : DockContent
     {
+        private readonly Frm_ListBoxHashCodes parentHashCodesForm;
+
         //-------------------------------------------------------------------------------------------
         //  FORM EVENTS
         //-------------------------------------------------------------------------------------------
-        public Frm_Searcher()
+        public Frm_Searcher(Frm_ListBoxHashCodes parentForm)
         {
             InitializeComponent();
+            parentHashCodesForm = parentForm;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_Searcher_Load(object sender, EventArgs e)
         {
+            UserControl_HashCodesTable.parentFormToSync = parentHashCodesForm;
+
             //Add languages
             Combobox_LookIn.BeginUpdate();
             Combobox_LookIn.Items.Add("All");
@@ -34,15 +40,15 @@ namespace EuroTextEditor
             Combobox_LookField.SelectedIndex = 0;
 
             //Hide other context menu items
-            UserControl_HashCodesTable.MenuItem_Color.Visible = false;
-            UserControl_HashCodesTable.MenuItem_EditNote.Visible = false;
-            UserControl_HashCodesTable.MenuItem_MultiEditor.Visible = false;
             UserControl_HashCodesTable.MenuItem_New.Visible = false;
             UserControl_HashCodesTable.MenuItem_Refresh.Visible = false;
             UserControl_HashCodesTable.MenuItem_Delete.Visible = false;
             UserControl_HashCodesTable.MenuItem_Rename.Visible = false;
-            UserControl_HashCodesTable.MenuItem_Separator1.Visible = false;
             UserControl_HashCodesTable.MenuItem_Separator2.Visible = false;
+
+            //Read ini file
+            IniFile euroTextIni = new IniFile(GlobalVariables.EuroTextIni);
+            Textbox_LookFor.Text = euroTextIni.Read("LastSearch", "Searcher");
         }
 
         //-------------------------------------------------------------------------------------------
@@ -50,6 +56,9 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         private void Button_Search_Click(object sender, EventArgs e)
         {
+            IniFile applicationIni = new IniFile(GlobalVariables.EuroTextIni);
+            applicationIni.Write("LastSearch", Textbox_LookFor.Text, "Searcher");
+
             if (!AsyncWorker.IsBusy)
             {
                 if (UserControl_HashCodesTable.ListView_HashCodes.Items.Count > 0)
@@ -80,7 +89,7 @@ namespace EuroTextEditor
             {
                 UserControl_HashCodesTable.ListView_HashCodes.Items.Clear();
                 Textbox_LookFor.Clear();
-                Label_NumberOfItems.Text = "0 Items";
+                UserControl_HashCodesTable.StatusLabel_TotalItems.Text = "0 Items";
             }
         }
 
@@ -125,7 +134,60 @@ namespace EuroTextEditor
                 string fileName = Path.GetFileNameWithoutExtension(textMessages[i]);
                 EuroText_TextFile objTextData = filesReader.ReadTextFile(textMessages[i]);
 
-                if (mode == 1)
+                if (mode == 0) //Hash-Codes
+                {
+                    if (fullMatch)
+                    {
+                        if (caseSensitive)
+                        {
+                            if (fileName.Equals(query))
+                            {
+                                UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                {
+                                    ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                    addedItem.BackColor = objTextData.RowColor;
+                                });
+                            }
+                        }
+                        else
+                        {
+                            if (fileName.Equals(query, StringComparison.OrdinalIgnoreCase))
+                            {
+                                UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                {
+                                    ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                    addedItem.BackColor = objTextData.RowColor;
+                                });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (caseSensitive)
+                        {
+                            if (fileName.Contains(query))
+                            {
+                                UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                {
+                                    ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                    addedItem.BackColor = objTextData.RowColor;
+                                });
+                            }
+                        }
+                        else
+                        {
+                            if (fileName.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                            {
+                                UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                {
+                                    ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                    addedItem.BackColor = objTextData.RowColor;
+                                });
+                            }
+                        }
+                    }
+                }
+                else if (mode == 1) //File Content
                 {
                     if (fullMatch)
                     {
@@ -262,30 +324,37 @@ namespace EuroTextEditor
                         }
                     }
                 }
-                else
+                else if (mode == 2) //Categories
                 {
+                    string[] categories = CommonFunctions.GetFlagsLabels(objTextData.textFlags).Split('|');
                     if (fullMatch)
                     {
                         if (caseSensitive)
                         {
-                            if (fileName.Equals(query))
+                            for (int j = 0; j < categories.Length; j++)
                             {
-                                UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                if (categories[j].Equals(query))
                                 {
-                                    ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                    addedItem.BackColor = objTextData.RowColor;
-                                });
+                                    UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                    {
+                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
+                                        addedItem.BackColor = objTextData.RowColor;
+                                    });
+                                }
                             }
                         }
                         else
                         {
-                            if (fileName.Equals(query, StringComparison.OrdinalIgnoreCase))
+                            for (int j = 0; j < categories.Length; j++)
                             {
-                                UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                if (categories[j].Equals(query, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                    addedItem.BackColor = objTextData.RowColor;
-                                });
+                                    UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                    {
+                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
+                                        addedItem.BackColor = objTextData.RowColor;
+                                    });
+                                }
                             }
                         }
                     }
@@ -293,30 +362,35 @@ namespace EuroTextEditor
                     {
                         if (caseSensitive)
                         {
-                            if (fileName.Contains(query))
+                            for (int j = 0; j < categories.Length; j++)
                             {
-                                UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                if (categories[j].Contains(query))
                                 {
-                                    ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                    addedItem.BackColor = objTextData.RowColor;
-                                });
+                                    UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                    {
+                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
+                                        addedItem.BackColor = objTextData.RowColor;
+                                    });
+                                }
                             }
                         }
                         else
                         {
-                            if (fileName.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                            for (int j = 0; j < categories.Length; j++)
                             {
-                                UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                if (categories[j].IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
                                 {
-                                    ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                    addedItem.BackColor = objTextData.RowColor;
-                                });
+                                    UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                    {
+                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
+                                        addedItem.BackColor = objTextData.RowColor;
+                                    });
+                                }
                             }
                         }
                     }
                 }
-
-                Label_NumberOfItems.Text = UserControl_HashCodesTable.ListView_HashCodes.Items.Count + " Items";
+                UserControl_HashCodesTable.StatusLabel_TotalItems.Text = UserControl_HashCodesTable.ListView_HashCodes.Items.Count + " Items";
             }
 
         }

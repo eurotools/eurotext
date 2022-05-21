@@ -53,11 +53,16 @@ namespace EuroTextEditor
             this.Button_Cancel = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Listbox_Categories = new System.Windows.Forms.ListBox();
+            this.Button_AddCategory = new System.Windows.Forms.Button();
+            this.Button_RemoveCategory = new System.Windows.Forms.Button();
             this.GroupBox_MessagesDir.SuspendLayout();
             this.GroupBox_SpreadSheetsDir.SuspendLayout();
             this.GroupBox_HashCodesDir.SuspendLayout();
             this.GroupBox_Languages.SuspendLayout();
             this.Groupbox_Misc.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // GroupBox_MessagesDir
@@ -186,7 +191,7 @@ namespace EuroTextEditor
             this.GroupBox_Languages.Controls.Add(this.Listbox_Languages);
             this.GroupBox_Languages.Location = new System.Drawing.Point(12, 171);
             this.GroupBox_Languages.Name = "GroupBox_Languages";
-            this.GroupBox_Languages.Size = new System.Drawing.Size(521, 292);
+            this.GroupBox_Languages.Size = new System.Drawing.Size(254, 292);
             this.GroupBox_Languages.TabIndex = 7;
             this.GroupBox_Languages.TabStop = false;
             this.GroupBox_Languages.Text = "Languages";
@@ -194,11 +199,11 @@ namespace EuroTextEditor
             // Button_DeleteLanguage
             // 
             this.Button_DeleteLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Button_DeleteLanguage.Location = new System.Drawing.Point(131, 263);
+            this.Button_DeleteLanguage.Location = new System.Drawing.Point(87, 263);
             this.Button_DeleteLanguage.Name = "Button_DeleteLanguage";
-            this.Button_DeleteLanguage.Size = new System.Drawing.Size(99, 23);
+            this.Button_DeleteLanguage.Size = new System.Drawing.Size(75, 23);
             this.Button_DeleteLanguage.TabIndex = 2;
-            this.Button_DeleteLanguage.Text = "Delete Language";
+            this.Button_DeleteLanguage.Text = "Delete";
             this.Button_DeleteLanguage.UseVisualStyleBackColor = true;
             this.Button_DeleteLanguage.Click += new System.EventHandler(this.Button_DeleteLanguage_Click);
             // 
@@ -207,9 +212,9 @@ namespace EuroTextEditor
             this.Button_AddLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Button_AddLanguage.Location = new System.Drawing.Point(6, 263);
             this.Button_AddLanguage.Name = "Button_AddLanguage";
-            this.Button_AddLanguage.Size = new System.Drawing.Size(119, 23);
+            this.Button_AddLanguage.Size = new System.Drawing.Size(75, 23);
             this.Button_AddLanguage.TabIndex = 1;
-            this.Button_AddLanguage.Text = "Add New Language";
+            this.Button_AddLanguage.Text = "Add";
             this.Button_AddLanguage.UseVisualStyleBackColor = true;
             this.Button_AddLanguage.Click += new System.EventHandler(this.Button_AddLanguage_Click);
             // 
@@ -222,7 +227,7 @@ namespace EuroTextEditor
             this.Listbox_Languages.Location = new System.Drawing.Point(6, 19);
             this.Listbox_Languages.Name = "Listbox_Languages";
             this.Listbox_Languages.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.Listbox_Languages.Size = new System.Drawing.Size(509, 238);
+            this.Listbox_Languages.Size = new System.Drawing.Size(242, 238);
             this.Listbox_Languages.TabIndex = 0;
             // 
             // Groupbox_Misc
@@ -309,6 +314,51 @@ namespace EuroTextEditor
             // 
             this.openFileDialog.Filter = "Executable Files (*.exe)|*.exe";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.Button_RemoveCategory);
+            this.groupBox1.Controls.Add(this.Button_AddCategory);
+            this.groupBox1.Controls.Add(this.Listbox_Categories);
+            this.groupBox1.Location = new System.Drawing.Point(272, 171);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(261, 292);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "GroupBox_Categories";
+            // 
+            // Listbox_Categories
+            // 
+            this.Listbox_Categories.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Listbox_Categories.FormattingEnabled = true;
+            this.Listbox_Categories.Location = new System.Drawing.Point(6, 19);
+            this.Listbox_Categories.Name = "Listbox_Categories";
+            this.Listbox_Categories.Size = new System.Drawing.Size(249, 238);
+            this.Listbox_Categories.TabIndex = 0;
+            // 
+            // Button_AddCategory
+            // 
+            this.Button_AddCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_AddCategory.Location = new System.Drawing.Point(6, 263);
+            this.Button_AddCategory.Name = "Button_AddCategory";
+            this.Button_AddCategory.Size = new System.Drawing.Size(75, 23);
+            this.Button_AddCategory.TabIndex = 1;
+            this.Button_AddCategory.Text = "Add";
+            this.Button_AddCategory.UseVisualStyleBackColor = true;
+            this.Button_AddCategory.Click += new System.EventHandler(this.Button_AddCategory_Click);
+            // 
+            // Button_RemoveCategory
+            // 
+            this.Button_RemoveCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_RemoveCategory.Location = new System.Drawing.Point(87, 263);
+            this.Button_RemoveCategory.Name = "Button_RemoveCategory";
+            this.Button_RemoveCategory.Size = new System.Drawing.Size(75, 23);
+            this.Button_RemoveCategory.TabIndex = 2;
+            this.Button_RemoveCategory.Text = "Delete";
+            this.Button_RemoveCategory.UseVisualStyleBackColor = true;
+            this.Button_RemoveCategory.Click += new System.EventHandler(this.Button_RemoveCategory_Click);
+            // 
             // Frm_ProjectForm
             // 
             this.AcceptButton = this.Button_OK;
@@ -316,6 +366,7 @@ namespace EuroTextEditor
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
             this.ClientSize = new System.Drawing.Size(545, 582);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Button_OK);
             this.Controls.Add(this.Groupbox_Misc);
@@ -342,6 +393,7 @@ namespace EuroTextEditor
             this.GroupBox_Languages.ResumeLayout(false);
             this.Groupbox_Misc.ResumeLayout(false);
             this.Groupbox_Misc.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -371,5 +423,9 @@ namespace EuroTextEditor
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Label Label_Username;
         private System.Windows.Forms.TextBox Textbox_UserName;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button Button_RemoveCategory;
+        private System.Windows.Forms.Button Button_AddCategory;
+        private System.Windows.Forms.ListBox Listbox_Categories;
     }
 }

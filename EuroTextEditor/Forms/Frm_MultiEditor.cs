@@ -183,7 +183,7 @@ namespace EuroTextEditor
                 string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", ListView_TextStore.SelectedItems[0].SubItems[0].Text + ".etf");
                 if (File.Exists(textFilePath))
                 {
-                    Frm_TextEditor textEditor = new Frm_TextEditor(textFilePath, ListView_TextStore.SelectedItems[0])
+                    Frm_TextEditor textEditor = new Frm_TextEditor(textFilePath, ListView_TextStore.SelectedItems[0], null)
                     {
                         Text = ListView_TextStore.SelectedItems[0].SubItems[0].Text
                     };

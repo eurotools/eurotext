@@ -29,6 +29,7 @@ namespace EuroTextEditor.Custom_Controls
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControl_ListViewHashCodes));
             this.ContextMenu_HashCodes = new System.Windows.Forms.ContextMenu();
             this.MenuItem_Edit = new System.Windows.Forms.MenuItem();
             this.MenuItem_New = new System.Windows.Forms.MenuItem();
@@ -41,16 +42,27 @@ namespace EuroTextEditor.Custom_Controls
             this.MenuItem_RemoveColor = new System.Windows.Forms.MenuItem();
             this.MenuItem_SetColor = new System.Windows.Forms.MenuItem();
             this.MenuItem_EditNote = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Categories = new System.Windows.Forms.MenuItem();
             this.MenuItem_Separator2 = new System.Windows.Forms.MenuItem();
             this.MenuItem_Refresh = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.MenuItem_CopyHashCode = new System.Windows.Forms.MenuItem();
             this.ColorPicker_HashCodes = new System.Windows.Forms.ColorDialog();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.StatusLabel_TotalItems = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusLabel_SelectedItems = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ToolButton_SelectAll = new System.Windows.Forms.ToolStripSplitButton();
+            this.ToolButton_SelectNone = new System.Windows.Forms.ToolStripSplitButton();
+            this.ToolButton_InvertSelection = new System.Windows.Forms.ToolStripSplitButton();
             this.ListView_HashCodes = new EuroTextEditor.Custom_Controls.ListView_ColumnSortingClick();
             this.Col_HashCodes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_FirstCreated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_FirstCreatedBy = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_LastModify = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_LastModifyBy = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Categories = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Comments = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ContextMenu_HashCodes
@@ -62,11 +74,14 @@ namespace EuroTextEditor.Custom_Controls
             this.MenuItem_Rename,
             this.MenuItem_Separator1,
             this.MenuItem_SetGroup,
+            this.MenuItem_Categories,
             this.MenuItem_MultiEditor,
             this.MenuItem_Color,
             this.MenuItem_EditNote,
             this.MenuItem_Separator2,
-            this.MenuItem_Refresh});
+            this.MenuItem_Refresh,
+            this.menuItem1,
+            this.MenuItem_CopyHashCode});
             // 
             // MenuItem_Edit
             // 
@@ -106,13 +121,13 @@ namespace EuroTextEditor.Custom_Controls
             // 
             // MenuItem_MultiEditor
             // 
-            this.MenuItem_MultiEditor.Index = 6;
+            this.MenuItem_MultiEditor.Index = 7;
             this.MenuItem_MultiEditor.Text = "Multi Editor";
             this.MenuItem_MultiEditor.Click += new System.EventHandler(this.MenuItem_MultiEditor_Click);
             // 
             // MenuItem_Color
             // 
-            this.MenuItem_Color.Index = 7;
+            this.MenuItem_Color.Index = 8;
             this.MenuItem_Color.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.MenuItem_RemoveColor,
             this.MenuItem_SetColor});
@@ -132,20 +147,98 @@ namespace EuroTextEditor.Custom_Controls
             // 
             // MenuItem_EditNote
             // 
-            this.MenuItem_EditNote.Index = 8;
+            this.MenuItem_EditNote.Index = 9;
             this.MenuItem_EditNote.Text = "Edit Note";
             this.MenuItem_EditNote.Click += new System.EventHandler(this.MenuItem_EditNote_Click);
             // 
+            // MenuItem_Categories
+            // 
+            this.MenuItem_Categories.Index = 6;
+            this.MenuItem_Categories.Text = "Set Categories";
+            this.MenuItem_Categories.Click += new System.EventHandler(this.MenuItem_Categories_Click);
+            // 
             // MenuItem_Separator2
             // 
-            this.MenuItem_Separator2.Index = 9;
+            this.MenuItem_Separator2.Index = 10;
             this.MenuItem_Separator2.Text = "-";
             // 
             // MenuItem_Refresh
             // 
-            this.MenuItem_Refresh.Index = 10;
+            this.MenuItem_Refresh.Index = 11;
             this.MenuItem_Refresh.Text = "Refresh";
             this.MenuItem_Refresh.Click += new System.EventHandler(this.MenuItem_Refresh_Click);
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 12;
+            this.menuItem1.Text = "-";
+            // 
+            // MenuItem_CopyHashCode
+            // 
+            this.MenuItem_CopyHashCode.Index = 13;
+            this.MenuItem_CopyHashCode.Text = "Copy HashCode";
+            this.MenuItem_CopyHashCode.Click += new System.EventHandler(this.MenuItem_CopyHashCode_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusLabel_TotalItems,
+            this.StatusLabel_SelectedItems,
+            this.ToolButton_SelectAll,
+            this.ToolButton_SelectNone,
+            this.ToolButton_InvertSelection});
+            this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.statusStrip1.Location = new System.Drawing.Point(0, 504);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(902, 22);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.TabIndex = 10;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // StatusLabel_TotalItems
+            // 
+            this.StatusLabel_TotalItems.Name = "StatusLabel_TotalItems";
+            this.StatusLabel_TotalItems.Size = new System.Drawing.Size(45, 17);
+            this.StatusLabel_TotalItems.Text = "0 Items";
+            // 
+            // StatusLabel_SelectedItems
+            // 
+            this.StatusLabel_SelectedItems.Name = "StatusLabel_SelectedItems";
+            this.StatusLabel_SelectedItems.Size = new System.Drawing.Size(60, 17);
+            this.StatusLabel_SelectedItems.Text = "0 Selected";
+            // 
+            // ToolButton_SelectAll
+            // 
+            this.ToolButton_SelectAll.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.ToolButton_SelectAll.DropDownButtonWidth = 0;
+            this.ToolButton_SelectAll.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_SelectAll.Image")));
+            this.ToolButton_SelectAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolButton_SelectAll.Name = "ToolButton_SelectAll";
+            this.ToolButton_SelectAll.Size = new System.Drawing.Size(76, 20);
+            this.ToolButton_SelectAll.Text = "Select All";
+            this.ToolButton_SelectAll.ButtonClick += new System.EventHandler(this.ToolButton_SelectAll_ButtonClick);
+            // 
+            // ToolButton_SelectNone
+            // 
+            this.ToolButton_SelectNone.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.ToolButton_SelectNone.DropDownButtonWidth = 0;
+            this.ToolButton_SelectNone.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_SelectNone.Image")));
+            this.ToolButton_SelectNone.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolButton_SelectNone.Name = "ToolButton_SelectNone";
+            this.ToolButton_SelectNone.Size = new System.Drawing.Size(91, 20);
+            this.ToolButton_SelectNone.Text = "Select None";
+            this.ToolButton_SelectNone.ButtonClick += new System.EventHandler(this.ToolButton_SelectNone_ButtonClick);
+            // 
+            // ToolButton_InvertSelection
+            // 
+            this.ToolButton_InvertSelection.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.ToolButton_InvertSelection.DropDownButtonWidth = 0;
+            this.ToolButton_InvertSelection.Image = ((System.Drawing.Image)(resources.GetObject("ToolButton_InvertSelection.Image")));
+            this.ToolButton_InvertSelection.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolButton_InvertSelection.Name = "ToolButton_InvertSelection";
+            this.ToolButton_InvertSelection.Size = new System.Drawing.Size(109, 20);
+            this.ToolButton_InvertSelection.Text = "Invert Selection";
+            this.ToolButton_InvertSelection.ButtonClick += new System.EventHandler(this.ToolButton_InvertSelection_ButtonClick);
             // 
             // ListView_HashCodes
             // 
@@ -155,6 +248,7 @@ namespace EuroTextEditor.Custom_Controls
             this.Col_FirstCreatedBy,
             this.Col_LastModify,
             this.Col_LastModifyBy,
+            this.Col_Categories,
             this.Col_Comments});
             this.ListView_HashCodes.ContextMenu = this.ContextMenu_HashCodes;
             this.ListView_HashCodes.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -163,16 +257,17 @@ namespace EuroTextEditor.Custom_Controls
             this.ListView_HashCodes.HideSelection = false;
             this.ListView_HashCodes.Location = new System.Drawing.Point(0, 0);
             this.ListView_HashCodes.Name = "ListView_HashCodes";
-            this.ListView_HashCodes.Size = new System.Drawing.Size(897, 519);
+            this.ListView_HashCodes.Size = new System.Drawing.Size(902, 504);
             this.ListView_HashCodes.TabIndex = 8;
             this.ListView_HashCodes.UseCompatibleStateImageBehavior = false;
             this.ListView_HashCodes.View = System.Windows.Forms.View.Details;
+            this.ListView_HashCodes.SelectedIndexChanged += new System.EventHandler(this.ListView_HashCodes_SelectedIndexChanged);
             this.ListView_HashCodes.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView_HashCodes_MouseDoubleClick);
             // 
             // Col_HashCodes
             // 
             this.Col_HashCodes.Text = "HashCode";
-            this.Col_HashCodes.Width = 200;
+            this.Col_HashCodes.Width = 400;
             // 
             // Col_FirstCreated
             // 
@@ -194,6 +289,11 @@ namespace EuroTextEditor.Custom_Controls
             this.Col_LastModifyBy.Text = "Last Modify By";
             this.Col_LastModifyBy.Width = 100;
             // 
+            // Col_Categories
+            // 
+            this.Col_Categories.Text = "Categories";
+            this.Col_Categories.Width = 200;
+            // 
             // Col_Comments
             // 
             this.Col_Comments.Text = "Notes";
@@ -204,9 +304,14 @@ namespace EuroTextEditor.Custom_Controls
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ListView_HashCodes);
+            this.Controls.Add(this.statusStrip1);
             this.Name = "UserControl_ListViewHashCodes";
-            this.Size = new System.Drawing.Size(897, 519);
+            this.Size = new System.Drawing.Size(902, 526);
+            this.Load += new System.EventHandler(this.UserControl_ListViewHashCodes_Load);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -234,5 +339,15 @@ namespace EuroTextEditor.Custom_Controls
         protected internal System.Windows.Forms.MenuItem MenuItem_Refresh;
         private System.Windows.Forms.ColumnHeader Col_Comments;
         protected internal System.Windows.Forms.MenuItem MenuItem_EditNote;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        protected internal System.Windows.Forms.ToolStripStatusLabel StatusLabel_TotalItems;
+        protected internal System.Windows.Forms.ToolStripStatusLabel StatusLabel_SelectedItems;
+        protected internal System.Windows.Forms.ToolStripSplitButton ToolButton_SelectAll;
+        protected internal System.Windows.Forms.ToolStripSplitButton ToolButton_SelectNone;
+        protected internal System.Windows.Forms.ToolStripSplitButton ToolButton_InvertSelection;
+        private System.Windows.Forms.MenuItem menuItem1;
+        private System.Windows.Forms.MenuItem MenuItem_CopyHashCode;
+        private System.Windows.Forms.MenuItem MenuItem_Categories;
+        private System.Windows.Forms.ColumnHeader Col_Categories;
     }
 }

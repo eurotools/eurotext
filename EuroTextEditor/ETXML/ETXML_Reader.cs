@@ -56,6 +56,9 @@ namespace EuroTextEditor
                         case "Notes":
                             textObject.Notes = node.InnerText;
                             break;
+                        case "Categories":
+                            textObject.textFlags = Convert.ToInt32(node.InnerText);
+                            break;
                     }
                 }
 
@@ -84,7 +87,11 @@ namespace EuroTextEditor
                 XmlNodeList messagesNdoes = reader.SelectNodes("ETXML/Messages/*");
                 foreach (XmlNode node in messagesNdoes)
                 {
-                    textObject.Messages.Add(node.Attributes["language"].Value, node.InnerText);
+                    string currentLanguage = node.Attributes["language"].Value;
+                    if (!textObject.Messages.ContainsKey(currentLanguage))
+                    {
+                        textObject.Messages.Add(currentLanguage, node.InnerText);
+                    }
                 }
             }
 
@@ -148,6 +155,13 @@ namespace EuroTextEditor
                 foreach (XmlNode node in languagesNodes)
                 {
                     projData.Languages.Add(node.InnerText);
+                }
+
+                //Read Categories section
+                XmlNodeList categoryNodes = reader.SelectNodes("ETXML/Categories/*");
+                foreach (XmlNode node in categoryNodes)
+                {
+                    projData.Categories.Add(node.InnerText);
                 }
             }
 

@@ -31,6 +31,11 @@ namespace EuroTextEditor
             Listbox_Languages.Items.AddRange(GlobalVariables.CurrentProject.Languages.ToArray());
             Listbox_Languages.EndUpdate();
 
+            //Show all categories
+            Listbox_Categories.BeginUpdate();
+            Listbox_Categories.Items.AddRange(GlobalVariables.CurrentProject.Categories.ToArray());
+            Listbox_Categories.EndUpdate();
+
             //Global Settings
             Textbox_HashTablesAdmin.Text = GlobalVariables.HashtablesAdminPath;
             Textbox_UserName.Text = GlobalVariables.EuroTextUser;
@@ -116,6 +121,34 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void Button_AddCategory_Click(object sender, System.EventArgs e)
+        {
+            using (Frm_InputBox newGroupForm = new Frm_InputBox("New Category", "Enter the new category name.", ""))
+            {
+                if (newGroupForm.ShowDialog() == DialogResult.OK)
+                {
+                    if (!Listbox_Categories.Items.Contains(newGroupForm.ReturnValue) && !string.IsNullOrEmpty(newGroupForm.ReturnValue))
+                    {
+                        Listbox_Categories.Items.Add(newGroupForm.ReturnValue);
+                    }
+                }
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Button_RemoveCategory_Click(object sender, System.EventArgs e)
+        {
+            ListBox.SelectedObjectCollection selectedItems = Listbox_Categories.SelectedItems;
+            if (Listbox_Categories.SelectedIndex != -1)
+            {
+                for (int i = selectedItems.Count - 1; i >= 0; i--)
+                {
+                    Listbox_Categories.Items.Remove(selectedItems[i]);
+                }
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void Textbox_HashTablesAdmin_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -141,6 +174,7 @@ namespace EuroTextEditor
             GlobalVariables.CurrentProject.SpreadSheetsDirectory = Textbox_SpreadSheetsDir.Text;
             GlobalVariables.CurrentProject.EuroLandHahCodesServPath = Textbox_HashCodesDir.Text;
             GlobalVariables.CurrentProject.Languages = Listbox_Languages.Items.OfType<string>().ToList();
+            GlobalVariables.CurrentProject.Categories = Listbox_Categories.Items.OfType<string>().ToList();
             GlobalVariables.HashtablesAdminPath = Textbox_HashTablesAdmin.Text;
             GlobalVariables.EuroTextUser = Textbox_UserName.Text;
 

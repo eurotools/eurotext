@@ -82,8 +82,6 @@ namespace EuroTextEditor
                     CommonFunctions.LoadEuroTextFiles(mainform.hashCodes.UserControl_HashCodesListView.ListView_HashCodes);
                     mainform.textGroups.ReadTextGroups();
                     mainform.textSections.LoadTextSections();
-
-
                 }
                 else
                 {
@@ -139,7 +137,7 @@ namespace EuroTextEditor
             }
             if (persistString == typeof(Frm_Searcher).ToString())
             {
-                return new Frm_Searcher();
+                return new Frm_Searcher(mainform.hashCodes);
             }
             return null;
         }

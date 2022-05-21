@@ -104,16 +104,15 @@ namespace EuroTextEditor
                 GlobalVariables.WorkingDirectory = FolderBrowserDialog.SelectedPath;
 
                 //Create Folders
-                string messagesDirectory = Path.Combine(GlobalVariables.WorkingDirectory, "Messages");
                 string outputDirectory = Path.Combine(GlobalVariables.WorkingDirectory, "Output");
-                Directory.CreateDirectory(Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles"));
                 Directory.CreateDirectory(outputDirectory);
-                Directory.CreateDirectory(messagesDirectory);
+                Directory.CreateDirectory(Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles"));
+                Directory.CreateDirectory(Path.Combine(GlobalVariables.WorkingDirectory, "Messages"));
 
                 //Write file
                 EuroText_ProjectFile projFile = new EuroText_ProjectFile
                 {
-                    MessagesDirectory = messagesDirectory,
+                    MessagesDirectory = GlobalVariables.WorkingDirectory,
                     SpreadSheetsDirectory = outputDirectory
                 };
 
@@ -280,7 +279,7 @@ namespace EuroTextEditor
         {
             if (!CommonFunctions.FormIsOpened("Frm_Searcher"))
             {
-                Frm_Searcher searchForm = new Frm_Searcher();
+                Frm_Searcher searchForm = new Frm_Searcher(hashCodes);
                 searchForm.Show(dockPanel, DockState.DockBottom);
             }
         }

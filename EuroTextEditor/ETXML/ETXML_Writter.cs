@@ -33,6 +33,7 @@ namespace EuroTextEditor
                 textWriter.WriteStartElement("RowInfo");
                 textWriter.WriteElementString("Color", ColorTranslator.ToHtml(textObj.RowColor));
                 textWriter.WriteElementString("Notes", textObj.Notes);
+                textWriter.WriteElementString("Categories", textObj.textFlags.ToString());
                 textWriter.WriteEndElement();
                 textWriter.WriteStartElement("Properties");
                 textWriter.WriteElementString("Group", textObj.Group);
@@ -41,7 +42,6 @@ namespace EuroTextEditor
                 textWriter.WriteElementString("DeatText", textObj.DeadText.ToString());
                 textWriter.WriteEndElement();
                 textWriter.WriteStartElement("Messages");
-
                 foreach (KeyValuePair<string, string> messageToPrint in textObj.Messages)
                 {
                     textWriter.WriteStartElement("Message");
@@ -102,6 +102,12 @@ namespace EuroTextEditor
                 foreach (string language in projObj.Languages)
                 {
                     textWriter.WriteElementString("Language", language);
+                }
+                textWriter.WriteEndElement();
+                textWriter.WriteStartElement("Categories");
+                foreach (string language in projObj.Categories)
+                {
+                    textWriter.WriteElementString("Category", language);
                 }
                 textWriter.WriteEndDocument();
                 textWriter.Close();

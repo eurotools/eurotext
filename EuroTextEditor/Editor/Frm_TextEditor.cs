@@ -18,13 +18,15 @@ namespace EuroTextEditor
         private int languageEditorsIndex = 0;
         private bool PromptSave = true;
         private readonly string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsTextEditor.xml");
+        private readonly Frm_ListBoxHashCodes parentFormToSync;
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        public Frm_TextEditor(string textFilePath, ListViewItem objectToModify)
+        public Frm_TextEditor(string textFilePath, ListViewItem objectToModify, Frm_ListBoxHashCodes formToSync)
         {
             InitializeComponent();
             filePath = textFilePath;
             listViewItemMainForm = objectToModify;
+            parentFormToSync = formToSync;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -239,7 +241,23 @@ namespace EuroTextEditor
             objText.LastModifiedBy = GlobalVariables.EuroTextUser;
             listViewItemMainForm.SubItems[3].Text = objText.LastModified;
             listViewItemMainForm.SubItems[4].Text = objText.LastModifiedBy;
-            listViewItemMainForm.SubItems[5].Text = objText.Notes;
+            listViewItemMainForm.SubItems[6].Text = objText.Notes;
+
+
+            //Sync listviews
+            if (parentFormToSync != null)
+            {
+                foreach (ListViewItem itemsToUpdate in parentFormToSync.UserControl_HashCodesListView.ListView_HashCodes.Items)
+                {
+                    if (itemsToUpdate.Text.Equals(Text))
+                    {
+                        itemsToUpdate.SubItems[3].Text = objText.LastModified;
+                        itemsToUpdate.SubItems[4].Text = objText.LastModifiedBy;
+                        itemsToUpdate.SubItems[6].Text = objText.Notes;
+                        break;
+                    }
+                }
+            }
 
             ETXML_Writter filesWriter = new ETXML_Writter();
             filesWriter.WriteTextFile(filePath, objText);

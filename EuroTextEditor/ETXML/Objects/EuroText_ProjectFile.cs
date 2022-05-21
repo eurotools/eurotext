@@ -21,6 +21,9 @@ namespace EuroTextEditor
 
         //Languages
         public List<string> Languages = new List<string>();
+
+        //Categories
+        public List<string> Categories = new List<string>();
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

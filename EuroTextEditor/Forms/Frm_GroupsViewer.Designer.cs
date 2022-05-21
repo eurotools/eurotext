@@ -31,8 +31,8 @@ namespace EuroTextEditor
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_GroupsViewer));
             this.Groupbox_hashCodes = new System.Windows.Forms.GroupBox();
-            this.Button_OK = new System.Windows.Forms.Button();
             this.UserControl_HashCodes = new EuroTextEditor.Custom_Controls.UserControl_ListViewHashCodes();
+            this.Button_OK = new System.Windows.Forms.Button();
             this.Groupbox_hashCodes.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,7 +47,15 @@ namespace EuroTextEditor
             this.Groupbox_hashCodes.Size = new System.Drawing.Size(758, 485);
             this.Groupbox_hashCodes.TabIndex = 0;
             this.Groupbox_hashCodes.TabStop = false;
-            this.Groupbox_hashCodes.Text = "HashCodes In Section/Group:";
+            this.Groupbox_hashCodes.Text = "HashCodes";
+            // 
+            // UserControl_HashCodes
+            // 
+            this.UserControl_HashCodes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.UserControl_HashCodes.Location = new System.Drawing.Point(3, 16);
+            this.UserControl_HashCodes.Name = "UserControl_HashCodes";
+            this.UserControl_HashCodes.Size = new System.Drawing.Size(752, 466);
+            this.UserControl_HashCodes.TabIndex = 2;
             // 
             // Button_OK
             // 
@@ -59,14 +67,6 @@ namespace EuroTextEditor
             this.Button_OK.Text = "OK";
             this.Button_OK.UseVisualStyleBackColor = true;
             this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
-            // 
-            // UserControl_HashCodes
-            // 
-            this.UserControl_HashCodes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.UserControl_HashCodes.Location = new System.Drawing.Point(3, 16);
-            this.UserControl_HashCodes.Name = "UserControl_HashCodes";
-            this.UserControl_HashCodes.Size = new System.Drawing.Size(752, 466);
-            this.UserControl_HashCodes.TabIndex = 2;
             // 
             // Frm_GroupsViewer
             // 

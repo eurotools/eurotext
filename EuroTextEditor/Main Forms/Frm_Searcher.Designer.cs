@@ -41,11 +41,8 @@ namespace EuroTextEditor
             this.Button_Search = new System.Windows.Forms.Button();
             this.Button_StopSearch = new System.Windows.Forms.Button();
             this.Button_NewSearch = new System.Windows.Forms.Button();
-            this.StatusBar = new System.Windows.Forms.StatusStrip();
-            this.Label_NumberOfItems = new System.Windows.Forms.ToolStripStatusLabel();
-            this.UserControl_HashCodesTable = new EuroTextEditor.Custom_Controls.UserControl_ListViewHashCodes();
             this.AsyncWorker = new System.ComponentModel.BackgroundWorker();
-            this.StatusBar.SuspendLayout();
+            this.UserControl_HashCodesTable = new EuroTextEditor.Custom_Controls.UserControl_ListViewHashCodes();
             this.SuspendLayout();
             // 
             // Label_LookIn
@@ -94,7 +91,8 @@ namespace EuroTextEditor
             this.Combobox_LookField.FormattingEnabled = true;
             this.Combobox_LookField.Items.AddRange(new object[] {
             "Hash-Codes",
-            "File Content"});
+            "File Content",
+            "Categories"});
             this.Combobox_LookField.Location = new System.Drawing.Point(80, 65);
             this.Combobox_LookField.Name = "Combobox_LookField";
             this.Combobox_LookField.Size = new System.Drawing.Size(294, 21);
@@ -162,21 +160,10 @@ namespace EuroTextEditor
             this.Button_NewSearch.UseVisualStyleBackColor = true;
             this.Button_NewSearch.Click += new System.EventHandler(this.Button_NewSearch_Click);
             // 
-            // StatusBar
+            // AsyncWorker
             // 
-            this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Label_NumberOfItems});
-            this.StatusBar.Location = new System.Drawing.Point(0, 394);
-            this.StatusBar.Name = "StatusBar";
-            this.StatusBar.Size = new System.Drawing.Size(461, 22);
-            this.StatusBar.TabIndex = 12;
-            this.StatusBar.Text = "statusStrip1";
-            // 
-            // Label_NumberOfItems
-            // 
-            this.Label_NumberOfItems.Name = "Label_NumberOfItems";
-            this.Label_NumberOfItems.Size = new System.Drawing.Size(45, 17);
-            this.Label_NumberOfItems.Text = "0 Items";
+            this.AsyncWorker.WorkerSupportsCancellation = true;
+            this.AsyncWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.AsyncWorker_DoWork);
             // 
             // UserControl_HashCodesTable
             // 
@@ -185,13 +172,8 @@ namespace EuroTextEditor
             | System.Windows.Forms.AnchorStyles.Right)));
             this.UserControl_HashCodesTable.Location = new System.Drawing.Point(0, 115);
             this.UserControl_HashCodesTable.Name = "UserControl_HashCodesTable";
-            this.UserControl_HashCodesTable.Size = new System.Drawing.Size(461, 279);
+            this.UserControl_HashCodesTable.Size = new System.Drawing.Size(461, 302);
             this.UserControl_HashCodesTable.TabIndex = 11;
-            // 
-            // AsyncWorker
-            // 
-            this.AsyncWorker.WorkerSupportsCancellation = true;
-            this.AsyncWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.AsyncWorker_DoWork);
             // 
             // Frm_Searcher
             // 
@@ -199,7 +181,6 @@ namespace EuroTextEditor
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(461, 416);
-            this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.UserControl_HashCodesTable);
             this.Controls.Add(this.Button_NewSearch);
             this.Controls.Add(this.Button_StopSearch);
@@ -217,8 +198,6 @@ namespace EuroTextEditor
             this.TabText = "Search";
             this.Text = "Search";
             this.Load += new System.EventHandler(this.Frm_Searcher_Load);
-            this.StatusBar.ResumeLayout(false);
-            this.StatusBar.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -238,8 +217,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.Button Button_StopSearch;
         private System.Windows.Forms.Button Button_NewSearch;
         private Custom_Controls.UserControl_ListViewHashCodes UserControl_HashCodesTable;
-        private System.Windows.Forms.StatusStrip StatusBar;
-        private System.Windows.Forms.ToolStripStatusLabel Label_NumberOfItems;
         private System.ComponentModel.BackgroundWorker AsyncWorker;
     }
 }

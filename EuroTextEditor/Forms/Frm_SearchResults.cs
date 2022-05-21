@@ -38,7 +38,7 @@ namespace EuroTextEditor
         {
             if (UserControl_HashCodes.ListView_HashCodes.SelectedItems.Count == 1)
             {
-                CommonFunctions.EditHashCode(UserControl_HashCodes.ListView_HashCodes.SelectedItems[0]);
+                CommonFunctions.EditHashCode(UserControl_HashCodes.ListView_HashCodes.SelectedItems[0], null);
             }
         }
     }

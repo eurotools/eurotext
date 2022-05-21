@@ -99,11 +99,8 @@
     <Compile Include="Classes\GlobalVariables.cs" />
     <Compile Include="Classes\IniFile.cs" />
     <Compile Include="Classes\MostRecentFilesMenu.cs" />
-    <Compile Include="Custom Controls\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Custom Controls\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Custom Controls\ListViewEx.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Custom Controls\UserControl_ListViewHashCodes.cs">
       <SubType>UserControl</SubType>
@@ -141,6 +138,12 @@
     </Compile>
     <Compile Include="Exporter\Frm_SpreadsheetExporter_Messages.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main Forms\Frm_Categories.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main Forms\Frm_Categories.Designer.cs">
+      <DependentUpon>Frm_Categories.cs</DependentUpon>
     </Compile>
     <Compile Include="Main Forms\Frm_ListBox_TextSections_Editor.cs">
       <SubType>Form</SubType>
@@ -343,6 +346,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Frm_Preview.resx">
       <DependentUpon>Frm_Preview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main Forms\Frm_Categories.resx">
+      <DependentUpon>Frm_Categories.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main Forms\Frm_ListBox_TextSections_Editor.resx">
       <DependentUpon>Frm_ListBox_TextSections_Editor.cs</DependentUpon>

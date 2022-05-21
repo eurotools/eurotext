@@ -646,7 +646,7 @@ namespace EuroTextEditor
                 EuroText_TextFile textObj = textReader.ReadTextFile(messagesToPrint[i]);
                 textObj.HashCode = Path.GetFileNameWithoutExtension(messagesToPrint[i]);
 
-                if (hashcodesWithNoSection && string.IsNullOrEmpty(textObj.OutputSection))
+                if (!hashcodesWithNoSection && string.IsNullOrEmpty(textObj.OutputSection))
                 {
                     continue;
                 }

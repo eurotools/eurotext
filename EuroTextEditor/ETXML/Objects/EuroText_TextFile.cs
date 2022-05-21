@@ -12,6 +12,7 @@ namespace EuroTextEditor
         public Color RowColor;
         public string Notes = string.Empty;
         public string HashCode = string.Empty;
+        public int textFlags = 0;
 
         //Info
         public string FirstCreated = string.Empty;

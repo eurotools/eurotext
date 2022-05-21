@@ -83,7 +83,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         //  OBJECTS
         //-------------------------------------------------------------------------------------------
-        internal static void EditHashCode(ListViewItem itemToModify)
+        internal static void EditHashCode(ListViewItem itemToModify, Frm_ListBoxHashCodes parentFormToSync)
         {
             string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", itemToModify.Text + ".etf");
             if (!File.Exists(textFilePath))
@@ -103,7 +103,7 @@ namespace EuroTextEditor
             //Show form
             if (File.Exists(textFilePath))
             {
-                Frm_TextEditor textEditor = new Frm_TextEditor(textFilePath, itemToModify)
+                Frm_TextEditor textEditor = new Frm_TextEditor(textFilePath, itemToModify, parentFormToSync)
                 {
                     Text = itemToModify.Text
                 };
@@ -128,7 +128,7 @@ namespace EuroTextEditor
                     EuroText_TextFile objTextData = filesReader.ReadTextFile(filesToAdd[i]);
 
                     //Update control
-                    ListViewItem HashCodeItem = ListView_HashCodes.Items.Add(new ListViewItem(new[] { Path.GetFileNameWithoutExtension(filesToAdd[i]).ToString(), objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                    ListViewItem HashCodeItem = ListView_HashCodes.Items.Add(new ListViewItem(new[] { Path.GetFileNameWithoutExtension(filesToAdd[i]).ToString(), objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                     HashCodeItem.BackColor = objTextData.RowColor;
 
                 }
@@ -157,6 +157,23 @@ namespace EuroTextEditor
             }
 
             return formOpened;
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  FLAGS
+        //-------------------------------------------------------------------------------------------
+        internal static string GetFlagsLabels(int flags)
+        {
+            string flagsLabels = "";
+            for(int i = 0; i < 16; i++)
+            {
+                if(Convert.ToBoolean((flags >> i) & 1))
+                {
+                    flagsLabels += GlobalVariables.CurrentProject.Categories[i] + " | ";
+                }
+            }
+
+            return flagsLabels.Trim().TrimEnd('|').Trim();
         }
     }
 

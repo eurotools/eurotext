@@ -29,15 +29,6 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void Frm_ListBoxHashCodes_Shown(object sender, EventArgs e)
-        {
-            if (UserControl_HashCodesListView.ListView_HashCodes.Items.Count > 0)
-            {
-                UserControl_HashCodesListView.ListView_HashCodes.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_ListBoxHashCodes_VisibleChanged(object sender, EventArgs e)
         {
             if (IsHidden)
@@ -53,7 +44,7 @@ namespace EuroTextEditor
         {
             if (UserControl_HashCodesListView.ListView_HashCodes.SelectedItems.Count == 1)
             {
-                CommonFunctions.EditHashCode(UserControl_HashCodesListView.ListView_HashCodes.SelectedItems[0]);
+                CommonFunctions.EditHashCode(UserControl_HashCodesListView.ListView_HashCodes.SelectedItems[0], null);
             }
             else
             {
@@ -68,7 +59,7 @@ namespace EuroTextEditor
         {
             if (UserControl_HashCodesListView.ListView_HashCodes.SelectedItems.Count == 1)
             {
-                CommonFunctions.EditHashCode(UserControl_HashCodesListView.ListView_HashCodes.SelectedItems[0]);
+                CommonFunctions.EditHashCode(UserControl_HashCodesListView.ListView_HashCodes.SelectedItems[0], null);
             }
             else
             {

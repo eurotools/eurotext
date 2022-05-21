@@ -13,6 +13,8 @@ namespace EuroTextEditor.Custom_Controls
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class UserControl_ListViewHashCodes : UserControl
     {
+        internal Frm_ListBoxHashCodes parentFormToSync;
+
         //-------------------------------------------------------------------------------------------
         //  FORM EVENTS
         //-------------------------------------------------------------------------------------------
@@ -22,11 +24,17 @@ namespace EuroTextEditor.Custom_Controls
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void UserControl_ListViewHashCodes_Load(object sender, EventArgs e)
+        {
+            StatusLabel_TotalItems.Text = ListView_HashCodes.Items.Count + " Items";
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void ListView_HashCodes_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (ListView_HashCodes.SelectedItems.Count == 1)
             {
-                CommonFunctions.EditHashCode(ListView_HashCodes.SelectedItems[0]);
+                CommonFunctions.EditHashCode(ListView_HashCodes.SelectedItems[0], parentFormToSync);
             }
             else
             {
@@ -41,7 +49,7 @@ namespace EuroTextEditor.Custom_Controls
         {
             if (ListView_HashCodes.SelectedItems.Count == 1)
             {
-                CommonFunctions.EditHashCode(ListView_HashCodes.SelectedItems[0]);
+                CommonFunctions.EditHashCode(ListView_HashCodes.SelectedItems[0], parentFormToSync);
             }
             else if (ListView_HashCodes.SelectedItems.Count > 1)
             {
@@ -252,6 +260,19 @@ namespace EuroTextEditor.Custom_Controls
                 {
                     itemToModify.BackColor = ColorPicker_HashCodes.Color;
 
+                    //Sync listviews
+                    if (parentFormToSync != null)
+                    {
+                        foreach (ListViewItem itemsToUpdate in parentFormToSync.UserControl_HashCodesListView.ListView_HashCodes.Items)
+                        {
+                            if (itemsToUpdate.Text.Equals(itemToModify.Text))
+                            {
+                                itemsToUpdate.BackColor = ColorPicker_HashCodes.Color;
+                                break;
+                            }
+                        }
+                    }
+
                     //Update TextFile
                     ETXML_Reader filesReader = new ETXML_Reader();
                     ETXML_Writter filesWriter = new ETXML_Writter();
@@ -276,6 +297,19 @@ namespace EuroTextEditor.Custom_Controls
             foreach (ListViewItem itemToModify in ListView_HashCodes.SelectedItems)
             {
                 itemToModify.BackColor = SystemColors.Window;
+
+                //Sync listviews
+                if (parentFormToSync != null)
+                {
+                    foreach (ListViewItem itemsToUpdate in parentFormToSync.UserControl_HashCodesListView.ListView_HashCodes.Items)
+                    {
+                        if (itemsToUpdate.Text.Equals(itemToModify.Text))
+                        {
+                            itemsToUpdate.BackColor = SystemColors.Window;
+                            break;
+                        }
+                    }
+                }
 
                 //Update TextFile
                 ETXML_Reader filesReader = new ETXML_Reader();
@@ -312,11 +346,24 @@ namespace EuroTextEditor.Custom_Controls
                 ListViewItem itemToModify = ListView_HashCodes.SelectedItems[0];
 
                 //Show input dialog form
-                Frm_InputBox inputText = new Frm_InputBox("Edit Note", "Enter note text", itemToModify.SubItems[5].Text);
+                Frm_InputBox inputText = new Frm_InputBox("Edit Note", "Enter note text", itemToModify.SubItems[6].Text);
                 if (inputText.ShowDialog() == DialogResult.OK)
                 {
                     //Update UI
-                    itemToModify.SubItems[5].Text = inputText.ReturnValue;
+                    itemToModify.SubItems[6].Text = inputText.ReturnValue;
+
+                    //Sync listviews
+                    if (parentFormToSync != null)
+                    {
+                        foreach (ListViewItem itemsToUpdate in parentFormToSync.UserControl_HashCodesListView.ListView_HashCodes.Items)
+                        {
+                            if (itemsToUpdate.Text.Equals(itemToModify.Text))
+                            {
+                                itemsToUpdate.SubItems[6].Text = inputText.ReturnValue;
+                                break;
+                            }
+                        }
+                    }
 
                     //Update TextFile
                     string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", itemToModify.Text + ".etf");
@@ -331,6 +378,116 @@ namespace EuroTextEditor.Custom_Controls
 
                         //Write file again
                         filesWriter.WriteTextFile(textFilePath, textObjectData);
+                    }
+                }
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ListView_HashCodes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            StatusLabel_SelectedItems.Text = ListView_HashCodes.SelectedItems.Count + " Selected";
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_SelectAll_ButtonClick(object sender, EventArgs e)
+        {
+            ListView_HashCodes.BeginUpdate();
+            for (int i = 0; i < ListView_HashCodes.Items.Count; i++)
+            {
+                ListView_HashCodes.Items[i].Selected = true;
+            }
+            ListView_HashCodes.EndUpdate();
+            ListView_HashCodes.Focus();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_SelectNone_ButtonClick(object sender, EventArgs e)
+        {
+            ListView_HashCodes.SelectedItems.Clear();
+            ListView_HashCodes.Focus();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void ToolButton_InvertSelection_ButtonClick(object sender, EventArgs e)
+        {
+            // Build a hashset of the currently selected indicies
+            int[] selectedArray = new int[ListView_HashCodes.SelectedIndices.Count];
+            HashSet<int> selected = new HashSet<int>();
+
+            ListView_HashCodes.SelectedIndices.CopyTo(selectedArray, 0);
+            selected.UnionWith(selectedArray);
+
+            ListView_HashCodes.SelectedIndices.Clear();
+            for (int i = 0; i < ListView_HashCodes.Items.Count; i++)
+            {
+                if (!selected.Contains(i))
+                {
+                    ListView_HashCodes.SelectedIndices.Add(i);
+                }
+            }
+
+            ListView_HashCodes.Focus();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_CopyHashCode_Click(object sender, EventArgs e)
+        {
+            if (ListView_HashCodes.SelectedItems.Count == 1)
+            {
+                Clipboard.SetText(ListView_HashCodes.SelectedItems[0].Text);
+            }
+        }
+
+        private void MenuItem_Categories_Click(object sender, EventArgs e)
+        {
+            if (ListView_HashCodes.SelectedItems.Count > 0)
+            {
+                //Update TextFile
+                string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", ListView_HashCodes.SelectedItems[0].Text + ".etf");
+                if (File.Exists(textFilePath))
+                {
+                    ETXML_Reader filesReader = new ETXML_Reader();
+                    ETXML_Writter filesWriter = new ETXML_Writter();
+
+                    EuroText_TextFile textObjectData = filesReader.ReadTextFile(textFilePath);
+
+                    //Show flags selector
+                    Frm_Categories categoriesEditor = new Frm_Categories(textObjectData.textFlags);
+                    if (categoriesEditor.ShowDialog() == DialogResult.OK)
+                    {
+                        textObjectData.textFlags = categoriesEditor.selectedFlags;
+
+                        foreach (ListViewItem textToUpdate in ListView_HashCodes.SelectedItems)
+                        {
+                            //Update UI
+                            string flagsLabels = CommonFunctions.GetFlagsLabels(categoriesEditor.selectedFlags);
+                            textToUpdate.SubItems[5].Text = flagsLabels;
+
+                            //Sync listviews
+                            if (parentFormToSync != null)
+                            {
+                                foreach (ListViewItem itemsToUpdate in parentFormToSync.UserControl_HashCodesListView.ListView_HashCodes.Items)
+                                {
+                                    if (itemsToUpdate.Text.Equals(textToUpdate.Text))
+                                    {
+                                        itemsToUpdate.SubItems[5].Text = flagsLabels;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            string filePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", textToUpdate.Text + ".etf");
+                            if (File.Exists(filePath))
+                            {
+                                //Update property
+                                EuroText_TextFile textObj = filesReader.ReadTextFile(filePath);
+                                textObj.textFlags = categoriesEditor.selectedFlags;
+
+                                //Write file again
+                                filesWriter.WriteTextFile(filePath, textObj);
+                            }
+                        }
                     }
                 }
             }

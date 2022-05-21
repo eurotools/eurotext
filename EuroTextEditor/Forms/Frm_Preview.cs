@@ -133,6 +133,14 @@ namespace EuroTextEditor
                         Location currentPosition = consoleControl1.GetCursorPosition();
                         consoleControl1.SetCursorPosition(currentPosition.Row, GetStartColumnCenter(i, centerText));
                     }
+                    if(tagName.Equals("<END TT>"))
+                    {
+                        disableTeletype = true;
+                    }
+                    if(tagName.StartsWith("<SO "))
+                    {
+                        consoleControl1.Write("<Objective Value>");
+                    }
 
 
                     tagName = string.Empty;

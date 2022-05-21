@@ -22,7 +22,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            ReturnValue = Textbox_Answer.Text;
+            ReturnValue = Textbox_Answer.Text.Trim();
             DialogResult = DialogResult.OK;
             Close();
         }

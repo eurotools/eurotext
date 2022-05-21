@@ -52,7 +52,6 @@ namespace EuroTextEditor
             this.Name = "Frm_ListBoxHashCodes";
             this.TabText = "HashCodes";
             this.Text = "HashCodes";
-            this.Shown += new System.EventHandler(this.Frm_ListBoxHashCodes_Shown);
             this.VisibleChanged += new System.EventHandler(this.Frm_ListBoxHashCodes_VisibleChanged);
             this.ResumeLayout(false);
 
