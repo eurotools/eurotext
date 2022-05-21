@@ -381,6 +381,10 @@ namespace EuroTextEditor.Custom_Controls
                     }
                 }
             }
+            else
+            {
+                SystemSounds.Exclamation.Play();
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -437,6 +441,10 @@ namespace EuroTextEditor.Custom_Controls
             {
                 Clipboard.SetText(ListView_HashCodes.SelectedItems[0].Text);
             }
+            else
+            {
+                SystemSounds.Exclamation.Play();
+            }
         }
 
         private void MenuItem_Categories_Click(object sender, EventArgs e)
@@ -490,6 +498,10 @@ namespace EuroTextEditor.Custom_Controls
                         }
                     }
                 }
+            }
+            else
+            {
+                SystemSounds.Exclamation.Play();
             }
         }
     }

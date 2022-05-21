@@ -121,276 +121,280 @@ namespace EuroTextEditor
             ETXML_Reader filesReader = new ETXML_Reader();
 
             //Get text messages 
-            string[] textMessages = Directory.GetFiles(Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
-            for (int i = 0; i < textMessages.Length; i++)
+            string messagesDirectory = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages");
+            if (Directory.Exists(messagesDirectory))
             {
-                //Check if we have to stop
-                if (AsyncWorker.CancellationPending)
+                string[] textMessages = Directory.GetFiles(messagesDirectory, "*.etf", SearchOption.TopDirectoryOnly);
+                for (int i = 0; i < textMessages.Length; i++)
                 {
-                    break;
-                }
+                    //Check if we have to stop
+                    if (AsyncWorker.CancellationPending)
+                    {
+                        break;
+                    }
 
-                //Search for matches
-                string fileName = Path.GetFileNameWithoutExtension(textMessages[i]);
-                EuroText_TextFile objTextData = filesReader.ReadTextFile(textMessages[i]);
+                    //Search for matches
+                    string fileName = Path.GetFileNameWithoutExtension(textMessages[i]);
+                    EuroText_TextFile objTextData = filesReader.ReadTextFile(textMessages[i]);
 
-                if (mode == 0) //Hash-Codes
-                {
-                    if (fullMatch)
+                    if (mode == 0) //Hash-Codes
                     {
-                        if (caseSensitive)
+                        if (fullMatch)
                         {
-                            if (fileName.Equals(query))
+                            if (caseSensitive)
                             {
-                                UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                if (fileName.Equals(query))
                                 {
-                                    ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                    addedItem.BackColor = objTextData.RowColor;
-                                });
+                                    UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                    {
+                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                        addedItem.BackColor = objTextData.RowColor;
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                if (fileName.Equals(query, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                    {
+                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                        addedItem.BackColor = objTextData.RowColor;
+                                    });
+                                }
                             }
                         }
                         else
                         {
-                            if (fileName.Equals(query, StringComparison.OrdinalIgnoreCase))
+                            if (caseSensitive)
                             {
-                                UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                if (fileName.Contains(query))
                                 {
-                                    ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                    addedItem.BackColor = objTextData.RowColor;
-                                });
+                                    UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                    {
+                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                        addedItem.BackColor = objTextData.RowColor;
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                if (fileName.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                                {
+                                    UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                    {
+                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                        addedItem.BackColor = objTextData.RowColor;
+                                    });
+                                }
                             }
                         }
                     }
-                    else
+                    else if (mode == 1) //File Content
                     {
-                        if (caseSensitive)
+                        if (fullMatch)
                         {
-                            if (fileName.Contains(query))
+                            if (caseSensitive)
                             {
-                                UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                if (language.Equals("All"))
                                 {
-                                    ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                    addedItem.BackColor = objTextData.RowColor;
-                                });
+                                    foreach (KeyValuePair<string, string> languageData in objTextData.Messages)
+                                    {
+                                        if (languageData.Value.Equals(query))
+                                        {
+                                            UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                            {
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                addedItem.BackColor = objTextData.RowColor;
+                                            });
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (objTextData.Messages.ContainsKey(language))
+                                    {
+                                        if (objTextData.Messages[language].Equals(query))
+                                        {
+                                            UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                            {
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                addedItem.BackColor = objTextData.RowColor;
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (language.Equals("All"))
+                                {
+                                    foreach (KeyValuePair<string, string> languageData in objTextData.Messages)
+                                    {
+                                        if (languageData.Value.Equals(query, StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                            {
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                addedItem.BackColor = objTextData.RowColor;
+                                            });
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (objTextData.Messages.ContainsKey(language))
+                                    {
+                                        if (objTextData.Messages[language].Equals(query, StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                            {
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                addedItem.BackColor = objTextData.RowColor;
+                                            });
+                                        }
+                                    }
+                                }
                             }
                         }
                         else
                         {
-                            if (fileName.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                            if (caseSensitive)
                             {
-                                UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                if (language.Equals("All"))
                                 {
-                                    ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                    addedItem.BackColor = objTextData.RowColor;
-                                });
+                                    foreach (KeyValuePair<string, string> languageData in objTextData.Messages)
+                                    {
+                                        if (languageData.Value.Contains(query))
+                                        {
+                                            UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                            {
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                addedItem.BackColor = objTextData.RowColor;
+                                            });
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (objTextData.Messages.ContainsKey(language))
+                                    {
+                                        if (objTextData.Messages[language].Contains(query))
+                                        {
+                                            UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                            {
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                addedItem.BackColor = objTextData.RowColor;
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (language.Equals("All"))
+                                {
+                                    foreach (KeyValuePair<string, string> languageData in objTextData.Messages)
+                                    {
+                                        if (languageData.Value.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                                        {
+                                            UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                            {
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                addedItem.BackColor = objTextData.RowColor;
+                                            });
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (objTextData.Messages.ContainsKey(language))
+                                    {
+                                        if (objTextData.Messages[language].IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                                        {
+                                            UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                            {
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                addedItem.BackColor = objTextData.RowColor;
+                                            });
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
+                    else if (mode == 2) //Categories
+                    {
+                        string[] categories = CommonFunctions.GetFlagsLabels(objTextData.textFlags).Split('|');
+                        if (fullMatch)
+                        {
+                            if (caseSensitive)
+                            {
+                                for (int j = 0; j < categories.Length; j++)
+                                {
+                                    if (categories[j].Equals(query))
+                                    {
+                                        UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                        {
+                                            ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
+                                            addedItem.BackColor = objTextData.RowColor;
+                                        });
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (int j = 0; j < categories.Length; j++)
+                                {
+                                    if (categories[j].Equals(query, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                        {
+                                            ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
+                                            addedItem.BackColor = objTextData.RowColor;
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (caseSensitive)
+                            {
+                                for (int j = 0; j < categories.Length; j++)
+                                {
+                                    if (categories[j].Contains(query))
+                                    {
+                                        UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                        {
+                                            ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
+                                            addedItem.BackColor = objTextData.RowColor;
+                                        });
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (int j = 0; j < categories.Length; j++)
+                                {
+                                    if (categories[j].IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                                    {
+                                        UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
+                                        {
+                                            ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
+                                            addedItem.BackColor = objTextData.RowColor;
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    UserControl_HashCodesTable.StatusLabel_TotalItems.Text = UserControl_HashCodesTable.ListView_HashCodes.Items.Count + " Items";
                 }
-                else if (mode == 1) //File Content
-                {
-                    if (fullMatch)
-                    {
-                        if (caseSensitive)
-                        {
-                            if (language.Equals("All"))
-                            {
-                                foreach (KeyValuePair<string, string> languageData in objTextData.Messages)
-                                {
-                                    if (languageData.Value.Equals(query))
-                                    {
-                                        UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
-                                        {
-                                            ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                            addedItem.BackColor = objTextData.RowColor;
-                                        });
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (objTextData.Messages.ContainsKey(language))
-                                {
-                                    if (objTextData.Messages[language].Equals(query))
-                                    {
-                                        UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
-                                        {
-                                            ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                            addedItem.BackColor = objTextData.RowColor;
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (language.Equals("All"))
-                            {
-                                foreach (KeyValuePair<string, string> languageData in objTextData.Messages)
-                                {
-                                    if (languageData.Value.Equals(query, StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
-                                        {
-                                            ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                            addedItem.BackColor = objTextData.RowColor;
-                                        });
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (objTextData.Messages.ContainsKey(language))
-                                {
-                                    if (objTextData.Messages[language].Equals(query, StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
-                                        {
-                                            ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                            addedItem.BackColor = objTextData.RowColor;
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (caseSensitive)
-                        {
-                            if (language.Equals("All"))
-                            {
-                                foreach (KeyValuePair<string, string> languageData in objTextData.Messages)
-                                {
-                                    if (languageData.Value.Contains(query))
-                                    {
-                                        UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
-                                        {
-                                            ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                            addedItem.BackColor = objTextData.RowColor;
-                                        });
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (objTextData.Messages.ContainsKey(language))
-                                {
-                                    if (objTextData.Messages[language].Contains(query))
-                                    {
-                                        UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
-                                        {
-                                            ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                            addedItem.BackColor = objTextData.RowColor;
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (language.Equals("All"))
-                            {
-                                foreach (KeyValuePair<string, string> languageData in objTextData.Messages)
-                                {
-                                    if (languageData.Value.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
-                                    {
-                                        UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
-                                        {
-                                            ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                            addedItem.BackColor = objTextData.RowColor;
-                                        });
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (objTextData.Messages.ContainsKey(language))
-                                {
-                                    if (objTextData.Messages[language].IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
-                                    {
-                                        UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
-                                        {
-                                            ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
-                                            addedItem.BackColor = objTextData.RowColor;
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (mode == 2) //Categories
-                {
-                    string[] categories = CommonFunctions.GetFlagsLabels(objTextData.textFlags).Split('|');
-                    if (fullMatch)
-                    {
-                        if (caseSensitive)
-                        {
-                            for (int j = 0; j < categories.Length; j++)
-                            {
-                                if (categories[j].Equals(query))
-                                {
-                                    UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
-                                    {
-                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
-                                        addedItem.BackColor = objTextData.RowColor;
-                                    });
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int j = 0; j < categories.Length; j++)
-                            {
-                                if (categories[j].Equals(query, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
-                                    {
-                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
-                                        addedItem.BackColor = objTextData.RowColor;
-                                    });
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (caseSensitive)
-                        {
-                            for (int j = 0; j < categories.Length; j++)
-                            {
-                                if (categories[j].Contains(query))
-                                {
-                                    UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
-                                    {
-                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
-                                        addedItem.BackColor = objTextData.RowColor;
-                                    });
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int j = 0; j < categories.Length; j++)
-                            {
-                                if (categories[j].IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
-                                {
-                                    UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
-                                    {
-                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
-                                        addedItem.BackColor = objTextData.RowColor;
-                                    });
-                                }
-                            }
-                        }
-                    }
-                }
-                UserControl_HashCodesTable.StatusLabel_TotalItems.Text = UserControl_HashCodesTable.ListView_HashCodes.Items.Count + " Items";
             }
 
         }
