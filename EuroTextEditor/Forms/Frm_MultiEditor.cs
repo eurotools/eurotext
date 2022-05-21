@@ -50,7 +50,7 @@ namespace EuroTextEditor
                     EuroText_TextFile objText = filesReader.ReadTextFile(textFilePath);
 
                     //Create new item
-                    ListViewItem item = new ListViewItem(new[] { Path.GetFileNameWithoutExtension(textFilePath), objText.OutputSection, objText.Group, "", });
+                    ListViewItem item = new ListViewItem(new[] { Path.GetFileNameWithoutExtension(textFilePath), string.Join(";", objText.OutputSection), objText.Group, "", });
                     for (int j = 0; j < GlobalVariables.CurrentProject.Languages.Count; j++)
                     {
                         string language = GlobalVariables.CurrentProject.Languages[j];
@@ -197,7 +197,7 @@ namespace EuroTextEditor
                 ListView_TextStore.BeginUpdate();
                 ListView_TextStore.SelectedItems[0].SubItems.Clear();
                 ListView_TextStore.SelectedItems[0].Text = Path.GetFileNameWithoutExtension(textFilePath);
-                ListView_TextStore.SelectedItems[0].SubItems.AddRange(new[] { objText.OutputSection, objText.Group, "", });
+                ListView_TextStore.SelectedItems[0].SubItems.AddRange(new[] { string.Join(";", objText.OutputSection), objText.Group, "", });
                 ListView_TextStore.SelectedItems[0].SubItems.AddRange(objText.Messages.Values.ToArray());
                 ListView_TextStore.EndUpdate();
             }

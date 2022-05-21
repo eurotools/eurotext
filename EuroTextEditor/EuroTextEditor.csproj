@@ -120,6 +120,12 @@
     <Compile Include="Editor\Frm_TextEditor_Multi.Designer.cs">
       <DependentUpon>Frm_TextEditor_Multi.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editor\Frm_TextOutputSections.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\Frm_TextOutputSections.Designer.cs">
+      <DependentUpon>Frm_TextOutputSections.cs</DependentUpon>
+    </Compile>
     <Compile Include="ETXML\Objects\EuroText_TextGroups.cs" />
     <Compile Include="Exporter\Frm_SpreadsheetExporter_ConfigSheet.cs">
       <SubType>Form</SubType>
@@ -319,6 +325,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Editor\Frm_TextEditor_Multi.resx">
       <DependentUpon>Frm_TextEditor_Multi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\Frm_TextOutputSections.resx">
+      <DependentUpon>Frm_TextOutputSections.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor\SubForms\Frm_HashCodesSelector.resx">
       <DependentUpon>Frm_HashCodesSelector.cs</DependentUpon>

@@ -32,9 +32,9 @@ namespace EuroTextEditor
         private void Frm_Splash_Shown(object sender, EventArgs e)
         {
             //Initialize forms
-            mainform.hashCodes = new Frm_ListBoxHashCodes(mainform.MenuItem_HashCodesForm);
             mainform.textSections = new Frm_ListBox_TextSections(mainform.MenuItem_TextSectionsForm, mainform.hashCodes);
             mainform.textGroups = new Frm_ListBox_TextGroups(mainform.MenuItem_TextGroupsForm, mainform.hashCodes);
+            mainform.hashCodes = new Frm_ListBoxHashCodes(mainform.MenuItem_HashCodesForm);
 
             //Check for ini file
             if (File.Exists(GlobalVariables.EuroTextIni))
@@ -79,9 +79,9 @@ namespace EuroTextEditor
                     mainform.Text = "EuroText: \"" + GlobalVariables.WorkingDirectory + "\"";
 
                     //Load content
-                    CommonFunctions.LoadEuroTextFiles(mainform.hashCodes.UserControl_HashCodesListView.ListView_HashCodes);
                     mainform.textGroups.ReadTextGroups();
                     mainform.textSections.LoadTextSections();
+                    CommonFunctions.LoadEuroTextFiles(mainform.hashCodes.UserControl_HashCodesListView.ListView_HashCodes);
                 }
                 else
                 {

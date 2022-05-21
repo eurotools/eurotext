@@ -147,7 +147,7 @@ namespace EuroTextEditor
                                 {
                                     UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
                                     {
-                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                                         addedItem.BackColor = objTextData.RowColor;
                                     });
                                 }
@@ -158,7 +158,7 @@ namespace EuroTextEditor
                                 {
                                     UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
                                     {
-                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                                         addedItem.BackColor = objTextData.RowColor;
                                     });
                                 }
@@ -172,7 +172,7 @@ namespace EuroTextEditor
                                 {
                                     UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
                                     {
-                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                                         addedItem.BackColor = objTextData.RowColor;
                                     });
                                 }
@@ -183,7 +183,7 @@ namespace EuroTextEditor
                                 {
                                     UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
                                     {
-                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                        ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                                         addedItem.BackColor = objTextData.RowColor;
                                     });
                                 }
@@ -204,7 +204,7 @@ namespace EuroTextEditor
                                         {
                                             UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
                                             {
-                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                                                 addedItem.BackColor = objTextData.RowColor;
                                             });
                                             break;
@@ -219,7 +219,7 @@ namespace EuroTextEditor
                                         {
                                             UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
                                             {
-                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                                                 addedItem.BackColor = objTextData.RowColor;
                                             });
                                         }
@@ -236,7 +236,7 @@ namespace EuroTextEditor
                                         {
                                             UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
                                             {
-                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                                                 addedItem.BackColor = objTextData.RowColor;
                                             });
                                             break;
@@ -251,7 +251,7 @@ namespace EuroTextEditor
                                         {
                                             UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
                                             {
-                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                                                 addedItem.BackColor = objTextData.RowColor;
                                             });
                                         }
@@ -271,7 +271,7 @@ namespace EuroTextEditor
                                         {
                                             UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
                                             {
-                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                                                 addedItem.BackColor = objTextData.RowColor;
                                             });
                                             break;
@@ -286,7 +286,7 @@ namespace EuroTextEditor
                                         {
                                             UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
                                             {
-                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                                                 addedItem.BackColor = objTextData.RowColor;
                                             });
                                         }
@@ -303,7 +303,7 @@ namespace EuroTextEditor
                                         {
                                             UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
                                             {
-                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                                                 addedItem.BackColor = objTextData.RowColor;
                                             });
                                             break;
@@ -318,7 +318,7 @@ namespace EuroTextEditor
                                         {
                                             UserControl_HashCodesTable.ListView_HashCodes.Invoke((MethodInvoker)delegate
                                             {
-                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, objTextData.Notes }));
+                                                ListViewItem addedItem = UserControl_HashCodesTable.ListView_HashCodes.Items.Add(new ListViewItem(new[] { fileName, objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
                                                 addedItem.BackColor = objTextData.RowColor;
                                             });
                                         }
@@ -395,6 +395,10 @@ namespace EuroTextEditor
                     }
                     UserControl_HashCodesTable.StatusLabel_TotalItems.Text = UserControl_HashCodesTable.ListView_HashCodes.Items.Count + " Items";
                 }
+            }
+            else
+            {
+                MessageBox.Show("Messages directory has not been found: " + messagesDirectory, "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Media;
@@ -86,7 +87,7 @@ namespace EuroTextEditor
                         EuroText_TextFile objText = filesReader.ReadTextFile(filesToAdd[i]);
 
                         //Add items
-                        if (objText.OutputSection.Equals(selectedSection, System.StringComparison.OrdinalIgnoreCase))
+                        if (Array.IndexOf(objText.OutputSection, selectedSection) >= 0)
                         {
                             hashCodesInThisGroup.Add(Path.GetFileName(filesToAdd[i]));
                         }

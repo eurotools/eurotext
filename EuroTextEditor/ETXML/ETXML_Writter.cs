@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Xml;
 
 namespace EuroTextEditor
@@ -15,6 +17,8 @@ namespace EuroTextEditor
         {
             try
             {
+                ETXML_Reader projectFileReader = new ETXML_Reader();
+
                 XmlWriterSettings settings = new XmlWriterSettings
                 {
                     Indent = true
@@ -37,7 +41,7 @@ namespace EuroTextEditor
                 textWriter.WriteEndElement();
                 textWriter.WriteStartElement("Properties");
                 textWriter.WriteElementString("Group", textObj.Group);
-                textWriter.WriteElementString("OutputSection", textObj.OutputSection);
+                textWriter.WriteElementString("OutputSection", string.Join(";", textObj.OutputSection));
                 textWriter.WriteElementString("MaxNumOfChars", textObj.MaxNumOfChars.ToString());
                 textWriter.WriteElementString("DeatText", textObj.DeadText.ToString());
                 textWriter.WriteEndElement();

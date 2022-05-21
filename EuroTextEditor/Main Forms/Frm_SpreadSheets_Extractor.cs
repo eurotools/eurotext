@@ -163,14 +163,16 @@ namespace EuroTextEditor
                                 case "MARKER_LEVEL_START":
                                     startPosition = markerObj.Value + 1;
                                     int numOfLevels = Markers["MARKER_LEVEL_END"] - (startPosition + 1);
+                                    List<string> outputSections = new List<string>();
                                     for (int i = 0; i < numOfLevels; i++)
                                     {
                                         string value = rowToInspect.Cells[startPosition + i].Value.ToString();
                                         if (!string.IsNullOrEmpty(value))
                                         {
-                                            textObj.OutputSection = DataGridView_ExcelSheet.Rows[1].Cells[startPosition + i].Value.ToString();
+                                            outputSections.Add(DataGridView_ExcelSheet.Rows[1].Cells[startPosition + i].Value.ToString());                                            
                                         }
                                     }
+                                    textObj.OutputSection = outputSections.ToArray();
                                     break;
                             }
                         }

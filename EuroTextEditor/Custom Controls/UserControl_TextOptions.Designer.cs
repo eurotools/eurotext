@@ -30,7 +30,7 @@ namespace EuroTextEditor.Custom_Controls
         private void InitializeComponent()
         {
             this.GroupBox_Settings = new System.Windows.Forms.GroupBox();
-            this.Combobox_OutputSection = new System.Windows.Forms.ComboBox();
+            this.Textbox_OutputSections = new System.Windows.Forms.TextBox();
             this.Label_OutputSection = new System.Windows.Forms.Label();
             this.Combobox_Group = new System.Windows.Forms.ComboBox();
             this.Label_TextGroup = new System.Windows.Forms.Label();
@@ -43,7 +43,7 @@ namespace EuroTextEditor.Custom_Controls
             // 
             // GroupBox_Settings
             // 
-            this.GroupBox_Settings.Controls.Add(this.Combobox_OutputSection);
+            this.GroupBox_Settings.Controls.Add(this.Textbox_OutputSections);
             this.GroupBox_Settings.Controls.Add(this.Label_OutputSection);
             this.GroupBox_Settings.Controls.Add(this.Combobox_Group);
             this.GroupBox_Settings.Controls.Add(this.Label_TextGroup);
@@ -58,18 +58,17 @@ namespace EuroTextEditor.Custom_Controls
             this.GroupBox_Settings.TabStop = false;
             this.GroupBox_Settings.Text = "Settings:";
             // 
-            // Combobox_OutputSection
+            // Textbox_OutputSections
             // 
-            this.Combobox_OutputSection.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.Textbox_OutputSections.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Combobox_OutputSection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Combobox_OutputSection.FormattingEnabled = true;
-            this.Combobox_OutputSection.Items.AddRange(new object[] {
-            ""});
-            this.Combobox_OutputSection.Location = new System.Drawing.Point(557, 13);
-            this.Combobox_OutputSection.Name = "Combobox_OutputSection";
-            this.Combobox_OutputSection.Size = new System.Drawing.Size(179, 21);
-            this.Combobox_OutputSection.TabIndex = 6;
+            this.Textbox_OutputSections.BackColor = System.Drawing.SystemColors.Window;
+            this.Textbox_OutputSections.Location = new System.Drawing.Point(557, 13);
+            this.Textbox_OutputSections.Name = "Textbox_OutputSections";
+            this.Textbox_OutputSections.ReadOnly = true;
+            this.Textbox_OutputSections.Size = new System.Drawing.Size(181, 20);
+            this.Textbox_OutputSections.TabIndex = 7;
+            this.Textbox_OutputSections.Click += new System.EventHandler(this.Textbox_OutputSections_Click);
             // 
             // Label_OutputSection
             // 
@@ -145,9 +144,9 @@ namespace EuroTextEditor.Custom_Controls
         private System.Windows.Forms.Label Label_OutputSection;
         private System.Windows.Forms.Label Label_TextGroup;
         private System.Windows.Forms.Label Label_MaxNumOfChars;
-        protected internal System.Windows.Forms.ComboBox Combobox_OutputSection;
         protected internal System.Windows.Forms.ComboBox Combobox_Group;
         protected internal System.Windows.Forms.CheckBox CheckBox_TextDead;
         protected internal System.Windows.Forms.NumericUpDown Numeric_MaxChars;
+        protected internal System.Windows.Forms.TextBox Textbox_OutputSections;
     }
 }

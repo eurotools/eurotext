@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -72,7 +74,7 @@ namespace EuroTextEditor
                             textObject.Group = node.InnerText;
                             break;
                         case "OutputSection":
-                            textObject.OutputSection = node.InnerText;
+                            textObject.OutputSection = node.InnerText.Split(';');
                             break;
                         case "MaxNumOfChars":
                             textObject.MaxNumOfChars = Convert.ToInt32(node.InnerText);

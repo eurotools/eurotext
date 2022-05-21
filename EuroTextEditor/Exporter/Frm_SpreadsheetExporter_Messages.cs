@@ -646,7 +646,7 @@ namespace EuroTextEditor
                 EuroText_TextFile textObj = textReader.ReadTextFile(messagesToPrint[i]);
                 textObj.HashCode = Path.GetFileNameWithoutExtension(messagesToPrint[i]);
 
-                if (!hashcodesWithNoSection && string.IsNullOrEmpty(textObj.OutputSection))
+                if (!hashcodesWithNoSection && textObj.OutputSection.Length == 0)
                 {
                     continue;
                 }
@@ -751,14 +751,17 @@ namespace EuroTextEditor
                             PrintColorsSection(ref lastColIndex, outLevels, orangeLightBackground, colorsLevels, headerRow);
 
                             //Set bit to the output group
-                            if (!string.IsNullOrEmpty(textObj.OutputSection))
+                            if (textObj.OutputSection.Length > 0)
                             {
-                                int bitPosition = Array.IndexOf(textSections, textObj.OutputSection);
-                                int colIndex = 7 + GlobalVariables.CurrentProject.Languages.Count + bitPosition;
-                                ICell textSectionCell = headerRow.GetCell(colIndex);
-                                if (textSectionCell != null)
+                                for (int x = 0; x < textObj.OutputSection.Length; x++)
                                 {
-                                    textSectionCell.SetCellValue(1);
+                                    int bitPosition = Array.IndexOf(textSections, textObj.OutputSection[x]);
+                                    int colIndex = 7 + GlobalVariables.CurrentProject.Languages.Count + bitPosition;
+                                    ICell textSectionCell = headerRow.GetCell(colIndex);
+                                    if (textSectionCell != null)
+                                    {
+                                        textSectionCell.SetCellValue(1);
+                                    }
                                 }
                             }
 

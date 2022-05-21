@@ -38,7 +38,7 @@ namespace EuroTextEditor
 
                 //Group and Output Section
                 userControl_TextOptions1.Combobox_Group.SelectedItem = objText.Group;
-                userControl_TextOptions1.Combobox_OutputSection.SelectedValue = objText.OutputSection;
+                userControl_TextOptions1.Textbox_OutputSections.Text = string.Join(";", objText.OutputSection);
 
                 //Others
                 userControl_TextOptions1.CheckBox_TextDead.Checked = Convert.ToBoolean(objText.DeadText);
@@ -76,14 +76,11 @@ namespace EuroTextEditor
                 {
                     objText.Group = userControl_TextOptions1.Combobox_Group.SelectedItem.ToString();
                 }
-                if (userControl_TextOptions1.Combobox_OutputSection.SelectedValue != null)
-                {
-                    objText.OutputSection = userControl_TextOptions1.Combobox_OutputSection.SelectedValue.ToString();
-                }
 
                 //Others
                 objText.DeadText = Convert.ToInt32(userControl_TextOptions1.CheckBox_TextDead.Checked);
                 objText.MaxNumOfChars = (int)userControl_TextOptions1.Numeric_MaxChars.Value;
+                objText.OutputSection = userControl_TextOptions1.Textbox_OutputSections.Text.Split(';');
 
                 //Update properties and listview
                 objText.LastModified = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");

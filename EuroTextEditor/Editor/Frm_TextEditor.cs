@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -35,10 +36,19 @@ namespace EuroTextEditor
             //New object
             ETXML_Reader filesReader = new ETXML_Reader();
             objText = filesReader.ReadTextFile(filePath);
+            EuroText_TextSections sectionsFileText = filesReader.ReadTextSectionsFile(Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf"));
 
             //Group and Output Section
             UserControl_TextOptions.Combobox_Group.SelectedItem = objText.Group;
-            UserControl_TextOptions.Combobox_OutputSection.SelectedValue = objText.OutputSection;
+            List<string> outputSections = new List<string>();
+            for (int i = 0; i < objText.OutputSection.Length; i++)
+            {
+                if (sectionsFileText.TextSections.ContainsKey(objText.OutputSection[i]))
+                {
+                    outputSections.Add(sectionsFileText.TextSections[objText.OutputSection[i]]);
+                }
+            }
+            UserControl_TextOptions.Textbox_OutputSections.Text = string.Join(";", outputSections.ToArray());
 
             //Others
             UserControl_TextOptions.CheckBox_TextDead.Checked = Convert.ToBoolean(objText.DeadText);
@@ -197,6 +207,10 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void SaveFile()
         {
+            ETXML_Reader filesReader = new ETXML_Reader();
+            string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
+            EuroText_TextSections sectionsFileText = filesReader.ReadTextSectionsFile(textSectionsFilePath);
+
             //Update text
             for (int i = 0; i < languageEditors.Count; i++)
             {
@@ -227,14 +241,16 @@ namespace EuroTextEditor
             {
                 objText.Group = UserControl_TextOptions.Combobox_Group.SelectedItem.ToString();
             }
-            if (UserControl_TextOptions.Combobox_OutputSection.SelectedValue != null)
-            {
-                objText.OutputSection = UserControl_TextOptions.Combobox_OutputSection.SelectedValue.ToString();
-            }
 
             //Others
             objText.DeadText = Convert.ToInt32(UserControl_TextOptions.CheckBox_TextDead.Checked);
             objText.MaxNumOfChars = (int)UserControl_TextOptions.Numeric_MaxChars.Value;
+            string[] outputSections = UserControl_TextOptions.Textbox_OutputSections.Text.Split(';');
+            objText.OutputSection = new string[outputSections.Length];
+            for (int i = 0; i < outputSections.Length; i++)
+            {
+                objText.OutputSection[i] = sectionsFileText.TextSections.FirstOrDefault(x => x.Value == outputSections[i]).Key;
+            }
 
             //Update properties and listview
             objText.LastModified = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
@@ -242,7 +258,6 @@ namespace EuroTextEditor
             listViewItemMainForm.SubItems[3].Text = objText.LastModified;
             listViewItemMainForm.SubItems[4].Text = objText.LastModifiedBy;
             listViewItemMainForm.SubItems[6].Text = objText.Notes;
-
 
             //Sync listviews
             if (parentFormToSync != null)

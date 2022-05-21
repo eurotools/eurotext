@@ -34,21 +34,15 @@ namespace EuroTextEditor.Custom_Controls
                     Combobox_Group.SelectedIndex = 0;
                 }
             }
+        }
 
-            //Get all output levels and sections
-            string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
-            if (File.Exists(textSectionsFilePath))
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Textbox_OutputSections_Click(object sender, EventArgs e)
+        {
+            Frm_TextOutputSections outputSectionsEditor = new Frm_TextOutputSections(Textbox_OutputSections.Text.Split(';'));
+            if (outputSectionsEditor.ShowDialog() == DialogResult.OK)
             {
-                ETXML_Reader projectFileReader = new ETXML_Reader();
-                EuroText_TextSections sectionsFileText = projectFileReader.ReadTextSectionsFile(textSectionsFilePath);
-                Dictionary<string, string> sectionsAndLevels = new Dictionary<string, string> { { "", "" } };
-                foreach (KeyValuePair<string, string> entry in sectionsFileText.TextSections)
-                {
-                    sectionsAndLevels.Add(entry.Key, entry.Value);
-                }
-                Combobox_OutputSection.DataSource = new BindingSource(sectionsAndLevels, null);
-                Combobox_OutputSection.DisplayMember = "Value";
-                Combobox_OutputSection.ValueMember = "Key";
+                Textbox_OutputSections.Text = outputSectionsEditor.selectedSections;
             }
         }
     }
