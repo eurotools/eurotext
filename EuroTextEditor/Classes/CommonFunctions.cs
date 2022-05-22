@@ -165,9 +165,9 @@ namespace EuroTextEditor
         internal static string GetFlagsLabels(int flags)
         {
             string flagsLabels = "";
-            for(int i = 0; i < 16; i++)
+            for (int i = 0; i < 16; i++)
             {
-                if(Convert.ToBoolean((flags >> i) & 1))
+                if (Convert.ToBoolean((flags >> i) & 1))
                 {
                     flagsLabels += GlobalVariables.CurrentProject.Categories[i] + " | ";
                 }

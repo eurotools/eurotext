@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EuroTextEditor
@@ -73,7 +67,7 @@ namespace EuroTextEditor
         {
             bool includeInAllSections = false;
             List<string> sectionsToMerge = new List<string>();
-            for(int i = 0; i <ListBox_OutputSections.Items.Count; i++)
+            for (int i = 0; i < ListBox_OutputSections.Items.Count; i++)
             {
                 string currentItem = ListBox_OutputSections.Items[i].ToString();
                 if (currentItem.Equals("Output For All Levels", StringComparison.OrdinalIgnoreCase))
@@ -83,7 +77,7 @@ namespace EuroTextEditor
                 }
                 sectionsToMerge.Add(currentItem);
             }
-            
+
             if (!includeInAllSections)
             {
                 selectedSections = string.Join(";", sectionsToMerge);

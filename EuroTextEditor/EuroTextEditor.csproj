@@ -126,6 +126,30 @@
     <Compile Include="Editor\Frm_TextOutputSections.Designer.cs">
       <DependentUpon>Frm_TextOutputSections.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editor\SubForms\Frm_Fountain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\SubForms\Frm_Fountain.Designer.cs">
+      <DependentUpon>Frm_Fountain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\SubForms\Frm_ShakeyText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\SubForms\Frm_ShakeyText.Designer.cs">
+      <DependentUpon>Frm_ShakeyText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\SubForms\Frm_SineWave.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\SubForms\Frm_SineWave.Designer.cs">
+      <DependentUpon>Frm_SineWave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\SubForms\Frm_TextCarrot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\SubForms\Frm_TextCarrot.Designer.cs">
+      <DependentUpon>Frm_TextCarrot.cs</DependentUpon>
+    </Compile>
     <Compile Include="ETXML\Objects\EuroText_TextGroups.cs" />
     <Compile Include="Exporter\Frm_SpreadsheetExporter_ConfigSheet.cs">
       <SubType>Form</SubType>
@@ -329,11 +353,23 @@
     <EmbeddedResource Include="Editor\Frm_TextOutputSections.resx">
       <DependentUpon>Frm_TextOutputSections.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Editor\SubForms\Frm_Fountain.resx">
+      <DependentUpon>Frm_Fountain.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Editor\SubForms\Frm_HashCodesSelector.resx">
       <DependentUpon>Frm_HashCodesSelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor\SubForms\Frm_InsertIcon.resx">
       <DependentUpon>Frm_InsertIcon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\SubForms\Frm_ShakeyText.resx">
+      <DependentUpon>Frm_ShakeyText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\SubForms\Frm_SineWave.resx">
+      <DependentUpon>Frm_SineWave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\SubForms\Frm_TextCarrot.resx">
+      <DependentUpon>Frm_TextCarrot.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor\SubForms\Frm_TextEditor_Buttons.resx">
       <DependentUpon>Frm_TextEditor_Buttons.cs</DependentUpon>

@@ -169,7 +169,7 @@ namespace EuroTextEditor
                                         string value = rowToInspect.Cells[startPosition + i].Value.ToString();
                                         if (!string.IsNullOrEmpty(value))
                                         {
-                                            outputSections.Add(DataGridView_ExcelSheet.Rows[1].Cells[startPosition + i].Value.ToString());                                            
+                                            outputSections.Add(DataGridView_ExcelSheet.Rows[1].Cells[startPosition + i].Value.ToString());
                                         }
                                     }
                                     textObj.OutputSection = outputSections.ToArray();

@@ -339,6 +339,12 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         //  TOOLBAR 1 - EFFECTS MENU
         //-------------------------------------------------------------------------------------------
+        private void MenuItem_Fountain_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_EffectString_Click(object sender, EventArgs e)
         {
             if (File.Exists(Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h")))
@@ -361,6 +367,46 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_SineWave_Click(object sender, EventArgs e)
+        {
+            Frm_SineWave selector = new Frm_SineWave();
+            if (selector.ShowDialog() == DialogResult.OK)
+            {
+                string replacedText;
+                if (Textbox.SelectedText.Length > 0)
+                {
+                    replacedText = string.Format("{0}{1}{2}", selector.fadeInEffect, Textbox.SelectedText, "<END SW>");
+                }
+                else
+                {
+                    replacedText = string.Join("", selector.fadeInEffect, Textbox.SelectedText);
+                }
+
+                Textbox.SelectedText = replacedText;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_ShakeyText_Click(object sender, EventArgs e)
+        {
+            Frm_ShakeyText selector = new Frm_ShakeyText();
+            if (selector.ShowDialog() == DialogResult.OK)
+            {
+                string replacedText;
+                if (Textbox.SelectedText.Length > 0)
+                {
+                    replacedText = string.Format("{0}{1}{2}", selector.fadeInEffect, Textbox.SelectedText, "<END ST>");
+                }
+                else
+                {
+                    replacedText = string.Join("", selector.fadeInEffect, Textbox.SelectedText);
+                }
+
+                Textbox.SelectedText = replacedText;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_FadeIn_Click(object sender, EventArgs e)
         {
             Frm_FadeIn selector = new Frm_FadeIn();
@@ -378,6 +424,12 @@ namespace EuroTextEditor
 
                 Textbox.SelectedText = replacedText;
             }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_EnsureFastEffect_Click(object sender, EventArgs e)
+        {
+            Textbox.SelectedText = string.Join("", "<EFF>", Textbox.SelectedText);
         }
 
         //-------------------------------------------------------------------------------------------
@@ -459,15 +511,20 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_EFF_Click(object sender, EventArgs e)
-        {
-            Textbox.SelectedText = string.Join("", "<EFF>", Textbox.SelectedText);
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_EPO_Click(object sender, EventArgs e)
         {
             Textbox.SelectedText = string.Join("", "<EPO>", Textbox.SelectedText);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_TextCarrot_Click(object sender, EventArgs e)
+        {
+            Frm_TextCarrot selector = new Frm_TextCarrot();
+            if (selector.ShowDialog() == DialogResult.OK)
+            {
+                string replacedText = string.Join("", selector.carrotText, Textbox.SelectedText);
+                Textbox.SelectedText = replacedText;
+            }
         }
 
         //-------------------------------------------------------------------------------------------

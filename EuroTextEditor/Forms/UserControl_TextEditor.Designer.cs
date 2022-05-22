@@ -32,31 +32,34 @@ namespace EuroTextEditor
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControl_TextEditor));
             this.Toolbar1 = new System.Windows.Forms.ToolStrip();
             this.DropDown_Insert = new System.Windows.Forms.ToolStripDropDownButton();
-            this.MenuItem_ExitButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_PageDownButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_InsertButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_LessThan = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_MoreThan = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Tab = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_ExitButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_InsertButton = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_NewLine = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_LessThan = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_InsertTextString = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_MoreThan = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_PageDownButton = new System.Windows.Forms.ToolStripMenuItem();
             this.DropDown_Icons = new System.Windows.Forms.ToolStripDropDownButton();
             this.MenuItem_ItemIcon = new System.Windows.Forms.ToolStripMenuItem();
             this.DropDown_Button = new System.Windows.Forms.ToolStripDropDownButton();
-            this.MenuItem_FontColour = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_FontType = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_FontColour = new System.Windows.Forms.ToolStripMenuItem();
             this.DropDown_Effect = new System.Windows.Forms.ToolStripDropDownButton();
-            this.MenuItem_EffectString = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_FadeIn = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_Fountain = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_SineWave = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_ShakeyText = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_EffectString = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_EnsureFastEffect = new System.Windows.Forms.ToolStripMenuItem();
             this.DropDown_GamePad = new System.Windows.Forms.ToolStripDropDownButton();
+            this.MenuItem_ShowGamePadButton = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_DisableGamepad = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_StopGamepad = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_ShowGamePadButton = new System.Windows.Forms.ToolStripMenuItem();
             this.DropDown_Others = new System.Windows.Forms.ToolStripDropDownButton();
-            this.MenuItem_CenterText = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_ShowObjective = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Wait = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_EFF = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_ShowObjective = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_CenterText = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_EPO = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolButton_TimerTest = new System.Windows.Forms.ToolStripButton();
             this.ToolButton_Preview = new System.Windows.Forms.ToolStripButton();
@@ -91,6 +94,7 @@ namespace EuroTextEditor
             this.MenuItem_SelectAll = new System.Windows.Forms.MenuItem();
             this.MenuItem_Separator2 = new System.Windows.Forms.MenuItem();
             this.MenuItem_Font = new System.Windows.Forms.MenuItem();
+            this.MenuItem_TextCarrot = new System.Windows.Forms.ToolStripMenuItem();
             this.Toolbar1.SuspendLayout();
             this.Toolbar2.SuspendLayout();
             this.SuspendLayout();
@@ -116,54 +120,19 @@ namespace EuroTextEditor
             // 
             this.DropDown_Insert.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.DropDown_Insert.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItem_ExitButton,
-            this.MenuItem_PageDownButton,
-            this.MenuItem_InsertButton,
-            this.MenuItem_LessThan,
-            this.MenuItem_MoreThan,
             this.MenuItem_Tab,
+            this.MenuItem_ExitButton,
+            this.MenuItem_InsertButton,
             this.MenuItem_NewLine,
-            this.MenuItem_InsertTextString});
+            this.MenuItem_LessThan,
+            this.MenuItem_InsertTextString,
+            this.MenuItem_MoreThan,
+            this.MenuItem_PageDownButton});
             this.DropDown_Insert.Image = ((System.Drawing.Image)(resources.GetObject("DropDown_Insert.Image")));
             this.DropDown_Insert.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DropDown_Insert.Name = "DropDown_Insert";
             this.DropDown_Insert.Size = new System.Drawing.Size(49, 22);
             this.DropDown_Insert.Text = "Insert";
-            // 
-            // MenuItem_ExitButton
-            // 
-            this.MenuItem_ExitButton.Name = "MenuItem_ExitButton";
-            this.MenuItem_ExitButton.Size = new System.Drawing.Size(173, 22);
-            this.MenuItem_ExitButton.Text = "Exit Button";
-            this.MenuItem_ExitButton.Click += new System.EventHandler(this.MenuItem_ExitButton_Click);
-            // 
-            // MenuItem_PageDownButton
-            // 
-            this.MenuItem_PageDownButton.Name = "MenuItem_PageDownButton";
-            this.MenuItem_PageDownButton.Size = new System.Drawing.Size(173, 22);
-            this.MenuItem_PageDownButton.Text = "Page Down Button";
-            this.MenuItem_PageDownButton.Click += new System.EventHandler(this.MenuItem_PageDownButton_Click);
-            // 
-            // MenuItem_InsertButton
-            // 
-            this.MenuItem_InsertButton.Name = "MenuItem_InsertButton";
-            this.MenuItem_InsertButton.Size = new System.Drawing.Size(173, 22);
-            this.MenuItem_InsertButton.Text = "Insert Button";
-            this.MenuItem_InsertButton.Click += new System.EventHandler(this.MenuItem_InsertButton_Click);
-            // 
-            // MenuItem_LessThan
-            // 
-            this.MenuItem_LessThan.Name = "MenuItem_LessThan";
-            this.MenuItem_LessThan.Size = new System.Drawing.Size(173, 22);
-            this.MenuItem_LessThan.Text = "Insert Less Than";
-            this.MenuItem_LessThan.Click += new System.EventHandler(this.MenuItem_LessThan_Click);
-            // 
-            // MenuItem_MoreThan
-            // 
-            this.MenuItem_MoreThan.Name = "MenuItem_MoreThan";
-            this.MenuItem_MoreThan.Size = new System.Drawing.Size(173, 22);
-            this.MenuItem_MoreThan.Text = "Insert More Than";
-            this.MenuItem_MoreThan.Click += new System.EventHandler(this.MenuItem_MoreThan_Click);
             // 
             // MenuItem_Tab
             // 
@@ -172,6 +141,20 @@ namespace EuroTextEditor
             this.MenuItem_Tab.Text = "Insert Tab";
             this.MenuItem_Tab.Click += new System.EventHandler(this.MenuItem_Tab_Click);
             // 
+            // MenuItem_ExitButton
+            // 
+            this.MenuItem_ExitButton.Name = "MenuItem_ExitButton";
+            this.MenuItem_ExitButton.Size = new System.Drawing.Size(173, 22);
+            this.MenuItem_ExitButton.Text = "Exit Button";
+            this.MenuItem_ExitButton.Click += new System.EventHandler(this.MenuItem_ExitButton_Click);
+            // 
+            // MenuItem_InsertButton
+            // 
+            this.MenuItem_InsertButton.Name = "MenuItem_InsertButton";
+            this.MenuItem_InsertButton.Size = new System.Drawing.Size(173, 22);
+            this.MenuItem_InsertButton.Text = "Insert Button";
+            this.MenuItem_InsertButton.Click += new System.EventHandler(this.MenuItem_InsertButton_Click);
+            // 
             // MenuItem_NewLine
             // 
             this.MenuItem_NewLine.Name = "MenuItem_NewLine";
@@ -179,12 +162,33 @@ namespace EuroTextEditor
             this.MenuItem_NewLine.Text = "Insert New Line";
             this.MenuItem_NewLine.Click += new System.EventHandler(this.MenuItem_NewLine_Click);
             // 
+            // MenuItem_LessThan
+            // 
+            this.MenuItem_LessThan.Name = "MenuItem_LessThan";
+            this.MenuItem_LessThan.Size = new System.Drawing.Size(173, 22);
+            this.MenuItem_LessThan.Text = "Insert Less Than";
+            this.MenuItem_LessThan.Click += new System.EventHandler(this.MenuItem_LessThan_Click);
+            // 
             // MenuItem_InsertTextString
             // 
             this.MenuItem_InsertTextString.Name = "MenuItem_InsertTextString";
             this.MenuItem_InsertTextString.Size = new System.Drawing.Size(173, 22);
             this.MenuItem_InsertTextString.Text = "Insert Text String";
             this.MenuItem_InsertTextString.Click += new System.EventHandler(this.MenuItem_InsertTextString_Click);
+            // 
+            // MenuItem_MoreThan
+            // 
+            this.MenuItem_MoreThan.Name = "MenuItem_MoreThan";
+            this.MenuItem_MoreThan.Size = new System.Drawing.Size(173, 22);
+            this.MenuItem_MoreThan.Text = "Insert More Than";
+            this.MenuItem_MoreThan.Click += new System.EventHandler(this.MenuItem_MoreThan_Click);
+            // 
+            // MenuItem_PageDownButton
+            // 
+            this.MenuItem_PageDownButton.Name = "MenuItem_PageDownButton";
+            this.MenuItem_PageDownButton.Size = new System.Drawing.Size(173, 22);
+            this.MenuItem_PageDownButton.Text = "Page Down Button";
+            this.MenuItem_PageDownButton.Click += new System.EventHandler(this.MenuItem_PageDownButton_Click);
             // 
             // DropDown_Icons
             // 
@@ -208,20 +212,13 @@ namespace EuroTextEditor
             // 
             this.DropDown_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.DropDown_Button.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItem_FontColour,
-            this.MenuItem_FontType});
+            this.MenuItem_FontType,
+            this.MenuItem_FontColour});
             this.DropDown_Button.Image = ((System.Drawing.Image)(resources.GetObject("DropDown_Button.Image")));
             this.DropDown_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DropDown_Button.Name = "DropDown_Button";
             this.DropDown_Button.Size = new System.Drawing.Size(44, 22);
             this.DropDown_Button.Text = "Font";
-            // 
-            // MenuItem_FontColour
-            // 
-            this.MenuItem_FontColour.Name = "MenuItem_FontColour";
-            this.MenuItem_FontColour.Size = new System.Drawing.Size(137, 22);
-            this.MenuItem_FontColour.Text = "Font Colour";
-            this.MenuItem_FontColour.Click += new System.EventHandler(this.MenuItem_FontColour_Click);
             // 
             // MenuItem_FontType
             // 
@@ -230,44 +227,90 @@ namespace EuroTextEditor
             this.MenuItem_FontType.Text = "Font Type";
             this.MenuItem_FontType.Click += new System.EventHandler(this.MenuItem_FontType_Click);
             // 
+            // MenuItem_FontColour
+            // 
+            this.MenuItem_FontColour.Name = "MenuItem_FontColour";
+            this.MenuItem_FontColour.Size = new System.Drawing.Size(137, 22);
+            this.MenuItem_FontColour.Text = "Font Colour";
+            this.MenuItem_FontColour.Click += new System.EventHandler(this.MenuItem_FontColour_Click);
+            // 
             // DropDown_Effect
             // 
             this.DropDown_Effect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.DropDown_Effect.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItem_FadeIn,
+            this.MenuItem_Fountain,
+            this.MenuItem_SineWave,
+            this.MenuItem_ShakeyText,
             this.MenuItem_EffectString,
-            this.MenuItem_FadeIn});
+            this.MenuItem_EnsureFastEffect});
             this.DropDown_Effect.Image = ((System.Drawing.Image)(resources.GetObject("DropDown_Effect.Image")));
             this.DropDown_Effect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DropDown_Effect.Name = "DropDown_Effect";
             this.DropDown_Effect.Size = new System.Drawing.Size(55, 22);
             this.DropDown_Effect.Text = "Effects";
             // 
-            // MenuItem_EffectString
-            // 
-            this.MenuItem_EffectString.Name = "MenuItem_EffectString";
-            this.MenuItem_EffectString.Size = new System.Drawing.Size(180, 22);
-            this.MenuItem_EffectString.Text = "Do Text Effect String";
-            this.MenuItem_EffectString.Click += new System.EventHandler(this.MenuItem_EffectString_Click);
-            // 
             // MenuItem_FadeIn
             // 
             this.MenuItem_FadeIn.Name = "MenuItem_FadeIn";
-            this.MenuItem_FadeIn.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_FadeIn.Size = new System.Drawing.Size(222, 22);
             this.MenuItem_FadeIn.Text = "Fade In";
             this.MenuItem_FadeIn.Click += new System.EventHandler(this.MenuItem_FadeIn_Click);
+            // 
+            // MenuItem_Fountain
+            // 
+            this.MenuItem_Fountain.Name = "MenuItem_Fountain";
+            this.MenuItem_Fountain.Size = new System.Drawing.Size(222, 22);
+            this.MenuItem_Fountain.Text = "Fountain";
+            this.MenuItem_Fountain.Click += new System.EventHandler(this.MenuItem_Fountain_Click);
+            // 
+            // MenuItem_SineWave
+            // 
+            this.MenuItem_SineWave.Name = "MenuItem_SineWave";
+            this.MenuItem_SineWave.Size = new System.Drawing.Size(222, 22);
+            this.MenuItem_SineWave.Text = "Sine Wave";
+            this.MenuItem_SineWave.Click += new System.EventHandler(this.MenuItem_SineWave_Click);
+            // 
+            // MenuItem_ShakeyText
+            // 
+            this.MenuItem_ShakeyText.Name = "MenuItem_ShakeyText";
+            this.MenuItem_ShakeyText.Size = new System.Drawing.Size(222, 22);
+            this.MenuItem_ShakeyText.Text = "Shakey Text";
+            this.MenuItem_ShakeyText.Click += new System.EventHandler(this.MenuItem_ShakeyText_Click);
+            // 
+            // MenuItem_EffectString
+            // 
+            this.MenuItem_EffectString.Name = "MenuItem_EffectString";
+            this.MenuItem_EffectString.Size = new System.Drawing.Size(222, 22);
+            this.MenuItem_EffectString.Text = "Do Text Effect String";
+            this.MenuItem_EffectString.Click += new System.EventHandler(this.MenuItem_EffectString_Click);
+            // 
+            // MenuItem_EnsureFastEffect
+            // 
+            this.MenuItem_EnsureFastEffect.Name = "MenuItem_EnsureFastEffect";
+            this.MenuItem_EnsureFastEffect.Size = new System.Drawing.Size(222, 22);
+            this.MenuItem_EnsureFastEffect.Text = "Ensure Fast Effect is Enabled";
+            this.MenuItem_EnsureFastEffect.Click += new System.EventHandler(this.MenuItem_EnsureFastEffect_Click);
             // 
             // DropDown_GamePad
             // 
             this.DropDown_GamePad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.DropDown_GamePad.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItem_ShowGamePadButton,
             this.MenuItem_DisableGamepad,
-            this.MenuItem_StopGamepad,
-            this.MenuItem_ShowGamePadButton});
+            this.MenuItem_StopGamepad});
             this.DropDown_GamePad.Image = ((System.Drawing.Image)(resources.GetObject("DropDown_GamePad.Image")));
             this.DropDown_GamePad.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DropDown_GamePad.Name = "DropDown_GamePad";
             this.DropDown_GamePad.Size = new System.Drawing.Size(71, 22);
             this.DropDown_GamePad.Text = "Gamepad";
+            // 
+            // MenuItem_ShowGamePadButton
+            // 
+            this.MenuItem_ShowGamePadButton.Name = "MenuItem_ShowGamePadButton";
+            this.MenuItem_ShowGamePadButton.Size = new System.Drawing.Size(227, 22);
+            this.MenuItem_ShowGamePadButton.Text = "Show Gamepad Button";
+            this.MenuItem_ShowGamePadButton.Click += new System.EventHandler(this.MenuItem_ShowGamePadButton_Click);
             // 
             // MenuItem_DisableGamepad
             // 
@@ -283,21 +326,14 @@ namespace EuroTextEditor
             this.MenuItem_StopGamepad.Text = "Stop Gamepad Being Hidden";
             this.MenuItem_StopGamepad.Click += new System.EventHandler(this.MenuItem_StopGamepad_Click);
             // 
-            // MenuItem_ShowGamePadButton
-            // 
-            this.MenuItem_ShowGamePadButton.Name = "MenuItem_ShowGamePadButton";
-            this.MenuItem_ShowGamePadButton.Size = new System.Drawing.Size(227, 22);
-            this.MenuItem_ShowGamePadButton.Text = "Show Gamepad Button";
-            this.MenuItem_ShowGamePadButton.Click += new System.EventHandler(this.MenuItem_ShowGamePadButton_Click);
-            // 
             // DropDown_Others
             // 
             this.DropDown_Others.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.DropDown_Others.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItem_CenterText,
-            this.MenuItem_ShowObjective,
             this.MenuItem_Wait,
-            this.MenuItem_EFF,
+            this.MenuItem_ShowObjective,
+            this.MenuItem_TextCarrot,
+            this.MenuItem_CenterText,
             this.MenuItem_EPO});
             this.DropDown_Others.Image = ((System.Drawing.Image)(resources.GetObject("DropDown_Others.Image")));
             this.DropDown_Others.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -305,38 +341,31 @@ namespace EuroTextEditor
             this.DropDown_Others.Size = new System.Drawing.Size(55, 22);
             this.DropDown_Others.Text = "Others";
             // 
-            // MenuItem_CenterText
+            // MenuItem_Wait
             // 
-            this.MenuItem_CenterText.Name = "MenuItem_CenterText";
-            this.MenuItem_CenterText.Size = new System.Drawing.Size(246, 22);
-            this.MenuItem_CenterText.Text = "Central justification of text";
-            this.MenuItem_CenterText.Click += new System.EventHandler(this.MenuItem_CenterText_Click);
+            this.MenuItem_Wait.Name = "MenuItem_Wait";
+            this.MenuItem_Wait.Size = new System.Drawing.Size(230, 22);
+            this.MenuItem_Wait.Text = "Wait";
+            this.MenuItem_Wait.Click += new System.EventHandler(this.MenuItem_Wait_Click);
             // 
             // MenuItem_ShowObjective
             // 
             this.MenuItem_ShowObjective.Name = "MenuItem_ShowObjective";
-            this.MenuItem_ShowObjective.Size = new System.Drawing.Size(246, 22);
+            this.MenuItem_ShowObjective.Size = new System.Drawing.Size(230, 22);
             this.MenuItem_ShowObjective.Text = "Show Objective";
             this.MenuItem_ShowObjective.Click += new System.EventHandler(this.MenuItem_ShowObjective_Click);
             // 
-            // MenuItem_Wait
+            // MenuItem_CenterText
             // 
-            this.MenuItem_Wait.Name = "MenuItem_Wait";
-            this.MenuItem_Wait.Size = new System.Drawing.Size(246, 22);
-            this.MenuItem_Wait.Text = "Wait";
-            this.MenuItem_Wait.Click += new System.EventHandler(this.MenuItem_Wait_Click);
-            // 
-            // MenuItem_EFF
-            // 
-            this.MenuItem_EFF.Name = "MenuItem_EFF";
-            this.MenuItem_EFF.Size = new System.Drawing.Size(246, 22);
-            this.MenuItem_EFF.Text = "Ensure that Fast Effect is Enabled";
-            this.MenuItem_EFF.Click += new System.EventHandler(this.MenuItem_EFF_Click);
+            this.MenuItem_CenterText.Name = "MenuItem_CenterText";
+            this.MenuItem_CenterText.Size = new System.Drawing.Size(230, 22);
+            this.MenuItem_CenterText.Text = "Central justification of text";
+            this.MenuItem_CenterText.Click += new System.EventHandler(this.MenuItem_CenterText_Click);
             // 
             // MenuItem_EPO
             // 
             this.MenuItem_EPO.Name = "MenuItem_EPO";
-            this.MenuItem_EPO.Size = new System.Drawing.Size(246, 22);
+            this.MenuItem_EPO.Size = new System.Drawing.Size(230, 22);
             this.MenuItem_EPO.Text = "Enable Page Buttons Override";
             this.MenuItem_EPO.Click += new System.EventHandler(this.MenuItem_EPO_Click);
             // 
@@ -606,6 +635,13 @@ namespace EuroTextEditor
             this.MenuItem_Font.Text = "Font";
             this.MenuItem_Font.Click += new System.EventHandler(this.MenuItem_Font_Click);
             // 
+            // MenuItem_TextCarrot
+            // 
+            this.MenuItem_TextCarrot.Name = "MenuItem_TextCarrot";
+            this.MenuItem_TextCarrot.Size = new System.Drawing.Size(230, 22);
+            this.MenuItem_TextCarrot.Text = "Position Text Carrot";
+            this.MenuItem_TextCarrot.Click += new System.EventHandler(this.MenuItem_TextCarrot_Click);
+            // 
             // UserControl_TextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -668,7 +704,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.ToolStripDropDownButton DropDown_GamePad;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_DisableGamepad;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_StopGamepad;
-        private System.Windows.Forms.ToolStripMenuItem MenuItem_EFF;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_EPO;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_InsertTextString;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_FadeIn;
@@ -694,5 +729,10 @@ namespace EuroTextEditor
         private System.Windows.Forms.ToolStripButton ToolButton_ZoomOut;
         private System.Windows.Forms.ToolStripTextBox MenuItem_Factor;
         private System.Windows.Forms.ToolStripButton ToolButton_Preview;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_SineWave;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_ShakeyText;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_EnsureFastEffect;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Fountain;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_TextCarrot;
     }
 }
