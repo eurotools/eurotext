@@ -646,7 +646,7 @@ namespace EuroTextEditor
                 EuroText_TextFile textObj = textReader.ReadTextFile(messagesToPrint[i]);
                 textObj.HashCode = Path.GetFileNameWithoutExtension(messagesToPrint[i]);
 
-                if (!hashcodesWithNoSection && textObj.OutputSection.Length == 0)
+                if (!hashcodesWithNoSection && textObj.OutputSection.Length > 0 && string.IsNullOrEmpty(textObj.OutputSection[0]))
                 {
                     continue;
                 }
@@ -756,11 +756,14 @@ namespace EuroTextEditor
                                 for (int x = 0; x < textObj.OutputSection.Length; x++)
                                 {
                                     int bitPosition = Array.IndexOf(textSections, textObj.OutputSection[x]);
-                                    int colIndex = 7 + GlobalVariables.CurrentProject.Languages.Count + bitPosition;
-                                    ICell textSectionCell = headerRow.GetCell(colIndex);
-                                    if (textSectionCell != null)
+                                    if (bitPosition >= 0)
                                     {
-                                        textSectionCell.SetCellValue(1);
+                                        int colIndex = 7 + GlobalVariables.CurrentProject.Languages.Count + bitPosition;
+                                        ICell textSectionCell = headerRow.GetCell(colIndex);
+                                        if (textSectionCell != null)
+                                        {
+                                            textSectionCell.SetCellValue(1);
+                                        }
                                     }
                                 }
                             }

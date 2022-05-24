@@ -621,7 +621,7 @@ namespace EuroTextEditor
         {
             Frm_Preview previewForm = new Frm_Preview(Textbox.Text);
             previewForm.ShowDialog();
-        }
+        }        
     }
     //-------------------------------------------------------------------------------------------------------------------------------
 }

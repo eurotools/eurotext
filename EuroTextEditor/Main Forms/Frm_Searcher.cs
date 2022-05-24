@@ -57,7 +57,7 @@ namespace EuroTextEditor
         private void Button_Search_Click(object sender, EventArgs e)
         {
             IniFile applicationIni = new IniFile(GlobalVariables.EuroTextIni);
-            applicationIni.Write("LastSearch", Textbox_LookFor.Text, "Searcher");
+            applicationIni.Write("LastSearch", Textbox_LookFor.Text.Trim(), "Searcher");
 
             if (!AsyncWorker.IsBusy)
             {
@@ -98,7 +98,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         private void AsyncWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            string query = Textbox_LookFor.Text;
+            string query = Textbox_LookFor.Text.Trim();
 
             //Section to search
             string language = string.Empty;

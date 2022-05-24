@@ -59,6 +59,7 @@ namespace EuroTextEditor
             this.DropDown_Others = new System.Windows.Forms.ToolStripDropDownButton();
             this.MenuItem_Wait = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_ShowObjective = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_TextCarrot = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_CenterText = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_EPO = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolButton_TimerTest = new System.Windows.Forms.ToolStripButton();
@@ -79,6 +80,7 @@ namespace EuroTextEditor
             this.ToolButton_ZoomIn = new System.Windows.Forms.ToolStripButton();
             this.ToolButton_ZoomOut = new System.Windows.Forms.ToolStripButton();
             this.MenuItem_Factor = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.colorPicker = new System.Windows.Forms.ColorDialog();
             this.Textbox = new System.Windows.Forms.RichTextBox();
@@ -94,7 +96,6 @@ namespace EuroTextEditor
             this.MenuItem_SelectAll = new System.Windows.Forms.MenuItem();
             this.MenuItem_Separator2 = new System.Windows.Forms.MenuItem();
             this.MenuItem_Font = new System.Windows.Forms.MenuItem();
-            this.MenuItem_TextCarrot = new System.Windows.Forms.ToolStripMenuItem();
             this.Toolbar1.SuspendLayout();
             this.Toolbar2.SuspendLayout();
             this.SuspendLayout();
@@ -355,6 +356,13 @@ namespace EuroTextEditor
             this.MenuItem_ShowObjective.Text = "Show Objective";
             this.MenuItem_ShowObjective.Click += new System.EventHandler(this.MenuItem_ShowObjective_Click);
             // 
+            // MenuItem_TextCarrot
+            // 
+            this.MenuItem_TextCarrot.Name = "MenuItem_TextCarrot";
+            this.MenuItem_TextCarrot.Size = new System.Drawing.Size(230, 22);
+            this.MenuItem_TextCarrot.Text = "Position Text Carrot";
+            this.MenuItem_TextCarrot.Click += new System.EventHandler(this.MenuItem_TextCarrot_Click);
+            // 
             // MenuItem_CenterText
             // 
             this.MenuItem_CenterText.Name = "MenuItem_CenterText";
@@ -407,7 +415,8 @@ namespace EuroTextEditor
             this.toolStripSeparator4,
             this.ToolButton_ZoomIn,
             this.ToolButton_ZoomOut,
-            this.MenuItem_Factor});
+            this.MenuItem_Factor,
+            this.toolStripSeparator5});
             this.Toolbar2.Location = new System.Drawing.Point(0, 25);
             this.Toolbar2.Name = "Toolbar2";
             this.Toolbar2.Size = new System.Drawing.Size(547, 25);
@@ -542,6 +551,11 @@ namespace EuroTextEditor
             this.MenuItem_Factor.Size = new System.Drawing.Size(30, 25);
             this.MenuItem_Factor.Leave += new System.EventHandler(this.MenuItem_Factor_Leave);
             // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
             // Textbox
             // 
             this.Textbox.AcceptsTab = true;
@@ -635,13 +649,6 @@ namespace EuroTextEditor
             this.MenuItem_Font.Text = "Font";
             this.MenuItem_Font.Click += new System.EventHandler(this.MenuItem_Font_Click);
             // 
-            // MenuItem_TextCarrot
-            // 
-            this.MenuItem_TextCarrot.Name = "MenuItem_TextCarrot";
-            this.MenuItem_TextCarrot.Size = new System.Drawing.Size(230, 22);
-            this.MenuItem_TextCarrot.Text = "Position Text Carrot";
-            this.MenuItem_TextCarrot.Click += new System.EventHandler(this.MenuItem_TextCarrot_Click);
-            // 
             // UserControl_TextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -734,5 +741,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.ToolStripMenuItem MenuItem_EnsureFastEffect;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Fountain;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_TextCarrot;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
     }
 }

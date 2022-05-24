@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace EuroTextEditor
@@ -29,21 +31,25 @@ namespace EuroTextEditor
             //Update counter
             GroupBox_FilesToBeModified.Text = hashCodesNames.Length + " Files";
 
-            //New object
-            if (hashCodesNames.Length > 0)
+            ETXML_Reader filesReader = new ETXML_Reader();
+            EuroText_TextFile objText = filesReader.ReadTextFile(Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", hashCodesNames[0] + ".etf"));
+            EuroText_TextSections sectionsFileText = filesReader.ReadTextSectionsFile(Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf"));
+
+            //Group and Output Section
+            userControl_TextOptions1.Combobox_Group.SelectedItem = objText.Group;
+            List<string> outputSections = new List<string>();
+            for (int i = 0; i < objText.OutputSection.Length; i++)
             {
-                string filePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", hashCodesNames[0] + ".etf");
-                ETXML_Reader filesReader = new ETXML_Reader();
-                EuroText_TextFile objText = filesReader.ReadTextFile(filePath);
-
-                //Group and Output Section
-                userControl_TextOptions1.Combobox_Group.SelectedItem = objText.Group;
-                userControl_TextOptions1.Textbox_OutputSections.Text = string.Join(";", objText.OutputSection);
-
-                //Others
-                userControl_TextOptions1.CheckBox_TextDead.Checked = Convert.ToBoolean(objText.DeadText);
-                userControl_TextOptions1.Numeric_MaxChars.Value = objText.MaxNumOfChars;
+                if (sectionsFileText.TextSections.ContainsKey(objText.OutputSection[i]))
+                {
+                    outputSections.Add(sectionsFileText.TextSections[objText.OutputSection[i]]);
+                }
             }
+            userControl_TextOptions1.Textbox_OutputSections.Text = string.Join(";", outputSections.ToArray());
+
+            //Others
+            userControl_TextOptions1.CheckBox_TextDead.Checked = Convert.ToBoolean(objText.DeadText);
+            userControl_TextOptions1.Numeric_MaxChars.Value = objText.MaxNumOfChars;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -62,13 +68,17 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_OK_Click(object sender, EventArgs e)
         {
+            ETXML_Reader filesReader = new ETXML_Reader();
+            string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
+            EuroText_TextSections sectionsFileText = filesReader.ReadTextSectionsFile(textSectionsFilePath);
+
             PromptSave = false;
             for (int i = 0; i < ListBox_FilesToBeModified.Items.Count; i++)
             {
                 string filePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", ListBox_FilesToBeModified.Items[i] + ".etf");
 
                 //New object
-                ETXML_Reader filesReader = new ETXML_Reader();
+
                 EuroText_TextFile objText = filesReader.ReadTextFile(filePath);
 
                 //Group and Output Section
@@ -80,7 +90,12 @@ namespace EuroTextEditor
                 //Others
                 objText.DeadText = Convert.ToInt32(userControl_TextOptions1.CheckBox_TextDead.Checked);
                 objText.MaxNumOfChars = (int)userControl_TextOptions1.Numeric_MaxChars.Value;
-                objText.OutputSection = userControl_TextOptions1.Textbox_OutputSections.Text.Split(';');
+                string[] outputSections = userControl_TextOptions1.Textbox_OutputSections.Text.Split(';');
+                objText.OutputSection = new string[outputSections.Length];
+                for (int j = 0; j < outputSections.Length; j++)
+                {
+                    objText.OutputSection[j] = sectionsFileText.TextSections.FirstOrDefault(x => x.Value == outputSections[j]).Key;
+                }
 
                 //Update properties and listview
                 objText.LastModified = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");

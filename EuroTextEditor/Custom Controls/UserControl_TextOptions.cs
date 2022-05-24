@@ -38,7 +38,7 @@ namespace EuroTextEditor.Custom_Controls
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Textbox_OutputSections_Click(object sender, EventArgs e)
         {
-            Frm_TextOutputSections outputSectionsEditor = new Frm_TextOutputSections(Textbox_OutputSections.Text.Split(';'));
+            Frm_TextOutputSections outputSectionsEditor = new Frm_TextOutputSections(Textbox_OutputSections.Text.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
             if (outputSectionsEditor.ShowDialog() == DialogResult.OK)
             {
                 Textbox_OutputSections.Text = outputSectionsEditor.selectedSections;

@@ -22,7 +22,7 @@ namespace EuroTextEditor
 
         //Properties
         public string Group = string.Empty;
-        public string[] OutputSection = new string[0];
+        public string[] OutputSection = new string[] { };
         public int DeadText;
         public int MaxNumOfChars;
 
