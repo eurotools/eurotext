@@ -38,7 +38,6 @@ namespace EuroTextEditor
             this.ContextMenu_TextSections = new System.Windows.Forms.ContextMenu();
             this.MenuItem_AddNewSection = new System.Windows.Forms.MenuItem();
             this.MenuItem_DeleteTextSection = new System.Windows.Forms.MenuItem();
-            this.Label_Info = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Button_OK
@@ -76,9 +75,9 @@ namespace EuroTextEditor
             this.ListView_TextSections.FullRowSelect = true;
             this.ListView_TextSections.GridLines = true;
             this.ListView_TextSections.HideSelection = false;
-            this.ListView_TextSections.Location = new System.Drawing.Point(12, 25);
+            this.ListView_TextSections.Location = new System.Drawing.Point(12, 12);
             this.ListView_TextSections.Name = "ListView_TextSections";
-            this.ListView_TextSections.Size = new System.Drawing.Size(409, 411);
+            this.ListView_TextSections.Size = new System.Drawing.Size(409, 424);
             this.ListView_TextSections.TabIndex = 3;
             this.ListView_TextSections.UseCompatibleStateImageBehavior = false;
             this.ListView_TextSections.View = System.Windows.Forms.View.Details;
@@ -86,7 +85,7 @@ namespace EuroTextEditor
             // Col_TextSection
             // 
             this.Col_TextSection.Text = "Text Section";
-            this.Col_TextSection.Width = 200;
+            this.Col_TextSection.Width = 120;
             // 
             // Col_OutputLevel
             // 
@@ -111,16 +110,6 @@ namespace EuroTextEditor
             this.MenuItem_DeleteTextSection.Text = "Remove Text Section";
             this.MenuItem_DeleteTextSection.Click += new System.EventHandler(this.MenuItem_DeleteTextSection_Click);
             // 
-            // Label_Info
-            // 
-            this.Label_Info.AutoSize = true;
-            this.Label_Info.Location = new System.Drawing.Point(12, 9);
-            this.Label_Info.Name = "Label_Info";
-            this.Label_Info.Size = new System.Drawing.Size(385, 13);
-            this.Label_Info.TabIndex = 4;
-            this.Label_Info.Text = "Click on the cells to modify the value, only the output level cells can be modifi" +
-    "ed.";
-            // 
             // Frm_ListBox_TextSections_Editor
             // 
             this.AcceptButton = this.Button_OK;
@@ -128,7 +117,6 @@ namespace EuroTextEditor
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
             this.ClientSize = new System.Drawing.Size(433, 477);
-            this.Controls.Add(this.Label_Info);
             this.Controls.Add(this.ListView_TextSections);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Button_OK);
@@ -143,7 +131,6 @@ namespace EuroTextEditor
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_ListBox_TextSections_Editor_FormClosing);
             this.Load += new System.EventHandler(this.Frm_ListBox_TextSections_Editor_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -156,6 +143,5 @@ namespace EuroTextEditor
         private System.Windows.Forms.ContextMenu ContextMenu_TextSections;
         private System.Windows.Forms.MenuItem MenuItem_AddNewSection;
         private System.Windows.Forms.MenuItem MenuItem_DeleteTextSection;
-        private System.Windows.Forms.Label Label_Info;
     }
 }

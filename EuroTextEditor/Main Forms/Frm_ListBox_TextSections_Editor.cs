@@ -14,6 +14,7 @@ namespace EuroTextEditor
     {
         private bool PromptSave = true;
         private EuroText_TextSections sectionsFileText;
+        private readonly List<string> changesReg = new List<string>();
 
         //------------------------------------------------------------------------------------------------------------------------------
         public Frm_ListBox_TextSections_Editor()
@@ -42,6 +43,19 @@ namespace EuroTextEditor
             HashSet<string> AvailableHashCodes = CommonFunctions.ReadHashTableSection(Path.Combine(GlobalVariables.CurrentProject.EuroLandHahCodesServPath, "hashcodes.h"), "HT_File_");
             string[] AvailableHashCodesSorted = AvailableHashCodes.OrderBy(v => v).ToArray();
 
+
+            List<string> AvailableTextSections = new List<string>();
+            for(int i = 8; i < 256; i++)
+            {
+                //memcard/savedata text
+                if (i > 59 && i < 64)
+                {
+                    continue;
+                }
+                AvailableTextSections.Add("HT_TextSection" + i.ToString("00"));
+            }
+
+
             string SectionsFilepath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
             if (File.Exists(SectionsFilepath))
             {
@@ -49,15 +63,16 @@ namespace EuroTextEditor
                 sectionsFileText = projectFileReader.ReadTextSectionsFile(SectionsFilepath);
 
                 ListView_TextSections.BeginUpdate();
-                foreach (var textsection in sectionsFileText.TextSections)
+                foreach (KeyValuePair<string, string> textsection in sectionsFileText.TextSections)
                 {
+                    changesReg.Add(textsection.Key);
                     ListViewItem itemData = ListView_TextSections.Items.Add(new ListViewItem(new[] { textsection.Key, textsection.Value }));
-                    if (itemData.Index > 1)
+                    if (itemData.Index > 0)
                     {
                         ListView_TextSections.AddComboBoxCell(itemData.Index, 1, AvailableHashCodesSorted);
+                        ListView_TextSections.AddComboBoxCell(itemData.Index, 0, AvailableTextSections.ToArray());
                     }
                 }
-                ListView_TextSections.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 ListView_TextSections.EndUpdate();
             }
         }
@@ -95,6 +110,7 @@ namespace EuroTextEditor
                         GlobalVariables.CurrentProject.TextSectionsID++;
                         string textSectionName = "HT_TextSection" + GlobalVariables.CurrentProject.TextSectionsID.ToString("00");
                         ListView_TextSections.Items.Add(new ListViewItem(new[] { textSectionName, selector.SelectedHashCode }));
+                        changesReg.Add(textSectionName);
                     }
                     else
                     {
@@ -141,34 +157,99 @@ namespace EuroTextEditor
         //------------------------------------------------------------------------------------------------------------------------------
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
+            //First of all, check no duplicated sections and levels
+            List<string> userTextSections = new List<string>();
+            List<string> userLevels = new List<string>();
 
-            string SectionsFilepath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
-            if (File.Exists(SectionsFilepath))
+            foreach(ListViewItem itemToCheck in ListView_TextSections.Items)
             {
-                sectionsFileText.TextSections.Clear();
-                foreach (ListViewItem rowToRead in ListView_TextSections.Items)
-                {
-                    string sectionLevel = rowToRead.SubItems[1].Text;
-                    if (rowToRead.Index == 0)
-                    {
-                        sectionLevel = "Output For All Levels";
-                    }
+                userTextSections.Add(itemToCheck.Text);
+                userLevels.Add(itemToCheck.SubItems[1].Text);
+            }
 
-                    int sectionText = Convert.ToInt32(Regex.Match(rowToRead.Text, @"\d+").Value);
-                    sectionsFileText.TextSections.Add(sectionText.ToString(), sectionLevel);
-                }
-
-                ETXML_Writter filesWriter = new ETXML_Writter();
-                filesWriter.WriteTextSections(SectionsFilepath, sectionsFileText);
+            //Inform user if there are duplicated levles.
+            if (userLevels.Count != userLevels.Distinct().Count())
+            {
+                MessageBox.Show("There is more than one section with the same output level, fix it before save changes.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                MessageBox.Show("Error, file not found: " + SectionsFilepath, "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                if (userTextSections.Count != userTextSections.Distinct().Count())
+                {
+                    MessageBox.Show("Duplicated text sections, fix it before save changes.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    DialogResult = DialogResult.OK;
 
-            PromptSave = false;
-            Close();
+                    string SectionsFilepath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
+                    if (File.Exists(SectionsFilepath))
+                    {
+                        sectionsFileText.TextSections.Clear();
+                        foreach (ListViewItem rowToRead in ListView_TextSections.Items)
+                        {
+                            string sectionLevel = rowToRead.SubItems[1].Text;
+                            if (rowToRead.Index == 0)
+                            {
+                                sectionLevel = "Output For All Levels";
+                            }
+
+                            int sectionText = Convert.ToInt32(Regex.Match(rowToRead.Text, @"\d+").Value);
+                            sectionsFileText.TextSections.Add(sectionText.ToString(), sectionLevel);
+                        }
+
+                        ETXML_Writter filesWriter = new ETXML_Writter();
+                        filesWriter.WriteTextSections(SectionsFilepath, sectionsFileText);
+
+                        //Get sections to modify
+                        Dictionary<string, string> TextSectionsToModify = new Dictionary<string, string>();
+                        for(int i = 0; i < changesReg.Count; i++)
+                        {
+                            string previousTextSection = changesReg[i];
+                            if (!previousTextSection.Equals(userTextSections[i]))
+                            {
+                                TextSectionsToModify.Add(previousTextSection, userTextSections[i]);
+                            }
+                        }
+
+                        //Update text files
+                        if (TextSectionsToModify.Count > 0)
+                        {
+                            ETXML_Reader filesReader = new ETXML_Reader();
+                            string[] textFilesToCheck = Directory.GetFiles(Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
+                            for (int i = 0; i < textFilesToCheck.Length; i++)
+                            {
+                                EuroText_TextFile textObj = filesReader.ReadTextFile(textFilesToCheck[i]);
+
+                                //Check for changes
+                                bool fileModified = false;
+                                foreach (KeyValuePair<string, string> sectionToCheck in TextSectionsToModify)
+                                {
+                                    int positionToModify = Array.IndexOf(textObj.OutputSection, sectionToCheck.Key);
+                                    if (positionToModify >= 0)
+                                    {
+                                        textObj.OutputSection[positionToModify] = sectionToCheck.Value;
+                                        fileModified = true;
+                                    }
+                                }
+
+                                //Write file again
+                                if (fileModified)
+                                {
+                                    filesWriter.WriteTextFile(textFilesToCheck[i], textObj);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error, file not found: " + SectionsFilepath, "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    PromptSave = false;
+                    Close();
+                }
+            }
         }
     }
 

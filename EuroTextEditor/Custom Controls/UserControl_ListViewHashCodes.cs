@@ -104,7 +104,7 @@ namespace EuroTextEditor.Custom_Controls
 
                     //Add item to the listbox
                     ListView_HashCodes.BeginUpdate();
-                    ListView_HashCodes.Items.Add(new ListViewItem(new[] { frmTextFileName.ReturnValue, newTextFile.FirstCreated, newTextFile.CreatedBy, newTextFile.LastModified, newTextFile.LastModifiedBy }));
+                    ListView_HashCodes.Items.Add(new ListViewItem(new[] { frmTextFileName.ReturnValue, newTextFile.FirstCreated, newTextFile.CreatedBy, newTextFile.LastModified, newTextFile.LastModifiedBy, CommonFunctions.GetFlagsLabels(newTextFile.textFlags), newTextFile.Notes }));
                     ListView_HashCodes.EndUpdate();
 
                     //Write file
