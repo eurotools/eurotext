@@ -344,6 +344,12 @@
     <Compile Include="Tools\Frm_Tool_RemoveMultiWhitespaces.Designer.cs">
       <DependentUpon>Frm_Tool_RemoveMultiWhitespaces.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Frm_Tool_ReplaceWords.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\Frm_Tool_ReplaceWords.Designer.cs">
+      <DependentUpon>Frm_Tool_ReplaceWords.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Frm_Tool_Trim.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -467,6 +473,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\Frm_Tool_RemoveMultiWhitespaces.resx">
       <DependentUpon>Frm_Tool_RemoveMultiWhitespaces.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\Frm_Tool_ReplaceWords.resx">
+      <DependentUpon>Frm_Tool_ReplaceWords.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\Frm_Tool_Trim.resx">
       <DependentUpon>Frm_Tool_Trim.cs</DependentUpon>

@@ -373,7 +373,7 @@ namespace EuroTextEditor
             this.grbxTools.Size = new System.Drawing.Size(166, 108);
             this.grbxTools.TabIndex = 4;
             this.grbxTools.TabStop = false;
-            this.grbxTools.Text = "Tools:";
+            this.grbxTools.Text = "Tools";
             // 
             // btnTrimStrings
             // 
@@ -403,6 +403,7 @@ namespace EuroTextEditor
             this.btnWordReplacing.TabIndex = 0;
             this.btnWordReplacing.Text = "Word Replacing";
             this.btnWordReplacing.UseVisualStyleBackColor = true;
+            this.btnWordReplacing.Click += new System.EventHandler(this.BtnWordReplacing_Click);
             // 
             // Frm_MainFrame
             // 

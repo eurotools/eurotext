@@ -360,6 +360,15 @@ namespace EuroTextEditor
                 removeWhiteSpaces.ShowDialog();
             }
         }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void BtnWordReplacing_Click(object sender, EventArgs e)
+        {
+            using (Frm_Tool_ReplaceWords replaceWords = new Frm_Tool_ReplaceWords())
+            {
+                replaceWords.ShowDialog();
+            }
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
