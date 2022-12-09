@@ -54,6 +54,7 @@ namespace EuroTextEditor
             this.UserControl_HashCodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.UserControl_HashCodes.Location = new System.Drawing.Point(3, 16);
             this.UserControl_HashCodes.Name = "UserControl_HashCodes";
+            this.UserControl_HashCodes.ShowFilters = false;
             this.UserControl_HashCodes.Size = new System.Drawing.Size(752, 466);
             this.UserControl_HashCodes.TabIndex = 2;
             // 

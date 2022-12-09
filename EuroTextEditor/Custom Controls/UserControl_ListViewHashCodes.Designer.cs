@@ -37,12 +37,12 @@ namespace EuroTextEditor.Custom_Controls
             this.MenuItem_Rename = new System.Windows.Forms.MenuItem();
             this.MenuItem_Separator1 = new System.Windows.Forms.MenuItem();
             this.MenuItem_SetGroup = new System.Windows.Forms.MenuItem();
+            this.MenuItem_Categories = new System.Windows.Forms.MenuItem();
             this.MenuItem_MultiEditor = new System.Windows.Forms.MenuItem();
             this.MenuItem_Color = new System.Windows.Forms.MenuItem();
             this.MenuItem_RemoveColor = new System.Windows.Forms.MenuItem();
             this.MenuItem_SetColor = new System.Windows.Forms.MenuItem();
             this.MenuItem_EditNote = new System.Windows.Forms.MenuItem();
-            this.MenuItem_Categories = new System.Windows.Forms.MenuItem();
             this.MenuItem_Separator2 = new System.Windows.Forms.MenuItem();
             this.MenuItem_Refresh = new System.Windows.Forms.MenuItem();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
@@ -54,6 +54,12 @@ namespace EuroTextEditor.Custom_Controls
             this.ToolButton_SelectAll = new System.Windows.Forms.ToolStripSplitButton();
             this.ToolButton_SelectNone = new System.Windows.Forms.ToolStripSplitButton();
             this.ToolButton_InvertSelection = new System.Windows.Forms.ToolStripSplitButton();
+            this.groupBox_Filters = new System.Windows.Forms.GroupBox();
+            this.radioBtnContains = new System.Windows.Forms.RadioButton();
+            this.radOnlySpecified = new System.Windows.Forms.RadioButton();
+            this.btnShowAll = new System.Windows.Forms.Button();
+            this.btn_ApplyFilters = new System.Windows.Forms.Button();
+            this.txtFilters = new System.Windows.Forms.TextBox();
             this.ListView_HashCodes = new EuroTextEditor.Custom_Controls.ListView_ColumnSortingClick();
             this.Col_HashCodes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_FirstCreated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -63,6 +69,7 @@ namespace EuroTextEditor.Custom_Controls
             this.Col_Categories = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Comments = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.statusStrip1.SuspendLayout();
+            this.groupBox_Filters.SuspendLayout();
             this.SuspendLayout();
             // 
             // ContextMenu_HashCodes
@@ -119,6 +126,12 @@ namespace EuroTextEditor.Custom_Controls
             this.MenuItem_SetGroup.Visible = false;
             this.MenuItem_SetGroup.Click += new System.EventHandler(this.MenuItem_SetGroup_Click);
             // 
+            // MenuItem_Categories
+            // 
+            this.MenuItem_Categories.Index = 6;
+            this.MenuItem_Categories.Text = "Set Categories";
+            this.MenuItem_Categories.Click += new System.EventHandler(this.MenuItem_Categories_Click);
+            // 
             // MenuItem_MultiEditor
             // 
             this.MenuItem_MultiEditor.Index = 7;
@@ -151,12 +164,6 @@ namespace EuroTextEditor.Custom_Controls
             this.MenuItem_EditNote.Text = "Edit Note";
             this.MenuItem_EditNote.Click += new System.EventHandler(this.MenuItem_EditNote_Click);
             // 
-            // MenuItem_Categories
-            // 
-            this.MenuItem_Categories.Index = 6;
-            this.MenuItem_Categories.Text = "Set Categories";
-            this.MenuItem_Categories.Click += new System.EventHandler(this.MenuItem_Categories_Click);
-            // 
             // MenuItem_Separator2
             // 
             this.MenuItem_Separator2.Index = 10;
@@ -188,9 +195,9 @@ namespace EuroTextEditor.Custom_Controls
             this.ToolButton_SelectNone,
             this.ToolButton_InvertSelection});
             this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 504);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 521);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(902, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(600, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 10;
             this.statusStrip1.Text = "statusStrip1";
@@ -240,8 +247,83 @@ namespace EuroTextEditor.Custom_Controls
             this.ToolButton_InvertSelection.Text = "Invert Selection";
             this.ToolButton_InvertSelection.ButtonClick += new System.EventHandler(this.ToolButton_InvertSelection_ButtonClick);
             // 
+            // groupBox_Filters
+            // 
+            this.groupBox_Filters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox_Filters.Controls.Add(this.radioBtnContains);
+            this.groupBox_Filters.Controls.Add(this.radOnlySpecified);
+            this.groupBox_Filters.Controls.Add(this.btnShowAll);
+            this.groupBox_Filters.Controls.Add(this.btn_ApplyFilters);
+            this.groupBox_Filters.Controls.Add(this.txtFilters);
+            this.groupBox_Filters.Location = new System.Drawing.Point(3, 448);
+            this.groupBox_Filters.Name = "groupBox_Filters";
+            this.groupBox_Filters.Size = new System.Drawing.Size(594, 70);
+            this.groupBox_Filters.TabIndex = 11;
+            this.groupBox_Filters.TabStop = false;
+            this.groupBox_Filters.Text = "Filters";
+            // 
+            // radioBtnContains
+            // 
+            this.radioBtnContains.AutoSize = true;
+            this.radioBtnContains.Checked = true;
+            this.radioBtnContains.Location = new System.Drawing.Point(6, 45);
+            this.radioBtnContains.Name = "radioBtnContains";
+            this.radioBtnContains.Size = new System.Drawing.Size(144, 17);
+            this.radioBtnContains.TabIndex = 3;
+            this.radioBtnContains.TabStop = true;
+            this.radioBtnContains.Text = "Contains Filter Categories";
+            this.radioBtnContains.UseVisualStyleBackColor = true;
+            // 
+            // radOnlySpecified
+            // 
+            this.radOnlySpecified.AutoSize = true;
+            this.radOnlySpecified.Location = new System.Drawing.Point(156, 45);
+            this.radOnlySpecified.Name = "radOnlySpecified";
+            this.radOnlySpecified.Size = new System.Drawing.Size(151, 17);
+            this.radOnlySpecified.TabIndex = 4;
+            this.radOnlySpecified.Text = "ONLY specified categories";
+            this.radOnlySpecified.UseVisualStyleBackColor = true;
+            // 
+            // btnShowAll
+            // 
+            this.btnShowAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShowAll.Location = new System.Drawing.Point(513, 17);
+            this.btnShowAll.Name = "btnShowAll";
+            this.btnShowAll.Size = new System.Drawing.Size(75, 23);
+            this.btnShowAll.TabIndex = 2;
+            this.btnShowAll.Text = "Show All";
+            this.btnShowAll.UseVisualStyleBackColor = true;
+            this.btnShowAll.Click += new System.EventHandler(this.BtnShowAll_Click);
+            // 
+            // btn_ApplyFilters
+            // 
+            this.btn_ApplyFilters.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_ApplyFilters.Location = new System.Drawing.Point(432, 17);
+            this.btn_ApplyFilters.Name = "btn_ApplyFilters";
+            this.btn_ApplyFilters.Size = new System.Drawing.Size(75, 23);
+            this.btn_ApplyFilters.TabIndex = 1;
+            this.btn_ApplyFilters.Text = "Apply";
+            this.btn_ApplyFilters.UseVisualStyleBackColor = true;
+            this.btn_ApplyFilters.Click += new System.EventHandler(this.Btn_ApplyFilters_Click);
+            // 
+            // txtFilters
+            // 
+            this.txtFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtFilters.BackColor = System.Drawing.SystemColors.Window;
+            this.txtFilters.Location = new System.Drawing.Point(6, 19);
+            this.txtFilters.Name = "txtFilters";
+            this.txtFilters.ReadOnly = true;
+            this.txtFilters.Size = new System.Drawing.Size(420, 20);
+            this.txtFilters.TabIndex = 0;
+            this.txtFilters.Click += new System.EventHandler(this.TxtFilters_Click);
+            // 
             // ListView_HashCodes
             // 
+            this.ListView_HashCodes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ListView_HashCodes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Col_HashCodes,
             this.Col_FirstCreated,
@@ -251,13 +333,12 @@ namespace EuroTextEditor.Custom_Controls
             this.Col_Categories,
             this.Col_Comments});
             this.ListView_HashCodes.ContextMenu = this.ContextMenu_HashCodes;
-            this.ListView_HashCodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ListView_HashCodes.FullRowSelect = true;
             this.ListView_HashCodes.GridLines = true;
             this.ListView_HashCodes.HideSelection = false;
             this.ListView_HashCodes.Location = new System.Drawing.Point(0, 0);
             this.ListView_HashCodes.Name = "ListView_HashCodes";
-            this.ListView_HashCodes.Size = new System.Drawing.Size(902, 504);
+            this.ListView_HashCodes.Size = new System.Drawing.Size(600, 442);
             this.ListView_HashCodes.TabIndex = 8;
             this.ListView_HashCodes.UseCompatibleStateImageBehavior = false;
             this.ListView_HashCodes.View = System.Windows.Forms.View.Details;
@@ -303,13 +384,16 @@ namespace EuroTextEditor.Custom_Controls
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox_Filters);
             this.Controls.Add(this.ListView_HashCodes);
             this.Controls.Add(this.statusStrip1);
             this.Name = "UserControl_ListViewHashCodes";
-            this.Size = new System.Drawing.Size(902, 526);
+            this.Size = new System.Drawing.Size(600, 543);
             this.Load += new System.EventHandler(this.UserControl_ListViewHashCodes_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.groupBox_Filters.ResumeLayout(false);
+            this.groupBox_Filters.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -349,5 +433,11 @@ namespace EuroTextEditor.Custom_Controls
         private System.Windows.Forms.MenuItem MenuItem_CopyHashCode;
         private System.Windows.Forms.MenuItem MenuItem_Categories;
         private System.Windows.Forms.ColumnHeader Col_Categories;
+        private System.Windows.Forms.GroupBox groupBox_Filters;
+        private System.Windows.Forms.Button btn_ApplyFilters;
+        private System.Windows.Forms.Button btnShowAll;
+        protected internal System.Windows.Forms.TextBox txtFilters;
+        private System.Windows.Forms.RadioButton radioBtnContains;
+        private System.Windows.Forms.RadioButton radOnlySpecified;
     }
 }

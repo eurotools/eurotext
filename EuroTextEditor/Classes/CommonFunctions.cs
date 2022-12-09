@@ -111,32 +111,6 @@ namespace EuroTextEditor
             }
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------
-        internal static void LoadEuroTextFiles(ListView ListView_HashCodes)
-        {
-            //Get text files
-            string messagesFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages");
-            if (Directory.Exists(messagesFilePath))
-            {
-                string[] filesToAdd = Directory.GetFiles(messagesFilePath, "*.etf", SearchOption.TopDirectoryOnly);
-                ETXML_Reader filesReader = new ETXML_Reader();
-
-                ListView_HashCodes.BeginUpdate();
-                ListView_HashCodes.Items.Clear();
-                for (int i = 0; i < filesToAdd.Length; i++)
-                {
-                    EuroText_TextFile objTextData = filesReader.ReadTextFile(filesToAdd[i]);
-
-                    //Update control
-                    ListViewItem HashCodeItem = ListView_HashCodes.Items.Add(new ListViewItem(new[] { Path.GetFileNameWithoutExtension(filesToAdd[i]).ToString(), objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
-                    HashCodeItem.BackColor = objTextData.RowColor;
-
-                }
-                ListView_HashCodes.EndUpdate();
-            }
-
-        }
-
         //-------------------------------------------------------------------------------------------
         //  FORMS
         //-------------------------------------------------------------------------------------------
@@ -164,12 +138,17 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         internal static string GetFlagsLabels(int flags)
         {
-            string flagsLabels = "";
+            string flagsLabels = string.Empty;
             for (int i = 0; i < 16; i++)
             {
                 if (Convert.ToBoolean((flags >> i) & 1))
                 {
-                    flagsLabels += GlobalVariables.CurrentProject.Categories[i] + " | ";
+                    string label = string.Empty;
+                    if (i < GlobalVariables.CurrentProject.Categories.Count)
+                    {
+                        label = GlobalVariables.CurrentProject.Categories[i];
+                    }
+                    flagsLabels += label + " | ";
                 }
             }
 

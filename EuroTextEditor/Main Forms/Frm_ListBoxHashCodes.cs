@@ -23,9 +23,6 @@ namespace EuroTextEditor
         {
             InitializeComponent();
             formMenuItem = parentMainForm;
-
-            //Menu Item
-            formMenuItem.Click += (se, ev) => { if (IsHidden) { Show(); formMenuItem.Checked = true; } };
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -302,7 +299,12 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_Refresh_Click(object sender, EventArgs e)
         {
-            CommonFunctions.LoadEuroTextFiles(UserControl_HashCodesListView.ListView_HashCodes);
+            int currentFlags = -1;
+            if (UserControl_HashCodesListView.txtFilters.Tag != null)
+            {
+                currentFlags = (int)UserControl_HashCodesListView.txtFilters.Tag;
+            }
+            UserControl_HashCodesListView.LoadEuroTextFiles(currentFlags);
         }
     }
 

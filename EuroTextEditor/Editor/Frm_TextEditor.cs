@@ -157,7 +157,6 @@ namespace EuroTextEditor
             }
         }
 
-
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_Exit_Click(object sender, EventArgs e)
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EuroTextEditor.Classes;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -15,6 +16,28 @@ namespace EuroTextEditor.Custom_Controls
     {
         internal Frm_ListBoxHashCodes parentFormToSync;
 
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private bool _showFilters = false;
+        public bool ShowFilters
+        {
+            get { return _showFilters; }
+            set
+            {
+                _showFilters = value;
+                groupBox_Filters.Visible = _showFilters;
+                if (_showFilters)
+                {
+                    ListView_HashCodes.Dock = DockStyle.None;
+                    ListView_HashCodes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+                }
+                else
+                {
+                    ListView_HashCodes.Dock = DockStyle.Fill;
+                }
+            }
+        }
+
         //-------------------------------------------------------------------------------------------
         //  FORM EVENTS
         //-------------------------------------------------------------------------------------------
@@ -27,6 +50,14 @@ namespace EuroTextEditor.Custom_Controls
         private void UserControl_ListViewHashCodes_Load(object sender, EventArgs e)
         {
             StatusLabel_TotalItems.Text = ListView_HashCodes.Items.Count + " Items";
+
+            //Read ini file
+            IniFile euroTextIni = new IniFile(GlobalVariables.EuroTextIni);
+            if (int.TryParse(euroTextIni.Read("Filters", "HashCodes"), out int flags))
+            {
+                txtFilters.Tag = flags;
+                txtFilters.Text = CommonFunctions.GetFlagsLabels(flags);
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -331,7 +362,7 @@ namespace EuroTextEditor.Custom_Controls
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_Refresh_Click(object sender, EventArgs e)
         {
-            CommonFunctions.LoadEuroTextFiles(ListView_HashCodes);
+            LoadEuroTextFiles();
             if (ListView_HashCodes.Items.Count > 0)
             {
                 ListView_HashCodes.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -502,6 +533,111 @@ namespace EuroTextEditor.Custom_Controls
             else
             {
                 SystemSounds.Exclamation.Play();
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Btn_ApplyFilters_Click(object sender, EventArgs e)
+        {
+            //Get current selected flags
+            int currentFlags = 0;
+            if (txtFilters.Tag != null)
+            {
+                currentFlags = (int)txtFilters.Tag;
+            }
+
+            if (currentFlags > 0)
+            {
+                LoadEuroTextFiles(currentFlags);
+
+                //End list update and update labels.
+                StatusLabel_TotalItems.Text = ListView_HashCodes.Items.Count + " Items";
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void BtnShowAll_Click(object sender, EventArgs e)
+        {
+            LoadEuroTextFiles();
+
+            //End list update and update labels.
+            StatusLabel_TotalItems.Text = ListView_HashCodes.Items.Count + " Items";
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void TxtFilters_Click(object sender, EventArgs e)
+        {
+            //Get current selected flags
+            int currentFlags = 0;
+            if (txtFilters.Tag != null)
+            {
+                currentFlags = (int)txtFilters.Tag;
+            }
+
+            //Show and display form
+            Frm_Categories frmCategories = new Frm_Categories(currentFlags);
+            if (frmCategories.ShowDialog() == DialogResult.OK)
+            {
+                int selectedFlags = frmCategories.selectedFlags;
+                txtFilters.Tag = frmCategories.selectedFlags;
+                txtFilters.Text = CommonFunctions.GetFlagsLabels(selectedFlags);
+
+                //Save Filters
+                IniFile applicationIni = new IniFile(GlobalVariables.EuroTextIni);
+                applicationIni.Write("Filters", selectedFlags.ToString(), "HashCodes");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal void LoadEuroTextFiles(int flags = -1)
+        {
+            //Get text files
+            string messagesFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages");
+            if (Directory.Exists(messagesFilePath))
+            {
+                string[] filesToAdd = Directory.GetFiles(messagesFilePath, "*.etf", SearchOption.TopDirectoryOnly);
+                ETXML_Reader filesReader = new ETXML_Reader();
+
+                ListView_HashCodes.BeginUpdate();
+                ListView_HashCodes.Items.Clear();
+                for (int i = 0; i < filesToAdd.Length; i++)
+                {
+                    //Add item if required
+                    EuroText_TextFile objTextData = filesReader.ReadTextFile(filesToAdd[i]);
+
+                    //Check if we have to add this item
+                    bool addItem = true;
+                    if (flags > 0)
+                    {
+                        //Has these flags
+                        if (radioBtnContains.Checked)
+                        {
+                            for (int flagBit = 0; flagBit < 16; flagBit++)
+                            {
+                                if (Convert.ToBoolean((flags >> flagBit) & 1) && !Convert.ToBoolean((objTextData.textFlags >> flagBit) & 1))
+                                {
+                                    addItem = false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //ONLY specified in filter
+                            if (flags != objTextData.textFlags)
+                            {
+                                addItem = false;
+                            }
+                        }
+                    }
+
+                    //Check if item has to be added
+                    if (addItem)
+                    {
+                        ListViewItem HashCodeItem = ListView_HashCodes.Items.Add(new ListViewItem(new[] { Path.GetFileNameWithoutExtension(filesToAdd[i]).ToString(), objTextData.FirstCreated, objTextData.CreatedBy, objTextData.LastModified, objTextData.LastModifiedBy, CommonFunctions.GetFlagsLabels(objTextData.textFlags), objTextData.Notes }));
+                        HashCodeItem.BackColor = objTextData.RowColor;
+                    }
+                }
+                ListView_HashCodes.EndUpdate();
             }
         }
     }

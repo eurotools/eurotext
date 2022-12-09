@@ -31,8 +31,8 @@ namespace EuroTextEditor
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_SearchResults));
             this.GroupBox_Results = new System.Windows.Forms.GroupBox();
-            this.Button_OK = new System.Windows.Forms.Button();
             this.UserControl_HashCodes = new EuroTextEditor.Custom_Controls.UserControl_ListViewHashCodes();
+            this.Button_OK = new System.Windows.Forms.Button();
             this.GroupBox_Results.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,6 +49,15 @@ namespace EuroTextEditor
             this.GroupBox_Results.TabStop = false;
             this.GroupBox_Results.Text = "50 Results:";
             // 
+            // UserControl_HashCodes
+            // 
+            this.UserControl_HashCodes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.UserControl_HashCodes.Location = new System.Drawing.Point(3, 16);
+            this.UserControl_HashCodes.Name = "UserControl_HashCodes";
+            this.UserControl_HashCodes.ShowFilters = false;
+            this.UserControl_HashCodes.Size = new System.Drawing.Size(752, 466);
+            this.UserControl_HashCodes.TabIndex = 0;
+            // 
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -59,14 +68,6 @@ namespace EuroTextEditor
             this.Button_OK.Text = "OK";
             this.Button_OK.UseVisualStyleBackColor = true;
             this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
-            // 
-            // userControl_ListViewHashCodes1
-            // 
-            this.UserControl_HashCodes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.UserControl_HashCodes.Location = new System.Drawing.Point(3, 16);
-            this.UserControl_HashCodes.Name = "userControl_ListViewHashCodes1";
-            this.UserControl_HashCodes.Size = new System.Drawing.Size(752, 466);
-            this.UserControl_HashCodes.TabIndex = 0;
             // 
             // Frm_SearchResults
             // 

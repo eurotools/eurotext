@@ -1,4 +1,5 @@
 ﻿using EuroTextEditor.Classes;
+using EuroTextEditor.Tools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -90,7 +91,7 @@ namespace EuroTextEditor
             }
             else
             {
-                MessageBox.Show("Project Directory Not Found " + filename, "EuroText Load Project Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(string.Format("Project Directory Not Found {0}", filename), "EuroText Load Project Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 RecentFilesMenu.RemoveFile(number);
             }
         }
@@ -134,22 +135,12 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_ResetSettings_Click(object sender, EventArgs e)
         {
-            hashCodes.DockPanel = dockPanel;
-            hashCodes.IsFloat = false;
-            hashCodes.IsHidden = false;
-            hashCodes.Pane = dockPanel.Panes[0];
-            hashCodes.DockState = DockState.Document;
-
-            textSections.DockPanel = dockPanel;
-            textSections.IsFloat = false;
-            textSections.IsHidden = false;
-            textSections.Pane = dockPanel.Panes[0];
-            textSections.DockState = DockState.DockLeft;
-
-            textGroups.DockPanel = dockPanel;
-            textGroups.IsFloat = false;
-            textGroups.IsHidden = false;
-            textGroups.Show(textSections.Pane, DockAlignment.Bottom, 0.5);
+            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DefaultDockSettingsMainForm.xml");
+            if (File.Exists(configFile))
+            {
+                DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
+                dockPanel.LoadFromXml(configFile, _deserializeDockContent);
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -161,8 +152,10 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_About_Click(object sender, EventArgs e)
         {
-            Frm_About aboutForm = new Frm_About();
-            aboutForm.ShowDialog();
+            using (Frm_About aboutForm = new Frm_About())
+            {
+                aboutForm.ShowDialog();
+            }
         }
 
         //-------------------------------------------------------------------------------------------
@@ -209,8 +202,11 @@ namespace EuroTextEditor
                     filesToModify.Add(Item.Text.ToString());
                 }
 
-                Frm_TextStore storeText = new Frm_TextStore(filesToModify.ToArray());
-                storeText.ShowDialog();
+                //Show form
+                using (Frm_TextStore storeText = new Frm_TextStore(filesToModify.ToArray()))
+                {
+                    storeText.ShowDialog();
+                }
             }
         }
 
@@ -260,8 +256,10 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_ProjectSettings_Click(object sender, EventArgs e)
         {
-            Frm_ProjectForm projectSettings = new Frm_ProjectForm();
-            projectSettings.ShowDialog();
+            using (Frm_ProjectForm projectSettings = new Frm_ProjectForm())
+            {
+                projectSettings.ShowDialog();
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -270,7 +268,7 @@ namespace EuroTextEditor
             if (!CommonFunctions.FormIsOpened("Frm_SpreadSheets_Extractor"))
             {
                 Frm_SpreadSheets_Extractor xlsExtractor = new Frm_SpreadSheets_Extractor();
-                xlsExtractor.Show(dockPanel, DockState.DockBottom);
+                xlsExtractor.Show(dockPanel, DockState.Float);
             }
         }
 
@@ -280,7 +278,86 @@ namespace EuroTextEditor
             if (!CommonFunctions.FormIsOpened("Frm_Searcher"))
             {
                 Frm_Searcher searchForm = new Frm_Searcher(hashCodes);
-                searchForm.Show(dockPanel, DockState.DockBottom);
+                searchForm.Show(dockPanel, DockState.Float);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private IDockContent DeserializeDockContent(string persistString)
+        {
+            if (persistString == typeof(Frm_ListBoxHashCodes).ToString())
+            {
+                return hashCodes;
+            }
+            if (persistString == typeof(Frm_ListBox_TextSections).ToString())
+            {
+                return textSections;
+            }
+            if (persistString == typeof(Frm_ListBox_TextGroups).ToString())
+            {
+                return textGroups;
+            }
+            if (persistString == typeof(Frm_SpreadSheets_Extractor).ToString())
+            {
+                return new Frm_SpreadSheets_Extractor();
+            }
+            if (persistString == typeof(Frm_Searcher).ToString())
+            {
+                return new Frm_Searcher(hashCodes);
+            }
+            return null;
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  MAIN MENU
+        //-------------------------------------------------------------------------------------------
+        private void MenuItem_TextGroupsForm_Click(object sender, EventArgs e)
+        {
+            if (textGroups == null)
+            {
+                textGroups = new Frm_ListBox_TextGroups(MenuItem_TextGroupsForm, hashCodes);
+            }
+            textGroups.Show(dockPanel, DockState.Float);
+            MenuItem_TextGroupsForm.Checked = true;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_TextSectionsForm_Click(object sender, EventArgs e)
+        {
+            if (textSections == null)
+            {
+                textSections = new Frm_ListBox_TextSections(MenuItem_TextSectionsForm, hashCodes);
+            }
+            textSections.Show(dockPanel, DockState.Float);
+            MenuItem_TextSectionsForm.Checked = true;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_HashCodesForm_Click(object sender, EventArgs e)
+        {
+            if (hashCodes == null)
+            {
+                hashCodes = new Frm_ListBoxHashCodes(MenuItem_HashCodesForm);
+            }
+            hashCodes.Show(dockPanel, DockState.Float);
+            MenuItem_HashCodesForm.Checked = true;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void BtnTrimStrings_Click(object sender, EventArgs e)
+        {
+            using (Frm_Tool_Trim stringsTrim = new Frm_Tool_Trim())
+            {
+                stringsTrim.ShowDialog();
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void BtnRemoveDoubleSpacing_Click(object sender, EventArgs e)
+        {
+            using (Frm_Tool_RemoveMultiWhitespaces removeWhiteSpaces = new Frm_Tool_RemoveMultiWhitespaces())
+            {
+                removeWhiteSpaces.ShowDialog();
             }
         }
     }

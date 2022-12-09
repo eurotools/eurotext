@@ -45,7 +45,7 @@ namespace EuroTextEditor
 
 
             List<string> AvailableTextSections = new List<string>();
-            for(int i = 8; i < 256; i++)
+            for (int i = 8; i < 256; i++)
             {
                 //memcard/savedata text
                 if (i > 59 && i < 64)
@@ -161,7 +161,7 @@ namespace EuroTextEditor
             List<string> userTextSections = new List<string>();
             List<string> userLevels = new List<string>();
 
-            foreach(ListViewItem itemToCheck in ListView_TextSections.Items)
+            foreach (ListViewItem itemToCheck in ListView_TextSections.Items)
             {
                 userTextSections.Add(itemToCheck.Text);
                 userLevels.Add(itemToCheck.SubItems[1].Text);
@@ -203,7 +203,7 @@ namespace EuroTextEditor
 
                         //Get sections to modify
                         Dictionary<string, string> TextSectionsToModify = new Dictionary<string, string>();
-                        for(int i = 0; i < changesReg.Count; i++)
+                        for (int i = 0; i < changesReg.Count; i++)
                         {
                             string previousTextSection = changesReg[i];
                             if (!previousTextSection.Equals(userTextSections[i]))

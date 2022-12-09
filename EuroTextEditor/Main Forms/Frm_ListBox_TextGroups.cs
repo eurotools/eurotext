@@ -23,9 +23,6 @@ namespace EuroTextEditor
             InitializeComponent();
             formMenuItem = parentMainForm;
             parentHashCodesForm = parentForm;
-
-            //Menu Item
-            formMenuItem.Click += (se, ev) => { if (IsHidden) { Show(); formMenuItem.Checked = true; } };
         }
 
         //-------------------------------------------------------------------------------------------

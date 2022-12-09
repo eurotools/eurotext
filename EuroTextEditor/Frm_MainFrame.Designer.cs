@@ -65,8 +65,13 @@ namespace EuroTextEditor
             this.Button_ExportHashCodes = new System.Windows.Forms.Button();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.FolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.grbxTools = new System.Windows.Forms.GroupBox();
+            this.btnTrimStrings = new System.Windows.Forms.Button();
+            this.btnRemoveDoubleSpacing = new System.Windows.Forms.Button();
+            this.btnWordReplacing = new System.Windows.Forms.Button();
             this.Groupbox_Output.SuspendLayout();
             this.GroupBox_Misc.SuspendLayout();
+            this.grbxTools.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -155,18 +160,21 @@ namespace EuroTextEditor
             this.MenuItem_TextGroupsForm.Checked = true;
             this.MenuItem_TextGroupsForm.Index = 0;
             this.MenuItem_TextGroupsForm.Text = "Text Groups";
+            this.MenuItem_TextGroupsForm.Click += new System.EventHandler(this.MenuItem_TextGroupsForm_Click);
             // 
             // MenuItem_TextSectionsForm
             // 
             this.MenuItem_TextSectionsForm.Checked = true;
             this.MenuItem_TextSectionsForm.Index = 1;
             this.MenuItem_TextSectionsForm.Text = "Text Sections";
+            this.MenuItem_TextSectionsForm.Click += new System.EventHandler(this.MenuItem_TextSectionsForm_Click);
             // 
             // MenuItem_HashCodesForm
             // 
             this.MenuItem_HashCodesForm.Checked = true;
             this.MenuItem_HashCodesForm.Index = 2;
             this.MenuItem_HashCodesForm.Text = "HashCodes";
+            this.MenuItem_HashCodesForm.Click += new System.EventHandler(this.MenuItem_HashCodesForm_Click);
             // 
             // MenuItem_Help
             // 
@@ -190,7 +198,7 @@ namespace EuroTextEditor
             this.Groupbox_Output.Controls.Add(this.Checkbox_FormatInfo);
             this.Groupbox_Output.Controls.Add(this.Button_Output);
             this.Groupbox_Output.Controls.Add(this.Checkbox_IncludeHashCodesWithNoSection);
-            this.Groupbox_Output.Location = new System.Drawing.Point(906, 173);
+            this.Groupbox_Output.Location = new System.Drawing.Point(781, 287);
             this.Groupbox_Output.Name = "Groupbox_Output";
             this.Groupbox_Output.Size = new System.Drawing.Size(166, 157);
             this.Groupbox_Output.TabIndex = 3;
@@ -285,7 +293,7 @@ namespace EuroTextEditor
             this.GroupBox_Misc.Controls.Add(this.Button_ProjectSettings);
             this.GroupBox_Misc.Controls.Add(this.Button_ExportHashCodes);
             this.GroupBox_Misc.Controls.Add(this.Button_TextStore);
-            this.GroupBox_Misc.Location = new System.Drawing.Point(906, 0);
+            this.GroupBox_Misc.Location = new System.Drawing.Point(781, 0);
             this.GroupBox_Misc.Name = "GroupBox_Misc";
             this.GroupBox_Misc.Size = new System.Drawing.Size(166, 167);
             this.GroupBox_Misc.TabIndex = 2;
@@ -351,14 +359,57 @@ namespace EuroTextEditor
             this.dockPanel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.dockPanel.Location = new System.Drawing.Point(0, 0);
             this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(900, 679);
+            this.dockPanel.Size = new System.Drawing.Size(775, 644);
             this.dockPanel.TabIndex = 1;
+            // 
+            // grbxTools
+            // 
+            this.grbxTools.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.grbxTools.Controls.Add(this.btnTrimStrings);
+            this.grbxTools.Controls.Add(this.btnRemoveDoubleSpacing);
+            this.grbxTools.Controls.Add(this.btnWordReplacing);
+            this.grbxTools.Location = new System.Drawing.Point(781, 173);
+            this.grbxTools.Name = "grbxTools";
+            this.grbxTools.Size = new System.Drawing.Size(166, 108);
+            this.grbxTools.TabIndex = 4;
+            this.grbxTools.TabStop = false;
+            this.grbxTools.Text = "Tools:";
+            // 
+            // btnTrimStrings
+            // 
+            this.btnTrimStrings.Location = new System.Drawing.Point(6, 77);
+            this.btnTrimStrings.Name = "btnTrimStrings";
+            this.btnTrimStrings.Size = new System.Drawing.Size(154, 23);
+            this.btnTrimStrings.TabIndex = 2;
+            this.btnTrimStrings.Text = "Trim Strings";
+            this.btnTrimStrings.UseVisualStyleBackColor = true;
+            this.btnTrimStrings.Click += new System.EventHandler(this.BtnTrimStrings_Click);
+            // 
+            // btnRemoveDoubleSpacing
+            // 
+            this.btnRemoveDoubleSpacing.Location = new System.Drawing.Point(6, 48);
+            this.btnRemoveDoubleSpacing.Name = "btnRemoveDoubleSpacing";
+            this.btnRemoveDoubleSpacing.Size = new System.Drawing.Size(154, 23);
+            this.btnRemoveDoubleSpacing.TabIndex = 1;
+            this.btnRemoveDoubleSpacing.Text = "Remove Double-Spacing";
+            this.btnRemoveDoubleSpacing.UseVisualStyleBackColor = true;
+            this.btnRemoveDoubleSpacing.Click += new System.EventHandler(this.BtnRemoveDoubleSpacing_Click);
+            // 
+            // btnWordReplacing
+            // 
+            this.btnWordReplacing.Location = new System.Drawing.Point(6, 19);
+            this.btnWordReplacing.Name = "btnWordReplacing";
+            this.btnWordReplacing.Size = new System.Drawing.Size(154, 23);
+            this.btnWordReplacing.TabIndex = 0;
+            this.btnWordReplacing.Text = "Word Replacing";
+            this.btnWordReplacing.UseVisualStyleBackColor = true;
             // 
             // Frm_MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1084, 679);
+            this.ClientSize = new System.Drawing.Size(959, 644);
+            this.Controls.Add(this.grbxTools);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.GroupBox_Misc);
             this.Controls.Add(this.Groupbox_Output);
@@ -372,6 +423,7 @@ namespace EuroTextEditor
             this.Groupbox_Output.ResumeLayout(false);
             this.Groupbox_Output.PerformLayout();
             this.GroupBox_Misc.ResumeLayout(false);
+            this.grbxTools.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -411,6 +463,10 @@ namespace EuroTextEditor
         private System.Windows.Forms.Button Button_SpreadSheetExtractor;
         private System.Windows.Forms.Button Button_Searcher;
         protected internal System.Windows.Forms.CheckBox Checkbox_IncludeHashCodesWithNoSection;
+        private System.Windows.Forms.GroupBox grbxTools;
+        private System.Windows.Forms.Button btnTrimStrings;
+        private System.Windows.Forms.Button btnRemoveDoubleSpacing;
+        private System.Windows.Forms.Button btnWordReplacing;
     }
 }
 

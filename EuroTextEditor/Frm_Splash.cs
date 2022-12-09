@@ -45,6 +45,7 @@ namespace EuroTextEditor
                 GlobalVariables.WorkingDirectory = euroTextIni.Read("Last_Project_Opened", "Misc");
                 GlobalVariables.HashtablesAdminPath = euroTextIni.Read("HashTablesAdmin_Path", "Settings");
                 mainform.Textbox_FileName.Text = euroTextIni.Read("OutputFileName", "MainForm");
+
                 string tempVar = euroTextIni.Read("includeDataInfoSheet", "MainForm");
                 if (!string.IsNullOrEmpty(tempVar))
                 {
@@ -76,12 +77,12 @@ namespace EuroTextEditor
                     GlobalVariables.CurrentProject = projectFileReader.ReadProjectFile(projectFilePath);
 
                     //Update form text
-                    mainform.Text = "EuroText: \"" + GlobalVariables.WorkingDirectory + "\"";
+                    mainform.Text = string.Format("EuroText: \"{0}\"", GlobalVariables.WorkingDirectory);
 
                     //Load content
                     mainform.textGroups.ReadTextGroups();
                     mainform.textSections.LoadTextSections();
-                    CommonFunctions.LoadEuroTextFiles(mainform.hashCodes.UserControl_HashCodesListView.ListView_HashCodes);
+                    mainform.hashCodes.UserControl_HashCodesListView.LoadEuroTextFiles();
                 }
                 else
                 {
@@ -89,18 +90,12 @@ namespace EuroTextEditor
                 }
             }
 
-            //Show/dock forms
+            //Show or dock forms
             string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsMainForm.xml");
             if (File.Exists(configFile))
             {
                 DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
                 mainform.dockPanel.LoadFromXml(configFile, _deserializeDockContent);
-            }
-            else
-            {
-                mainform.hashCodes.Show(mainform.dockPanel, DockState.Document);
-                mainform.textSections.Show(mainform.dockPanel, DockState.DockLeft);
-                mainform.textGroups.Show(mainform.textSections.Pane, DockAlignment.Bottom, 0.5);
             }
 
             //Update menus

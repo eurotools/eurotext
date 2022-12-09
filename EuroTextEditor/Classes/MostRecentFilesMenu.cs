@@ -239,7 +239,7 @@ namespace EuroTextEditor.Classes
         /// (Use Path.GetFullPath() to obtain this.)</para>
         /// </remarks>
         /// <returns></returns>
-        static public string ShortenPathname(string FullPath)
+        public static string ShortenPathname(string FullPath)
         {
             string ShortPath;
             string SplittedPath;

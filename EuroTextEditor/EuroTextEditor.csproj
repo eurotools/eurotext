@@ -199,9 +199,6 @@
     <Compile Include="Frm_About.Designer.cs">
       <DependentUpon>Frm_About.cs</DependentUpon>
     </Compile>
-    <Compile Include="Frm_MainFrame_Functions.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="ETXML\Objects\EuroText_ProjectFile.cs" />
     <Compile Include="Custom Controls\ListView_ColumnSortingClick.cs">
       <SubType>Component</SubType>
@@ -341,6 +338,18 @@
     <Compile Include="Forms\UserControl_TextEditor.Designer.cs">
       <DependentUpon>UserControl_TextEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Frm_Tool_RemoveMultiWhitespaces.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\Frm_Tool_RemoveMultiWhitespaces.Designer.cs">
+      <DependentUpon>Frm_Tool_RemoveMultiWhitespaces.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Frm_Tool_Trim.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\Frm_Tool_Trim.Designer.cs">
+      <DependentUpon>Frm_Tool_Trim.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Custom Controls\UserControl_ListViewHashCodes.resx">
       <DependentUpon>UserControl_ListViewHashCodes.cs</DependentUpon>
     </EmbeddedResource>
@@ -456,6 +465,12 @@
     <EmbeddedResource Include="Forms\UserControl_TextEditor.resx">
       <DependentUpon>UserControl_TextEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\Frm_Tool_RemoveMultiWhitespaces.resx">
+      <DependentUpon>Frm_Tool_RemoveMultiWhitespaces.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\Frm_Tool_Trim.resx">
+      <DependentUpon>Frm_Tool_Trim.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -477,6 +492,7 @@
       <Name>ConsoleControl</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.6.1\build\Fody.targets" Condition="Exists('..\packages\Fody.6.6.1\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -172,6 +172,7 @@ namespace EuroTextEditor
             | System.Windows.Forms.AnchorStyles.Right)));
             this.UserControl_HashCodesTable.Location = new System.Drawing.Point(0, 115);
             this.UserControl_HashCodesTable.Name = "UserControl_HashCodesTable";
+            this.UserControl_HashCodesTable.ShowFilters = false;
             this.UserControl_HashCodesTable.Size = new System.Drawing.Size(461, 302);
             this.UserControl_HashCodesTable.TabIndex = 11;
             // 
