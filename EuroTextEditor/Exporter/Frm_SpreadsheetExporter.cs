@@ -1,4 +1,5 @@
-﻿using NPOI.HSSF.UserModel;
+﻿using EuroTextEditor.Classes;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using System;
 using System.ComponentModel;
@@ -92,8 +93,13 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void BackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            ProgressBar_Status.Value = e.ProgressPercentage;
             Text = e.UserState.ToString();
+            ProgressBar_Status.Value = e.ProgressPercentage;
+            if (!IsDisposed && Environment.OSVersion.Version >= new Version(6, 1))
+            {
+                TaskbarProgress.SetValue(Handle, e.ProgressPercentage, ProgressBar_Status.Maximum);
+                TaskbarProgress.SetState(Handle, TaskbarProgress.TaskbarStates.Normal);
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------

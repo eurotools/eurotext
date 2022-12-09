@@ -99,6 +99,7 @@
     <Compile Include="Classes\GlobalVariables.cs" />
     <Compile Include="Classes\IniFile.cs" />
     <Compile Include="Classes\MostRecentFilesMenu.cs" />
+    <Compile Include="Classes\TaskbarProgress.cs" />
     <Compile Include="Custom Controls\ListViewEx.cs">
       <SubType>Component</SubType>
     </Compile>
