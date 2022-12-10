@@ -13,14 +13,16 @@ namespace EuroTextEditor
         private readonly int filterFlags;
         private readonly bool modifyFiles;
         public int selectedFlags;
+        internal Frm_ListBoxHashCodes parentFormToSync;
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        public Frm_Categories(ListView listViewControl, int userFilterFlags, bool UpdateTextFiles = true)
+        public Frm_Categories(ListView listViewControl, int userFilterFlags, Frm_ListBoxHashCodes formToSync, bool UpdateTextFiles = true)
         {
             InitializeComponent();
             listControl = listViewControl;
             modifyFiles = UpdateTextFiles;
             filterFlags = userFilterFlags;
+            parentFormToSync = formToSync;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -66,7 +68,7 @@ namespace EuroTextEditor
             }
             else
             {
-                PrintFlags(defaultState, filterFlags,false);
+                PrintFlags(defaultState, filterFlags, false);
             }
         }
 
@@ -98,7 +100,7 @@ namespace EuroTextEditor
             {
                 ETXML_Writter filesWriter = new ETXML_Writter();
                 ETXML_Reader filesReader = new ETXML_Reader();
-                foreach(ListViewItem selectedItem in listControl.SelectedItems)
+                foreach (ListViewItem selectedItem in listControl.SelectedItems)
                 {
                     string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", selectedItem.Text + ".etf");
                     if (File.Exists(textFilePath))
@@ -112,6 +114,23 @@ namespace EuroTextEditor
 
                         //Write file again
                         filesWriter.WriteTextFile(textFilePath, textObj);
+
+                        //Update UI
+                        string flagsLabels = CommonFunctions.GetFlagsLabels(textObj.textFlags);
+                        selectedItem.SubItems[5].Text = flagsLabels;
+
+                        //Sync listviews
+                        if (parentFormToSync != null)
+                        {
+                            foreach (ListViewItem itemsToUpdate in parentFormToSync.UserControl_HashCodesListView.ListView_HashCodes.Items)
+                            {
+                                if (itemsToUpdate.Text.Equals(selectedItem.Text))
+                                {
+                                    itemsToUpdate.SubItems[5].Text = flagsLabels;
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }

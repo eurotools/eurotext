@@ -517,28 +517,9 @@ namespace EuroTextEditor.Custom_Controls
                 if (File.Exists(textFilePath))
                 {
                     //Show flags selector
-                    Frm_Categories categoriesEditor = new Frm_Categories(ListView_HashCodes, 0);
-                    if (categoriesEditor.ShowDialog() == DialogResult.OK)
+                    using (Frm_Categories categoriesEditor = new Frm_Categories(ListView_HashCodes, 0, parentFormToSync))
                     {
-                        foreach (ListViewItem textToUpdate in ListView_HashCodes.SelectedItems)
-                        {
-                            //Update UI
-                            string flagsLabels = CommonFunctions.GetFlagsLabels(categoriesEditor.selectedFlags);
-                            textToUpdate.SubItems[5].Text = flagsLabels;
-
-                            //Sync listviews
-                            if (parentFormToSync != null)
-                            {
-                                foreach (ListViewItem itemsToUpdate in parentFormToSync.UserControl_HashCodesListView.ListView_HashCodes.Items)
-                                {
-                                    if (itemsToUpdate.Text.Equals(textToUpdate.Text))
-                                    {
-                                        itemsToUpdate.SubItems[5].Text = flagsLabels;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
+                        categoriesEditor.ShowDialog();
                     }
                 }
             }
@@ -587,7 +568,7 @@ namespace EuroTextEditor.Custom_Controls
             }
 
             //Show and display form
-            Frm_Categories frmCategories = new Frm_Categories(null, currentFlags, false);
+            Frm_Categories frmCategories = new Frm_Categories(null, currentFlags, parentFormToSync, false);
             if (frmCategories.ShowDialog() == DialogResult.OK)
             {
                 int selectedFlags = frmCategories.selectedFlags;
