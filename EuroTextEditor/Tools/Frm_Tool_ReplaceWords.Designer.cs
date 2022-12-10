@@ -31,6 +31,9 @@ namespace EuroTextEditor.Tools
         {
             this.label1 = new System.Windows.Forms.Label();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.ContextMenuCheckList = new System.Windows.Forms.ContextMenu();
+            this.MenuItem_CheckAll = new System.Windows.Forms.MenuItem();
+            this.MenuItem_UncheckAll = new System.Windows.Forms.MenuItem();
             this.label2 = new System.Windows.Forms.Label();
             this.TextBoxOriginal = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -39,9 +42,6 @@ namespace EuroTextEditor.Tools
             this.ButtonCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ChckOrdinalIgnore = new System.Windows.Forms.CheckBox();
-            this.ContextMenuCheckList = new System.Windows.Forms.ContextMenu();
-            this.MenuItem_CheckAll = new System.Windows.Forms.MenuItem();
-            this.MenuItem_UncheckAll = new System.Windows.Forms.MenuItem();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,12 +60,30 @@ namespace EuroTextEditor.Tools
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.checkedListBox1.CheckOnClick = true;
+            this.checkedListBox1.ContextMenu = this.ContextMenuCheckList;
             this.checkedListBox1.FormattingEnabled = true;
             this.checkedListBox1.Location = new System.Drawing.Point(12, 148);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(355, 289);
-            this.checkedListBox1.ContextMenu = ContextMenuCheckList;
             this.checkedListBox1.TabIndex = 4;
+            // 
+            // ContextMenuCheckList
+            // 
+            this.ContextMenuCheckList.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.MenuItem_CheckAll,
+            this.MenuItem_UncheckAll});
+            // 
+            // MenuItem_CheckAll
+            // 
+            this.MenuItem_CheckAll.Index = 0;
+            this.MenuItem_CheckAll.Text = "Check All";
+            this.MenuItem_CheckAll.Click += new System.EventHandler(this.MenuItem_CheckAll_Click);
+            // 
+            // MenuItem_UncheckAll
+            // 
+            this.MenuItem_UncheckAll.Index = 1;
+            this.MenuItem_UncheckAll.Text = "Uncheck All";
+            this.MenuItem_UncheckAll.Click += new System.EventHandler(this.MenuItem_UncheckAll_Click);
             // 
             // label2
             // 
@@ -147,24 +165,6 @@ namespace EuroTextEditor.Tools
             this.ChckOrdinalIgnore.Text = "Ignore Case";
             this.ChckOrdinalIgnore.UseVisualStyleBackColor = true;
             // 
-            // ContextMenuCheckList
-            // 
-            this.ContextMenuCheckList.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.MenuItem_CheckAll,
-            this.MenuItem_UncheckAll});
-            // 
-            // MenuItem_CheckAll
-            // 
-            this.MenuItem_CheckAll.Index = 0;
-            this.MenuItem_CheckAll.Text = "Check All";
-            this.MenuItem_CheckAll.Click += new System.EventHandler(this.MenuItem_CheckAll_Click);
-            // 
-            // MenuItem_UncheckAll
-            // 
-            this.MenuItem_UncheckAll.Index = 1;
-            this.MenuItem_UncheckAll.Text = "Uncheck All";
-            this.MenuItem_UncheckAll.Click += new System.EventHandler(this.MenuItem_UncheckAll_Click);
-            // 
             // Frm_Tool_ReplaceWords
             // 
             this.AcceptButton = this.ButtonOk;
@@ -188,6 +188,7 @@ namespace EuroTextEditor.Tools
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Replace Words";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_Tool_ReplaceWords_FormClosing);
             this.Load += new System.EventHandler(this.Frm_Tool_ReplaceWords_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

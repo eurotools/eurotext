@@ -78,6 +78,7 @@ namespace EuroTextEditor.Tools
 
                     //Inform User
                     MessageBox.Show(string.Format("{0} Files has been modified.", numOfFilesModified), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Close();
                 }
             }
         }

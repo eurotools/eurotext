@@ -274,6 +274,7 @@ namespace EuroTextEditor.Custom_Controls
             this.radioBtnContains.TabStop = true;
             this.radioBtnContains.Text = "Contains Filter Categories";
             this.radioBtnContains.UseVisualStyleBackColor = true;
+            this.radioBtnContains.Click += new System.EventHandler(this.RadioBtnContains_Click);
             // 
             // radOnlySpecified
             // 
@@ -284,6 +285,7 @@ namespace EuroTextEditor.Custom_Controls
             this.radOnlySpecified.TabIndex = 4;
             this.radOnlySpecified.Text = "ONLY specified categories";
             this.radOnlySpecified.UseVisualStyleBackColor = true;
+            this.radOnlySpecified.Click += new System.EventHandler(this.RadOnlySpecified_Click);
             // 
             // btnShowAll
             // 

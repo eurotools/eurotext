@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EuroTextEditor.Classes;
+using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -16,16 +17,38 @@ namespace EuroTextEditor.Tools
             InitializeComponent();
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------
+        //  FORM EVENTS
+        //-------------------------------------------------------------------------------------------
         private void Frm_Tool_ReplaceWords_Load(object sender, EventArgs e)
         {
             foreach (string language in GlobalVariables.CurrentProject.Languages)
             {
                 checkedListBox1.Items.Add(language);
             }
+
+            //Read ini file
+            IniFile euroTextIni = new IniFile(GlobalVariables.EuroTextIni);
+            TextBoxOriginal.Text = euroTextIni.Read("OriginalString", "WordsReplacing");
+            TextboxReplacement.Text = euroTextIni.Read("ReplacementString", "WordsReplacing");
+            if (bool.TryParse(euroTextIni.Read("IgnoreCase", "WordsReplacing").Trim(), out bool status))
+            {
+                ChckOrdinalIgnore.Checked = status;
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void Frm_Tool_ReplaceWords_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            IniFile applicationIni = new IniFile(GlobalVariables.EuroTextIni);
+            applicationIni.Write("OriginalString", TextBoxOriginal.Text, "WordsReplacing");
+            applicationIni.Write("ReplacementString", TextboxReplacement.Text, "WordsReplacing");
+            applicationIni.Write("IgnoreCase", ChckOrdinalIgnore.Checked.ToString(), "WordsReplacing");
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  FORM BUTTONS
+        //-------------------------------------------------------------------------------------------
         private void ButtonOk_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Are you sure you want to proceed?\nThis action can not be undone.", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -81,11 +104,14 @@ namespace EuroTextEditor.Tools
 
                     //Inform User
                     MessageBox.Show(string.Format("{0} Files has been modified.", numOfFilesModified), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Close();
                 }
             }
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------
+        //  CONTEXT MENU
+        //-------------------------------------------------------------------------------------------
         private void MenuItem_CheckAll_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < checkedListBox1.Items.Count; i++)

@@ -58,6 +58,14 @@ namespace EuroTextEditor.Custom_Controls
                 txtFilters.Tag = flags;
                 txtFilters.Text = CommonFunctions.GetFlagsLabels(flags);
             }
+            if (bool.TryParse(euroTextIni.Read("ContainsFilters", "HashCodes").Trim(), out bool checkStatus))
+            {
+                radioBtnContains.Checked = checkStatus;
+            }
+            if (bool.TryParse(euroTextIni.Read("OnlySpecified", "HashCodes").Trim(), out checkStatus))
+            {
+                radOnlySpecified.Checked = checkStatus;
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -285,6 +293,22 @@ namespace EuroTextEditor.Custom_Controls
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_SetColor_Click(object sender, EventArgs e)
         {
+            IniFile applicationIni = new IniFile(GlobalVariables.EuroTextIni);
+
+            //Restore Custom Colors
+            int[] savedColors = new int[ColorPicker_HashCodes.CustomColors.Length];
+            for (int i = 0; i < ColorPicker_HashCodes.CustomColors.Length; i++)
+            {
+                int colorCode = 16777215;
+                if (int.TryParse(applicationIni.Read("Color" + i, "ColorPicker"), out int savedColor))
+                {
+                    colorCode = savedColor;
+                }
+                savedColors[i] = colorCode;
+            }
+
+            //Open Color Picker
+            ColorPicker_HashCodes.CustomColors = savedColors;
             if (ColorPicker_HashCodes.ShowDialog() == DialogResult.OK)
             {
                 foreach (ListViewItem itemToModify in ListView_HashCodes.SelectedItems)
@@ -318,6 +342,12 @@ namespace EuroTextEditor.Custom_Controls
                         //Write file again
                         filesWriter.WriteTextFile(textFilePath, textObjectData);
                     }
+                }
+
+                //Save Custom Colors
+                for (int i = 0; i < ColorPicker_HashCodes.CustomColors.Length; i++)
+                {
+                    applicationIni.Write("Color" + i, ColorPicker_HashCodes.CustomColors[i].ToString(), "ColorPicker");
                 }
             }
         }
@@ -478,6 +508,7 @@ namespace EuroTextEditor.Custom_Controls
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_Categories_Click(object sender, EventArgs e)
         {
             if (ListView_HashCodes.SelectedItems.Count > 0)
@@ -639,6 +670,24 @@ namespace EuroTextEditor.Custom_Controls
                 }
                 ListView_HashCodes.EndUpdate();
             }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void RadioBtnContains_Click(object sender, EventArgs e)
+        {
+            //Save Filters
+            IniFile applicationIni = new IniFile(GlobalVariables.EuroTextIni);
+            applicationIni.Write("ContainsFilters", radioBtnContains.Checked.ToString(), "HashCodes");
+            applicationIni.Write("OnlySpecified", radOnlySpecified.Checked.ToString(), "HashCodes");
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void RadOnlySpecified_Click(object sender, EventArgs e)
+        {
+            //Save Filters
+            IniFile applicationIni = new IniFile(GlobalVariables.EuroTextIni);
+            applicationIni.Write("ContainsFilters", radioBtnContains.Checked.ToString(), "HashCodes");
+            applicationIni.Write("OnlySpecified", radOnlySpecified.Checked.ToString(), "HashCodes");
         }
     }
 

@@ -46,20 +46,17 @@ namespace EuroTextEditor
                 GlobalVariables.HashtablesAdminPath = euroTextIni.Read("HashTablesAdmin_Path", "Settings");
                 mainform.Textbox_FileName.Text = euroTextIni.Read("OutputFileName", "MainForm");
 
-                string tempVar = euroTextIni.Read("includeDataInfoSheet", "MainForm");
-                if (!string.IsNullOrEmpty(tempVar))
+                if (bool.TryParse(euroTextIni.Read("includeDataInfoSheet", "MainForm").Trim(), out bool checkStatus))
                 {
-                    mainform.Checkbox_DataInfoSheet.Checked = Convert.ToBoolean(tempVar);
+                    mainform.Checkbox_DataInfoSheet.Checked = checkStatus;
                 }
-                tempVar = euroTextIni.Read("includeFormatInfoSheet", "MainForm");
-                if (!string.IsNullOrEmpty(tempVar))
+                if (bool.TryParse(euroTextIni.Read("includeFormatInfoSheet", "MainForm").Trim(), out checkStatus))
                 {
-                    mainform.Checkbox_FormatInfo.Checked = Convert.ToBoolean(tempVar);
+                    mainform.Checkbox_FormatInfo.Checked = checkStatus;
                 }
-                tempVar = euroTextIni.Read("includeNoSectionedHashCodes", "MainForm");
-                if (!string.IsNullOrEmpty(tempVar))
+                if (bool.TryParse(euroTextIni.Read("includeNoSectionedHashCodes", "MainForm").Trim(), out checkStatus))
                 {
-                    mainform.Checkbox_IncludeHashCodesWithNoSection.Checked = Convert.ToBoolean(tempVar);
+                    mainform.Checkbox_IncludeHashCodesWithNoSection.Checked = checkStatus;
                 }
 
                 //Ask for userName if required
@@ -90,8 +87,14 @@ namespace EuroTextEditor
                 }
             }
 
-            //Show or dock forms
+            //Get settings file
             string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsMainForm.xml");
+            if (!File.Exists(configFile))
+            {
+                configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DefaultDockSettingsMainForm.xml");
+            }
+
+            //Load panels last or default state
             if (File.Exists(configFile))
             {
                 DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
