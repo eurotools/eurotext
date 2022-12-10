@@ -531,7 +531,7 @@ namespace EuroTextEditor
             this.ToolButton_ZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolButton_ZoomIn.Name = "ToolButton_ZoomIn";
             this.ToolButton_ZoomIn.Size = new System.Drawing.Size(23, 22);
-            this.ToolButton_ZoomIn.Text = "toolStripButton1";
+            this.ToolButton_ZoomIn.Text = "Zoom In";
             this.ToolButton_ZoomIn.Click += new System.EventHandler(this.ToolButton_ZoomIn_Click);
             // 
             // ToolButton_ZoomOut
@@ -541,7 +541,7 @@ namespace EuroTextEditor
             this.ToolButton_ZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolButton_ZoomOut.Name = "ToolButton_ZoomOut";
             this.ToolButton_ZoomOut.Size = new System.Drawing.Size(23, 22);
-            this.ToolButton_ZoomOut.Text = "toolStripButton1";
+            this.ToolButton_ZoomOut.Text = "Zoom Out";
             this.ToolButton_ZoomOut.Click += new System.EventHandler(this.ToolButton_ZoomOut_Click);
             // 
             // MenuItem_Factor
