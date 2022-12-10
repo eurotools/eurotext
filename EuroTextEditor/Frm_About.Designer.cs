@@ -48,12 +48,12 @@ namespace EuroTextEditor
             // 
             // Label_About
             // 
+            this.Label_About.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Label_About.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Bold);
-            this.Label_About.Location = new System.Drawing.Point(10, 25);
+            this.Label_About.Location = new System.Drawing.Point(0, 0);
             this.Label_About.Name = "Label_About";
-            this.Label_About.Size = new System.Drawing.Size(232, 112);
+            this.Label_About.Size = new System.Drawing.Size(252, 164);
             this.Label_About.TabIndex = 0;
-            this.Label_About.Text = "EuroText Editor\r\n\r\nProgrammer:\r\nJordi Martínez (jmarti856)";
             this.Label_About.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // Button_OK
@@ -83,6 +83,7 @@ namespace EuroTextEditor
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About";
+            this.Load += new System.EventHandler(this.Frm_About_Load);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
