@@ -94,6 +94,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Custom Controls\CheckboxTriple.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Classes\ComboItemData.cs" />
     <Compile Include="Classes\CommonFunctions.cs" />
     <Compile Include="Classes\GlobalVariables.cs" />

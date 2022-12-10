@@ -16,7 +16,6 @@ namespace EuroTextEditor.Custom_Controls
     {
         internal Frm_ListBoxHashCodes parentFormToSync;
 
-
         //-------------------------------------------------------------------------------------------------------------------------------
         private bool _showFilters = false;
         public bool ShowFilters
@@ -517,17 +516,10 @@ namespace EuroTextEditor.Custom_Controls
                 string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", ListView_HashCodes.SelectedItems[0].Text + ".etf");
                 if (File.Exists(textFilePath))
                 {
-                    ETXML_Reader filesReader = new ETXML_Reader();
-                    ETXML_Writter filesWriter = new ETXML_Writter();
-
-                    EuroText_TextFile textObjectData = filesReader.ReadTextFile(textFilePath);
-
                     //Show flags selector
-                    Frm_Categories categoriesEditor = new Frm_Categories(textObjectData.textFlags);
+                    Frm_Categories categoriesEditor = new Frm_Categories(ListView_HashCodes, 0);
                     if (categoriesEditor.ShowDialog() == DialogResult.OK)
                     {
-                        textObjectData.textFlags = categoriesEditor.selectedFlags;
-
                         foreach (ListViewItem textToUpdate in ListView_HashCodes.SelectedItems)
                         {
                             //Update UI
@@ -545,17 +537,6 @@ namespace EuroTextEditor.Custom_Controls
                                         break;
                                     }
                                 }
-                            }
-
-                            string filePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", textToUpdate.Text + ".etf");
-                            if (File.Exists(filePath))
-                            {
-                                //Update property
-                                EuroText_TextFile textObj = filesReader.ReadTextFile(filePath);
-                                textObj.textFlags = categoriesEditor.selectedFlags;
-
-                                //Write file again
-                                filesWriter.WriteTextFile(filePath, textObj);
                             }
                         }
                     }
@@ -606,7 +587,7 @@ namespace EuroTextEditor.Custom_Controls
             }
 
             //Show and display form
-            Frm_Categories frmCategories = new Frm_Categories(currentFlags);
+            Frm_Categories frmCategories = new Frm_Categories(null, currentFlags, false);
             if (frmCategories.ShowDialog() == DialogResult.OK)
             {
                 int selectedFlags = frmCategories.selectedFlags;

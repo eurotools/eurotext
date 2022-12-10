@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EuroTextEditor
@@ -8,14 +9,18 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class Frm_Categories : Form
     {
-        private readonly int currentTextFlags;
-        internal int selectedFlags;
+        private readonly ListView listControl;
+        private readonly int filterFlags;
+        private readonly bool modifyFiles;
+        public int selectedFlags;
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        public Frm_Categories(int textFlags)
+        public Frm_Categories(ListView listViewControl, int userFilterFlags, bool UpdateTextFiles = true)
         {
             InitializeComponent();
-            currentTextFlags = textFlags;
+            listControl = listViewControl;
+            modifyFiles = UpdateTextFiles;
+            filterFlags = userFilterFlags;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -37,18 +42,49 @@ namespace EuroTextEditor
                 }
             }
 
-            //Check flag if was selected by the user
-            for (int i = 0; i < 16; i++)
+            //Initialize readers and check state var
+            ETXML_Reader filesReader = new ETXML_Reader();
+            CheckState defaultState = CheckState.Checked;
+
+            if (listControl != null)
             {
-                if (Convert.ToBoolean((currentTextFlags >> i) & 1))
+                if (listControl.SelectedItems.Count > 1)
                 {
-                    string controlText = "CheckBox_Flag" + (i + 1);
-                    if (GroupBox_Flags.Controls.ContainsKey(controlText))
+                    defaultState = CheckState.Indeterminate;
+                }
+
+                //Read and check items
+                for (int i = 0; i < listControl.SelectedItems.Count; i++)
+                {
+                    string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", listControl.SelectedItems[i].Text + ".etf");
+                    if (File.Exists(textFilePath))
                     {
-                        if (GroupBox_Flags.Controls[controlText] is CheckBox chxBox)
-                        {
-                            chxBox.Checked = true;
-                        }
+                        EuroText_TextFile textObjectData = filesReader.ReadTextFile(textFilePath);
+                        PrintFlags(defaultState, textObjectData.textFlags, listControl.SelectedItems.Count > 1);
+                    }
+                }
+            }
+            else
+            {
+                PrintFlags(defaultState, filterFlags,false);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void PrintFlags(CheckState defaultState, int flags, bool allowThreeStates)
+        {
+            for (int j = 0; j < 16; j++)
+            {
+                string controlText = "CheckBox_Flag" + (j + 1);
+                if (GroupBox_Flags.Controls.ContainsKey(controlText) && GroupBox_Flags.Controls[controlText] is CheckBox chxBox)
+                {
+                    if (allowThreeStates)
+                    {
+                        chxBox.ThreeState = true;
+                    }
+                    if (((flags >> j) & 1) == 1)
+                    {
+                        chxBox.CheckState = defaultState;
                     }
                 }
             }
@@ -57,8 +93,41 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_OK_Click(object sender, EventArgs e)
         {
+            //Update files and close
+            if (modifyFiles)
+            {
+                ETXML_Writter filesWriter = new ETXML_Writter();
+                ETXML_Reader filesReader = new ETXML_Reader();
+                foreach(ListViewItem selectedItem in listControl.SelectedItems)
+                {
+                    string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", selectedItem.Text + ".etf");
+                    if (File.Exists(textFilePath))
+                    {
+                        //Read file flags
+                        EuroText_TextFile textObj = filesReader.ReadTextFile(textFilePath);
+
+                        //Update Flags
+                        GetFlags(ref textObj.textFlags);
+                        selectedFlags = textObj.textFlags;
+
+                        //Write file again
+                        filesWriter.WriteTextFile(textFilePath, textObj);
+                    }
+                }
+            }
+            else
+            {
+                GetFlags(ref selectedFlags);
+            }
+
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void GetFlags(ref int flagsVariable)
+        {
             //Check flag if was selected by the user
-            selectedFlags = 0;
             for (int i = 0; i < 16; i++)
             {
                 string controlText = "CheckBox_Flag" + (i + 1);
@@ -66,16 +135,20 @@ namespace EuroTextEditor
                 {
                     if (GroupBox_Flags.Controls[controlText] is CheckBox chxBox)
                     {
-                        if (chxBox.Checked)
+                        //Set this bit --ON--
+                        if (chxBox.CheckState == CheckState.Checked)
                         {
-                            selectedFlags |= (1 << i);
+                            flagsVariable |= (1 << i);
+                        }
+
+                        //Set this bit --OFF--
+                        if (chxBox.CheckState == CheckState.Unchecked)
+                        {
+                            flagsVariable &= ~(1 << i);
                         }
                     }
                 }
             }
-
-            DialogResult = DialogResult.OK;
-            Close();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
