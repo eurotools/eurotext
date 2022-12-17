@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EuroTextEditor.Forms.Editor;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -38,10 +39,10 @@ namespace EuroTextEditor.Custom_Controls
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Textbox_OutputSections_Click(object sender, EventArgs e)
         {
-            Frm_TextOutputSections outputSectionsEditor = new Frm_TextOutputSections(Textbox_OutputSections.Text.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
-            if (outputSectionsEditor.ShowDialog() == DialogResult.OK)
+            Frm_TextOutSection outForm = new Frm_TextOutSection(Textbox_OutputSections.Text.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
+            if (outForm.ShowDialog() == DialogResult.OK)
             {
-                Textbox_OutputSections.Text = outputSectionsEditor.selectedSections;
+                Textbox_OutputSections.Text = outForm.selectedSections;
             }
         }
     }
