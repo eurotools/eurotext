@@ -18,7 +18,7 @@ namespace EuroTextEditor
         private List<UserControl_TextEditor> languageEditors;
         private int languageEditorsIndex = 0;
         private bool PromptSave = true;
-        private readonly string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsTextEditor.xml");
+        private readonly string configFile = "ET\\DockSettingsTextEditor.xml";
         private readonly Frm_ListBoxHashCodes parentFormToSync;
 
         //-------------------------------------------------------------------------------------------------------------------------------

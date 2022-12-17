@@ -117,7 +117,6 @@ namespace EuroTextEditor
             this.Name = "Frm_ListBox_TextSections";
             this.TabText = "Text Sections";
             this.Text = "Text Sections";
-            this.VisibleChanged += new System.EventHandler(this.Frm_ListBox_TextSections_VisibleChanged);
             this.ResumeLayout(false);
 
         }

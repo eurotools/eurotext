@@ -1,10 +1,12 @@
 ﻿using EuroTextEditor.Classes;
+using EuroTextEditor.Custom_Controls;
 using EuroTextEditor.Tools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using System.Windows.Forms.Layout;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace EuroTextEditor
@@ -14,15 +16,28 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class Frm_MainFrame : Form
     {
-        internal Frm_ListBoxHashCodes hashCodes;
-        internal Frm_ListBox_TextSections textSections;
-        internal Frm_ListBox_TextGroups textGroups;
         internal MostRecentFilesMenu RecentFilesMenu;
+        internal List<DockContent> m_DockForms = new List<DockContent>();
+
+        //Initialize forms
+        internal Frm_ListBox_TextSections textSections = new Frm_ListBox_TextSections();
+        internal Frm_ListBox_TextGroups textGroups = new Frm_ListBox_TextGroups();
+        internal Frm_ListBoxHashCodes hashCodes = new Frm_ListBoxHashCodes();
+        internal Frm_SpreadSheets_Extractor xlsExtractor = new Frm_SpreadSheets_Extractor();
+        internal Frm_Searcher searchForm = new Frm_Searcher();
+
+        //Global vars
+        private bool ResetSettingsOnExit;
 
         //-------------------------------------------------------------------------------------------------------------------------------
         public Frm_MainFrame()
         {
             InitializeComponent();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Frm_MainFrame_Load(object sender, EventArgs e)
+        {
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -56,15 +71,36 @@ namespace EuroTextEditor
             applicationIni.Write("includeNoSectionedHashCodes", Checkbox_IncludeHashCodesWithNoSection.Checked.ToString(), "MainForm");
             applicationIni.Write("OutputFileName", Textbox_FileName.Text, "MainForm");
 
-            //Dock conifg
-            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsMainForm.xml");
-            dockPanel.SaveAsXml(configFile);
+            //Save all listviews state
+            foreach (Form dockForm in m_DockForms)
+            {
+                SaveListViewConfig(dockForm);
+            }
+
+            //Save Dock Panels status
+            dockPanel.SaveAsXml("ET\\Dock Settings.xml");
+
+            //Close all forms
+            foreach (Form dockForm in m_DockForms)
+            {
+                dockForm.Close();
+            }
+
+            //Reset Settings
+            if (ResetSettingsOnExit)
+            {
+                File.Delete("ET\\Dock Settings.xml");
+                foreach (Form dockForm in m_DockForms)
+                {
+                    File.Delete(GetConfigFile(dockForm));
+                }
+            }
         }
 
         //-------------------------------------------------------------------------------------------
         //  MENU ITEM - FILE
-        //-------------------------------------------------------------------------------------------
-        private void MenuItem_OpenProject_Click(object sender, EventArgs e)
+        //-------------------------------------------------------------------------------------------        
+        private void MenuItemStrip_OpenProject_Click(object sender, EventArgs e)
         {
             if (OpenFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -78,26 +114,7 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        internal void MenuItemFile_Recent_Click(int number, string filename)
-        {
-            if (Directory.Exists(filename))
-            {
-                //Update Global variable and restart
-                GlobalVariables.WorkingDirectory = filename;
-
-                //Restart application
-                Process.Start(Application.ExecutablePath);
-                Application.Exit();
-            }
-            else
-            {
-                MessageBox.Show(string.Format("Project Directory Not Found {0}", filename), "EuroText Load Project Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                RecentFilesMenu.RemoveFile(number);
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_NewProject_Click(object sender, EventArgs e)
+        private void MenuItemStrip_NewProject_Click(object sender, EventArgs e)
         {
             if (FolderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
@@ -133,24 +150,39 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_ResetSettings_Click(object sender, EventArgs e)
+        internal void MenuItemFile_Recent_Click(int number, string filename)
         {
-            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DefaultDockSettingsMainForm.xml");
-            if (File.Exists(configFile))
+            if (Directory.Exists(filename))
             {
-                DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
-                dockPanel.LoadFromXml(configFile, _deserializeDockContent);
+                //Update Global variable and restart
+                GlobalVariables.WorkingDirectory = filename;
+
+                //Restart application
+                Application.Restart();
+            }
+            else
+            {
+                MessageBox.Show(string.Format("Project Directory Not Found {0}", filename), "EuroText Load Project Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                RecentFilesMenu.RemoveFile(number);
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_Exit_Click(object sender, EventArgs e)
+        private void MenuItemStrip_ResetSettings_Click(object sender, EventArgs e)
+        {
+            ResetSettingsOnExit = true;
+            Close();
+            Application.Restart();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItemStrip_Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_About_Click(object sender, EventArgs e)
+        private void MenuItemStrip_About_Click(object sender, EventArgs e)
         {
             using (Frm_About aboutForm = new Frm_About())
             {
@@ -267,7 +299,6 @@ namespace EuroTextEditor
         {
             if (!CommonFunctions.FormIsOpened("Frm_SpreadSheets_Extractor"))
             {
-                Frm_SpreadSheets_Extractor xlsExtractor = new Frm_SpreadSheets_Extractor();
                 xlsExtractor.Show(dockPanel, DockState.Float);
             }
         }
@@ -277,33 +308,19 @@ namespace EuroTextEditor
         {
             if (!CommonFunctions.FormIsOpened("Frm_Searcher"))
             {
-                Frm_Searcher searchForm = new Frm_Searcher(hashCodes);
                 searchForm.Show(dockPanel, DockState.Float);
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private IDockContent DeserializeDockContent(string persistString)
+        internal IDockContent DeserializeDockContent(string persistString)
         {
-            if (persistString == typeof(Frm_ListBoxHashCodes).ToString())
+            foreach (DockContent dockForm in m_DockForms)
             {
-                return hashCodes;
-            }
-            if (persistString == typeof(Frm_ListBox_TextSections).ToString())
-            {
-                return textSections;
-            }
-            if (persistString == typeof(Frm_ListBox_TextGroups).ToString())
-            {
-                return textGroups;
-            }
-            if (persistString == typeof(Frm_SpreadSheets_Extractor).ToString())
-            {
-                return new Frm_SpreadSheets_Extractor();
-            }
-            if (persistString == typeof(Frm_Searcher).ToString())
-            {
-                return new Frm_Searcher(hashCodes);
+                if (persistString == dockForm.GetType().ToString())
+                {
+                    return dockForm;
+                }
             }
             return null;
         }
@@ -311,36 +328,50 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------
         //  MAIN MENU
         //-------------------------------------------------------------------------------------------
+        private void MenuItemStrip_Windows_DropDownOpening(object sender, EventArgs e)
+        {
+            UpdateWindowMenuChecks();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItemStrip_TextGroups_Click(object sender, EventArgs e)
+        {
+            textGroups.Show(dockPanel, DockState.Float);
+            UpdateWindowMenuChecks();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItemStrip_TextSections_Click(object sender, EventArgs e)
+        {
+            textSections.Show(dockPanel, DockState.Float);
+            UpdateWindowMenuChecks();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItemStrip_HashCodes_Click(object sender, EventArgs e)
+        {
+            hashCodes.Show(dockPanel, DockState.Float);
+            UpdateWindowMenuChecks();
+        }
+
         private void MenuItem_TextGroupsForm_Click(object sender, EventArgs e)
         {
-            if (textGroups == null)
-            {
-                textGroups = new Frm_ListBox_TextGroups(MenuItem_TextGroupsForm, hashCodes);
-            }
             textGroups.Show(dockPanel, DockState.Float);
-            MenuItem_TextGroupsForm.Checked = true;
+            UpdateWindowMenuChecks();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_TextSectionsForm_Click(object sender, EventArgs e)
         {
-            if (textSections == null)
-            {
-                textSections = new Frm_ListBox_TextSections(MenuItem_TextSectionsForm, hashCodes);
-            }
             textSections.Show(dockPanel, DockState.Float);
-            MenuItem_TextSectionsForm.Checked = true;
+            UpdateWindowMenuChecks();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_HashCodesForm_Click(object sender, EventArgs e)
         {
-            if (hashCodes == null)
-            {
-                hashCodes = new Frm_ListBoxHashCodes(MenuItem_HashCodesForm);
-            }
             hashCodes.Show(dockPanel, DockState.Float);
-            MenuItem_HashCodesForm.Checked = true;
+            UpdateWindowMenuChecks();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -367,6 +398,71 @@ namespace EuroTextEditor
             using (Frm_Tool_ReplaceWords replaceWords = new Frm_Tool_ReplaceWords())
             {
                 replaceWords.ShowDialog();
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void UpdateWindowMenuChecks()
+        {
+            MenuItemStrip_TextGroups.Checked = textGroups.DockState != DockState.Hidden;
+            MenuItemStrip_TextSections.Checked = textSections.DockState != DockState.Hidden;
+            MenuItemStrip_HashCodes.Checked = hashCodes.DockState != DockState.Hidden;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private string GetConfigFile(Form f) => "ET\\" + f.Name + ".ini";
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void SaveListViewConfig(Form f)
+        {
+            string contents = "";
+            foreach (Control control in (ArrangedElementCollection)f.Controls)
+            {
+                if (control is ListView listView1)
+                {
+                    contents += listView1.Name;
+                    for (int i = 0; i < listView1.Columns.Count; ++i)
+                    {
+                        contents = contents + " " + listView1.Columns[i].Width;
+                    }
+                    contents += "\n";
+                }
+                if (control is ListView_ColumnSortingClick listView2)
+                {
+                    contents += listView2.Name;
+                    for (int i = 0; i < listView2.Columns.Count; ++i)
+                    {
+                        contents = contents + " " + listView2.Columns[i].Width;
+                    }
+                    contents += "\n";
+                }
+            }
+            File.WriteAllText(GetConfigFile(f), contents);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal void LoadListViewConfig(Form frm)
+        {
+            string filePath = GetConfigFile(frm);
+            if (File.Exists(filePath))
+            {
+                string[] fileContent = File.ReadAllLines(filePath);
+                foreach (string line in fileContent)
+                {
+                    string[] lineData = line.Split(' ');
+                    Control[] formControls = frm.Controls.Find(lineData[0], false);
+                    if (formControls.Length == 1)
+                    {
+                        ListView listView = (ListView)formControls[0];
+                        if (listView.Columns.Count == lineData.Length - 1)
+                        {
+                            for (int i = 0; i < listView.Columns.Count; ++i)
+                            {
+                                listView.Columns[i].Width = Convert.ToInt32(lineData[1 + i]);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

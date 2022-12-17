@@ -14,26 +14,10 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class Frm_ListBox_TextGroups : DockContent
     {
-        private readonly Frm_ListBoxHashCodes parentHashCodesForm;
-        private readonly MenuItem formMenuItem;
-
         //-------------------------------------------------------------------------------------------------------------------------------
-        public Frm_ListBox_TextGroups(MenuItem parentMainForm, Frm_ListBoxHashCodes parentForm)
+        public Frm_ListBox_TextGroups()
         {
             InitializeComponent();
-            formMenuItem = parentMainForm;
-            parentHashCodesForm = parentForm;
-        }
-
-        //-------------------------------------------------------------------------------------------
-        //  FORM EVENTS
-        //-------------------------------------------------------------------------------------------
-        private void Frm_ListBox_TextGroups_VisibleChanged(object sender, EventArgs e)
-        {
-            if (IsHidden)
-            {
-                formMenuItem.Checked = false;
-            }
         }
 
         //-------------------------------------------------------------------------------------------
@@ -157,7 +141,7 @@ namespace EuroTextEditor
                 }
 
                 //Show form
-                Frm_GroupsViewer groupsViewer = new Frm_GroupsViewer(hashCodesInThisGroup.ToArray(), parentHashCodesForm)
+                Frm_GroupsViewer groupsViewer = new Frm_GroupsViewer(hashCodesInThisGroup.ToArray())
                 {
                     Text = groupToSearch
                 };

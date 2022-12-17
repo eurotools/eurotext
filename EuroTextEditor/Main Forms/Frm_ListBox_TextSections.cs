@@ -13,26 +13,10 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class Frm_ListBox_TextSections : DockContent
     {
-        private readonly MenuItem formMenuItem;
-        private readonly Frm_ListBoxHashCodes parentHashCodesForm;
-
         //-------------------------------------------------------------------------------------------------------------------------------
-        public Frm_ListBox_TextSections(MenuItem parentMainForm, Frm_ListBoxHashCodes parentForm)
+        public Frm_ListBox_TextSections()
         {
             InitializeComponent();
-            formMenuItem = parentMainForm;
-            parentHashCodesForm = parentForm;
-        }
-
-        //-------------------------------------------------------------------------------------------
-        //  FORM EVENTS
-        //-------------------------------------------------------------------------------------------
-        private void Frm_ListBox_TextSections_VisibleChanged(object sender, System.EventArgs e)
-        {
-            if (IsHidden)
-            {
-                formMenuItem.Checked = false;
-            }
         }
 
         //-------------------------------------------------------------------------------------------
@@ -92,7 +76,7 @@ namespace EuroTextEditor
                 }
 
                 //Show form
-                Frm_GroupsViewer groupsViewer = new Frm_GroupsViewer(hashCodesInThisGroup.ToArray(), parentHashCodesForm)
+                Frm_GroupsViewer groupsViewer = new Frm_GroupsViewer(hashCodesInThisGroup.ToArray())
                 {
                     Text = selectedSection
                 };

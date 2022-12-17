@@ -29,25 +29,7 @@ namespace EuroTextEditor
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_MainFrame));
-            this.MainMenu = new System.Windows.Forms.MainMenu(this.components);
-            this.MenuItem_File = new System.Windows.Forms.MenuItem();
-            this.MenuItem_OpenProject = new System.Windows.Forms.MenuItem();
-            this.MenuItem_NewProject = new System.Windows.Forms.MenuItem();
-            this.MenuItem_Divider1 = new System.Windows.Forms.MenuItem();
-            this.MenuItem_RecentProjects = new System.Windows.Forms.MenuItem();
-            this.MenuItem_RecentFiles = new System.Windows.Forms.MenuItem();
-            this.MenuItem_Divider2 = new System.Windows.Forms.MenuItem();
-            this.MenuItem_ResetSettings = new System.Windows.Forms.MenuItem();
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
-            this.MenuItem_Exit = new System.Windows.Forms.MenuItem();
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.MenuItem_TextGroupsForm = new System.Windows.Forms.MenuItem();
-            this.MenuItem_TextSectionsForm = new System.Windows.Forms.MenuItem();
-            this.MenuItem_HashCodesForm = new System.Windows.Forms.MenuItem();
-            this.MenuItem_Help = new System.Windows.Forms.MenuItem();
-            this.MenuItem_About = new System.Windows.Forms.MenuItem();
             this.Groupbox_Output = new System.Windows.Forms.GroupBox();
             this.Label_OutputName = new System.Windows.Forms.Label();
             this.Textbox_FileName = new System.Windows.Forms.TextBox();
@@ -69,125 +51,28 @@ namespace EuroTextEditor
             this.btnTrimStrings = new System.Windows.Forms.Button();
             this.btnRemoveDoubleSpacing = new System.Windows.Forms.Button();
             this.btnWordReplacing = new System.Windows.Forms.Button();
+            this.MainMenu = new System.Windows.Forms.MenuStrip();
+            this.MenuItemStrip_File = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemStrip_OpenProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemStrip_NewProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemStrip_Separator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItemStrip_RecentProjects = new System.Windows.Forms.ToolStripMenuItem();
+            this.recentFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemStrip_Separator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItemStrip_ResetSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemStrip_Separator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItemStrip_Exit = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemStrip_Windows = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemStrip_TextGroups = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemStrip_TextSections = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemStrip_HashCodes = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemStrip_Help = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemStrip_About = new System.Windows.Forms.ToolStripMenuItem();
             this.Groupbox_Output.SuspendLayout();
             this.GroupBox_Misc.SuspendLayout();
             this.grbxTools.SuspendLayout();
+            this.MainMenu.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // MainMenu
-            // 
-            this.MainMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.MenuItem_File,
-            this.menuItem1,
-            this.MenuItem_Help});
-            // 
-            // MenuItem_File
-            // 
-            this.MenuItem_File.Index = 0;
-            this.MenuItem_File.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.MenuItem_OpenProject,
-            this.MenuItem_NewProject,
-            this.MenuItem_Divider1,
-            this.MenuItem_RecentProjects,
-            this.MenuItem_Divider2,
-            this.MenuItem_ResetSettings,
-            this.menuItem2,
-            this.MenuItem_Exit});
-            this.MenuItem_File.Text = "File";
-            // 
-            // MenuItem_OpenProject
-            // 
-            this.MenuItem_OpenProject.Index = 0;
-            this.MenuItem_OpenProject.Text = "Open Project";
-            this.MenuItem_OpenProject.Click += new System.EventHandler(this.MenuItem_OpenProject_Click);
-            // 
-            // MenuItem_NewProject
-            // 
-            this.MenuItem_NewProject.Index = 1;
-            this.MenuItem_NewProject.Text = "New Project";
-            this.MenuItem_NewProject.Click += new System.EventHandler(this.MenuItem_NewProject_Click);
-            // 
-            // MenuItem_Divider1
-            // 
-            this.MenuItem_Divider1.Index = 2;
-            this.MenuItem_Divider1.Text = "-";
-            // 
-            // MenuItem_RecentProjects
-            // 
-            this.MenuItem_RecentProjects.Index = 3;
-            this.MenuItem_RecentProjects.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.MenuItem_RecentFiles});
-            this.MenuItem_RecentProjects.Text = "Recent Projects";
-            // 
-            // MenuItem_RecentFiles
-            // 
-            this.MenuItem_RecentFiles.Index = 0;
-            this.MenuItem_RecentFiles.Text = "";
-            // 
-            // MenuItem_Divider2
-            // 
-            this.MenuItem_Divider2.Index = 4;
-            this.MenuItem_Divider2.Text = "-";
-            // 
-            // MenuItem_ResetSettings
-            // 
-            this.MenuItem_ResetSettings.Index = 5;
-            this.MenuItem_ResetSettings.Text = "Reset Settings";
-            this.MenuItem_ResetSettings.Click += new System.EventHandler(this.MenuItem_ResetSettings_Click);
-            // 
-            // menuItem2
-            // 
-            this.menuItem2.Index = 6;
-            this.menuItem2.Text = "-";
-            // 
-            // MenuItem_Exit
-            // 
-            this.MenuItem_Exit.Index = 7;
-            this.MenuItem_Exit.Text = "Exit";
-            this.MenuItem_Exit.Click += new System.EventHandler(this.MenuItem_Exit_Click);
-            // 
-            // menuItem1
-            // 
-            this.menuItem1.Index = 1;
-            this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.MenuItem_TextGroupsForm,
-            this.MenuItem_TextSectionsForm,
-            this.MenuItem_HashCodesForm});
-            this.menuItem1.Text = "Windows";
-            // 
-            // MenuItem_TextGroupsForm
-            // 
-            this.MenuItem_TextGroupsForm.Checked = true;
-            this.MenuItem_TextGroupsForm.Index = 0;
-            this.MenuItem_TextGroupsForm.Text = "Text Groups";
-            this.MenuItem_TextGroupsForm.Click += new System.EventHandler(this.MenuItem_TextGroupsForm_Click);
-            // 
-            // MenuItem_TextSectionsForm
-            // 
-            this.MenuItem_TextSectionsForm.Checked = true;
-            this.MenuItem_TextSectionsForm.Index = 1;
-            this.MenuItem_TextSectionsForm.Text = "Text Sections";
-            this.MenuItem_TextSectionsForm.Click += new System.EventHandler(this.MenuItem_TextSectionsForm_Click);
-            // 
-            // MenuItem_HashCodesForm
-            // 
-            this.MenuItem_HashCodesForm.Checked = true;
-            this.MenuItem_HashCodesForm.Index = 2;
-            this.MenuItem_HashCodesForm.Text = "HashCodes";
-            this.MenuItem_HashCodesForm.Click += new System.EventHandler(this.MenuItem_HashCodesForm_Click);
-            // 
-            // MenuItem_Help
-            // 
-            this.MenuItem_Help.Index = 2;
-            this.MenuItem_Help.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.MenuItem_About});
-            this.MenuItem_Help.Text = "Help";
-            // 
-            // MenuItem_About
-            // 
-            this.MenuItem_About.Index = 0;
-            this.MenuItem_About.Text = "About";
-            this.MenuItem_About.Click += new System.EventHandler(this.MenuItem_About_Click);
             // 
             // Groupbox_Output
             // 
@@ -198,10 +83,10 @@ namespace EuroTextEditor
             this.Groupbox_Output.Controls.Add(this.Checkbox_FormatInfo);
             this.Groupbox_Output.Controls.Add(this.Button_Output);
             this.Groupbox_Output.Controls.Add(this.Checkbox_IncludeHashCodesWithNoSection);
-            this.Groupbox_Output.Location = new System.Drawing.Point(781, 287);
+            this.Groupbox_Output.Location = new System.Drawing.Point(781, 314);
             this.Groupbox_Output.Name = "Groupbox_Output";
             this.Groupbox_Output.Size = new System.Drawing.Size(166, 157);
-            this.Groupbox_Output.TabIndex = 3;
+            this.Groupbox_Output.TabIndex = 4;
             this.Groupbox_Output.TabStop = false;
             this.Groupbox_Output.Text = "Output";
             // 
@@ -293,7 +178,7 @@ namespace EuroTextEditor
             this.GroupBox_Misc.Controls.Add(this.Button_ProjectSettings);
             this.GroupBox_Misc.Controls.Add(this.Button_ExportHashCodes);
             this.GroupBox_Misc.Controls.Add(this.Button_TextStore);
-            this.GroupBox_Misc.Location = new System.Drawing.Point(781, 0);
+            this.GroupBox_Misc.Location = new System.Drawing.Point(781, 27);
             this.GroupBox_Misc.Name = "GroupBox_Misc";
             this.GroupBox_Misc.Size = new System.Drawing.Size(166, 167);
             this.GroupBox_Misc.TabIndex = 2;
@@ -357,9 +242,9 @@ namespace EuroTextEditor
             this.dockPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
             this.dockPanel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
-            this.dockPanel.Location = new System.Drawing.Point(0, 0);
+            this.dockPanel.Location = new System.Drawing.Point(0, 27);
             this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(775, 644);
+            this.dockPanel.Size = new System.Drawing.Size(775, 617);
             this.dockPanel.TabIndex = 1;
             // 
             // grbxTools
@@ -368,10 +253,10 @@ namespace EuroTextEditor
             this.grbxTools.Controls.Add(this.btnTrimStrings);
             this.grbxTools.Controls.Add(this.btnRemoveDoubleSpacing);
             this.grbxTools.Controls.Add(this.btnWordReplacing);
-            this.grbxTools.Location = new System.Drawing.Point(781, 173);
+            this.grbxTools.Location = new System.Drawing.Point(781, 200);
             this.grbxTools.Name = "grbxTools";
             this.grbxTools.Size = new System.Drawing.Size(166, 108);
-            this.grbxTools.TabIndex = 4;
+            this.grbxTools.TabIndex = 3;
             this.grbxTools.TabStop = false;
             this.grbxTools.Text = "Tools";
             // 
@@ -405,6 +290,141 @@ namespace EuroTextEditor
             this.btnWordReplacing.UseVisualStyleBackColor = true;
             this.btnWordReplacing.Click += new System.EventHandler(this.BtnWordReplacing_Click);
             // 
+            // MainMenu
+            // 
+            this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemStrip_File,
+            this.MenuItemStrip_Windows,
+            this.MenuItemStrip_Help});
+            this.MainMenu.Location = new System.Drawing.Point(0, 0);
+            this.MainMenu.Name = "MainMenu";
+            this.MainMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.MainMenu.Size = new System.Drawing.Size(959, 24);
+            this.MainMenu.TabIndex = 0;
+            this.MainMenu.Text = "MainMenu";
+            // 
+            // MenuItemStrip_File
+            // 
+            this.MenuItemStrip_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemStrip_OpenProject,
+            this.MenuItemStrip_NewProject,
+            this.MenuItemStrip_Separator1,
+            this.MenuItemStrip_RecentProjects,
+            this.MenuItemStrip_Separator2,
+            this.MenuItemStrip_ResetSettings,
+            this.MenuItemStrip_Separator3,
+            this.MenuItemStrip_Exit});
+            this.MenuItemStrip_File.Name = "MenuItemStrip_File";
+            this.MenuItemStrip_File.Size = new System.Drawing.Size(37, 20);
+            this.MenuItemStrip_File.Text = "File";
+            // 
+            // MenuItemStrip_OpenProject
+            // 
+            this.MenuItemStrip_OpenProject.Name = "MenuItemStrip_OpenProject";
+            this.MenuItemStrip_OpenProject.Size = new System.Drawing.Size(155, 22);
+            this.MenuItemStrip_OpenProject.Text = "Open Project";
+            this.MenuItemStrip_OpenProject.Click += new System.EventHandler(this.MenuItemStrip_OpenProject_Click);
+            // 
+            // MenuItemStrip_NewProject
+            // 
+            this.MenuItemStrip_NewProject.Name = "MenuItemStrip_NewProject";
+            this.MenuItemStrip_NewProject.Size = new System.Drawing.Size(155, 22);
+            this.MenuItemStrip_NewProject.Text = "New Project";
+            this.MenuItemStrip_NewProject.Click += new System.EventHandler(this.MenuItemStrip_NewProject_Click);
+            // 
+            // MenuItemStrip_Separator1
+            // 
+            this.MenuItemStrip_Separator1.Name = "MenuItemStrip_Separator1";
+            this.MenuItemStrip_Separator1.Size = new System.Drawing.Size(152, 6);
+            // 
+            // MenuItemStrip_RecentProjects
+            // 
+            this.MenuItemStrip_RecentProjects.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.recentFilesToolStripMenuItem});
+            this.MenuItemStrip_RecentProjects.Name = "MenuItemStrip_RecentProjects";
+            this.MenuItemStrip_RecentProjects.Size = new System.Drawing.Size(155, 22);
+            this.MenuItemStrip_RecentProjects.Text = "Recent Projects";
+            // 
+            // recentFilesToolStripMenuItem
+            // 
+            this.recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
+            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.recentFilesToolStripMenuItem.Text = "Recent Files";
+            // 
+            // MenuItemStrip_Separator2
+            // 
+            this.MenuItemStrip_Separator2.Name = "MenuItemStrip_Separator2";
+            this.MenuItemStrip_Separator2.Size = new System.Drawing.Size(152, 6);
+            // 
+            // MenuItemStrip_ResetSettings
+            // 
+            this.MenuItemStrip_ResetSettings.Name = "MenuItemStrip_ResetSettings";
+            this.MenuItemStrip_ResetSettings.Size = new System.Drawing.Size(155, 22);
+            this.MenuItemStrip_ResetSettings.Text = "Reset Settings";
+            this.MenuItemStrip_ResetSettings.Click += new System.EventHandler(this.MenuItemStrip_ResetSettings_Click);
+            // 
+            // MenuItemStrip_Separator3
+            // 
+            this.MenuItemStrip_Separator3.Name = "MenuItemStrip_Separator3";
+            this.MenuItemStrip_Separator3.Size = new System.Drawing.Size(152, 6);
+            // 
+            // MenuItemStrip_Exit
+            // 
+            this.MenuItemStrip_Exit.Name = "MenuItemStrip_Exit";
+            this.MenuItemStrip_Exit.Size = new System.Drawing.Size(155, 22);
+            this.MenuItemStrip_Exit.Text = "Exit";
+            this.MenuItemStrip_Exit.Click += new System.EventHandler(this.MenuItemStrip_Exit_Click);
+            // 
+            // MenuItemStrip_Windows
+            // 
+            this.MenuItemStrip_Windows.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemStrip_TextGroups,
+            this.MenuItemStrip_TextSections,
+            this.MenuItemStrip_HashCodes});
+            this.MenuItemStrip_Windows.Name = "MenuItemStrip_Windows";
+            this.MenuItemStrip_Windows.Size = new System.Drawing.Size(68, 20);
+            this.MenuItemStrip_Windows.Text = "Windows";
+            this.MenuItemStrip_Windows.DropDownOpening += new System.EventHandler(this.MenuItemStrip_Windows_DropDownOpening);
+            // 
+            // MenuItemStrip_TextGroups
+            // 
+            this.MenuItemStrip_TextGroups.CheckOnClick = true;
+            this.MenuItemStrip_TextGroups.Name = "MenuItemStrip_TextGroups";
+            this.MenuItemStrip_TextGroups.Size = new System.Drawing.Size(142, 22);
+            this.MenuItemStrip_TextGroups.Text = "Text Groups";
+            this.MenuItemStrip_TextGroups.Click += new System.EventHandler(this.MenuItemStrip_TextGroups_Click);
+            // 
+            // MenuItemStrip_TextSections
+            // 
+            this.MenuItemStrip_TextSections.CheckOnClick = true;
+            this.MenuItemStrip_TextSections.Name = "MenuItemStrip_TextSections";
+            this.MenuItemStrip_TextSections.Size = new System.Drawing.Size(142, 22);
+            this.MenuItemStrip_TextSections.Text = "Text Sections";
+            this.MenuItemStrip_TextSections.Click += new System.EventHandler(this.MenuItemStrip_TextSections_Click);
+            // 
+            // MenuItemStrip_HashCodes
+            // 
+            this.MenuItemStrip_HashCodes.CheckOnClick = true;
+            this.MenuItemStrip_HashCodes.Name = "MenuItemStrip_HashCodes";
+            this.MenuItemStrip_HashCodes.Size = new System.Drawing.Size(142, 22);
+            this.MenuItemStrip_HashCodes.Text = "HashCodes";
+            this.MenuItemStrip_HashCodes.Click += new System.EventHandler(this.MenuItemStrip_HashCodes_Click);
+            // 
+            // MenuItemStrip_Help
+            // 
+            this.MenuItemStrip_Help.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemStrip_About});
+            this.MenuItemStrip_Help.Name = "MenuItemStrip_Help";
+            this.MenuItemStrip_Help.Size = new System.Drawing.Size(44, 20);
+            this.MenuItemStrip_Help.Text = "Help";
+            // 
+            // MenuItemStrip_About
+            // 
+            this.MenuItemStrip_About.Name = "MenuItemStrip_About";
+            this.MenuItemStrip_About.Size = new System.Drawing.Size(107, 22);
+            this.MenuItemStrip_About.Text = "About";
+            this.MenuItemStrip_About.Click += new System.EventHandler(this.MenuItemStrip_About_Click);
+            // 
             // Frm_MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -414,33 +434,29 @@ namespace EuroTextEditor
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.GroupBox_Misc);
             this.Controls.Add(this.Groupbox_Output);
+            this.Controls.Add(this.MainMenu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Menu = this.MainMenu;
+            this.MainMenuStrip = this.MainMenu;
             this.Name = "Frm_MainFrame";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EuroText";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_MainFrame_FormClosing);
+            this.Load += new System.EventHandler(this.Frm_MainFrame_Load);
             this.Shown += new System.EventHandler(this.Frm_MainFrame_Shown);
             this.Groupbox_Output.ResumeLayout(false);
             this.Groupbox_Output.PerformLayout();
             this.GroupBox_Misc.ResumeLayout(false);
             this.grbxTools.ResumeLayout(false);
+            this.MainMenu.ResumeLayout(false);
+            this.MainMenu.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.MainMenu MainMenu;
-        private System.Windows.Forms.MenuItem MenuItem_File;
-        private System.Windows.Forms.MenuItem MenuItem_OpenProject;
-        private System.Windows.Forms.MenuItem MenuItem_NewProject;
-        private System.Windows.Forms.MenuItem MenuItem_Help;
-        private System.Windows.Forms.MenuItem MenuItem_About;
         private System.Windows.Forms.GroupBox Groupbox_Output;
         private System.Windows.Forms.Button Button_Output;
-        private System.Windows.Forms.MenuItem MenuItem_Divider1;
-        private System.Windows.Forms.MenuItem MenuItem_Divider2;
-        private System.Windows.Forms.MenuItem MenuItem_Exit;
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
         private System.Windows.Forms.SaveFileDialog SaveFileDialog;
         protected internal System.Windows.Forms.CheckBox Checkbox_DataInfoSheet;
@@ -451,14 +467,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.Button Button_ProjectSettings;
         private System.Windows.Forms.Label Label_OutputName;
         protected internal System.Windows.Forms.TextBox Textbox_FileName;
-        protected internal System.Windows.Forms.MenuItem menuItem1;
-        protected internal System.Windows.Forms.MenuItem MenuItem_TextGroupsForm;
-        protected internal System.Windows.Forms.MenuItem MenuItem_TextSectionsForm;
-        protected internal System.Windows.Forms.MenuItem MenuItem_HashCodesForm;
-        private System.Windows.Forms.MenuItem MenuItem_ResetSettings;
-        private System.Windows.Forms.MenuItem menuItem2;
-        protected internal System.Windows.Forms.MenuItem MenuItem_RecentFiles;
-        protected internal System.Windows.Forms.MenuItem MenuItem_RecentProjects;
         protected internal WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
         private System.Windows.Forms.FolderBrowserDialog FolderBrowserDialog;
         private System.Windows.Forms.Button Button_SpreadSheetExtractor;
@@ -468,6 +476,23 @@ namespace EuroTextEditor
         private System.Windows.Forms.Button btnTrimStrings;
         private System.Windows.Forms.Button btnRemoveDoubleSpacing;
         private System.Windows.Forms.Button btnWordReplacing;
+        private System.Windows.Forms.MenuStrip MainMenu;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_File;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_OpenProject;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_NewProject;
+        private System.Windows.Forms.ToolStripSeparator MenuItemStrip_Separator1;
+        private System.Windows.Forms.ToolStripSeparator MenuItemStrip_Separator2;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_ResetSettings;
+        private System.Windows.Forms.ToolStripSeparator MenuItemStrip_Separator3;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_Exit;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_Windows;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_TextGroups;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_TextSections;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_HashCodes;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_Help;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_About;
+        protected internal System.Windows.Forms.ToolStripMenuItem MenuItemStrip_RecentProjects;
+        protected internal System.Windows.Forms.ToolStripMenuItem recentFilesToolStripMenuItem;
     }
 }
 

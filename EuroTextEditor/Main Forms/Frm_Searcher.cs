@@ -13,21 +13,18 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class Frm_Searcher : DockContent
     {
-        private readonly Frm_ListBoxHashCodes parentHashCodesForm;
-
         //-------------------------------------------------------------------------------------------
         //  FORM EVENTS
         //-------------------------------------------------------------------------------------------
-        public Frm_Searcher(Frm_ListBoxHashCodes parentForm)
+        public Frm_Searcher()
         {
             InitializeComponent();
-            parentHashCodesForm = parentForm;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_Searcher_Load(object sender, EventArgs e)
         {
-            UserControl_HashCodesTable.parentFormToSync = parentHashCodesForm;
+            UserControl_HashCodesTable.parentFormToSync = ((Frm_MainFrame)Application.OpenForms[nameof(Frm_MainFrame)]).hashCodes;
 
             //Add languages
             Combobox_LookIn.BeginUpdate();

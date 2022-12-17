@@ -14,24 +14,12 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class Frm_ListBoxHashCodes : DockContent
     {
-        private readonly MenuItem formMenuItem;
-
         //-------------------------------------------------------------------------------------------
         //  FORM EVENTS
         //-------------------------------------------------------------------------------------------
-        public Frm_ListBoxHashCodes(MenuItem parentMainForm)
+        public Frm_ListBoxHashCodes()
         {
             InitializeComponent();
-            formMenuItem = parentMainForm;
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void Frm_ListBoxHashCodes_VisibleChanged(object sender, EventArgs e)
-        {
-            if (IsHidden)
-            {
-                formMenuItem.Checked = false;
-            }
         }
 
         //-------------------------------------------------------------------------------------------

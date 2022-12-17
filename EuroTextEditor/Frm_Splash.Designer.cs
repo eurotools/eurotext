@@ -34,6 +34,7 @@ namespace EuroTextEditor
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.Label_Version = new System.Windows.Forms.Label();
             this.TimerSplash = new System.Windows.Forms.Timer(this.components);
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,6 +63,11 @@ namespace EuroTextEditor
             this.TimerSplash.Interval = 900;
             this.TimerSplash.Tick += new System.EventHandler(this.TimerSplash_Tick);
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker1_RunWorkerCompleted);
+            // 
             // Frm_Splash
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -89,5 +95,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.PictureBox pictureBox1;
         internal System.Windows.Forms.Label Label_Version;
         internal System.Windows.Forms.Timer TimerSplash;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

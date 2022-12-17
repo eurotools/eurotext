@@ -86,7 +86,6 @@ namespace EuroTextEditor
             this.Name = "Frm_ListBox_TextGroups";
             this.TabText = "Text Groups";
             this.Text = "Text Groups";
-            this.VisibleChanged += new System.EventHandler(this.Frm_ListBox_TextGroups_VisibleChanged);
             this.ResumeLayout(false);
 
         }

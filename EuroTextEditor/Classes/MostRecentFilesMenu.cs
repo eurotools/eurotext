@@ -2,14 +2,13 @@
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using static System.Windows.Forms.Menu;
 
 namespace EuroTextEditor.Classes
 {
     public class MostRecentFilesMenu
     {
         private ClickedHandler clickedHandler;
-        protected MenuItem recentFileMenuItem;
+        protected ToolStripMenuItem recentFileMenuItem;
         protected string registryKeyName;
         protected int numEntries = 0;
         protected int maxEntries = 4;
@@ -23,7 +22,7 @@ namespace EuroTextEditor.Classes
         /// <remarks>The menu may display a shortened or otherwise invalid pathname.
         /// This class stores the actual filename, preferably as a fully
         /// resolved labelName, that will be returned in the event handler.</remarks>
-        public class MruMenuItem : MenuItem
+        public class MruMenuItem : ToolStripMenuItem
         {
             /// <summary>
             /// Initializes an MruMenuItem object.
@@ -31,7 +30,7 @@ namespace EuroTextEditor.Classes
             /// <param labelName="filename">The string to actually return in the <paramref labelName="eventHandler">eventHandler</paramref>.</param>
             /// <param labelName="entryname">The string that will be displayed in the menu.</param>
             /// <param labelName="eventHandler">The <see cref="EventHandler">EventHandler</see> that 
-            /// handles the <see cref="MenuItem.Click">Click</see> event for this menu item.</param>
+            /// handles the <see cref="ToolStripMenuItem.Click">Click</see> event for this menu item.</param>
             public MruMenuItem(string filename, string entryname, EventHandler eventHandler)
             {
                 Tag = filename;
@@ -61,7 +60,7 @@ namespace EuroTextEditor.Classes
 
         protected MostRecentFilesMenu() { }
 
-        protected void Init(MenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, bool loadFromRegistry, int maxEntries)
+        protected void Init(ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, bool loadFromRegistry, int maxEntries)
         {
             this.recentFileMenuItem = recentFileMenuItem ?? throw new ArgumentNullException("recentFileMenuItem");
             this.recentFileMenuItem.Checked = false;
@@ -95,11 +94,11 @@ namespace EuroTextEditor.Classes
 
         #region Properties
 
-        public virtual MenuItemCollection MenuItems
+        public virtual ToolStripItemCollection MenuItems
         {
             get
             {
-                return recentFileMenuItem.MenuItems;
+                return recentFileMenuItem.DropDownItems;
             }
         }
 
@@ -191,7 +190,7 @@ namespace EuroTextEditor.Classes
                 MruMenuItem menuItem = (MruMenuItem)MenuItems[StartIndex + number];
 
                 MenuItems.RemoveAt(StartIndex + number);
-                MenuItems.Add(StartIndex, menuItem);
+                MenuItems.Insert(StartIndex, menuItem);
 
                 SetFirstFile(menuItem);
                 FixupPrefixes(0);
@@ -352,7 +351,7 @@ namespace EuroTextEditor.Classes
             if (numEntries < maxEntries)
             {
                 MruMenuItem menuItem = new MruMenuItem(filename, FixupEntryname(0, entryname), new System.EventHandler(OnClick));
-                MenuItems.Add(StartIndex, menuItem);
+                MenuItems.Insert(StartIndex, menuItem);
                 SetFirstFile(menuItem);
 
                 if (numEntries++ == 0)
@@ -372,7 +371,7 @@ namespace EuroTextEditor.Classes
                 menuItem.Text = FixupEntryname(0, entryname);
                 menuItem.Filename = filename;
 
-                MenuItems.Add(StartIndex, menuItem);
+                MenuItems.Insert(StartIndex, menuItem);
 
                 SetFirstFile(menuItem);
                 FixupPrefixes(1);
@@ -496,19 +495,19 @@ namespace EuroTextEditor.Classes
     /// </remarks>
     public class MruStripMenuInline : MostRecentFilesMenu
     {
-        protected MenuItem owningMenu;
-        protected MenuItem firstMenuItem;
+        protected ToolStripMenuItem owningMenu;
+        protected ToolStripMenuItem firstMenuItem;
 
         #region Construction
 
         //private MruStripMenuInline(
 
-        public MruStripMenuInline(MenuItem owningMenu, MenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, int maxEntries)
+        public MruStripMenuInline(ToolStripMenuItem owningMenu, ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, int maxEntries)
             : this(owningMenu, recentFileMenuItem, clickedHandler, registryKeyName, true, maxEntries)
         {
         }
 
-        public MruStripMenuInline(MenuItem owningMenu, MenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, bool loadFromRegistry, int maxEntries)
+        public MruStripMenuInline(ToolStripMenuItem owningMenu, ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, bool loadFromRegistry, int maxEntries)
         {
             maxShortenPathLength = 48;
             this.owningMenu = owningMenu;
@@ -520,11 +519,11 @@ namespace EuroTextEditor.Classes
 
         #region Overridden Properties
 
-        public override MenuItemCollection MenuItems
+        public override ToolStripItemCollection MenuItems
         {
             get
             {
-                return owningMenu.MenuItems;
+                return owningMenu.DropDownItems;
             }
         }
 
@@ -570,7 +569,7 @@ namespace EuroTextEditor.Classes
         {
             int index = MenuItems.IndexOf(firstMenuItem);
             MenuItems.RemoveAt(index);
-            MenuItems.Add(index, recentFileMenuItem);
+            MenuItems.Insert(index, recentFileMenuItem);
             firstMenuItem = recentFileMenuItem;
         }
 

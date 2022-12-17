@@ -31,11 +31,15 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_Splash_Shown(object sender, EventArgs e)
         {
-            //Initialize forms
-            mainform.textSections = new Frm_ListBox_TextSections(mainform.MenuItem_TextSectionsForm, mainform.hashCodes);
-            mainform.textGroups = new Frm_ListBox_TextGroups(mainform.MenuItem_TextGroupsForm, mainform.hashCodes);
-            mainform.hashCodes = new Frm_ListBoxHashCodes(mainform.MenuItem_HashCodesForm);
+            if (!backgroundWorker1.IsBusy)
+            {
+                backgroundWorker1.RunWorkerAsync();
+            }
+        }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void BackgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
             //Check for ini file
             if (File.Exists(GlobalVariables.EuroTextIni))
             {
@@ -86,58 +90,38 @@ namespace EuroTextEditor
                     MessageBox.Show(string.Join(" ", "Project Not Found", GlobalVariables.WorkingDirectory), "EuroText Load Project Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-
-            //Get settings file
-            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockSettingsMainForm.xml");
-            if (!File.Exists(configFile))
-            {
-                configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DefaultDockSettingsMainForm.xml");
-            }
-
-            //Load panels last or default state
-            if (File.Exists(configFile))
-            {
-                DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
-                mainform.dockPanel.LoadFromXml(configFile, _deserializeDockContent);
-            }
-
-            //Update menus
-            mainform.MenuItem_TextGroupsForm.Checked = !mainform.textGroups.IsHidden;
-            mainform.MenuItem_TextSectionsForm.Checked = !mainform.textSections.IsHidden;
-            mainform.MenuItem_HashCodesForm.Checked = !mainform.hashCodes.IsHidden;
-
-            //Get recent files
-            mainform.RecentFilesMenu = new MruStripMenuInline(mainform.MenuItem_RecentProjects, mainform.MenuItem_RecentFiles, new MostRecentFilesMenu.ClickedHandler(mainform.MenuItemFile_Recent_Click), GlobalVariables.EuroTextIni, 5);
-            mainform.RecentFilesMenu.LoadFromIniFile();
-
-            //Start timer
-            TimerSplash.Start();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private IDockContent DeserializeDockContent(string persistString)
+        private void BackgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            if (persistString == typeof(Frm_ListBoxHashCodes).ToString())
+            //Get recent files
+            mainform.RecentFilesMenu = new MruStripMenuInline(mainform.MenuItemStrip_RecentProjects, mainform.recentFilesToolStripMenuItem, new MostRecentFilesMenu.ClickedHandler(mainform.MenuItemFile_Recent_Click), GlobalVariables.EuroTextIni, 5);
+            mainform.RecentFilesMenu.LoadFromIniFile();
+
+            //Add forms to the list
+            mainform.m_DockForms.Add(mainform.textSections);
+            mainform.m_DockForms.Add(mainform.textGroups);
+            mainform.m_DockForms.Add(mainform.hashCodes);
+            mainform.m_DockForms.Add(mainform.xlsExtractor);
+            mainform.m_DockForms.Add(mainform.searchForm);
+
+            //Load Panels State
+            if (!File.Exists("ET\\Dock Settings.xml"))
             {
-                return mainform.hashCodes;
+                File.Copy("ET\\Default Dock Settings.xml", "ET\\Dock Settings.xml", true);
+                File.SetAttributes("ET\\Dock Settings.xml", FileAttributes.Normal);
             }
-            if (persistString == typeof(Frm_ListBox_TextSections).ToString())
+            mainform.dockPanel.LoadFromXml("ET\\Dock Settings.xml", new DeserializeDockContent(mainform.DeserializeDockContent));
+
+            //Load last state listview
+            foreach (Form dockForm in mainform.m_DockForms)
             {
-                return mainform.textSections;
+                mainform.LoadListViewConfig(dockForm);
             }
-            if (persistString == typeof(Frm_ListBox_TextGroups).ToString())
-            {
-                return mainform.textGroups;
-            }
-            if (persistString == typeof(Frm_SpreadSheets_Extractor).ToString())
-            {
-                return new Frm_SpreadSheets_Extractor();
-            }
-            if (persistString == typeof(Frm_Searcher).ToString())
-            {
-                return new Frm_Searcher(mainform.hashCodes);
-            }
-            return null;
+
+            //Start timer
+            TimerSplash.Start();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
