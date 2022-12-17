@@ -12,14 +12,14 @@ namespace EuroTextEditor
     //-------------------------------------------------------------------------------------------------------------------------------
     public partial class Frm_TextEditor : Form
     {
+        private bool ResetSettingsOnExit;
+        private bool PromptSave = true;
+        private int indexTest = 0;
         private readonly string filePath;
         private readonly ListViewItem listViewItemMainForm;
-        private EuroText_TextFile objText;
-        private List<UserControl_TextEditor> languageEditors;
-        private int languageEditorsIndex = 0;
-        private bool PromptSave = true;
-        private readonly string configFile = "ET\\DockSettingsTextEditor.xml";
+        private readonly List<UserControl_TextEditor> m_DockForms = new List<UserControl_TextEditor>();
         private readonly Frm_ListBoxHashCodes parentFormToSync;
+        private EuroText_TextFile objText;
 
         //-------------------------------------------------------------------------------------------------------------------------------
         public Frm_TextEditor(string textFilePath, ListViewItem objectToModify, Frm_ListBoxHashCodes formToSync)
@@ -30,7 +30,9 @@ namespace EuroTextEditor
             parentFormToSync = formToSync;
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------
+        //  FORM EVENTS
+        //-------------------------------------------------------------------------------------------
         private void Frm_TextEditor_Load(object sender, EventArgs e)
         {
             //New object
@@ -56,114 +58,98 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void Frm_TextEditor_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (PromptSave)
-            {
-                DialogResult diagResult = MessageBox.Show("Are you sure you wish to quit without saving?", "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (diagResult == DialogResult.No)
-                {
-                    e.Cancel = true;
-                }
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_TextEditor_Shown(object sender, EventArgs e)
         {
-            languageEditors = new List<UserControl_TextEditor>();
-
             //Add notes
             AddNewForm("Notes", objText.Notes);
 
             //Add languages Stuff
             if (GlobalVariables.CurrentProject.Languages.Count > 0)
             {
-                for (int i = 0; i < GlobalVariables.CurrentProject.Languages.Count; i++)
+                foreach (string currentLanguage in GlobalVariables.CurrentProject.Languages)
                 {
-                    string currentLanguage = GlobalVariables.CurrentProject.Languages[i];
-
                     string textToDisplay = string.Empty;
                     if (objText.Messages.ContainsKey(currentLanguage))
                     {
                         textToDisplay = objText.Messages[currentLanguage];
                     }
-
                     AddNewForm(currentLanguage, textToDisplay);
                 }
             }
 
-            //Show forms
-            if (File.Exists(configFile))
+            //Load Panels State
+            if (!File.Exists("ET\\Dock Settings Text Editor.xml"))
             {
-                DeserializeDockContent _deserializeDockContent = new DeserializeDockContent(DeserializeDockContent);
-                dockPanel.LoadFromXml(configFile, _deserializeDockContent);
+                File.Copy("ET\\Default Dock Settings Text Editor.xml", "ET\\Dock Settings Text Editor.xml", true);
+                File.SetAttributes("ET\\Dock Settings Text Editor.xml", FileAttributes.Normal);
             }
-
-            //Update menus
-            for (int i = 0; i < languageEditors.Count; i++)
-            {
-                if (languageEditors[i].IsHidden)
-                {
-                    for (int j = 0; j < MenuItem_Windows.MenuItems.Count; j++)
-                    {
-                        if (MenuItem_Windows.MenuItems[j].Name.Equals("MenuItem_" + languageEditors[i].Name))
-                        {
-                            MenuItem_Windows.MenuItems[j].Checked = false;
-                            languageEditors[i].DockPanel = dockPanel;
-                            break;
-                        }
-                    }
-                }
-            }
+            dockPanel.LoadFromXml("ET\\Dock Settings Text Editor.xml", new DeserializeDockContent(DeserializeDockContent));
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private IDockContent DeserializeDockContent(string persistString)
+        internal IDockContent DeserializeDockContent(string persistString)
         {
-            if (languageEditorsIndex < languageEditors.Count)
+            if (indexTest < m_DockForms.Count)
             {
-                if (persistString == typeof(UserControl_TextEditor).ToString())
+                if (persistString == m_DockForms[indexTest].GetType().ToString())
                 {
-                    return languageEditors[languageEditorsIndex++];
+                    return m_DockForms[indexTest++];
                 }
             }
             return null;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void Frm_TextEditor_FormClosed(object sender, FormClosedEventArgs e)
+        private void Frm_TextEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //Dock conifg
-            dockPanel.SaveAsXml(configFile);
+            if (PromptSave)
+            {
+                DialogResult diagResult = MessageBox.Show("Are you sure you wish to quit without saving?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (diagResult == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    CloseTextEditor();
+                }
+            }
+            else
+            {
+                CloseTextEditor();
+            }
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_Save_Click(object sender, EventArgs e)
+        //-------------------------------------------------------------------------------------------
+        //  MENU ITEM FILE
+        //-------------------------------------------------------------------------------------------
+        private void MenuItemStrip_Save_Click(object sender, EventArgs e)
         {
             SaveFile();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_ResetPanels_Click(object sender, EventArgs e)
+        private void MenuItemStrip_ResetSettings_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < languageEditors.Count; i++)
-            {
-                //Update properties
-                languageEditors[i].IsFloat = false;
-                languageEditors[i].IsHidden = false;
-                languageEditors[i].Pane = dockPanel.Panes[0];
-                languageEditors[i].Show(dockPanel, DockState.Document);
-            }
+            ResetSettingsOnExit = true;
+            MessageBox.Show("Settings will be reset the next time that you open this editor.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void MenuItem_Exit_Click(object sender, EventArgs e)
+        private void MenuItemStrip_Exit_Click(object sender, EventArgs e)
         {
             Close();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItemStrip_Windows_DropDownOpening(object sender, EventArgs e)
+        {
+            UpdateWindowMenuChecks();
+        }
+
+        //-------------------------------------------------------------------------------------------
+        //  FORM BUTTONS EVENTS
+        //-------------------------------------------------------------------------------------------
         private void Button_OK_Click(object sender, EventArgs e)
         {
             PromptSave = false;
@@ -177,33 +163,26 @@ namespace EuroTextEditor
             Close();
         }
 
-        //------------------------------------------------------------------------------------------------------------------------------
-        private void AddNewForm(string formName, string tabText)
+        //-------------------------------------------------------------------------------------------
+        //  MENU ITEM WINDOW
+        //-------------------------------------------------------------------------------------------
+        private void OpenForm(object sender, EventArgs args)
         {
-            //Add notes
-            MenuItem formMenuItem = MenuItem_Windows.MenuItems.Add(formName);
-            formMenuItem.Name = "MenuItem_Frm_" + formName;
-            formMenuItem.Checked = true;
-
-            //Create a new language editor
-            UserControl_TextEditor notesEditor = new UserControl_TextEditor(formMenuItem, dockPanel, DockState.Document)
+            foreach (DockContent formToShow in m_DockForms)
             {
-                Text = formName,
-                TabText = formName,
-                Name = "Frm_" + formName
-            };
-
-            //Add text to this language editor
-            notesEditor.Textbox.Text = tabText;
-
-            languageEditors.Add(notesEditor);
-            if (!File.Exists(configFile))
-            {
-                notesEditor.Show(dockPanel, DockState.Document);
+                string senderName = string.Format("Frm_{0}", sender);
+                if (formToShow.Name.Equals(senderName))
+                {
+                    formToShow.Show(dockPanel, DockState.Float);
+                    break;
+                }
             }
+            UpdateWindowMenuChecks();
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------
+        //  FUNCTIONS
+        //-------------------------------------------------------------------------------------------
         private void SaveFile()
         {
             ETXML_Reader filesReader = new ETXML_Reader();
@@ -211,13 +190,13 @@ namespace EuroTextEditor
             EuroText_TextSections sectionsFileText = filesReader.ReadTextSectionsFile(textSectionsFilePath);
 
             //Update text
-            for (int i = 0; i < languageEditors.Count; i++)
+            for (int i = 0; i < m_DockForms.Count; i++)
             {
                 //Get message data
-                string language = languageEditors[i].Text;
-                string messageData = languageEditors[i].Textbox.Text;
+                string language = m_DockForms[i].Text;
+                string messageData = m_DockForms[i].Textbox.Text;
 
-                if (languageEditors[i].Name.Equals("Frm_Notes"))
+                if (m_DockForms[i].Name.Equals("Frm_Notes"))
                 {
                     objText.Notes = messageData;
                 }
@@ -275,6 +254,69 @@ namespace EuroTextEditor
 
             ETXML_Writter filesWriter = new ETXML_Writter();
             filesWriter.WriteTextFile(filePath, objText);
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        private void AddNewForm(string formName, string tabText)
+        {
+            //Add Menu Item
+            ToolStripMenuItem formMenuItem = new ToolStripMenuItem
+            {
+                Name = "MenuItem_Frm_" + formName,
+                Text = formName,
+                Checked = true
+            };
+            MenuItemStrip_Windows.DropDownItems.Add(formMenuItem);
+            formMenuItem.Click += (s, e) => OpenForm(s, e);
+
+            //Create a new form
+            UserControl_TextEditor notesEditor = new UserControl_TextEditor()
+            {
+                Text = formName,
+                TabText = formName,
+                Name = string.Format("Frm_{0}", formName)
+            };
+            notesEditor.Textbox.Text = tabText;
+
+            //Add form to this list
+            m_DockForms.Add(notesEditor);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void UpdateWindowMenuChecks()
+        {
+            foreach (DockContent formToCheck in m_DockForms)
+            {
+                string formName = formToCheck.Name;
+                foreach (ToolStripMenuItem menuItem in MenuItemStrip_Windows.DropDownItems)
+                {
+                    string senderName = string.Format("Frm_{0}", menuItem.Text);
+                    if (formName.Equals(senderName))
+                    {
+                        menuItem.Checked = formToCheck.DockState != DockState.Hidden;
+                        break;
+                    }
+                }
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void CloseTextEditor()
+        {
+            //Save Dock Panels status
+            dockPanel.SaveAsXml("ET\\Dock Settings Text Editor.xml");
+
+            //Close all forms
+            foreach (Form dockForm in m_DockForms)
+            {
+                dockForm.Close();
+            }
+
+            //Reset Settings
+            if (ResetSettingsOnExit)
+            {
+                File.Delete("ET\\Dock Settings Text Editor.xml");
+            }
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------

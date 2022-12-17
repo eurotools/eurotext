@@ -107,7 +107,7 @@ namespace EuroTextEditor
                     {
                         Invoke(new Action(() =>
                         {
-                            DialogResult diagResult = MessageBox.Show("Do you want to show the next page?", "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            DialogResult diagResult = MessageBox.Show("Do you want to show the next page?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                             if (diagResult == DialogResult.Yes)
                             {
                                 disableTeletype = false;

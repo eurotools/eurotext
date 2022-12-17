@@ -195,7 +195,7 @@ namespace EuroTextEditor.Custom_Controls
             this.ToolButton_SelectNone,
             this.ToolButton_InvertSelection});
             this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 521);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 500);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(600, 22);
             this.statusStrip1.SizingGrip = false;
@@ -256,7 +256,7 @@ namespace EuroTextEditor.Custom_Controls
             this.groupBox_Filters.Controls.Add(this.btnShowAll);
             this.groupBox_Filters.Controls.Add(this.btn_ApplyFilters);
             this.groupBox_Filters.Controls.Add(this.txtFilters);
-            this.groupBox_Filters.Location = new System.Drawing.Point(3, 448);
+            this.groupBox_Filters.Location = new System.Drawing.Point(3, 427);
             this.groupBox_Filters.Name = "groupBox_Filters";
             this.groupBox_Filters.Size = new System.Drawing.Size(594, 70);
             this.groupBox_Filters.TabIndex = 11;
@@ -340,7 +340,7 @@ namespace EuroTextEditor.Custom_Controls
             this.ListView_HashCodes.HideSelection = false;
             this.ListView_HashCodes.Location = new System.Drawing.Point(0, 0);
             this.ListView_HashCodes.Name = "ListView_HashCodes";
-            this.ListView_HashCodes.Size = new System.Drawing.Size(600, 442);
+            this.ListView_HashCodes.Size = new System.Drawing.Size(600, 421);
             this.ListView_HashCodes.TabIndex = 8;
             this.ListView_HashCodes.UseCompatibleStateImageBehavior = false;
             this.ListView_HashCodes.View = System.Windows.Forms.View.Details;
@@ -390,7 +390,7 @@ namespace EuroTextEditor.Custom_Controls
             this.Controls.Add(this.ListView_HashCodes);
             this.Controls.Add(this.statusStrip1);
             this.Name = "UserControl_ListViewHashCodes";
-            this.Size = new System.Drawing.Size(600, 543);
+            this.Size = new System.Drawing.Size(600, 522);
             this.Load += new System.EventHandler(this.UserControl_ListViewHashCodes_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

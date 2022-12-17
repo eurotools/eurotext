@@ -66,7 +66,7 @@ namespace EuroTextEditor
                     }
                     else
                     {
-                        MessageBox.Show("The new group could not be added, a group with the same name already exists.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("The new group could not be added, a group with the same name already exists.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -76,7 +76,7 @@ namespace EuroTextEditor
         private void MenuItem_DeleteGroup_Click(object sender, EventArgs e)
         {
             string[] itemsToDelete = ListBox_TextGroups.SelectedItems.OfType<string>().ToArray();
-            DialogResult answerQuestion = MessageBox.Show(CommonFunctions.MultipleDeletionMessage("Are you sure you want to delete Groups", itemsToDelete), "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult answerQuestion = MessageBox.Show(CommonFunctions.MultipleDeletionMessage("Are you sure you want to delete Groups", itemsToDelete), Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (answerQuestion == DialogResult.Yes)
             {
                 if (ListBox_TextGroups.SelectedItems.Count > 0)

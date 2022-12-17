@@ -95,7 +95,7 @@ namespace EuroTextEditor
                 }
                 else
                 {
-                    MessageBox.Show("Label '" + frmTextFileName.ReturnValue + "' uses invalid characters, only numbers, digits and underscore characters are allowed.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Label '" + frmTextFileName.ReturnValue + "' uses invalid characters, only numbers, digits and underscore characters are allowed.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -111,7 +111,7 @@ namespace EuroTextEditor
                     itemsToDelete.Add(Item.Text.ToString());
                 }
 
-                DialogResult answerQuestion = MessageBox.Show(CommonFunctions.MultipleDeletionMessage("Are you sure you want to delete HashCodes", itemsToDelete.ToArray()), "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult answerQuestion = MessageBox.Show(CommonFunctions.MultipleDeletionMessage("Are you sure you want to delete HashCodes", itemsToDelete.ToArray()), Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (answerQuestion == DialogResult.Yes)
                 {
                     //Crate trash folder
@@ -156,7 +156,7 @@ namespace EuroTextEditor
                         //Move file
                         if (File.Exists(newFilePath))
                         {
-                            MessageBox.Show(string.Join("", "'", frmTextFileName.ReturnValue, "' already exists please use another name!"), "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show(string.Join("", "'", frmTextFileName.ReturnValue, "' already exists please use another name!"), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         else
                         {
@@ -167,7 +167,7 @@ namespace EuroTextEditor
                     }
                     else
                     {
-                        MessageBox.Show("Label '" + frmTextFileName.ReturnValue + "' uses invalid characters, only numbers, digits and underscore characters are allowed.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Label '" + frmTextFileName.ReturnValue + "' uses invalid characters, only numbers, digits and underscore characters are allowed.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }

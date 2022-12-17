@@ -24,8 +24,6 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_Searcher_Load(object sender, EventArgs e)
         {
-            UserControl_HashCodesTable.parentFormToSync = ((Frm_MainFrame)Application.OpenForms[nameof(Frm_MainFrame)]).hashCodes;
-
             //Add languages
             Combobox_LookIn.BeginUpdate();
             Combobox_LookIn.Items.Add("All");
@@ -80,7 +78,7 @@ namespace EuroTextEditor
         {
             if (AsyncWorker.IsBusy)
             {
-                MessageBox.Show("There is a search in progress, please wait until finishes or stop it before starting a new search.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("There is a search in progress, please wait until finishes or stop it before starting a new search.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
@@ -395,9 +393,8 @@ namespace EuroTextEditor
             }
             else
             {
-                MessageBox.Show("Messages directory has not been found: " + messagesDirectory, "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Messages directory has not been found: " + messagesDirectory, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------

@@ -441,7 +441,6 @@ namespace EuroTextEditor
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EuroText";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_MainFrame_FormClosing);
-            this.Load += new System.EventHandler(this.Frm_MainFrame_Load);
             this.Shown += new System.EventHandler(this.Frm_MainFrame_Shown);
             this.Groupbox_Output.ResumeLayout(false);
             this.Groupbox_Output.PerformLayout();

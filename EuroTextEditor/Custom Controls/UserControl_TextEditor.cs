@@ -13,16 +13,9 @@ namespace EuroTextEditor
     public partial class UserControl_TextEditor : DockContent
     {
         //-------------------------------------------------------------------------------------------------------------------------------
-        private readonly MenuItem formMenuItem;
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        public UserControl_TextEditor(MenuItem parentMainForm, DockPanel defaultPanel, DockState defaultDockState)
+        public UserControl_TextEditor()
         {
             InitializeComponent();
-            formMenuItem = parentMainForm;
-
-            //Menu Item
-            formMenuItem.Click += (se, ev) => { if (IsHidden) { Show(defaultPanel, defaultDockState); formMenuItem.Checked = true; } };
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -194,7 +187,7 @@ namespace EuroTextEditor
             }
             else
             {
-                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -239,7 +232,7 @@ namespace EuroTextEditor
             }
             else
             {
-                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -260,7 +253,7 @@ namespace EuroTextEditor
             }
             else
             {
-                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -332,7 +325,7 @@ namespace EuroTextEditor
             }
             else
             {
-                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -362,7 +355,7 @@ namespace EuroTextEditor
             }
             else
             {
-                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -463,7 +456,7 @@ namespace EuroTextEditor
             }
             else
             {
-                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -492,7 +485,7 @@ namespace EuroTextEditor
             }
             else
             {
-                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -557,16 +550,7 @@ namespace EuroTextEditor
             timeFor30 = (int)Math.Round(calcTime * 30);
 
             //Show info
-            MessageBox.Show(string.Join(" ", "Character count =", charCount, "\nTeletype time =", calcTime.ToString("0.00000000"), "Seconds", "\nFrames =", timeFor30), "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
-        private void UserControl_TextEditor_VisibleChanged(object sender, EventArgs e)
-        {
-            if (IsHidden)
-            {
-                formMenuItem.Checked = false;
-            }
+            MessageBox.Show(string.Join(" ", "Character count =", charCount, "\nTeletype time =", calcTime.ToString("0.00000000"), "Seconds", "\nFrames =", timeFor30), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -598,19 +582,19 @@ namespace EuroTextEditor
             }
             catch (FormatException)
             {
-                MessageBox.Show("Enter valid number", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Enter valid number", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 MenuItem_Factor.Focus();
                 MenuItem_Factor.SelectAll();
             }
             catch (OverflowException)
             {
-                MessageBox.Show("Enter valid number", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Enter valid number", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 MenuItem_Factor.Focus();
                 MenuItem_Factor.SelectAll();
             }
             catch (ArgumentException)
             {
-                MessageBox.Show("Zoom factor should be between 20% and 6400%", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Zoom factor should be between 20% and 6400%", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 MenuItem_Factor.Focus();
                 MenuItem_Factor.SelectAll();
             }

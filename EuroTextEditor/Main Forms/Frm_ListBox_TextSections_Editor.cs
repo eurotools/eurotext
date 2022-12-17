@@ -29,7 +29,7 @@ namespace EuroTextEditor
         {
             if (PromptSave)
             {
-                DialogResult diagResult = MessageBox.Show("Are you sure you wish to quit without saving?", "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult diagResult = MessageBox.Show("Are you sure you wish to quit without saving?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (diagResult == DialogResult.No)
                 {
                     e.Cancel = true;
@@ -114,13 +114,13 @@ namespace EuroTextEditor
                     }
                     else
                     {
-                        MessageBox.Show("The selected section could not be added, a section with this level already exists.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("The selected section could not be added, a section with this level already exists.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Hashtable file not found, please specify the file path under the 'Settings' menu.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -133,7 +133,7 @@ namespace EuroTextEditor
                 itemsToDelete.Add(Item.Text.ToString());
             }
 
-            DialogResult answerQuestion = MessageBox.Show(CommonFunctions.MultipleDeletionMessage("Are you sure you want to delete Text Sections", itemsToDelete.ToArray()), "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult answerQuestion = MessageBox.Show(CommonFunctions.MultipleDeletionMessage("Are you sure you want to delete Text Sections", itemsToDelete.ToArray()), Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (answerQuestion == DialogResult.Yes)
             {
                 ListView_TextSections.BeginUpdate();
@@ -170,13 +170,13 @@ namespace EuroTextEditor
             //Inform user if there are duplicated levles.
             if (userLevels.Count != userLevels.Distinct().Count())
             {
-                MessageBox.Show("There is more than one section with the same output level, fix it before save changes.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("There is more than one section with the same output level, fix it before save changes.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
                 if (userTextSections.Count != userTextSections.Distinct().Count())
                 {
-                    MessageBox.Show("Duplicated text sections, fix it before save changes.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Duplicated text sections, fix it before save changes.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
@@ -243,7 +243,7 @@ namespace EuroTextEditor
                     }
                     else
                     {
-                        MessageBox.Show("Error, file not found: " + SectionsFilepath, "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Error, file not found: " + SectionsFilepath, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
 
                     PromptSave = false;

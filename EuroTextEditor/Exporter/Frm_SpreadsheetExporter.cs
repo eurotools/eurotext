@@ -126,7 +126,7 @@ namespace EuroTextEditor
             if (BackgroundWorker.IsBusy)
             {
                 e.Cancel = true;
-                DialogResult response = MessageBox.Show("Are you sure you want to cancel the output?", "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult response = MessageBox.Show("Are you sure you want to cancel the output?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (response == DialogResult.Yes)
                 {
                     BackgroundWorker.CancelAsync();

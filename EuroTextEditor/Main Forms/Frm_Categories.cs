@@ -13,16 +13,14 @@ namespace EuroTextEditor
         private readonly int filterFlags;
         private readonly bool modifyFiles;
         public int selectedFlags;
-        internal Frm_ListBoxHashCodes parentFormToSync;
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        public Frm_Categories(ListView listViewControl, int userFilterFlags, Frm_ListBoxHashCodes formToSync, bool UpdateTextFiles = true)
+        public Frm_Categories(ListView listViewControl, int userFilterFlags, bool UpdateTextFiles = true)
         {
             InitializeComponent();
             listControl = listViewControl;
             modifyFiles = UpdateTextFiles;
             filterFlags = userFilterFlags;
-            parentFormToSync = formToSync;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -120,9 +118,10 @@ namespace EuroTextEditor
                         selectedItem.SubItems[5].Text = flagsLabels;
 
                         //Sync listviews
-                        if (parentFormToSync != null)
+                        if (((Frm_MainFrame)Application.OpenForms[nameof(Frm_MainFrame)]) != null)
                         {
-                            foreach (ListViewItem itemsToUpdate in parentFormToSync.UserControl_HashCodesListView.ListView_HashCodes.Items)
+                            ListView hashcodesList = ((Frm_MainFrame)Application.OpenForms[nameof(Frm_MainFrame)]).hashCodes.UserControl_HashCodesListView.ListView_HashCodes;
+                            foreach (ListViewItem itemsToUpdate in hashcodesList.Items)
                             {
                                 if (itemsToUpdate.Text.Equals(selectedItem.Text))
                                 {

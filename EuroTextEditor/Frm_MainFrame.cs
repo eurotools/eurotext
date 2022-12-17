@@ -36,11 +36,6 @@ namespace EuroTextEditor
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void Frm_MainFrame_Load(object sender, EventArgs e)
-        {
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
         private void Frm_MainFrame_Shown(object sender, EventArgs e)
         {
             //Recen files
@@ -162,7 +157,7 @@ namespace EuroTextEditor
             }
             else
             {
-                MessageBox.Show(string.Format("Project Directory Not Found {0}", filename), "EuroText Load Project Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(string.Format("Project Directory Not Found {0}", filename), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 RecentFilesMenu.RemoveFile(number);
             }
         }
@@ -214,12 +209,12 @@ namespace EuroTextEditor
                 }
                 else
                 {
-                    MessageBox.Show("The output filename is empty.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("The output filename is empty.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("The output directory does not exists.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("The output directory does not exists.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -280,7 +275,7 @@ namespace EuroTextEditor
                 }
                 else
                 {
-                    MessageBox.Show("Could not find the HashTable Admin Tool, please set the file path under the project settings form.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show("Could not find the HashTable Admin Tool, please set the file path under the project settings form.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
         }

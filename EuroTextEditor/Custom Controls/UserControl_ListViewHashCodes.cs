@@ -151,7 +151,7 @@ namespace EuroTextEditor.Custom_Controls
                 }
                 else
                 {
-                    MessageBox.Show("Label '" + frmTextFileName.ReturnValue + "' uses invalid characters, only numbers, digits and underscore characters are allowed.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Label '" + frmTextFileName.ReturnValue + "' uses invalid characters, only numbers, digits and underscore characters are allowed.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -167,7 +167,7 @@ namespace EuroTextEditor.Custom_Controls
                     itemsToDelete.Add(Item.Text.ToString());
                 }
 
-                DialogResult answerQuestion = MessageBox.Show(CommonFunctions.MultipleDeletionMessage("Are you sure you want to delete HashCodes", itemsToDelete.ToArray()), "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult answerQuestion = MessageBox.Show(CommonFunctions.MultipleDeletionMessage("Are you sure you want to delete HashCodes", itemsToDelete.ToArray()), Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (answerQuestion == DialogResult.Yes)
                 {
                     //Crate trash folder
@@ -212,7 +212,7 @@ namespace EuroTextEditor.Custom_Controls
                         //Move file
                         if (File.Exists(newFilePath))
                         {
-                            MessageBox.Show(string.Join("", "'", frmTextFileName.ReturnValue, "' already exists please use another name!"), "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show(string.Join("", "'", frmTextFileName.ReturnValue, "' already exists please use another name!"), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         else
                         {
@@ -223,7 +223,7 @@ namespace EuroTextEditor.Custom_Controls
                     }
                     else
                     {
-                        MessageBox.Show("Label '" + frmTextFileName.ReturnValue + "' uses invalid characters, only numbers, digits and underscore characters are allowed.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Label '" + frmTextFileName.ReturnValue + "' uses invalid characters, only numbers, digits and underscore characters are allowed.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -314,10 +314,11 @@ namespace EuroTextEditor.Custom_Controls
                 {
                     itemToModify.BackColor = ColorPicker_HashCodes.Color;
 
-                    //Sync listviews
-                    if (parentFormToSync != null)
+                    //Sync with the main listview
+                    if (Parent.GetType() == typeof(Frm_Searcher))
                     {
-                        foreach (ListViewItem itemsToUpdate in parentFormToSync.UserControl_HashCodesListView.ListView_HashCodes.Items)
+                        ListView hashcodesList = ((Frm_MainFrame)Application.OpenForms[nameof(Frm_MainFrame)]).hashCodes.UserControl_HashCodesListView.ListView_HashCodes;
+                        foreach (ListViewItem itemsToUpdate in hashcodesList.Items)
                         {
                             if (itemsToUpdate.Text.Equals(itemToModify.Text))
                             {
@@ -358,10 +359,11 @@ namespace EuroTextEditor.Custom_Controls
             {
                 itemToModify.BackColor = SystemColors.Window;
 
-                //Sync listviews
-                if (parentFormToSync != null)
+                //Sync with the main listview
+                if (Parent.GetType() == typeof(Frm_Searcher))
                 {
-                    foreach (ListViewItem itemsToUpdate in parentFormToSync.UserControl_HashCodesListView.ListView_HashCodes.Items)
+                    ListView hashcodesList = ((Frm_MainFrame)Application.OpenForms[nameof(Frm_MainFrame)]).hashCodes.UserControl_HashCodesListView.ListView_HashCodes;
+                    foreach (ListViewItem itemsToUpdate in hashcodesList.Items)
                     {
                         if (itemsToUpdate.Text.Equals(itemToModify.Text))
                         {
@@ -412,10 +414,11 @@ namespace EuroTextEditor.Custom_Controls
                     //Update UI
                     itemToModify.SubItems[6].Text = inputText.ReturnValue;
 
-                    //Sync listviews
-                    if (parentFormToSync != null)
+                    //Sync with the main listview
+                    if (Parent.GetType() == typeof(Frm_Searcher))
                     {
-                        foreach (ListViewItem itemsToUpdate in parentFormToSync.UserControl_HashCodesListView.ListView_HashCodes.Items)
+                        ListView hashcodesList = ((Frm_MainFrame)Application.OpenForms[nameof(Frm_MainFrame)]).hashCodes.UserControl_HashCodesListView.ListView_HashCodes;
+                        foreach (ListViewItem itemsToUpdate in hashcodesList.Items)
                         {
                             if (itemsToUpdate.Text.Equals(itemToModify.Text))
                             {
@@ -517,7 +520,7 @@ namespace EuroTextEditor.Custom_Controls
                 if (File.Exists(textFilePath))
                 {
                     //Show flags selector
-                    using (Frm_Categories categoriesEditor = new Frm_Categories(ListView_HashCodes, 0, parentFormToSync))
+                    using (Frm_Categories categoriesEditor = new Frm_Categories(ListView_HashCodes, 0))
                     {
                         categoriesEditor.ShowDialog();
                     }
@@ -568,7 +571,7 @@ namespace EuroTextEditor.Custom_Controls
             }
 
             //Show and display form
-            Frm_Categories frmCategories = new Frm_Categories(null, currentFlags, parentFormToSync, false);
+            Frm_Categories frmCategories = new Frm_Categories(null, currentFlags, false);
             if (frmCategories.ShowDialog() == DialogResult.OK)
             {
                 int selectedFlags = frmCategories.selectedFlags;

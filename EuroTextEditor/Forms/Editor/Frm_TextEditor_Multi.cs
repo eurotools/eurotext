@@ -57,7 +57,7 @@ namespace EuroTextEditor
         {
             if (PromptSave)
             {
-                DialogResult diagResult = MessageBox.Show("Are you sure you wish to quit without saving?", "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult diagResult = MessageBox.Show("Are you sure you wish to quit without saving?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (diagResult == DialogResult.No)
                 {
                     e.Cancel = true;

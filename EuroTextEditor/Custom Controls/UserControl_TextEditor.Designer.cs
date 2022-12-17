@@ -102,6 +102,7 @@ namespace EuroTextEditor
             // 
             // Toolbar1
             // 
+            this.Toolbar1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.Toolbar1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.DropDown_Insert,
             this.DropDown_Icons,
@@ -400,6 +401,7 @@ namespace EuroTextEditor
             // 
             // Toolbar2
             // 
+            this.Toolbar2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.Toolbar2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolButton_Cut,
             this.ToolButton_Copy,
@@ -664,7 +666,6 @@ namespace EuroTextEditor
             this.TabText = "Text Editor";
             this.Text = "Text Editor";
             this.Load += new System.EventHandler(this.UserControl_TextEditor_Load);
-            this.VisibleChanged += new System.EventHandler(this.UserControl_TextEditor_VisibleChanged);
             this.Toolbar1.ResumeLayout(false);
             this.Toolbar1.PerformLayout();
             this.Toolbar2.ResumeLayout(false);

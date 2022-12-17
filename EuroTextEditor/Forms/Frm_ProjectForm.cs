@@ -46,7 +46,7 @@ namespace EuroTextEditor
         {
             if (PromptToSave)
             {
-                DialogResult messageAnswer = MessageBox.Show("Are you sure you wish to Quit Properties without saving?", "EuroText", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult messageAnswer = MessageBox.Show("Are you sure you wish to Quit Properties without saving?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (messageAnswer == DialogResult.No)
                 {
                     e.Cancel = true;
@@ -67,7 +67,7 @@ namespace EuroTextEditor
                 }
                 else
                 {
-                    MessageBox.Show("Messages folder not found under the selected path, please choose another path.", "EuroText", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Messages folder not found under the selected path, please choose another path.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
