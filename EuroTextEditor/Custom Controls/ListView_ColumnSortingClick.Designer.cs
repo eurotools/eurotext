@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Forms;
+
 namespace EuroTextEditor.Custom_Controls
 {
     partial class ListView_ColumnSortingClick
@@ -35,7 +37,7 @@ namespace EuroTextEditor.Custom_Controls
             // 
             this.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ListView_Extended_ColumnSorting_ColumnClick);
             this.ResumeLayout(false);
-
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
         #endregion

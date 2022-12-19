@@ -179,6 +179,7 @@ namespace EuroTextEditor.Custom_Controls
             this.Controls.Add(this.combo);
             this.combo.DropDownStyle = ComboBoxStyle.DropDownList;
             this.combo.SelectedIndexChanged += new EventHandler(Combo_SelectedIndexChanged);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
         /// <summary>
