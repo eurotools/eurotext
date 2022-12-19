@@ -413,15 +413,6 @@ namespace EuroTextEditor
             string contents = "";
             foreach (Control control in (ArrangedElementCollection)f.Controls)
             {
-                if (control is ListView listView1)
-                {
-                    contents += listView1.Name;
-                    for (int i = 0; i < listView1.Columns.Count; ++i)
-                    {
-                        contents = contents + " " + listView1.Columns[i].Width;
-                    }
-                    contents += "\n";
-                }
                 if (control is ListView_ColumnSortingClick listView2)
                 {
                     contents += listView2.Name;
@@ -448,7 +439,7 @@ namespace EuroTextEditor
                     Control[] formControls = frm.Controls.Find(lineData[0], false);
                     if (formControls.Length == 1)
                     {
-                        ListView listView = (ListView)formControls[0];
+                        ListView_ColumnSortingClick listView = (ListView_ColumnSortingClick)formControls[0];
                         if (listView.Columns.Count == lineData.Length - 1)
                         {
                             for (int i = 0; i < listView.Columns.Count; ++i)
