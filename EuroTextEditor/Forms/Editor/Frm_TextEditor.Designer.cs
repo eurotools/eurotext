@@ -41,8 +41,17 @@ namespace EuroTextEditor
             this.MenuItemStrip_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItemStrip_Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemStrip_Windows = new System.Windows.Forms.ToolStripMenuItem();
-            this.UserControl_TextOptions = new EuroTextEditor.Custom_Controls.UserControl_TextOptions();
+            this.GroupBox_Settings = new System.Windows.Forms.GroupBox();
+            this.Textbox_OutputSections = new System.Windows.Forms.TextBox();
+            this.Label_OutputSection = new System.Windows.Forms.Label();
+            this.Combobox_Group = new System.Windows.Forms.ComboBox();
+            this.Label_TextGroup = new System.Windows.Forms.Label();
+            this.CheckBox_TextDead = new System.Windows.Forms.CheckBox();
+            this.Numeric_MaxChars = new System.Windows.Forms.NumericUpDown();
+            this.Label_MaxNumOfChars = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
+            this.GroupBox_Settings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Numeric_MaxChars)).BeginInit();
             this.SuspendLayout();
             // 
             // Button_OK
@@ -144,21 +153,93 @@ namespace EuroTextEditor
             this.MenuItemStrip_Windows.Text = "Windows";
             this.MenuItemStrip_Windows.DropDownOpening += new System.EventHandler(this.MenuItemStrip_Windows_DropDownOpening);
             // 
-            // UserControl_TextOptions
+            // GroupBox_Settings
             // 
-            this.UserControl_TextOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.GroupBox_Settings.Controls.Add(this.Textbox_OutputSections);
+            this.GroupBox_Settings.Controls.Add(this.Label_OutputSection);
+            this.GroupBox_Settings.Controls.Add(this.Combobox_Group);
+            this.GroupBox_Settings.Controls.Add(this.Label_TextGroup);
+            this.GroupBox_Settings.Controls.Add(this.CheckBox_TextDead);
+            this.GroupBox_Settings.Controls.Add(this.Numeric_MaxChars);
+            this.GroupBox_Settings.Controls.Add(this.Label_MaxNumOfChars);
+            this.GroupBox_Settings.Location = new System.Drawing.Point(12, 27);
+            this.GroupBox_Settings.Name = "GroupBox_Settings";
+            this.GroupBox_Settings.Size = new System.Drawing.Size(744, 44);
+            this.GroupBox_Settings.TabIndex = 8;
+            this.GroupBox_Settings.TabStop = false;
+            this.GroupBox_Settings.Text = "Settings:";
+            // 
+            // Textbox_OutputSections
+            // 
+            this.Textbox_OutputSections.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.UserControl_TextOptions.Location = new System.Drawing.Point(12, 27);
-            this.UserControl_TextOptions.Name = "UserControl_TextOptions";
-            this.UserControl_TextOptions.Size = new System.Drawing.Size(744, 44);
-            this.UserControl_TextOptions.TabIndex = 5;
+            this.Textbox_OutputSections.BackColor = System.Drawing.SystemColors.Window;
+            this.Textbox_OutputSections.Location = new System.Drawing.Point(557, 13);
+            this.Textbox_OutputSections.Name = "Textbox_OutputSections";
+            this.Textbox_OutputSections.ReadOnly = true;
+            this.Textbox_OutputSections.Size = new System.Drawing.Size(181, 20);
+            this.Textbox_OutputSections.TabIndex = 7;
+            this.Textbox_OutputSections.Click += new System.EventHandler(this.Textbox_OutputSections_Click);
+            // 
+            // Label_OutputSection
+            // 
+            this.Label_OutputSection.AutoSize = true;
+            this.Label_OutputSection.Location = new System.Drawing.Point(470, 16);
+            this.Label_OutputSection.Name = "Label_OutputSection";
+            this.Label_OutputSection.Size = new System.Drawing.Size(81, 13);
+            this.Label_OutputSection.TabIndex = 5;
+            this.Label_OutputSection.Text = "Output Section:";
+            // 
+            // Combobox_Group
+            // 
+            this.Combobox_Group.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Combobox_Group.FormattingEnabled = true;
+            this.Combobox_Group.Location = new System.Drawing.Point(315, 13);
+            this.Combobox_Group.Name = "Combobox_Group";
+            this.Combobox_Group.Size = new System.Drawing.Size(149, 21);
+            this.Combobox_Group.TabIndex = 4;
+            // 
+            // Label_TextGroup
+            // 
+            this.Label_TextGroup.AutoSize = true;
+            this.Label_TextGroup.Location = new System.Drawing.Point(270, 16);
+            this.Label_TextGroup.Name = "Label_TextGroup";
+            this.Label_TextGroup.Size = new System.Drawing.Size(39, 13);
+            this.Label_TextGroup.TabIndex = 3;
+            this.Label_TextGroup.Text = "Group:";
+            // 
+            // CheckBox_TextDead
+            // 
+            this.CheckBox_TextDead.AutoSize = true;
+            this.CheckBox_TextDead.Location = new System.Drawing.Point(182, 15);
+            this.CheckBox_TextDead.Name = "CheckBox_TextDead";
+            this.CheckBox_TextDead.Size = new System.Drawing.Size(82, 17);
+            this.CheckBox_TextDead.TabIndex = 2;
+            this.CheckBox_TextDead.Text = "Dead Text?";
+            this.CheckBox_TextDead.UseVisualStyleBackColor = true;
+            // 
+            // Numeric_MaxChars
+            // 
+            this.Numeric_MaxChars.Location = new System.Drawing.Point(111, 14);
+            this.Numeric_MaxChars.Name = "Numeric_MaxChars";
+            this.Numeric_MaxChars.Size = new System.Drawing.Size(65, 20);
+            this.Numeric_MaxChars.TabIndex = 1;
+            // 
+            // Label_MaxNumOfChars
+            // 
+            this.Label_MaxNumOfChars.AutoSize = true;
+            this.Label_MaxNumOfChars.Location = new System.Drawing.Point(6, 16);
+            this.Label_MaxNumOfChars.Name = "Label_MaxNumOfChars";
+            this.Label_MaxNumOfChars.Size = new System.Drawing.Size(99, 13);
+            this.Label_MaxNumOfChars.TabIndex = 0;
+            this.Label_MaxNumOfChars.Text = "Max Num Of Chars:";
             // 
             // Frm_TextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(768, 584);
-            this.Controls.Add(this.UserControl_TextOptions);
+            this.Controls.Add(this.GroupBox_Settings);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Button_OK);
@@ -174,6 +255,9 @@ namespace EuroTextEditor
             this.Shown += new System.EventHandler(this.Frm_TextEditor_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.GroupBox_Settings.ResumeLayout(false);
+            this.GroupBox_Settings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Numeric_MaxChars)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,7 +267,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.Button Button_OK;
         private System.Windows.Forms.Button Button_Cancel;
         private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
-        private Custom_Controls.UserControl_TextOptions UserControl_TextOptions;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_File;
         private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_Save;
@@ -192,5 +275,13 @@ namespace EuroTextEditor
         private System.Windows.Forms.ToolStripSeparator MenuItemStrip_Separator2;
         private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_Exit;
         private System.Windows.Forms.ToolStripMenuItem MenuItemStrip_Windows;
+        private System.Windows.Forms.GroupBox GroupBox_Settings;
+        protected internal System.Windows.Forms.TextBox Textbox_OutputSections;
+        private System.Windows.Forms.Label Label_OutputSection;
+        protected internal System.Windows.Forms.ComboBox Combobox_Group;
+        private System.Windows.Forms.Label Label_TextGroup;
+        protected internal System.Windows.Forms.CheckBox CheckBox_TextDead;
+        protected internal System.Windows.Forms.NumericUpDown Numeric_MaxChars;
+        private System.Windows.Forms.Label Label_MaxNumOfChars;
     }
 }

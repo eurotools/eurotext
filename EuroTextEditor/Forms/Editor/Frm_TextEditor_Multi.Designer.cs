@@ -34,8 +34,17 @@ namespace EuroTextEditor
             this.ListBox_FilesToBeModified = new System.Windows.Forms.ListBox();
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
-            this.userControl_TextOptions1 = new EuroTextEditor.Custom_Controls.UserControl_TextOptions();
+            this.GroupBox_Settings = new System.Windows.Forms.GroupBox();
+            this.Textbox_OutputSections = new System.Windows.Forms.TextBox();
+            this.Label_OutputSection = new System.Windows.Forms.Label();
+            this.Combobox_Group = new System.Windows.Forms.ComboBox();
+            this.Label_TextGroup = new System.Windows.Forms.Label();
+            this.CheckBox_TextDead = new System.Windows.Forms.CheckBox();
+            this.Numeric_MaxChars = new System.Windows.Forms.NumericUpDown();
+            this.Label_MaxNumOfChars = new System.Windows.Forms.Label();
             this.GroupBox_FilesToBeModified.SuspendLayout();
+            this.GroupBox_Settings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Numeric_MaxChars)).BeginInit();
             this.SuspendLayout();
             // 
             // GroupBox_FilesToBeModified
@@ -84,14 +93,86 @@ namespace EuroTextEditor
             this.Button_Cancel.UseVisualStyleBackColor = true;
             this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
             // 
-            // userControl_TextOptions1
+            // GroupBox_Settings
             // 
-            this.userControl_TextOptions1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.GroupBox_Settings.Controls.Add(this.Textbox_OutputSections);
+            this.GroupBox_Settings.Controls.Add(this.Label_OutputSection);
+            this.GroupBox_Settings.Controls.Add(this.Combobox_Group);
+            this.GroupBox_Settings.Controls.Add(this.Label_TextGroup);
+            this.GroupBox_Settings.Controls.Add(this.CheckBox_TextDead);
+            this.GroupBox_Settings.Controls.Add(this.Numeric_MaxChars);
+            this.GroupBox_Settings.Controls.Add(this.Label_MaxNumOfChars);
+            this.GroupBox_Settings.Location = new System.Drawing.Point(12, 12);
+            this.GroupBox_Settings.Name = "GroupBox_Settings";
+            this.GroupBox_Settings.Size = new System.Drawing.Size(744, 44);
+            this.GroupBox_Settings.TabIndex = 9;
+            this.GroupBox_Settings.TabStop = false;
+            this.GroupBox_Settings.Text = "Settings:";
+            // 
+            // Textbox_OutputSections
+            // 
+            this.Textbox_OutputSections.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.userControl_TextOptions1.Location = new System.Drawing.Point(12, 12);
-            this.userControl_TextOptions1.Name = "userControl_TextOptions1";
-            this.userControl_TextOptions1.Size = new System.Drawing.Size(745, 44);
-            this.userControl_TextOptions1.TabIndex = 0;
+            this.Textbox_OutputSections.BackColor = System.Drawing.SystemColors.Window;
+            this.Textbox_OutputSections.Location = new System.Drawing.Point(557, 13);
+            this.Textbox_OutputSections.Name = "Textbox_OutputSections";
+            this.Textbox_OutputSections.ReadOnly = true;
+            this.Textbox_OutputSections.Size = new System.Drawing.Size(181, 20);
+            this.Textbox_OutputSections.TabIndex = 7;
+            this.Textbox_OutputSections.Click += new System.EventHandler(this.Textbox_OutputSections_Click);
+            // 
+            // Label_OutputSection
+            // 
+            this.Label_OutputSection.AutoSize = true;
+            this.Label_OutputSection.Location = new System.Drawing.Point(470, 16);
+            this.Label_OutputSection.Name = "Label_OutputSection";
+            this.Label_OutputSection.Size = new System.Drawing.Size(81, 13);
+            this.Label_OutputSection.TabIndex = 5;
+            this.Label_OutputSection.Text = "Output Section:";
+            // 
+            // Combobox_Group
+            // 
+            this.Combobox_Group.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Combobox_Group.FormattingEnabled = true;
+            this.Combobox_Group.Location = new System.Drawing.Point(315, 13);
+            this.Combobox_Group.Name = "Combobox_Group";
+            this.Combobox_Group.Size = new System.Drawing.Size(149, 21);
+            this.Combobox_Group.TabIndex = 4;
+            // 
+            // Label_TextGroup
+            // 
+            this.Label_TextGroup.AutoSize = true;
+            this.Label_TextGroup.Location = new System.Drawing.Point(270, 16);
+            this.Label_TextGroup.Name = "Label_TextGroup";
+            this.Label_TextGroup.Size = new System.Drawing.Size(39, 13);
+            this.Label_TextGroup.TabIndex = 3;
+            this.Label_TextGroup.Text = "Group:";
+            // 
+            // CheckBox_TextDead
+            // 
+            this.CheckBox_TextDead.AutoSize = true;
+            this.CheckBox_TextDead.Location = new System.Drawing.Point(182, 15);
+            this.CheckBox_TextDead.Name = "CheckBox_TextDead";
+            this.CheckBox_TextDead.Size = new System.Drawing.Size(82, 17);
+            this.CheckBox_TextDead.TabIndex = 2;
+            this.CheckBox_TextDead.Text = "Dead Text?";
+            this.CheckBox_TextDead.UseVisualStyleBackColor = true;
+            // 
+            // Numeric_MaxChars
+            // 
+            this.Numeric_MaxChars.Location = new System.Drawing.Point(111, 14);
+            this.Numeric_MaxChars.Name = "Numeric_MaxChars";
+            this.Numeric_MaxChars.Size = new System.Drawing.Size(65, 20);
+            this.Numeric_MaxChars.TabIndex = 1;
+            // 
+            // Label_MaxNumOfChars
+            // 
+            this.Label_MaxNumOfChars.AutoSize = true;
+            this.Label_MaxNumOfChars.Location = new System.Drawing.Point(6, 16);
+            this.Label_MaxNumOfChars.Name = "Label_MaxNumOfChars";
+            this.Label_MaxNumOfChars.Size = new System.Drawing.Size(99, 13);
+            this.Label_MaxNumOfChars.TabIndex = 0;
+            this.Label_MaxNumOfChars.Text = "Max Num Of Chars:";
             // 
             // Frm_TextEditor_Multi
             // 
@@ -100,10 +181,10 @@ namespace EuroTextEditor
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
             this.ClientSize = new System.Drawing.Size(768, 503);
+            this.Controls.Add(this.GroupBox_Settings);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Button_OK);
             this.Controls.Add(this.GroupBox_FilesToBeModified);
-            this.Controls.Add(this.userControl_TextOptions1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_TextEditor_Multi";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -111,16 +192,26 @@ namespace EuroTextEditor
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_TextEditor_Multi_FormClosing);
             this.Load += new System.EventHandler(this.Frm_TextEditor_Multi_Load);
             this.GroupBox_FilesToBeModified.ResumeLayout(false);
+            this.GroupBox_Settings.ResumeLayout(false);
+            this.GroupBox_Settings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Numeric_MaxChars)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private Custom_Controls.UserControl_TextOptions userControl_TextOptions1;
         private System.Windows.Forms.GroupBox GroupBox_FilesToBeModified;
         private System.Windows.Forms.Button Button_OK;
         private System.Windows.Forms.Button Button_Cancel;
         private System.Windows.Forms.ListBox ListBox_FilesToBeModified;
+        private System.Windows.Forms.GroupBox GroupBox_Settings;
+        protected internal System.Windows.Forms.TextBox Textbox_OutputSections;
+        private System.Windows.Forms.Label Label_OutputSection;
+        protected internal System.Windows.Forms.ComboBox Combobox_Group;
+        private System.Windows.Forms.Label Label_TextGroup;
+        protected internal System.Windows.Forms.CheckBox CheckBox_TextDead;
+        protected internal System.Windows.Forms.NumericUpDown Numeric_MaxChars;
+        private System.Windows.Forms.Label Label_MaxNumOfChars;
     }
 }

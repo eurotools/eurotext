@@ -34,11 +34,12 @@ namespace EuroTextEditor
             this.MenuItem_Refresh = new System.Windows.Forms.MenuItem();
             this.MenuItem_Separator1 = new System.Windows.Forms.MenuItem();
             this.MenuItem_EditSections = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.MenuItem_SectionName = new System.Windows.Forms.MenuItem();
             this.ListView_SectionsAndLevels = new EuroTextEditor.Custom_Controls.ListView_ColumnSortingClick();
             this.Col_TextSection = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_OutputLevel = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.MenuItem_SectionName = new System.Windows.Forms.MenuItem();
+            this.MenuItem_ApplyFilter = new System.Windows.Forms.MenuItem();
             this.SuspendLayout();
             // 
             // ContextMenu_TextSections
@@ -48,7 +49,8 @@ namespace EuroTextEditor
             this.MenuItem_Separator1,
             this.MenuItem_EditSections,
             this.menuItem1,
-            this.MenuItem_SectionName});
+            this.MenuItem_SectionName,
+            this.MenuItem_ApplyFilter});
             // 
             // MenuItem_Refresh
             // 
@@ -66,6 +68,17 @@ namespace EuroTextEditor
             this.MenuItem_EditSections.Index = 2;
             this.MenuItem_EditSections.Text = "Edit Sections";
             this.MenuItem_EditSections.Click += new System.EventHandler(this.MenuItem_EditSections_Click);
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 3;
+            this.menuItem1.Text = "-";
+            // 
+            // MenuItem_SectionName
+            // 
+            this.MenuItem_SectionName.Index = 4;
+            this.MenuItem_SectionName.Text = "Copy Section Name";
+            this.MenuItem_SectionName.Click += new System.EventHandler(this.MenuItem_SectionName_Click);
             // 
             // ListView_SectionsAndLevels
             // 
@@ -95,16 +108,11 @@ namespace EuroTextEditor
             this.Col_OutputLevel.Text = "Level";
             this.Col_OutputLevel.Width = 180;
             // 
-            // menuItem1
+            // MenuItem_ApplyFilter
             // 
-            this.menuItem1.Index = 3;
-            this.menuItem1.Text = "-";
-            // 
-            // MenuItem_SectionName
-            // 
-            this.MenuItem_SectionName.Index = 4;
-            this.MenuItem_SectionName.Text = "Copy Section Name";
-            this.MenuItem_SectionName.Click += new System.EventHandler(this.MenuItem_SectionName_Click);
+            this.MenuItem_ApplyFilter.Index = 5;
+            this.MenuItem_ApplyFilter.Text = "Apply Filter";
+            this.MenuItem_ApplyFilter.Click += new System.EventHandler(this.MenuItem_ApplyFilter_Click);
             // 
             // Frm_ListBox_TextSections
             // 
@@ -131,5 +139,6 @@ namespace EuroTextEditor
         private System.Windows.Forms.MenuItem MenuItem_EditSections;
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem MenuItem_SectionName;
+        private System.Windows.Forms.MenuItem MenuItem_ApplyFilter;
     }
 }

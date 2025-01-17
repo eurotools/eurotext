@@ -118,12 +118,6 @@
     <Compile Include="Custom Controls\UserControl_ListViewHashCodes.Designer.cs">
       <DependentUpon>UserControl_ListViewHashCodes.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom Controls\UserControl_TextOptions.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Custom Controls\UserControl_TextOptions.Designer.cs">
-      <DependentUpon>UserControl_TextOptions.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Editor\Frm_TextEditor_Multi.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -368,9 +362,6 @@
     </Compile>
     <EmbeddedResource Include="Custom Controls\UserControl_ListViewHashCodes.resx">
       <DependentUpon>UserControl_ListViewHashCodes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Custom Controls\UserControl_TextOptions.resx">
-      <DependentUpon>UserControl_TextOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editor\Frm_TextEditor_Multi.resx">
       <DependentUpon>Frm_TextEditor_Multi.cs</DependentUpon>

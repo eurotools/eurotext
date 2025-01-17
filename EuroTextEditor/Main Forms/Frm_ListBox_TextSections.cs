@@ -46,6 +46,21 @@ namespace EuroTextEditor
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_ApplyFilter_Click(object sender, EventArgs e)
+        {
+            if (ListView_SectionsAndLevels.SelectedItems.Count > 0)
+            {
+                string selectedTextSection = ListView_SectionsAndLevels.SelectedItems[0].Text;
+
+                Frm_MainFrame mainFrame = (Frm_MainFrame)Application.OpenForms[nameof(Frm_MainFrame)];
+                if (mainFrame != null)
+                {
+                    mainFrame.hashCodes.UserControl_HashCodesListView.LoadEuroTextFiles(-1, selectedTextSection);
+                }
+            }
+        }
+
         //-------------------------------------------------------------------------------------------
         //  LISTVIEW
         //-------------------------------------------------------------------------------------------
@@ -107,6 +122,12 @@ namespace EuroTextEditor
                     ListView_SectionsAndLevels.Items.Add(new ListViewItem(new[] { textSectionItem.Key, textSectionItem.Value.ToString() }));
                 }
                 ListView_SectionsAndLevels.EndUpdate();
+
+                //Select first item
+                if (ListView_SectionsAndLevels.Items.Count > 0)
+                {
+                    ListView_SectionsAndLevels.Items[0].Selected = true;
+                }
             }
         }
     }

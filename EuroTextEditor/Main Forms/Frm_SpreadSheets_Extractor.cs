@@ -94,7 +94,7 @@ namespace EuroTextEditor
         //-------------------------------------------------------------------------------------------------------------------------------
         private void Button_GetMessages_Click(object sender, EventArgs e)
         {
-            if (DataGridView_ExcelSheet.Rows.Count > 0)
+            if (DataGridView_ExcelSheet.Rows.Count > 0 && FolderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 Dictionary<string, int> Markers = new Dictionary<string, int>();
                 for (int i = 0; i < DataGridView_ExcelSheet.Columns.Count; i++)
@@ -178,7 +178,7 @@ namespace EuroTextEditor
                         }
 
                         //Calculate file path
-                        string filePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", textObj.HashCode + ".etf");
+                        string filePath = Path.Combine(FolderBrowserDialog.SelectedPath, textObj.HashCode + ".etf");
                         if (!string.IsNullOrEmpty(textObj.HashCode))
                         {
                             ETXML_Writter filesWriter = new ETXML_Writter();

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Media;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -545,9 +546,6 @@ namespace EuroTextEditor.Custom_Controls
             if (currentFlags > 0)
             {
                 LoadEuroTextFiles(currentFlags);
-
-                //End list update and update labels.
-                StatusLabel_TotalItems.Text = ListView_HashCodes.Items.Count + " Items";
             }
         }
 
@@ -555,9 +553,6 @@ namespace EuroTextEditor.Custom_Controls
         private void BtnShowAll_Click(object sender, EventArgs e)
         {
             LoadEuroTextFiles();
-
-            //End list update and update labels.
-            StatusLabel_TotalItems.Text = ListView_HashCodes.Items.Count + " Items";
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -585,7 +580,7 @@ namespace EuroTextEditor.Custom_Controls
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        internal void LoadEuroTextFiles(int flags = -1)
+        internal void LoadEuroTextFiles(int flags = -1, string SectionHashcode = "")
         {
             //Get text files
             string messagesFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages");
@@ -600,6 +595,10 @@ namespace EuroTextEditor.Custom_Controls
                 {
                     //Add item if required
                     EuroText_TextFile objTextData = filesReader.ReadTextFile(filesToAdd[i]);
+                    if (SectionHashcode.Length > 0 && objTextData.OutputSection.ToList().IndexOf(SectionHashcode) == -1)
+                    {
+                        continue;
+                    }
 
                     //Check if we have to add this item
                     bool addItem = true;
@@ -634,6 +633,9 @@ namespace EuroTextEditor.Custom_Controls
                     }
                 }
                 ListView_HashCodes.EndUpdate();
+
+                //End list update and update labels.
+                StatusLabel_TotalItems.Text = ListView_HashCodes.Items.Count + " Items";
             }
         }
 

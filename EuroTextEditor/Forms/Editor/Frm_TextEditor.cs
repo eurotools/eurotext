@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EuroTextEditor.Forms.Editor;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -40,8 +41,24 @@ namespace EuroTextEditor
             objText = filesReader.ReadTextFile(filePath);
             EuroText_TextSections sectionsFileText = filesReader.ReadTextSectionsFile(Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf"));
 
+            //Get all groups
+            string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextGroups.etf");
+            if (File.Exists(textGroupsFilePath))
+            {
+                ETXML_Reader projectFileReader = new ETXML_Reader();
+                EuroText_TextGroups textGroupsData = projectFileReader.ReadTextGroupsFile(textGroupsFilePath);
+                Combobox_Group.BeginUpdate();
+                Combobox_Group.Items.Add("");
+                Combobox_Group.Items.AddRange(textGroupsData.TextGroups.ToArray());
+                Combobox_Group.EndUpdate();
+                if (Combobox_Group.Items.Count > 0)
+                {
+                    Combobox_Group.SelectedIndex = 0;
+                }
+            }
+
             //Group and Output Section
-            UserControl_TextOptions.Combobox_Group.SelectedItem = objText.Group;
+            Combobox_Group.SelectedItem = objText.Group;
             List<string> outputSections = new List<string>();
             for (int i = 0; i < objText.OutputSection.Length; i++)
             {
@@ -50,11 +67,11 @@ namespace EuroTextEditor
                     outputSections.Add(sectionsFileText.TextSections[objText.OutputSection[i]]);
                 }
             }
-            UserControl_TextOptions.Textbox_OutputSections.Text = string.Join(";", outputSections.ToArray());
+            Textbox_OutputSections.Text = string.Join(";", outputSections.ToArray());
 
             //Others
-            UserControl_TextOptions.CheckBox_TextDead.Checked = Convert.ToBoolean(objText.DeadText);
-            UserControl_TextOptions.Numeric_MaxChars.Value = objText.MaxNumOfChars;
+            CheckBox_TextDead.Checked = Convert.ToBoolean(objText.DeadText);
+            Numeric_MaxChars.Value = objText.MaxNumOfChars;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -117,6 +134,16 @@ namespace EuroTextEditor
             else
             {
                 CloseTextEditor();
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void Textbox_OutputSections_Click(object sender, EventArgs e)
+        {
+            Frm_TextOutSection outForm = new Frm_TextOutSection(Textbox_OutputSections.Text.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
+            if (outForm.ShowDialog() == DialogResult.OK)
+            {
+                Textbox_OutputSections.Text = outForm.selectedSections;
             }
         }
 
@@ -215,15 +242,15 @@ namespace EuroTextEditor
             }
 
             //Group and Output Section
-            if (UserControl_TextOptions.Combobox_Group.SelectedItem != null)
+            if (Combobox_Group.SelectedItem != null)
             {
-                objText.Group = UserControl_TextOptions.Combobox_Group.SelectedItem.ToString();
+                objText.Group = Combobox_Group.SelectedItem.ToString();
             }
 
             //Others
-            objText.DeadText = Convert.ToInt32(UserControl_TextOptions.CheckBox_TextDead.Checked);
-            objText.MaxNumOfChars = (int)UserControl_TextOptions.Numeric_MaxChars.Value;
-            string[] outputSections = UserControl_TextOptions.Textbox_OutputSections.Text.Split(';');
+            objText.DeadText = Convert.ToInt32(CheckBox_TextDead.Checked);
+            objText.MaxNumOfChars = (int)Numeric_MaxChars.Value;
+            string[] outputSections = Textbox_OutputSections.Text.Split(';');
             objText.OutputSection = new string[outputSections.Length];
             for (int i = 0; i < outputSections.Length; i++)
             {
@@ -319,5 +346,6 @@ namespace EuroTextEditor
             }
         }
     }
+
     //-------------------------------------------------------------------------------------------------------------------------------
 }
