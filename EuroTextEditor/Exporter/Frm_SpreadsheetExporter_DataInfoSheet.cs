@@ -29,42 +29,11 @@ namespace EuroTextEditor
             //-------------------------------------------------------------------------------------------
             HSSFPalette palette = ((HSSFWorkbook)workbook).GetCustomPalette();
 
-            ICellStyle pinkBackground = workbook.CreateCellStyle();
-            short pinkBackgroundColor = 45;
-            palette.SetColorAtIndex(pinkBackgroundColor, 255, 153, 204);
-            pinkBackground.FillForegroundColor = pinkBackgroundColor;
-            pinkBackground.FillPattern = FillPattern.SolidForeground;
-            pinkBackground.SetFont(font);
-            pinkBackground.BorderLeft = BorderStyle.Thin;
-            pinkBackground.BorderTop = BorderStyle.Thin;
-            pinkBackground.BorderRight = BorderStyle.Thin;
-            pinkBackground.BorderBottom = BorderStyle.Thin;
-
-            ICellStyle blueBackground = workbook.CreateCellStyle();
-            short blueBackgroundColor = 46;
-            palette.SetColorAtIndex(blueBackgroundColor, 204, 255, 255);
-            blueBackground.FillForegroundColor = blueBackgroundColor;
-            blueBackground.FillPattern = FillPattern.SolidForeground;
-            blueBackground.SetFont(font);
-            blueBackground.BorderLeft = BorderStyle.Thin;
-            blueBackground.BorderTop = BorderStyle.Thin;
-            blueBackground.BorderRight = BorderStyle.Thin;
-            blueBackground.BorderBottom = BorderStyle.Thin;
-
-            ICellStyle blueBackgroundAndFore = workbook.CreateCellStyle();
-            blueBackgroundAndFore.FillForegroundColor = blueBackgroundColor;
-            blueBackgroundAndFore.FillPattern = FillPattern.SolidForeground;
-            blueBackgroundAndFore.SetFont(fontColor);
-            blueBackgroundAndFore.BorderLeft = BorderStyle.Thin;
-            blueBackgroundAndFore.BorderTop = BorderStyle.Thin;
-            blueBackgroundAndFore.BorderRight = BorderStyle.Thin;
-            blueBackgroundAndFore.BorderBottom = BorderStyle.Thin;
-
-            ICellStyle borderedCellStyle = workbook.CreateCellStyle();
-            borderedCellStyle.BorderLeft = BorderStyle.Thin;
-            borderedCellStyle.BorderTop = BorderStyle.Thin;
-            borderedCellStyle.BorderRight = BorderStyle.Thin;
-            borderedCellStyle.BorderBottom = BorderStyle.Thin;
+            // Create styles
+            ICellStyle pinkBackground = CreateCellStyle(workbook, font, palette, 45, 255, 153, 204);
+            ICellStyle blueBackground = CreateCellStyle(workbook, font, palette, 46, 204, 255, 255);
+            ICellStyle blueBackgroundAndFore = CreateCellStyle(workbook, fontColor, palette, 46, 204, 255, 255);
+            ICellStyle borderedCellStyle = CreateBorderedStyle(workbook, null);
 
             //-------------------------------------------------------------------------------------------
             //  Writing
@@ -87,7 +56,6 @@ namespace EuroTextEditor
 
             ICell EffectFormatCodesValueCell = currentRow.CreateCell(1);
             EffectFormatCodesValueCell.SetCellValue("These are the format codes that are supported by the help window. Typically these format codes allow you to change the font colour before or during the text, add command buttons EG page down, exit button)");
-
 
             //Start with descriptions of each tag
             rowIndex++;

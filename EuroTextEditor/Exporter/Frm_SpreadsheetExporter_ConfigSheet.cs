@@ -9,139 +9,86 @@ namespace EuroTextEditor
     public partial class Frm_SpreadsheetExporter
     {
         //-------------------------------------------------------------------------------------------------------------------------------
-        internal void CreateConfigSheet(ISheet FormatInfo, IWorkbook workbook)
+        internal void CreateConfigSheet(ISheet formatInfo, IWorkbook workbook)
         {
             //-------------------------------------------------------------------------------------------
             //  Fonts
             //-------------------------------------------------------------------------------------------
-            IFont titleFont = workbook.CreateFont();
-            titleFont.FontName = "Arial";
-            titleFont.FontHeightInPoints = 16;
-
-            IFont font = workbook.CreateFont();
-            font.FontName = "Arial";
-            font.FontHeightInPoints = 12;
+            IFont titleFont = CreateFont(workbook, "Arial", 16);
+            IFont font = CreateFont(workbook, "Arial", 12);
 
             //-------------------------------------------------------------------------------------------
             //  Styles
             //-------------------------------------------------------------------------------------------
             HSSFPalette palette = ((HSSFWorkbook)workbook).GetCustomPalette();
 
-            ICellStyle pinkBackground = workbook.CreateCellStyle();
-            short pinkBackgroundColor = 45;
-            palette.SetColorAtIndex(pinkBackgroundColor, 255, 153, 204);
-            pinkBackground.FillForegroundColor = pinkBackgroundColor;
-            pinkBackground.FillPattern = FillPattern.SolidForeground;
-            pinkBackground.SetFont(titleFont);
-            pinkBackground.BorderLeft = BorderStyle.Thin;
-            pinkBackground.BorderTop = BorderStyle.Thin;
-            pinkBackground.BorderRight = BorderStyle.Thin;
-            pinkBackground.BorderBottom = BorderStyle.Thin;
-
-            ICellStyle blueBackgroundCenter = workbook.CreateCellStyle();
-            short blueBackgroundColor = 46;
-            palette.SetColorAtIndex(blueBackgroundColor, 204, 255, 255);
-            blueBackgroundCenter.FillForegroundColor = blueBackgroundColor;
-            blueBackgroundCenter.FillPattern = FillPattern.SolidForeground;
-            blueBackgroundCenter.SetFont(font);
-            blueBackgroundCenter.BorderLeft = BorderStyle.Thin;
-            blueBackgroundCenter.BorderTop = BorderStyle.Thin;
-            blueBackgroundCenter.BorderRight = BorderStyle.Thin;
-            blueBackgroundCenter.BorderBottom = BorderStyle.Thin;
-            blueBackgroundCenter.Alignment = HorizontalAlignment.Center;
-
-            ICellStyle blueBackground = workbook.CreateCellStyle();
-            palette.SetColorAtIndex(blueBackgroundColor, 204, 255, 255);
-            blueBackground.FillForegroundColor = blueBackgroundColor;
-            blueBackground.FillPattern = FillPattern.SolidForeground;
-            blueBackground.SetFont(font);
-            blueBackground.BorderLeft = BorderStyle.Thin;
-            blueBackground.BorderTop = BorderStyle.Thin;
-            blueBackground.BorderRight = BorderStyle.Thin;
-            blueBackground.BorderBottom = BorderStyle.Thin;
-
-            ICellStyle grayBackground = workbook.CreateCellStyle();
-            short grayBackgroundColor = 47;
-            palette.SetColorAtIndex(grayBackgroundColor, 192, 192, 192);
-            grayBackground.FillForegroundColor = grayBackgroundColor;
-            grayBackground.FillPattern = FillPattern.SolidForeground;
-            grayBackground.SetFont(font);
-            grayBackground.BorderLeft = BorderStyle.Thin;
-            grayBackground.BorderTop = BorderStyle.Thin;
-            grayBackground.BorderRight = BorderStyle.Thin;
-            grayBackground.BorderBottom = BorderStyle.Thin;
+            ICellStyle pinkBackground = CreateCellStyle(workbook, palette, titleFont, 255, 153, 204);
+            ICellStyle blueBackgroundCenter = CreateCellStyle(workbook, palette, font, 204, 255, 255, HorizontalAlignment.Center);
+            ICellStyle blueBackground = CreateCellStyle(workbook, palette, font, 204, 255, 255);
+            ICellStyle grayBackground = CreateCellStyle(workbook, palette, font, 192, 192, 192);
 
             //-------------------------------------------------------------------------------------------
             //  Writing
             //-------------------------------------------------------------------------------------------
-            //Row
             int rowIndex = 0;
-            IRow currentRow = FormatInfo.CreateRow(rowIndex);
 
-            //Configuration Settings - Title only
-            ICell posMarkersCell = currentRow.CreateCell(0);
-            posMarkersCell.CellStyle = pinkBackground;
-            posMarkersCell.SetCellValue("Configuration settings");
+            AddRow(formatInfo, rowIndex++, "Configuration settings", pinkBackground);
+            AddBlankRow(formatInfo, ref rowIndex);
+            AddRow(formatInfo, rowIndex++, "Enable Hashcode exporting", grayBackground, "1", blueBackgroundCenter);
+            AddRow(formatInfo, rowIndex++, "Hashcode admin file path", grayBackground, @"x:\enginex\utils\htadmin.exe", blueBackground);
+            AddRow(formatInfo, rowIndex++, "Message Hashcode section", grayBackground, "HT_Text", blueBackground);
 
-            //Create empty row and add a new one
-            rowIndex++;
-            AddEmptyRow(ref currentRow, rowIndex, FormatInfo, null);
-
-            //Hashcodes Exporting - Key and Value
-            rowIndex++;
-            currentRow = FormatInfo.CreateRow(rowIndex);
-
-            ICell hashcodeExporting = currentRow.CreateCell(0);
-            hashcodeExporting.CellStyle = grayBackground;
-            hashcodeExporting.SetCellValue("Enable Hashcode exporting");
-
-            ICell hashcodeExportingValue = currentRow.CreateCell(1);
-            hashcodeExportingValue.CellStyle = blueBackgroundCenter;
-            hashcodeExportingValue.SetCellValue(1);
-
-            //Admin File Path - Key and Value
-            rowIndex++;
-            currentRow = FormatInfo.CreateRow(rowIndex);
-
-            ICell hashcodeAdminPath = currentRow.CreateCell(0);
-            hashcodeAdminPath.CellStyle = grayBackground;
-            hashcodeAdminPath.SetCellValue("Hashcode admin file path");
-
-            ICell hashcodeAdminPathDesc = currentRow.CreateCell(1);
-            hashcodeAdminPathDesc.CellStyle = blueBackground;
-            hashcodeAdminPathDesc.SetCellValue(@"x:\enginex\utils\htadmin.exe");
-
-            //Hashcode exporting
-            rowIndex++;
-            currentRow = FormatInfo.CreateRow(rowIndex);
-
-            ICell hashcodeSection = currentRow.CreateCell(0);
-            hashcodeSection.CellStyle = grayBackground;
-            hashcodeSection.SetCellValue("Message Hashcode section");
-
-            ICell hashcodeSectionMessage = currentRow.CreateCell(1);
-            hashcodeSectionMessage.CellStyle = blueBackground;
-            hashcodeSectionMessage.SetCellValue("HT_Text");
-
-            //Set size
-            FormatInfo.AutoSizeColumn(0);
-            FormatInfo.AutoSizeColumn(1);
+            // Set column sizes
+            AutoSizeColumns(formatInfo, 2);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private void AddEmptyRow(ref IRow headerRow, int rowIndex, ISheet FormatInfo, ICellStyle borderedCellStyle)
+        private IFont CreateFont(IWorkbook workbook, string fontName, short fontSize)
         {
-            headerRow = FormatInfo.CreateRow(rowIndex);
-            ICell emptyLeft = headerRow.CreateCell(0);
-            if (borderedCellStyle != null)
-            {
-                emptyLeft.CellStyle = borderedCellStyle;
-            }
+            IFont font = workbook.CreateFont();
+            font.FontName = fontName;
+            font.FontHeightInPoints = fontSize;
+            return font;
+        }
 
-            ICell emptyRight = headerRow.CreateCell(1);
-            if (borderedCellStyle != null)
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private ICellStyle CreateCellStyle(IWorkbook workbook, HSSFPalette palette, IFont font, int r, int g, int b, HorizontalAlignment alignment = HorizontalAlignment.General)
+        {
+            short colorIndex = palette.FindSimilarColor((byte)r, (byte)g, (byte)b).Indexed;
+            ICellStyle style = workbook.CreateCellStyle();
+            style.FillForegroundColor = colorIndex;
+            style.FillPattern = FillPattern.SolidForeground;
+            style.SetFont(font);
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderTop = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Thin;
+            style.Alignment = alignment;
+            return style;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void AddRow(ISheet sheet, int rowIndex, string key, ICellStyle keyStyle, string value = null, ICellStyle valueStyle = null)
+        {
+            IRow row = sheet.CreateRow(rowIndex);
+            ICell keyCell = row.CreateCell(0);
+            keyCell.CellStyle = keyStyle;
+            keyCell.SetCellValue(key);
+
+            if (value != null && valueStyle != null)
             {
-                emptyRight.CellStyle = borderedCellStyle;
+                ICell valueCell = row.CreateCell(1);
+                valueCell.CellStyle = valueStyle;
+                valueCell.SetCellValue(value);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void AutoSizeColumns(ISheet sheet, int columnCount)
+        {
+            for (int i = 0; i < columnCount; i++)
+            {
+                sheet.AutoSizeColumn(i);
             }
         }
     }
