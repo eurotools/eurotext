@@ -27,3 +27,10 @@ C:\Users\Jordi Martinez\source\repos\EuroText2\ConsoleControl\obj\Release\Consol
 C:\Users\Jordi Martinez\source\repos\EuroText2\ConsoleControl\obj\Release\ConsoleControl.csproj.CoreCompileInputs.cache
 C:\Users\Jordi Martinez\source\repos\EuroText2\ConsoleControl\obj\Release\ConsoleControl.dll
 C:\Users\Jordi Martinez\source\repos\EuroText2\ConsoleControl\obj\Release\ConsoleControl.pdb
+J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\ConsoleControl\bin\Release\ConsoleControl.dll
+J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\ConsoleControl\bin\Release\ConsoleControl.pdb
+J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\ConsoleControl\obj\Release\ConsoleControl.Properties.Resources.resources
+J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\ConsoleControl\obj\Release\ConsoleControl.csproj.GenerateResource.cache
+J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\ConsoleControl\obj\Release\ConsoleControl.csproj.CoreCompileInputs.cache
+J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\ConsoleControl\obj\Release\ConsoleControl.dll
+J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\ConsoleControl\obj\Release\ConsoleControl.pdb
