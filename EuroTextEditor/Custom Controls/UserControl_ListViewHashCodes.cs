@@ -143,12 +143,15 @@ namespace EuroTextEditor.Custom_Controls
 
                     //Add item to the listbox
                     ListView_HashCodes.BeginUpdate();
-                    ListView_HashCodes.Items.Add(new ListViewItem(new[] { frmTextFileName.ReturnValue, newTextFile.FirstCreated, newTextFile.CreatedBy, newTextFile.LastModified, newTextFile.LastModifiedBy, CommonFunctions.GetFlagsLabels(newTextFile.textFlags), newTextFile.Notes }));
+                    ListViewItem txtFileToModify = ListView_HashCodes.Items.Add(new ListViewItem(new[] { frmTextFileName.ReturnValue, newTextFile.FirstCreated, newTextFile.CreatedBy, newTextFile.LastModified, newTextFile.LastModifiedBy, CommonFunctions.GetFlagsLabels(newTextFile.textFlags), newTextFile.Notes }));
                     ListView_HashCodes.EndUpdate();
 
                     //Write file
                     ETXML_Writter filesWriter = new ETXML_Writter();
                     filesWriter.WriteTextFile(projectFilePath, newTextFile);
+
+                    //Open file
+                    CommonFunctions.EditHashCode(txtFileToModify, parentFormToSync);
                 }
                 else
                 {
@@ -655,6 +658,21 @@ namespace EuroTextEditor.Custom_Controls
             IniFile applicationIni = new IniFile(GlobalVariables.EuroTextIni);
             applicationIni.Write("ContainsFilters", radioBtnContains.Checked.ToString(), "HashCodes");
             applicationIni.Write("OnlySpecified", radOnlySpecified.Checked.ToString(), "HashCodes");
+        }
+
+        private void menuItem2_Click(object sender, EventArgs e)
+        {
+            if(saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                using (StreamWriter outputFile = new StreamWriter(saveFileDialog1.FileName))
+                {
+                    foreach (ListViewItem itemToWrite in ListView_HashCodes.Items)
+                    {
+                        string textFilePath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages", itemToWrite.Text + ".etf");
+                        outputFile.WriteLine(textFilePath);
+                    }
+                }
+            }
         }
     }
 

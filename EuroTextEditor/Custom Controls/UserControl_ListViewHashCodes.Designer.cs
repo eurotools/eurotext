@@ -60,6 +60,8 @@ namespace EuroTextEditor.Custom_Controls
             this.btnShowAll = new System.Windows.Forms.Button();
             this.btn_ApplyFilters = new System.Windows.Forms.Button();
             this.txtFilters = new System.Windows.Forms.TextBox();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.ListView_HashCodes = new EuroTextEditor.Custom_Controls.ListView_ColumnSortingClick();
             this.Col_HashCodes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_FirstCreated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -88,7 +90,8 @@ namespace EuroTextEditor.Custom_Controls
             this.MenuItem_Separator2,
             this.MenuItem_Refresh,
             this.menuItem1,
-            this.MenuItem_CopyHashCode});
+            this.MenuItem_CopyHashCode,
+            this.menuItem2});
             // 
             // MenuItem_Edit
             // 
@@ -195,7 +198,7 @@ namespace EuroTextEditor.Custom_Controls
             this.ToolButton_SelectNone,
             this.ToolButton_InvertSelection});
             this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 500);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 479);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(600, 22);
             this.statusStrip1.SizingGrip = false;
@@ -256,7 +259,7 @@ namespace EuroTextEditor.Custom_Controls
             this.groupBox_Filters.Controls.Add(this.btnShowAll);
             this.groupBox_Filters.Controls.Add(this.btn_ApplyFilters);
             this.groupBox_Filters.Controls.Add(this.txtFilters);
-            this.groupBox_Filters.Location = new System.Drawing.Point(3, 427);
+            this.groupBox_Filters.Location = new System.Drawing.Point(3, 406);
             this.groupBox_Filters.Name = "groupBox_Filters";
             this.groupBox_Filters.Size = new System.Drawing.Size(594, 70);
             this.groupBox_Filters.TabIndex = 11;
@@ -321,6 +324,16 @@ namespace EuroTextEditor.Custom_Controls
             this.txtFilters.TabIndex = 0;
             this.txtFilters.Click += new System.EventHandler(this.TxtFilters_Click);
             // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 14;
+            this.menuItem2.Text = "Export to file";
+            this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.Filter = "Text File|*.txt";
+            // 
             // ListView_HashCodes
             // 
             this.ListView_HashCodes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -340,7 +353,7 @@ namespace EuroTextEditor.Custom_Controls
             this.ListView_HashCodes.HideSelection = false;
             this.ListView_HashCodes.Location = new System.Drawing.Point(0, 0);
             this.ListView_HashCodes.Name = "ListView_HashCodes";
-            this.ListView_HashCodes.Size = new System.Drawing.Size(600, 421);
+            this.ListView_HashCodes.Size = new System.Drawing.Size(600, 400);
             this.ListView_HashCodes.TabIndex = 8;
             this.ListView_HashCodes.UseCompatibleStateImageBehavior = false;
             this.ListView_HashCodes.View = System.Windows.Forms.View.Details;
@@ -390,7 +403,7 @@ namespace EuroTextEditor.Custom_Controls
             this.Controls.Add(this.ListView_HashCodes);
             this.Controls.Add(this.statusStrip1);
             this.Name = "UserControl_ListViewHashCodes";
-            this.Size = new System.Drawing.Size(600, 522);
+            this.Size = new System.Drawing.Size(600, 501);
             this.Load += new System.EventHandler(this.UserControl_ListViewHashCodes_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -441,5 +454,7 @@ namespace EuroTextEditor.Custom_Controls
         protected internal System.Windows.Forms.TextBox txtFilters;
         private System.Windows.Forms.RadioButton radioBtnContains;
         private System.Windows.Forms.RadioButton radOnlySpecified;
+        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }

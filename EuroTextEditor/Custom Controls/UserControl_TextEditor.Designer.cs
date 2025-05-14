@@ -114,7 +114,7 @@ namespace EuroTextEditor
             this.ToolButton_Preview});
             this.Toolbar1.Location = new System.Drawing.Point(0, 0);
             this.Toolbar1.Name = "Toolbar1";
-            this.Toolbar1.Size = new System.Drawing.Size(547, 25);
+            this.Toolbar1.Size = new System.Drawing.Size(649, 25);
             this.Toolbar1.TabIndex = 0;
             this.Toolbar1.Text = "MainMenu";
             // 
@@ -421,7 +421,7 @@ namespace EuroTextEditor
             this.toolStripSeparator5});
             this.Toolbar2.Location = new System.Drawing.Point(0, 25);
             this.Toolbar2.Name = "Toolbar2";
-            this.Toolbar2.Size = new System.Drawing.Size(547, 25);
+            this.Toolbar2.Size = new System.Drawing.Size(649, 25);
             this.Toolbar2.TabIndex = 1;
             this.Toolbar2.Text = "toolStrip2";
             // 
@@ -569,7 +569,7 @@ namespace EuroTextEditor
             this.Textbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Textbox.Location = new System.Drawing.Point(0, 50);
             this.Textbox.Name = "Textbox";
-            this.Textbox.Size = new System.Drawing.Size(547, 301);
+            this.Textbox.Size = new System.Drawing.Size(649, 381);
             this.Textbox.TabIndex = 2;
             this.Textbox.Text = "";
             // 
@@ -655,7 +655,7 @@ namespace EuroTextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(547, 350);
+            this.ClientSize = new System.Drawing.Size(649, 430);
             this.Controls.Add(this.Toolbar2);
             this.Controls.Add(this.Toolbar1);
             this.Controls.Add(this.Textbox);

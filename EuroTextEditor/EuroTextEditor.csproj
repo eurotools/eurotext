@@ -170,6 +170,12 @@
     <Compile Include="Exporter\Frm_SpreadsheetExporter_InfoSheet.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\Frm_TextProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Frm_TextProperties.Designer.cs">
+      <DependentUpon>Frm_TextProperties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Frm_Preview.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -401,6 +407,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editor\SubForms\Frm_FadeIn.resx">
       <DependentUpon>Frm_FadeIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Frm_TextProperties.resx">
+      <DependentUpon>Frm_TextProperties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Frm_InputBox.resx">
       <DependentUpon>Frm_InputBox.cs</DependentUpon>
