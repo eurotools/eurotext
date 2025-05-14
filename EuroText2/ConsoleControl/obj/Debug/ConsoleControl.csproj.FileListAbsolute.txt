@@ -1,0 +1,31 @@
+F:\Repositories\eurotext-editor\ConsoleControl\bin\Debug\ConsoleControl.dll
+F:\Repositories\eurotext-editor\ConsoleControl\bin\Debug\ConsoleControl.pdb
+F:\Repositories\eurotext-editor\ConsoleControl\obj\Debug\ConsoleControl.Properties.Resources.resources
+F:\Repositories\eurotext-editor\ConsoleControl\obj\Debug\ConsoleControl.csproj.GenerateResource.cache
+F:\Repositories\eurotext-editor\ConsoleControl\obj\Debug\ConsoleControl.csproj.CoreCompileInputs.cache
+F:\Repositories\eurotext-editor\ConsoleControl\obj\Debug\ConsoleControl.dll
+F:\Repositories\eurotext-editor\ConsoleControl\obj\Debug\ConsoleControl.pdb
+F:\Repositories\eurotext-editor\ConsoleControl\obj\Debug\ConsoleControl.csproj.AssemblyReference.cache
+F:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\bin\Debug\ConsoleControl.dll
+F:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\bin\Debug\ConsoleControl.pdb
+F:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\obj\Debug\ConsoleControl.Properties.Resources.resources
+F:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\obj\Debug\ConsoleControl.csproj.GenerateResource.cache
+F:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\obj\Debug\ConsoleControl.csproj.CoreCompileInputs.cache
+F:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\obj\Debug\ConsoleControl.dll
+F:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\obj\Debug\ConsoleControl.pdb
+F:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\obj\Debug\ConsoleControl.csproj.AssemblyReference.cache
+J:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\bin\Debug\ConsoleControl.dll
+J:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\bin\Debug\ConsoleControl.pdb
+J:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\obj\Debug\ConsoleControl.csproj.AssemblyReference.cache
+J:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\obj\Debug\ConsoleControl.Properties.Resources.resources
+J:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\obj\Debug\ConsoleControl.csproj.GenerateResource.cache
+J:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\obj\Debug\ConsoleControl.csproj.CoreCompileInputs.cache
+J:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\obj\Debug\ConsoleControl.dll
+J:\Repositories\EuroTools\Development\Tools\eurotext\ConsoleControl\obj\Debug\ConsoleControl.pdb
+C:\Users\Jordi Martinez\source\repos\EuroText2\ConsoleControl\bin\Debug\ConsoleControl.dll
+C:\Users\Jordi Martinez\source\repos\EuroText2\ConsoleControl\bin\Debug\ConsoleControl.pdb
+C:\Users\Jordi Martinez\source\repos\EuroText2\ConsoleControl\obj\Debug\ConsoleControl.Properties.Resources.resources
+C:\Users\Jordi Martinez\source\repos\EuroText2\ConsoleControl\obj\Debug\ConsoleControl.csproj.GenerateResource.cache
+C:\Users\Jordi Martinez\source\repos\EuroText2\ConsoleControl\obj\Debug\ConsoleControl.csproj.CoreCompileInputs.cache
+C:\Users\Jordi Martinez\source\repos\EuroText2\ConsoleControl\obj\Debug\ConsoleControl.dll
+C:\Users\Jordi Martinez\source\repos\EuroText2\ConsoleControl\obj\Debug\ConsoleControl.pdb

@@ -1,0 +1,454 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DF05E0CE-1B9F-4272-95CB-2732F83BA77C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>EuroText2</RootNamespace>
+    <AssemblyName>EuroText2</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>note16.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.9\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.6.0\lib\net45\ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.DataSet.3.6.0\lib\net35\ExcelDataReader.DataSet.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.3.11, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.3.3\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=2.5.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.6\lib\net45\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.5.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.6\lib\net45\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.5.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.6\lib\net45\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.5.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.6\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.1.6643.41644, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WeifenLuo.WinFormsUI.Docking.2.1.0\lib\net20\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\TaskbarProgress.cs" />
+    <Compile Include="Controls\CheckboxTriple.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Classes\CommonFunctions.cs" />
+    <Compile Include="Classes\ETXML\ETXML_Reader.cs" />
+    <Compile Include="Classes\ETXML\ETXML_Writter.cs" />
+    <Compile Include="Classes\ETXML\Objects\EuroText_ProjectFile.cs" />
+    <Compile Include="Classes\ETXML\Objects\EuroText_TextFile.cs" />
+    <Compile Include="Classes\ETXML\Objects\EuroText_TextGroups.cs" />
+    <Compile Include="Classes\ETXML\Objects\EuroText_TextSections.cs" />
+    <Compile Include="Forms\Misc\FrmImportFiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmImportFiles.Designer.cs">
+      <DependentUpon>FrmImportFiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmInputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmInputBox.Designer.cs">
+      <DependentUpon>FrmInputBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Multiple\FrmMultSetGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Multiple\FrmMultSetGroup.Designer.cs">
+      <DependentUpon>FrmMultSetGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmAbout.Designer.cs">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmFontBuilder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmFontBuilder.Designer.cs">
+      <DependentUpon>FrmFontBuilder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMain.Designer.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmHashTableSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmHashTableSelector.Designer.cs">
+      <DependentUpon>FrmHashTableSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmSearcher.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmSearcher.Designer.cs">
+      <DependentUpon>FrmSearcher.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmToolRemoveMultiWhitespaces.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmToolRemoveMultiWhitespaces.Designer.cs">
+      <DependentUpon>FrmToolRemoveMultiWhitespaces.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmToolsWordReplace.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmToolsWordReplace.Designer.cs">
+      <DependentUpon>FrmToolsWordReplace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmToolTrim.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmToolTrim.Designer.cs">
+      <DependentUpon>FrmToolTrim.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Frm_Preview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Frm_Preview.Designer.cs">
+      <DependentUpon>Frm_Preview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmSetCategories.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmSetCategories.Designer.cs">
+      <DependentUpon>FrmSetCategories.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\UserControl_TextEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\UserControl_TextEditor.Designer.cs">
+      <DependentUpon>UserControl_TextEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_Fountain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_Fountain.Designer.cs">
+      <DependentUpon>Frm_Fountain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_ShakeyText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_ShakeyText.Designer.cs">
+      <DependentUpon>Frm_ShakeyText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_SineWave.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_SineWave.Designer.cs">
+      <DependentUpon>Frm_SineWave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_TextCarrot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_TextCarrot.Designer.cs">
+      <DependentUpon>Frm_TextCarrot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmProjectProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmProjectProperties.Designer.cs">
+      <DependentUpon>FrmProjectProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmSectionsInspector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmSectionsInspector.Designer.cs">
+      <DependentUpon>FrmSectionsInspector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\FrmMainTextEditor_Multi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\FrmMainTextEditor_Multi.Designer.cs">
+      <DependentUpon>FrmMainTextEditor_Multi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmProjectsCompare.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmProjectsCompare.Designer.cs">
+      <DependentUpon>FrmProjectsCompare.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSplash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSplash.Designer.cs">
+      <DependentUpon>FrmSplash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmSpreadsheetsExtractor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmSpreadsheetsExtractor.Designer.cs">
+      <DependentUpon>FrmSpreadsheetsExtractor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmTextSections.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Misc\FrmTextSections.Designer.cs">
+      <DependentUpon>FrmTextSections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\GlobalVariables.cs" />
+    <Compile Include="Classes\IniFile.cs" />
+    <Compile Include="Controls\ListViewExtended.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Classes\MostRecentFilesMenu.cs" />
+    <Compile Include="Forms\TextEditor\FrmTextOutSection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\FrmTextOutSection.Designer.cs">
+      <DependentUpon>FrmTextOutSection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmTranslations.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmTranslations.Designer.cs">
+      <DependentUpon>FrmTranslations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Forms\TextEditor\FrmMainTextEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\FrmMainTextEditor.Designer.cs">
+      <DependentUpon>FrmMainTextEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserControl_HashCodesSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserControl_HashCodesSelector.Designer.cs">
+      <DependentUpon>UserControl_HashCodesSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TextSpreadSheetExporter\FrmMainExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TextSpreadSheetExporter\FrmMainExport_ConfigSheet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TextSpreadSheetExporter\FrmMainExport_DataInfoSheet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TextSpreadSheetExporter\FrmMainExport_InfoSheet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TextSpreadSheetExporter\FrmMainExport_Messages.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TimerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TimerForm.Designer.cs">
+      <DependentUpon>TimerForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\Misc\FrmImportFiles.resx">
+      <DependentUpon>FrmImportFiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmInputBox.resx">
+      <DependentUpon>FrmInputBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Multiple\FrmMultSetGroup.resx">
+      <DependentUpon>FrmMultSetGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TextEditor\FrmTextOutSection.resx">
+      <DependentUpon>FrmTextOutSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TextEditor\SubForms\Frm_Fountain.resx">
+      <DependentUpon>Frm_Fountain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TextEditor\SubForms\Frm_WaitTime.resx">
+      <DependentUpon>Frm_WaitTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmAbout.resx">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmFontBuilder.resx">
+      <DependentUpon>FrmFontBuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMain.resx">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Misc\FrmHashTableSelector.resx">
+      <DependentUpon>FrmHashTableSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Misc\FrmSearcher.resx">
+      <DependentUpon>FrmSearcher.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmToolRemoveMultiWhitespaces.resx">
+      <DependentUpon>FrmToolRemoveMultiWhitespaces.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmToolsWordReplace.resx">
+      <DependentUpon>FrmToolsWordReplace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmToolTrim.resx">
+      <DependentUpon>FrmToolTrim.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Frm_Preview.resx">
+      <DependentUpon>Frm_Preview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmSetCategories.resx">
+      <DependentUpon>FrmSetCategories.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TextEditor\UserControl_TextEditor.resx">
+      <DependentUpon>UserControl_TextEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_HashCodesSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_HashCodesSelector.Designer.cs">
+      <DependentUpon>Frm_HashCodesSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_InsertIcon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_InsertIcon.Designer.cs">
+      <DependentUpon>Frm_InsertIcon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_TextEditor_Buttons.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_TextEditor_Buttons.Designer.cs">
+      <DependentUpon>Frm_TextEditor_Buttons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_WaitTime.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_WaitTime.Designer.cs">
+      <DependentUpon>Frm_WaitTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_FadeIn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_FadeIn.Designer.cs">
+      <DependentUpon>Frm_FadeIn.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\Misc\FrmProjectProperties.resx">
+      <DependentUpon>FrmProjectProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Misc\FrmSectionsInspector.resx">
+      <DependentUpon>FrmSectionsInspector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TextEditor\FrmMainTextEditor_Multi.resx">
+      <DependentUpon>FrmMainTextEditor_Multi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmProjectsCompare.resx">
+      <DependentUpon>FrmProjectsCompare.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSplash.resx">
+      <DependentUpon>FrmSplash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Misc\FrmSpreadsheetsExtractor.resx">
+      <DependentUpon>FrmSpreadsheetsExtractor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Misc\FrmTextSections.resx">
+      <DependentUpon>FrmTextSections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmTranslations.resx">
+      <DependentUpon>FrmTranslations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Forms\TextEditor\FrmMainTextEditor.resx">
+      <DependentUpon>FrmMainTextEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TimerForm.resx">
+      <DependentUpon>TimerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleControl\ConsoleControl.csproj">
+      <Project>{8779b550-5f60-4a3e-af7e-f0b3d96fa582}</Project>
+      <Name>ConsoleControl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="clip06.ico" />
+    <Content Include="foldrs02.ico" />
+    <Content Include="note16.ico" />
+    <None Include="Resources\magnifying_glass_4-1.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.6.9.2\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.9.2\build\Fody.targets'))" />
+  </Target>
+  <Import Project="..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets')" />
+  <Import Project="..\packages\Fody.6.9.2\build\Fody.targets" Condition="Exists('..\packages\Fody.6.9.2\build\Fody.targets')" />
+</Project>
