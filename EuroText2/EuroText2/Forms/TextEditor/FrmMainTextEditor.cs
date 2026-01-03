@@ -37,6 +37,9 @@ namespace EuroText2
 
             //Get all groups
             CommonFunctions.GroupsToCombobox(Combobox_Group);
+            CommonFunctions.AddArrayToCombobox(cbxTextContext, GlobalVariables.CurrentProject.Contexts.ToArray());
+            CommonFunctions.AddArrayToCombobox(cbxGender, GlobalVariables.CurrentProject.Genders.ToArray());
+            CommonFunctions.AddArrayToCombobox(cbxTone, GlobalVariables.CurrentProject.Tones.ToArray());
 
             //Group and Output Section
             Combobox_Group.SelectedItem = objText.Group;
@@ -58,11 +61,6 @@ namespace EuroText2
             //Others
             CheckBox_TextDead.Checked = Convert.ToBoolean(objText.DeadText);
             Numeric_MaxChars.Value = objText.MaxNumOfChars;
-
-            //Info
-            CommonFunctions.AddArrayToCombobox(cbxTextContext, GlobalVariables.CurrentProject.Contexts.ToArray());
-            CommonFunctions.AddArrayToCombobox(cbxGender, GlobalVariables.CurrentProject.Genders.ToArray());
-            CommonFunctions.AddArrayToCombobox(cbxTone, GlobalVariables.CurrentProject.Tones.ToArray());
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
