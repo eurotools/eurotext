@@ -27,9 +27,9 @@ namespace EuroText2
             this.Button_PreviousPage = new System.Windows.Forms.Button();
             this.Button_Restart = new System.Windows.Forms.Button();
             this.Button_PlayPause = new System.Windows.Forms.Button();
-            this.PreviewCanvas = new EuroText2.EngineXPreviewControl();
             this.Timer_Animation = new System.Windows.Forms.Timer(this.components);
             this.FontDialog_Preview = new System.Windows.Forms.FontDialog();
+            this.PreviewCanvas = new EuroText2.EngineXPreviewControl();
             this.Panel_Toolbar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_TeletypeSpeed)).BeginInit();
             this.SuspendLayout();
@@ -50,22 +50,22 @@ namespace EuroText2
             this.Panel_Toolbar.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Toolbar.Location = new System.Drawing.Point(0, 0);
             this.Panel_Toolbar.Name = "Panel_Toolbar";
-            this.Panel_Toolbar.Size = new System.Drawing.Size(784, 40);
+            this.Panel_Toolbar.Size = new System.Drawing.Size(880, 40);
             this.Panel_Toolbar.TabIndex = 0;
             // 
             // Label_Font
             // 
             this.Label_Font.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_Font.Location = new System.Drawing.Point(643, 13);
+            this.Label_Font.Location = new System.Drawing.Point(739, 13);
             this.Label_Font.Name = "Label_Font";
             this.Label_Font.Size = new System.Drawing.Size(129, 17);
             this.Label_Font.TabIndex = 9;
-            this.Label_Font.Text = "Verdana, 12 pt, Bold";
+            this.Label_Font.Text = "Verdana, 16 pt, Regular";
             // 
             // Button_Font
             // 
             this.Button_Font.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Font.Location = new System.Drawing.Point(562, 8);
+            this.Button_Font.Location = new System.Drawing.Point(658, 8);
             this.Button_Font.Name = "Button_Font";
             this.Button_Font.Size = new System.Drawing.Size(75, 23);
             this.Button_Font.TabIndex = 8;
@@ -77,31 +77,43 @@ namespace EuroText2
             // 
             this.Label_SpeedSuffix.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_SpeedSuffix.AutoSize = true;
-            this.Label_SpeedSuffix.Location = new System.Drawing.Point(519, 13);
+            this.Label_SpeedSuffix.Location = new System.Drawing.Point(615, 13);
             this.Label_SpeedSuffix.Name = "Label_SpeedSuffix";
-            this.Label_SpeedSuffix.Size = new System.Drawing.Size(37, 13);
+            this.Label_SpeedSuffix.Size = new System.Drawing.Size(38, 13);
             this.Label_SpeedSuffix.TabIndex = 7;
             this.Label_SpeedSuffix.Text = "char/s";
             // 
             // Numeric_TeletypeSpeed
             // 
             this.Numeric_TeletypeSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Numeric_TeletypeSpeed.Location = new System.Drawing.Point(462, 10);
-            this.Numeric_TeletypeSpeed.Maximum = new decimal(new int[] { 120, 0, 0, 0 });
-            this.Numeric_TeletypeSpeed.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.Numeric_TeletypeSpeed.Location = new System.Drawing.Point(558, 10);
+            this.Numeric_TeletypeSpeed.Maximum = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.Numeric_TeletypeSpeed.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.Numeric_TeletypeSpeed.Name = "Numeric_TeletypeSpeed";
             this.Numeric_TeletypeSpeed.Size = new System.Drawing.Size(51, 20);
             this.Numeric_TeletypeSpeed.TabIndex = 6;
-            this.Numeric_TeletypeSpeed.Value = new decimal(new int[] { 30, 0, 0, 0 });
+            this.Numeric_TeletypeSpeed.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
             this.Numeric_TeletypeSpeed.ValueChanged += new System.EventHandler(this.Numeric_TeletypeSpeed_ValueChanged);
             // 
             // Label_Speed
             // 
             this.Label_Speed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_Speed.AutoSize = true;
-            this.Label_Speed.Location = new System.Drawing.Point(372, 13);
+            this.Label_Speed.Location = new System.Drawing.Point(468, 13);
             this.Label_Speed.Name = "Label_Speed";
-            this.Label_Speed.Size = new System.Drawing.Size(84, 13);
+            this.Label_Speed.Size = new System.Drawing.Size(83, 13);
             this.Label_Speed.TabIndex = 5;
             this.Label_Speed.Text = "Teletype speed:";
             // 
@@ -110,7 +122,7 @@ namespace EuroText2
             this.Label_Page.AutoSize = true;
             this.Label_Page.Location = new System.Drawing.Point(298, 13);
             this.Label_Page.Name = "Label_Page";
-            this.Label_Page.Size = new System.Drawing.Size(49, 13);
+            this.Label_Page.Size = new System.Drawing.Size(52, 13);
             this.Label_Page.TabIndex = 4;
             this.Label_Page.Text = "Page 1/1";
             // 
@@ -154,6 +166,17 @@ namespace EuroText2
             this.Button_PlayPause.UseVisualStyleBackColor = true;
             this.Button_PlayPause.Click += new System.EventHandler(this.Button_PlayPause_Click);
             // 
+            // Timer_Animation
+            // 
+            this.Timer_Animation.Interval = 16;
+            this.Timer_Animation.Tick += new System.EventHandler(this.Timer_Animation_Tick);
+            // 
+            // FontDialog_Preview
+            // 
+            this.FontDialog_Preview.Font = new System.Drawing.Font("Verdana", 16F);
+            this.FontDialog_Preview.FontMustExist = true;
+            this.FontDialog_Preview.ShowEffects = false;
+            // 
             // PreviewCanvas
             // 
             this.PreviewCanvas.BackColor = System.Drawing.Color.Black;
@@ -162,27 +185,16 @@ namespace EuroText2
             this.PreviewCanvas.ForeColor = System.Drawing.Color.White;
             this.PreviewCanvas.Location = new System.Drawing.Point(0, 40);
             this.PreviewCanvas.Name = "PreviewCanvas";
-            this.PreviewCanvas.PreviewFont = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold);
-            this.PreviewCanvas.Size = new System.Drawing.Size(784, 421);
+            this.PreviewCanvas.PreviewFont = new System.Drawing.Font("Verdana", 14.25F);
+            this.PreviewCanvas.Size = new System.Drawing.Size(880, 581);
             this.PreviewCanvas.TabIndex = 1;
             this.PreviewCanvas.Click += new System.EventHandler(this.PreviewCanvas_Click);
-            // 
-            // Timer_Animation
-            // 
-            this.Timer_Animation.Interval = 16;
-            this.Timer_Animation.Tick += new System.EventHandler(this.Timer_Animation_Tick);
-            // 
-            // FontDialog_Preview
-            // 
-            this.FontDialog_Preview.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold);
-            this.FontDialog_Preview.FontMustExist = true;
-            this.FontDialog_Preview.ShowEffects = false;
             // 
             // Frm_Preview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 461);
+            this.ClientSize = new System.Drawing.Size(880, 621);
             this.Controls.Add(this.PreviewCanvas);
             this.Controls.Add(this.Panel_Toolbar);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -199,6 +211,7 @@ namespace EuroText2
             this.Panel_Toolbar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_TeletypeSpeed)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion

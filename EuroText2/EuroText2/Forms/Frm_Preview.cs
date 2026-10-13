@@ -28,7 +28,7 @@ namespace EuroText2
             previewLanguage = language ?? string.Empty;
             textToPreview = ExpandEffectStrings(textToShow ?? string.Empty);
             InitializeComponent();
-            FontDialog_Preview.Font = new Font("Verdana", 12.0f, FontStyle.Bold, GraphicsUnit.Point);
+            FontDialog_Preview.Font = new Font("Verdana", 14.0f, FontStyle.Regular, GraphicsUnit.Point);
             PreviewCanvas.PreviewFont = FontDialog_Preview.Font;
             PreviewCanvas.CharactersPerSecond = Convert.ToInt32(Numeric_TeletypeSpeed.Value);
             PreviewCanvas.SetText(textToPreview);

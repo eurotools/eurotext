@@ -113,7 +113,7 @@ namespace EuroText2
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
             BackColor = Color.Black;
             ForeColor = Color.White;
-            previewFont = new Font("Verdana", 12.0f, FontStyle.Bold, GraphicsUnit.Point);
+            previewFont = new Font("Verdana", 14.0f, FontStyle.Regular, GraphicsUnit.Point);
             TabStop = true;
         }
 
@@ -628,12 +628,13 @@ namespace EuroText2
             if (pages.Count == 0) return;
 
             const float padding = 18.0f;
-            // EngineX reserves roughly fifteen percent of the help window on
-            // either side. Besides matching its placement, this reproduces
-            // the number of characters that fit before an automatic wrap.
-            float horizontalPadding = Math.Max(padding, ClientSize.Width * 0.15f);
-            float availableWidth = Math.Max(20.0f,
-                ClientSize.Width - horizontalPadding * 2.0f);
+            // EngineX lays text out in a centred 4:3 safe area even when the
+            // rendered window is widescreen. Keep the ordinary inset inside
+            // that logical area so wrapping follows the original game.
+            float safeWidth = Math.Min(ClientSize.Width, ClientSize.Height * 4.0f / 3.0f);
+            float safeLeft = (ClientSize.Width - safeWidth) * 0.5f;
+            float horizontalPadding = safeLeft + padding;
+            float availableWidth = Math.Max(20.0f, safeWidth - padding * 2.0f);
             float lineHeight = previewFont.GetHeight(graphics) + 5.0f;
             PreviewPage page = pages[pageIndex];
             List<PreviewLine> lines = new List<PreviewLine>();
@@ -924,7 +925,7 @@ namespace EuroText2
                     double trajectoryProgress = progress;
                     float sourceX = ClientSize.Width * 0.5f;
                     float sourceY = layoutTextCenterY > 0.0f
-                        ? layoutTextCenterY
+                        ? layoutTextCenterY - previewFont.GetHeight()
                         : ClientSize.Height * 0.5f;
 
                     float durationFactor = Math.Max(0.0f, Math.Min(1.0f,
