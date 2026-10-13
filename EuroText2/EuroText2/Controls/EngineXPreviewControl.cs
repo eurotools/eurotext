@@ -69,6 +69,7 @@ namespace EuroText2
             public float ForcedXPercent = -1.0f;
             public PointF Position;
             public SizeF Size;
+            public float AlphaCycleOriginX;
         }
 
         private sealed class ColourState
@@ -613,6 +614,25 @@ namespace EuroText2
                 }
             }
 
+            // AC is a horizontal travelling band. Keep the phase tied to the
+            // laid-out X coordinate rather than the character number, so
+            // proportional fonts do not turn it into a letter-by-letter
+            // blink. Each AC tag owns a list instance shared by its glyphs.
+            Dictionary<List<int>, float> alphaCycleOrigins = new Dictionary<List<int>, float>();
+            for (int i = 0; i < page.Glyphs.Count; i++)
+            {
+                PreviewGlyph glyph = page.Glyphs[i];
+                List<int> cycle = glyph.State.CycleAlphas;
+                if (glyph.NewLine || cycle == null || cycle.Count < 2) continue;
+                float origin;
+                if (!alphaCycleOrigins.TryGetValue(cycle, out origin))
+                {
+                    origin = glyph.Position.X;
+                    alphaCycleOrigins.Add(cycle, origin);
+                }
+                glyph.AlphaCycleOriginX = origin;
+            }
+
             // EngineX normally presents dialogue and help text along the
             // bottom of the viewport. Move the complete laid-out block as a
             // unit so explicit new lines, wrapping and horizontal alignment
@@ -693,12 +713,29 @@ namespace EuroText2
             int alpha = baseAlpha;
             if (state.CycleAlphas != null && state.CycleAlphas.Count >= 2)
             {
-                int segmentDuration = Math.Max(1, state.AlphaCycleSpeed) * 1000 / 30;
-                double progress = (animationTime % (segmentDuration * state.CycleAlphas.Count)) / (double)segmentDuration;
+                // Speed is the duration of the complete list in EngineX's
+                // 30 Hz ticks. The phase follows horizontal distance and is
+                // normalized by the selected font size, so resizing the text
+                // changes its pixel width without changing the apparent band.
+                int cycleDuration = Math.Max(1, state.AlphaCycleSpeed) * 1000 / 30;
+                double normalizedDistance = (glyph.Position.X - glyph.AlphaCycleOriginX)
+                    * 12.0 / Math.Max(1.0f, previewFont.SizeInPoints);
+                const double phaseMillisecondsPerPixelAt12Points = 1.6;
+                double phaseTime = animationTime
+                    - normalizedDistance * phaseMillisecondsPerPixelAt12Points;
+                double progress = phaseTime * state.CycleAlphas.Count / cycleDuration;
+                progress %= state.CycleAlphas.Count;
+                if (progress < 0) progress += state.CycleAlphas.Count;
                 int firstIndex = ((int)progress) % state.CycleAlphas.Count;
                 int secondIndex = (firstIndex + 1) % state.CycleAlphas.Count;
                 double fraction = progress - Math.Floor(progress);
-                alpha = Convert.ToInt32(state.CycleAlphas[firstIndex] + (state.CycleAlphas[secondIndex] - state.CycleAlphas[firstIndex]) * fraction);
+                // EngineX blends in the rendered scene before the captured
+                // image is gamma encoded. GDI+ otherwise makes the middle of
+                // the transition too dark and the travelling trough too wide.
+                double first = Math.Pow(state.CycleAlphas[firstIndex] / 255.0, 2.2);
+                double second = Math.Pow(state.CycleAlphas[secondIndex] / 255.0, 2.2);
+                double blended = first + (second - first) * fraction;
+                alpha = Convert.ToInt32(Math.Pow(Math.Max(0.0, blended), 1.0 / 2.2) * 255.0);
             }
             if (state.TeletypeFade) alpha = Math.Min(alpha, Convert.ToInt32(Math.Min(1.0, elapsed / 250.0) * 255.0));
             if (state.FadeIn)
