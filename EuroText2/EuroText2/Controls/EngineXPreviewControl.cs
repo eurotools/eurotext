@@ -31,7 +31,7 @@ namespace EuroText2
             public int FadeDuration = 60;
             public int FadeDelay;
             public bool Fountain;
-            public int FountainDuration = 60;
+            public int FountainDuration = 100;
             public int FountainMinDuration;
             public int FountainStartIndex;
             public long FountainStartTime;
@@ -452,8 +452,11 @@ namespace EuroText2
             {
                 List<int> values = GetNumbers(tag);
                 state.Shakey = true;
-                if (values.Count > 0) state.ShakeVariance = values[0];
-                if (values.Count > 1) state.ShakeSpeed = values[1];
+                // Missing ST values use EngineX's defaults independently.
+                // This also prevents a partial tag from inheriting the speed
+                // or variance of a preceding ST block.
+                state.ShakeVariance = values.Count > 0 ? Math.Max(0, values[0]) : 2.0f;
+                state.ShakeSpeed = values.Count > 1 ? Math.Max(1, values[1]) : 2.0f;
                 return true;
             }
             if (upperTag == "END ST") { state.Shakey = false; return true; }
@@ -475,13 +478,13 @@ namespace EuroText2
                 state.Fountain = true;
                 state.FountainStartIndex = glyphIndex;
                 state.FountainStartTime = revealTime;
-                // FTN defaults to a random landing time from 0 to 60 ticks
-                // (two seconds). A single value replaces only that maximum;
+                // The original EngineX preview gives bare FTN a maximum of
+                // 100 fountain steps. A single value replaces only that maximum;
                 // the minimum remains zero. Reset both defaults on every new
                 // block so parameters from an earlier FTN cannot leak in.
                 state.FountainDuration = values.Count > 0
                     ? Math.Max(1, values[0])
-                    : 60;
+                    : 100;
                 state.FountainMinDuration = values.Count > 1
                     ? Math.Max(0, Math.Min(state.FountainDuration, values[1]))
                     : 0;
@@ -543,7 +546,7 @@ namespace EuroText2
             if (state.Fountain)
             {
                 page.Duration = Math.Max(page.Duration,
-                    state.FountainStartTime + state.FountainDuration * 1000L / 30L);
+                    state.FountainStartTime + FountainStepsToMilliseconds(state.FountainDuration));
             }
             if (state.FadeIn)
             {
@@ -856,16 +859,17 @@ namespace EuroText2
                 // cannot introduce an accumulating cadence error.
                 int shakeFrame = (int)Math.Floor(animationTime * 30.0
                     / (Math.Max(1.0f, state.ShakeSpeed) * 1000.0));
-                Random random = new Random(glyph.Index * 7919 ^ shakeFrame);
-                // The captured game font is roughly equivalent to 24 pt in
-                // this preview: ST's native variance 2 therefore becomes one
-                // pixel at the default 12 pt, and scales with the chosen size.
-                float scaledVariance = state.ShakeVariance * previewFont.SizeInPoints / 24.0f;
-                int variance = state.ShakeVariance <= 0.0f
-                    ? 0
-                    : Math.Max(1, (int)Math.Round(scaledVariance, MidpointRounding.AwayFromZero));
-                x += random.Next(-variance, variance + 1);
-                y += random.Next(-variance, variance + 1);
+                int nativeVariance = Math.Max(0, (int)Math.Round(
+                    state.ShakeVariance, MidpointRounding.AwayFromZero));
+                // EngineX first chooses one of the native integer positions
+                // from -Variance through +Variance. Scale that result, not
+                // the range: at 12 pt VAR 2 retains five half-pixel positions
+                // instead of collapsing to the three positions -1, 0 and 1.
+                float shakeScale = previewFont.SizeInPoints / 24.0f;
+                x += GetShakeCoordinate(glyph.Index, shakeFrame, 0, nativeVariance)
+                    * shakeScale;
+                y += GetShakeCoordinate(glyph.Index, shakeFrame, 1, nativeVariance)
+                    * shakeScale;
             }
             if (state.Circular)
             {
@@ -894,10 +898,12 @@ namespace EuroText2
                 // glyphs are fired from the centre of the help window and
                 // land at their normal layout positions after a stable,
                 // pseudo-random time between MinDuration and MaxDuration.
-                // Both values are expressed in EngineX's 30ths of a second.
+                // Although the Data Info sheet describes these values as
+                // 30ths, the captured engine takes about 3.6 seconds for
+                // FTN 90: fountain motion advances at 25 steps per second.
                 int fountainIndex = Math.Max(0, glyph.Index - state.FountainStartIndex);
                 int durationUnits = GetFountainDuration(state, fountainIndex);
-                double duration = Math.Max(1.0, durationUnits * 1000.0 / 30.0);
+                double duration = Math.Max(1.0, FountainStepsToMilliseconds(durationUnits));
                 double fountainElapsed = Math.Max(0.0, animationTime - state.FountainStartTime);
                 double progress = Math.Min(1.0, fountainElapsed / duration);
 
@@ -956,6 +962,32 @@ namespace EuroText2
                 value = ((value >> (int)((value >> 28) + 4)) ^ value) * 277803737u;
                 value = (value >> 22) ^ value;
                 return minimum + (int)(value % (uint)(maximum - minimum + 1));
+            }
+        }
+
+        private static long FountainStepsToMilliseconds(int steps)
+        {
+            // FTN is updated by EngineX's 25 Hz effect clock rather than the
+            // 30 Hz timing used by tags such as FI, CC and RFC.
+            return Math.Max(0, steps) * 40L;
+        }
+
+        private static int GetShakeCoordinate(int glyphIndex, int shakeFrame,
+            int axis, int variance)
+        {
+            if (variance <= 0) return 0;
+
+            // A small integer hash gives every glyph and axis an independent,
+            // uniform native offset without allocating a Random on every paint.
+            unchecked
+            {
+                uint value = (uint)(glyphIndex + 1) * 747796405u;
+                value ^= (uint)(shakeFrame + 1) * 2891336453u;
+                value ^= axis == 0 ? 0x51f15e5du : 0x2c9277b5u;
+                value = ((value >> (int)((value >> 28) + 4)) ^ value)
+                    * 277803737u;
+                value = (value >> 22) ^ value;
+                return (int)(value % (uint)(variance * 2 + 1)) - variance;
             }
         }
 
