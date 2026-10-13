@@ -32,7 +32,7 @@ namespace EuroText2
             public int FadeDelay;
             public bool Fountain;
             public int FountainDuration = 100;
-            public int FountainMinDuration;
+            public int FountainMinDuration = 15;
             public int FountainStartIndex;
             public long FountainStartTime;
             public bool Circular;
@@ -478,16 +478,17 @@ namespace EuroText2
                 state.Fountain = true;
                 state.FountainStartIndex = glyphIndex;
                 state.FountainStartTime = revealTime;
-                // The original EngineX preview gives bare FTN a maximum of
-                // 100 fountain steps. A single value replaces only that maximum;
-                // the minimum remains zero. Reset both defaults on every new
-                // block so parameters from an earlier FTN cannot leak in.
+                // The captures give bare FTN a maximum of 100 fountain steps
+                // and an implicit minimum of about 15. Without that floor,
+                // some preview glyphs landed on the first frame whereas every
+                // EngineX glyph is initially visible in the launch nucleus. A
+                // supplied second value still replaces the implicit minimum.
                 state.FountainDuration = values.Count > 0
                     ? Math.Max(1, values[0])
                     : 100;
                 state.FountainMinDuration = values.Count > 1
                     ? Math.Max(0, Math.Min(state.FountainDuration, values[1]))
-                    : 0;
+                    : Math.Min(state.FountainDuration, 15);
                 return true;
             }
             if (upperTag == "END FTN") { state.Fountain = false; return true; }
@@ -724,9 +725,11 @@ namespace EuroText2
                     glyph.Position = new PointF(glyph.Position.X, glyph.Position.Y + verticalShift);
                 }
             }
-            // The captured FTN nucleus sits at a fixed point inside the
-            // four-line help band, independently of the number of laid-out
-            // lines: about one and a quarter line heights below its top.
+            // In the unobstructed capture the FTN glyphs overlap at a nucleus
+            // about 1.25 line heights below the top of the text band. They
+            // initially travel upwards and then land back on the first line.
+            // This position is font-relative and does not move when the
+            // window contains additional lines.
             layoutFountainOriginY = textBandTop + lineHeight * 1.25f;
         }
 
@@ -914,7 +917,10 @@ namespace EuroText2
                 int fountainIndex = Math.Max(0, glyph.Index - state.FountainStartIndex);
                 int durationUnits = GetFountainDuration(state, fountainIndex);
                 double fountainElapsed = Math.Max(0.0, animationTime - state.FountainStartTime);
-                double elapsedSteps = Math.Floor(fountainElapsed / 40.0);
+                // Keep the EngineX 25-step timing, but interpolate between
+                // updates. Quantising with Floor made motion pause for 40 ms
+                // and then jump, which was especially visible on short arcs.
+                double elapsedSteps = fountainElapsed / 40.0;
                 double progress = durationUnits <= 0
                     ? 1.0
                     : Math.Min(1.0, elapsedSteps / durationUnits);
@@ -926,43 +932,33 @@ namespace EuroText2
                         ? layoutFountainOriginY
                         : ClientSize.Height * 0.5f;
 
+                    // The measured FTN 50 arc is roughly half the height of
+                    // the default FTN 100 arc. EngineX therefore scales the
+                    // launch height approximately linearly with the allotted
+                    // duration; a T-squared scale made short arcs much too
+                    // flat even though their landing time was correct.
                     float durationFactor = Math.Max(0.0f, Math.Min(1.0f,
-                        durationUnits / (float)Math.Max(1, state.FountainDuration)));
+                        durationUnits / 100.0f));
 
-                    // Each glyph receives a different sideways impulse. The
-                    // parabolic term is zero both at launch and landing, so
-                    // every character still finishes at its exact laid-out
-                    // position but the cloud spreads irregularly in flight.
-                    float lateralDirection = GetFountainRandom(fountainIndex, 0x51f15e5d);
-                    // Express the impulse in em-like units derived from the
-                    // actual selected font. No particular family or point
+                    // Express the acceleration in em-like units derived from
+                    // the actual selected font. No particular family or point
                     // size is treated as the reference; the viewport cap only
                     // prevents very large fonts from leaving the help window.
                     float fontHeight = previewFont.GetHeight();
-                    float lateralReach = Math.Min(ClientSize.Width * 0.25f,
-                        fontHeight * 10.0f);
-                    float lateralDistance = lateralReach * durationFactor
-                        * lateralDirection;
-
-                    // Longer-lived characters are fired harder and therefore
-                    // climb higher, as in the capture. A second small random
-                    // factor avoids the uniform arch produced by the old
-                    // implementation while preserving a smooth landing.
-                    float heightVariation = GetFountainRandom(fountainIndex, 0x2c9277b5);
                     float verticalReach = Math.Min(ClientSize.Height * 0.63f,
                         fontHeight * 14.0f);
                     float arcHeight = verticalReach
-                        * (0.92f + heightVariation * 0.08f)
-                        * durationFactor * durationFactor;
+                        * durationFactor;
 
-                    // EngineX reaches the crown near the middle of the
-                    // character's allotted time. Linear time through this
-                    // parabola gives the captured constant horizontal motion
-                    // and constant downward acceleration.
+                    // The capture shows constant horizontal velocity and a
+                    // ballistic vertical component: equal time intervals
+                    // advance X equally while Y accelerates on the descent.
+                    // Using arc length here made both components differ from
+                    // EngineX, especially on the longest trajectories.
                     double trajectoryProgress = progress;
                     PointF current = GetFountainPathPoint(trajectoryProgress,
                         sourceX, sourceY, glyph.Position.X, glyph.Position.Y,
-                        lateralDistance, arcHeight);
+                        arcHeight);
                     float currentX = current.X;
                     float currentY = current.Y;
 
@@ -975,12 +971,11 @@ namespace EuroText2
 
         private static PointF GetFountainPathPoint(double progress,
             float sourceX, float sourceY, float targetX, float targetY,
-            float lateralDistance, float arcHeight)
+            float arcHeight)
         {
             double curve = 4.0 * progress * (1.0 - progress);
             return new PointF(
-                sourceX + (targetX - sourceX) * (float)progress
-                    + lateralDistance * (float)curve,
+                sourceX + (targetX - sourceX) * (float)progress,
                 sourceY + (targetY - sourceY) * (float)progress
                     - arcHeight * (float)curve);
         }
@@ -1026,17 +1021,6 @@ namespace EuroText2
                     * 277803737u;
                 value = (value >> 22) ^ value;
                 return (int)(value % (uint)(variance * 2 + 1)) - variance;
-            }
-        }
-
-        private static float GetFountainRandom(int glyphIndex, int salt)
-        {
-            unchecked
-            {
-                uint value = (uint)(glyphIndex + 1) * 747796405u + (uint)salt;
-                value = ((value >> (int)((value >> 28) + 4)) ^ value) * 277803737u;
-                value = (value >> 22) ^ value;
-                return value / (float)uint.MaxValue * 2.0f - 1.0f;
             }
         }
 
