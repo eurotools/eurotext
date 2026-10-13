@@ -628,11 +628,16 @@ namespace EuroText2
             if (pages.Count == 0) return;
 
             const float padding = 18.0f;
-            float availableWidth = Math.Max(20.0f, ClientSize.Width - padding * 2.0f);
+            // EngineX reserves roughly fifteen percent of the help window on
+            // either side. Besides matching its placement, this reproduces
+            // the number of characters that fit before an automatic wrap.
+            float horizontalPadding = Math.Max(padding, ClientSize.Width * 0.15f);
+            float availableWidth = Math.Max(20.0f,
+                ClientSize.Width - horizontalPadding * 2.0f);
             float lineHeight = previewFont.GetHeight(graphics) + 5.0f;
             PreviewPage page = pages[pageIndex];
             List<PreviewLine> lines = new List<PreviewLine>();
-            float x = padding;
+            float x = horizontalPadding;
             float y = padding;
             int lineStart = 0;
             bool lineCentered = false;
@@ -642,8 +647,8 @@ namespace EuroText2
                 PreviewGlyph glyph = page.Glyphs[i];
                 if (glyph.NewLine)
                 {
-                    lines.Add(new PreviewLine { StartIndex = lineStart, EndIndex = i - 1, Width = Math.Max(0, x - padding), Centered = lineCentered });
-                    x = padding;
+                    lines.Add(new PreviewLine { StartIndex = lineStart, EndIndex = i - 1, Width = Math.Max(0, x - horizontalPadding), Centered = lineCentered });
+                    x = horizontalPadding;
                     y += lineHeight;
                     lineStart = i + 1;
                     lineCentered = glyph.State.Centered;
@@ -655,11 +660,11 @@ namespace EuroText2
                 {
                     glyph.Size = new SizeF(Math.Max(2.0f, previewFont.SizeInPoints * 0.52f), glyph.Size.Height);
                 }
-                if (glyph.ForcedXPercent >= 0) x = padding + availableWidth * glyph.ForcedXPercent / 100.0f;
-                if (x > padding && x + glyph.Size.Width > padding + availableWidth)
+                if (glyph.ForcedXPercent >= 0) x = horizontalPadding + availableWidth * glyph.ForcedXPercent / 100.0f;
+                if (x > horizontalPadding && x + glyph.Size.Width > horizontalPadding + availableWidth)
                 {
-                    lines.Add(new PreviewLine { StartIndex = lineStart, EndIndex = i - 1, Width = Math.Max(0, x - padding), Centered = lineCentered });
-                    x = padding;
+                    lines.Add(new PreviewLine { StartIndex = lineStart, EndIndex = i - 1, Width = Math.Max(0, x - horizontalPadding), Centered = lineCentered });
+                    x = horizontalPadding;
                     y += lineHeight;
                     lineStart = i;
                 }
@@ -667,7 +672,7 @@ namespace EuroText2
                 glyph.Position = new PointF(x, y);
                 x += Math.Max(1.0f, glyph.Size.Width);
             }
-            lines.Add(new PreviewLine { StartIndex = lineStart, EndIndex = page.Glyphs.Count - 1, Width = Math.Max(0, x - padding), Centered = lineCentered });
+            lines.Add(new PreviewLine { StartIndex = lineStart, EndIndex = page.Glyphs.Count - 1, Width = Math.Max(0, x - horizontalPadding), Centered = lineCentered });
 
             foreach (PreviewLine line in lines)
             {
@@ -704,11 +709,12 @@ namespace EuroText2
                 alphaCycleDistances[cycle] = distance;
             }
 
-            // Move the complete laid-out block as a
-            // unit so explicit new lines, wrapping and horizontal alignment
-            // retain exactly the same geometry.
+            // EngineX anchors the first line to the top of a fixed four-line
+            // band near the bottom of the help window. Additional lines grow
+            // downwards; they do not push the beginning of the block upwards.
             float blockBottom = y + lineHeight;
-            float verticalShift = Math.Max(0.0f, ClientSize.Height - padding - blockBottom);
+            float textBandTop = Math.Max(padding, ClientSize.Height - lineHeight * 4.0f);
+            float verticalShift = Math.Max(0.0f, textBandTop - padding);
             for (int i = 0; i < page.Glyphs.Count; i++)
             {
                 PreviewGlyph glyph = page.Glyphs[i];
@@ -903,16 +909,26 @@ namespace EuroText2
                 // FTN 90: fountain motion advances at 25 steps per second.
                 int fountainIndex = Math.Max(0, glyph.Index - state.FountainStartIndex);
                 int durationUnits = GetFountainDuration(state, fountainIndex);
-                double duration = Math.Max(1.0, FountainStepsToMilliseconds(durationUnits));
                 double fountainElapsed = Math.Max(0.0, animationTime - state.FountainStartTime);
-                double progress = Math.Min(1.0, fountainElapsed / duration);
+                double elapsedSteps = Math.Floor(fountainElapsed / 40.0);
+                double progress = durationUnits <= 0
+                    ? 1.0
+                    : Math.Min(1.0, elapsedSteps / durationUnits);
 
                 if (progress < 1.0)
                 {
+                    // EngineX advances a flying glyph at a nearly constant
+                    // rate. Short-lived glyphs get a proportionally shorter
+                    // arc instead of being forced through the same large arc
+                    // at a much higher speed.
+                    double trajectoryProgress = progress;
                     float sourceX = ClientSize.Width * 0.5f;
                     float sourceY = layoutTextCenterY > 0.0f
                         ? layoutTextCenterY
                         : ClientSize.Height * 0.5f;
+
+                    float durationFactor = Math.Max(0.0f, Math.Min(1.0f,
+                        durationUnits / (float)Math.Max(1, state.FountainDuration)));
 
                     // Each glyph receives a different sideways impulse. The
                     // parabolic term is zero both at launch and landing, so
@@ -921,23 +937,22 @@ namespace EuroText2
                     float lateralDirection = GetFountainRandom(fountainIndex, 0x51f15e5d);
                     float fountainFontScale = Math.Max(0.5f, previewFont.SizeInPoints / 12.0f);
                     float lateralScale = Math.Min(1.5f, fountainFontScale);
-                    float lateralDistance = ClientSize.Width * 0.22f * lateralScale * lateralDirection;
-                    double ballisticCurve = 4.0 * progress * (1.0 - progress);
-                    float currentX = sourceX + (glyph.Position.X - sourceX) * (float)progress
+                    float lateralDistance = ClientSize.Width * 0.22f * lateralScale
+                        * durationFactor * lateralDirection;
+                    double ballisticCurve = 4.0 * trajectoryProgress * (1.0 - trajectoryProgress);
+                    float currentX = sourceX + (glyph.Position.X - sourceX) * (float)trajectoryProgress
                         + lateralDistance * (float)ballisticCurve;
 
                     // Longer-lived characters are fired harder and therefore
                     // climb higher, as in the capture. A second small random
                     // factor avoids the uniform arch produced by the old
                     // implementation while preserving a smooth landing.
-                    double durationRange = Math.Max(1.0,
-                        state.FountainDuration - state.FountainMinDuration);
-                    double durationFactor = (durationUnits - state.FountainMinDuration) / durationRange;
                     float heightVariation = GetFountainRandom(fountainIndex, 0x2c9277b5);
-                    float heightRatio = 0.48f + (float)durationFactor * 0.22f + heightVariation * 0.05f;
+                    float heightRatio = (0.70f + heightVariation * 0.06f)
+                        * durationFactor * durationFactor;
                     float arcHeight = Math.Min(ClientSize.Height * 0.82f,
                         ClientSize.Height * heightRatio * fountainFontScale);
-                    float currentY = sourceY + (glyph.Position.Y - sourceY) * (float)progress
+                    float currentY = sourceY + (glyph.Position.Y - sourceY) * (float)trajectoryProgress
                         - arcHeight * (float)ballisticCurve;
 
                     x += currentX - glyph.Position.X;
