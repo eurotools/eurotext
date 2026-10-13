@@ -31,7 +31,15 @@ x86/
 bld/
 [Oo]bj/
 [Ll]og/
-Ll]ogs/
+[Ll]ogs/
+
+# Local analysis and preview artifacts
+**/.analysis-*/
+**/.analysis/
+**/analysis-output/
+**/preview-output/
+*.analysis.png
+*.analysis.json
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
