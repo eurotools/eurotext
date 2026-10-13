@@ -81,9 +81,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\ETXML\Objects\EuroText_Color.cs" />
     <Compile Include="Classes\TaskbarProgress.cs" />
     <Compile Include="Controls\CheckboxTriple.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Classes\CommonFunctions.cs" />
     <Compile Include="Classes\ETXML\ETXML_Reader.cs" />
@@ -115,6 +116,18 @@
     </Compile>
     <Compile Include="Forms\FrmAbout.Designer.cs">
       <DependentUpon>FrmAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCheckExitMarkers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCheckExitMarkers.Designer.cs">
+      <DependentUpon>FrmCheckExitMarkers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmColorWordsValidation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmColorWordsValidation.Designer.cs">
+      <DependentUpon>FrmColorWordsValidation.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Tools\FrmFontBuilder.cs">
       <SubType>Form</SubType>
@@ -245,7 +258,7 @@
     <Compile Include="Classes\GlobalVariables.cs" />
     <Compile Include="Classes\IniFile.cs" />
     <Compile Include="Controls\ListViewExtended.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Classes\MostRecentFilesMenu.cs" />
     <Compile Include="Forms\TextEditor\FrmTextOutSection.cs">
@@ -315,6 +328,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmCheckExitMarkers.resx">
+      <DependentUpon>FrmCheckExitMarkers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmColorWordsValidation.resx">
+      <DependentUpon>FrmColorWordsValidation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tools\FrmFontBuilder.resx">
       <DependentUpon>FrmFontBuilder.cs</DependentUpon>

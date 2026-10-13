@@ -36,3 +36,4 @@ J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\ConsoleControl\ob
 J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\ConsoleControl\obj\Debug\ConsoleControl.csproj.CoreCompileInputs.cache
 J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\ConsoleControl\obj\Debug\ConsoleControl.dll
 J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\ConsoleControl\obj\Debug\ConsoleControl.pdb
+J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\ConsoleControl\obj\Debug\ConsoleControl.csproj.AssemblyReference.cache

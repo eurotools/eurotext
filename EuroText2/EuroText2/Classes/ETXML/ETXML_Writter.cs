@@ -253,6 +253,72 @@ namespace EuroText2
 
             }
         }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal void WriteWordsColorDocument(string filePath, EuroText_ColorFile fileData)
+        {
+            try
+            {
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Indent = true
+                };
+                XmlWriter textWriter = XmlWriter.Create(filePath, settings);
+                textWriter.WriteStartDocument();
+                textWriter.WriteStartElement("ETXML");
+                textWriter.WriteAttributeString("type", "WORDSCOLORFILE");
+                textWriter.WriteAttributeString("version", "1.0.0");
+                textWriter.WriteStartElement("Info");
+                if (string.IsNullOrEmpty(fileData.FirstCreated))
+                {
+                    textWriter.WriteElementString("FirstCreated", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
+                }
+                else
+                {
+                    textWriter.WriteElementString("FirstCreated", fileData.FirstCreated);
+                }
+                if (string.IsNullOrEmpty(fileData.CreatedBy))
+                {
+                    textWriter.WriteElementString("CreatedBy", GlobalVariables.EuroTextUser);
+                }
+                else
+                {
+                    textWriter.WriteElementString("CreatedBy", fileData.CreatedBy);
+                }
+                textWriter.WriteElementString("LastModified", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
+                textWriter.WriteElementString("LastModifiedBy", GlobalVariables.EuroTextUser);
+                textWriter.WriteEndElement();
+                textWriter.WriteStartElement("Colors");
+
+                foreach (EuroText_Color color in fileData.Colors)
+                {
+                    textWriter.WriteStartElement("Color");
+                    textWriter.WriteAttributeString("name", color.Name ?? string.Empty);
+                    textWriter.WriteAttributeString("r", color.WordColor.R.ToString());
+                    textWriter.WriteAttributeString("g", color.WordColor.G.ToString());
+                    textWriter.WriteAttributeString("b", color.WordColor.B.ToString());
+
+                    foreach (KeyValuePair<string, string> lang in color.Words)
+                    {
+                        textWriter.WriteStartElement("Language");
+                        textWriter.WriteAttributeString("id", lang.Key);
+                        textWriter.WriteString(lang.Value ?? string.Empty);
+                        textWriter.WriteEndElement(); // Language
+                    }
+
+                    textWriter.WriteEndElement(); // Color
+                }
+
+                textWriter.WriteEndElement(); // Colors
+                textWriter.WriteEndElement(); // ETXML
+                textWriter.WriteEndDocument();
+                textWriter.Close();
+            }
+            catch
+            {
+
+            }
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

@@ -194,7 +194,7 @@ namespace EuroText2
                             cell1.CellStyle = wrapTextStyle;
 
                             ICell cell2 = row.CreateCell(2);
-                            if (chkAddStrings.Checked)
+                            if (chkAddStrings.Checked && objTextData.Messages.ContainsKey(TranslationLanguage))
                             {
                                 cell2.SetCellValue(objTextData.Messages[TranslationLanguage]);
                             }

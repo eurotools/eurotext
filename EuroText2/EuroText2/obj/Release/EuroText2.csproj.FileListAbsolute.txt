@@ -90,3 +90,5 @@ J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\EuroText2\obj\Rel
 J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\EuroText2\obj\Release\EuroText2.csproj.CopyComplete
 J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\EuroText2\obj\Release\EuroText2.exe
 J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\EuroText2\obj\Release\EuroText2.pdb
+J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\EuroText2\obj\Release\EuroText2.FrmCheckExitMarkers.resources
+J:\Repositories\EuroTools\Development\Tools\eurotext\EuroText2\EuroText2\obj\Release\EuroText2.FrmColorWordsValidation.resources

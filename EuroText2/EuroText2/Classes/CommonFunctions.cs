@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace EuroText2
 {
@@ -46,68 +47,181 @@ namespace EuroText2
             EuroText_TextSections sectionsFileText = filesReader.ReadTextSectionsFile(textSectionsFilePath);
 
             //Search hashcodes that are in this group
-            string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
-            Parallel.ForEach(filesToAdd, file =>
-            {
-                EuroText_TextFile objText = filesReader.ReadTextFile(file);
+            string messagesPath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages");
+            string[] textFiles = Directory.GetFiles(messagesPath, "*.etf", SearchOption.TopDirectoryOnly);
 
-                if (objText.Group == groupToSearch)
+            ConcurrentDictionary<string, byte> result = new ConcurrentDictionary<string, byte>();
+
+            Parallel.ForEach(
+                textFiles,
+                new ParallelOptions
                 {
-                    foreach (string outputSection in objText.OutputSection)
+                    MaxDegreeOfParallelism = Environment.ProcessorCount
+                },
+                file =>
+                {
+                    ExtractSectionsFromFile(
+                        file,
+                        groupToSearch,
+                        sectionsFileText.TextSections,
+                        result);
+                });
+
+            string[] array = result.Keys.ToArray();
+            Array.Sort(array);
+            return array;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private static void ExtractSectionsFromFile(string filePath, string groupToSearch, Dictionary<string, string> textSections, ConcurrentDictionary<string, byte> output)
+        {
+            bool groupMatches = false;
+
+            using (XmlReader reader = XmlReader.Create(filePath))
+            {
+                while (reader.Read())
+                {
+                    if (reader.NodeType != XmlNodeType.Element)
                     {
-                        string sectionKey = outputSection;
-                        if (string.IsNullOrEmpty(sectionKey))
+                        continue;
+                    }
+
+                    //---------------------------------------------------------------------------------
+                    // Read <Group>
+                    //---------------------------------------------------------------------------------
+                    if (!groupMatches && reader.Name == "Group")
+                    {
+                        string groupValue = reader.ReadElementContentAsString();
+                        if (!string.Equals(groupValue, groupToSearch, StringComparison.OrdinalIgnoreCase))
                         {
-                            sectionKey = "Not Set";
+                            return;
+                        }
+                        groupMatches = true;
+                    }
+
+                    //---------------------------------------------------------------------------------
+                    // Read <OutputSection> ONLY if group matches
+                    //---------------------------------------------------------------------------------
+                    else if (groupMatches && reader.Name == "OutputSection")
+                    {
+                        string raw = reader.ReadElementContentAsString();
+                        if (string.IsNullOrEmpty(raw))
+                        {
+                            output.TryAdd("Not Set", 0);
+                            continue;
                         }
 
-                        // Obtener nombre amigable
-                        if (sectionsFileText.TextSections.TryGetValue(sectionKey, out string friendlyName))
+                        // Puede haber VARIOS separados por ';'
+                        string[] sections = raw.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (string s in sections)
                         {
-                            sectionKey = friendlyName;
-                        }
+                            string sectionKey = s;
 
-                        // Añadir si no existe
-                        sectionsInThisGroup.TryAdd(sectionKey, 0);
+                            // Mapear a nombre amigable si existe
+                            if (textSections.TryGetValue(sectionKey, out string friendly))
+                            {
+                                sectionKey = friendly;
+                            }
+                            output.TryAdd(sectionKey, 0);
+                        }
                     }
                 }
-            });
+            }
+        }
 
-            string[] result = sectionsInThisGroup.Keys.ToArray();
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal static string[] GetSectionHashcodes(string OutputSectionLabel, string OutputSectionHashCode = "")
+        {
+            //Get section
+            string sectionHashCode = OutputSectionHashCode;
+            if (!string.IsNullOrEmpty(OutputSectionLabel))
+            {
+                ETXML_Reader sectionTexts = new ETXML_Reader();
+                string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
+                EuroText_TextSections sectionsFileText = sectionTexts.ReadTextSectionsFile(textSectionsFilePath);
+                sectionHashCode = sectionsFileText.TextSections.FirstOrDefault(x => x.Value == OutputSectionLabel).Key;
+            }
+
+            //Search hashcodes that are in this group
+            string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
+            ConcurrentQueue<string> hashCodesInThisGroup = new ConcurrentQueue<string>();
+
+            Parallel.ForEach(filesToAdd,
+                new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = Environment.ProcessorCount
+                },
+                file =>
+             {
+                 if (TextContainsOutputSection(file, sectionHashCode))
+                 {
+                     hashCodesInThisGroup.Enqueue(Path.GetFileNameWithoutExtension(file));
+                 }
+             });
+
+            string[] result = hashCodesInThisGroup.ToArray();
             Array.Sort(result);
             return result;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        internal static string[] GetSectionHashcodes(string levelHashcode, string sectionHashcode = "")
+        private static bool TextContainsOutputSection(string filePath, string hashcodeToCheck)
         {
-            ETXML_Reader filesReader = new ETXML_Reader();
+            bool searchingForNoSection = string.IsNullOrEmpty(hashcodeToCheck);
 
-            //Get section
-            string hashcodeToCheck = sectionHashcode;
-            if (!string.IsNullOrEmpty(levelHashcode))
+            using (XmlReader reader = XmlReader.Create(filePath))
             {
-                string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
-                EuroText_TextSections sectionsFileText = filesReader.ReadTextSectionsFile(textSectionsFilePath);
-                hashcodeToCheck = sectionsFileText.TextSections.FirstOrDefault(x => x.Value == levelHashcode).Key;
+                while (reader.Read())
+                {
+                    if (reader.NodeType == XmlNodeType.Element && reader.Name == "OutputSection")
+                    {
+                        string section = reader.ReadElementContentAsString();
+
+                        // ----------------------------------------------------------------
+                        // Case 1: User selected "no section"
+                        // Match only if the ETF OutputSection is also empty or missing
+                        // ----------------------------------------------------------------
+                        if (searchingForNoSection)
+                        {
+                            if (string.IsNullOrEmpty(section))
+                            {
+                                return true;
+                            }
+
+                            continue;
+                        }
+
+                        // ----------------------------------------------------------------
+                        // Case 2: User selected a specific section
+                        // OutputSection may contain multiple values separated by ';'
+                        // ----------------------------------------------------------------
+                        if (!string.IsNullOrEmpty(section) && section.IndexOf(hashcodeToCheck, StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            return true;
+                        }
+                    }
+                }
             }
 
-            //Search hashcodes that are in this group
-            string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
-            ConcurrentBag<string> hashCodesInThisGroup = new ConcurrentBag<string>();
+            // No matching OutputSection found in this file
+            return false;
+        }
 
-            Parallel.ForEach(filesToAdd, file =>
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal static string[] ReadTextGroups()
+        {
+            string[] TextGroups = null;
+
+            //Get text file path
+            string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextGroups.etf");
+            if (File.Exists(textGroupsFilePath))
             {
-                EuroText_TextFile objText = filesReader.ReadTextFile(file);
-                if (objText.OutputSection != null && objText.OutputSection.Contains(hashcodeToCheck))
-                {
-                    hashCodesInThisGroup.Add(Path.GetFileNameWithoutExtension(file));
-                }
-            });
+                ETXML_Reader projectFileReader = new ETXML_Reader();
+                EuroText_TextGroups textGroupsData = projectFileReader.ReadTextGroupsFile(textGroupsFilePath);
+                TextGroups = textGroupsData.TextGroups.ToArray();
+            }
 
-            string[] result = hashCodesInThisGroup.Distinct().ToArray();
-            Array.Sort(result);
-            return result;
+            return TextGroups;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------

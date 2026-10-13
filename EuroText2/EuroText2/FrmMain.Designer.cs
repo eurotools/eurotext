@@ -48,6 +48,8 @@ namespace EuroText2
             this.btnUpdateHashTable = new System.Windows.Forms.Button();
             this.btnProjectProperties = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnCheckColorWords = new System.Windows.Forms.Button();
+            this.btnCheckExitMarkers = new System.Windows.Forms.Button();
             this.btnProjectCompare = new System.Windows.Forms.Button();
             this.btnTranslations = new System.Windows.Forms.Button();
             this.btnFontBuilder = new System.Windows.Forms.Button();
@@ -117,7 +119,7 @@ namespace EuroText2
             this.groupBox1.Controls.Add(this.lboxGroups);
             this.groupBox1.Location = new System.Drawing.Point(2, 27);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(243, 618);
+            this.groupBox1.Size = new System.Drawing.Size(243, 659);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Text Groups";
@@ -126,7 +128,7 @@ namespace EuroText2
             // 
             this.lblTotalGroups.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTotalGroups.AutoSize = true;
-            this.lblTotalGroups.Location = new System.Drawing.Point(6, 598);
+            this.lblTotalGroups.Location = new System.Drawing.Point(6, 639);
             this.lblTotalGroups.Name = "lblTotalGroups";
             this.lblTotalGroups.Size = new System.Drawing.Size(43, 13);
             this.lblTotalGroups.TabIndex = 1;
@@ -142,7 +144,7 @@ namespace EuroText2
             this.lboxGroups.HorizontalScrollbar = true;
             this.lboxGroups.Location = new System.Drawing.Point(3, 16);
             this.lboxGroups.Name = "lboxGroups";
-            this.lboxGroups.Size = new System.Drawing.Size(237, 576);
+            this.lboxGroups.Size = new System.Drawing.Size(237, 615);
             this.lboxGroups.TabIndex = 0;
             this.lboxGroups.SelectedIndexChanged += new System.EventHandler(this.LboxGroups_SelectedIndexChanged);
             // 
@@ -285,6 +287,8 @@ namespace EuroText2
             // groupBox4
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.btnCheckColorWords);
+            this.groupBox4.Controls.Add(this.btnCheckExitMarkers);
             this.groupBox4.Controls.Add(this.btnProjectCompare);
             this.groupBox4.Controls.Add(this.btnTranslations);
             this.groupBox4.Controls.Add(this.btnFontBuilder);
@@ -293,10 +297,31 @@ namespace EuroText2
             this.groupBox4.Controls.Add(this.WordsReplace);
             this.groupBox4.Location = new System.Drawing.Point(772, 257);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(166, 195);
+            this.groupBox4.Size = new System.Drawing.Size(166, 255);
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Tools";
+            // 
+            // btnCheckColorWords
+            // 
+            this.btnCheckColorWords.Enabled = false;
+            this.btnCheckColorWords.Location = new System.Drawing.Point(6, 222);
+            this.btnCheckColorWords.Name = "btnCheckColorWords";
+            this.btnCheckColorWords.Size = new System.Drawing.Size(154, 23);
+            this.btnCheckColorWords.TabIndex = 7;
+            this.btnCheckColorWords.Text = "Validate Color Words";
+            this.btnCheckColorWords.UseVisualStyleBackColor = true;
+            this.btnCheckColorWords.Click += new System.EventHandler(this.btnCheckColorWords_Click);
+            // 
+            // btnCheckExitMarkers
+            // 
+            this.btnCheckExitMarkers.Location = new System.Drawing.Point(6, 193);
+            this.btnCheckExitMarkers.Name = "btnCheckExitMarkers";
+            this.btnCheckExitMarkers.Size = new System.Drawing.Size(154, 23);
+            this.btnCheckExitMarkers.TabIndex = 6;
+            this.btnCheckExitMarkers.Text = "Validate Exit Markers";
+            this.btnCheckExitMarkers.UseVisualStyleBackColor = true;
+            this.btnCheckExitMarkers.Click += new System.EventHandler(this.btnCheckExitMarkers_Click);
             // 
             // btnProjectCompare
             // 
@@ -373,7 +398,7 @@ namespace EuroText2
             this.Groupbox_Output.Controls.Add(this.Checkbox_FormatInfo);
             this.Groupbox_Output.Controls.Add(this.Button_Output);
             this.Groupbox_Output.Controls.Add(this.Checkbox_IncludeHashCodesWithNoSection);
-            this.Groupbox_Output.Location = new System.Drawing.Point(772, 458);
+            this.Groupbox_Output.Location = new System.Drawing.Point(772, 518);
             this.Groupbox_Output.Name = "Groupbox_Output";
             this.Groupbox_Output.Size = new System.Drawing.Size(166, 157);
             this.Groupbox_Output.TabIndex = 5;
@@ -448,7 +473,7 @@ namespace EuroText2
             this.groupBox2.Controls.Add(this.lboxOutSections);
             this.groupBox2.Location = new System.Drawing.Point(251, 27);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(228, 618);
+            this.groupBox2.Size = new System.Drawing.Size(228, 659);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Output Sections";
@@ -457,7 +482,7 @@ namespace EuroText2
             // 
             this.lblTotalOutSections.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTotalOutSections.AutoSize = true;
-            this.lblTotalOutSections.Location = new System.Drawing.Point(6, 598);
+            this.lblTotalOutSections.Location = new System.Drawing.Point(6, 639);
             this.lblTotalOutSections.Name = "lblTotalOutSections";
             this.lblTotalOutSections.Size = new System.Drawing.Size(43, 13);
             this.lblTotalOutSections.TabIndex = 1;
@@ -472,7 +497,7 @@ namespace EuroText2
             this.lboxOutSections.HorizontalScrollbar = true;
             this.lboxOutSections.Location = new System.Drawing.Point(3, 16);
             this.lboxOutSections.Name = "lboxOutSections";
-            this.lboxOutSections.Size = new System.Drawing.Size(222, 576);
+            this.lboxOutSections.Size = new System.Drawing.Size(222, 615);
             this.lboxOutSections.Sorted = true;
             this.lboxOutSections.TabIndex = 0;
             this.lboxOutSections.SelectedIndexChanged += new System.EventHandler(this.LboxOutSections_SelectedIndexChanged);
@@ -486,7 +511,7 @@ namespace EuroText2
             this.groupBox5.Controls.Add(this.lboxSectionTexts);
             this.groupBox5.Location = new System.Drawing.Point(485, 27);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(281, 428);
+            this.groupBox5.Size = new System.Drawing.Size(281, 469);
             this.groupBox5.TabIndex = 7;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Section Dialogs";
@@ -495,7 +520,7 @@ namespace EuroText2
             // 
             this.lblTotalHashCodes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTotalHashCodes.AutoSize = true;
-            this.lblTotalHashCodes.Location = new System.Drawing.Point(6, 408);
+            this.lblTotalHashCodes.Location = new System.Drawing.Point(6, 449);
             this.lblTotalHashCodes.Name = "lblTotalHashCodes";
             this.lblTotalHashCodes.Size = new System.Drawing.Size(43, 13);
             this.lblTotalHashCodes.TabIndex = 1;
@@ -512,7 +537,7 @@ namespace EuroText2
             this.lboxSectionTexts.Location = new System.Drawing.Point(3, 16);
             this.lboxSectionTexts.Name = "lboxSectionTexts";
             this.lboxSectionTexts.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lboxSectionTexts.Size = new System.Drawing.Size(275, 381);
+            this.lboxSectionTexts.Size = new System.Drawing.Size(275, 420);
             this.lboxSectionTexts.Sorted = true;
             this.lboxSectionTexts.TabIndex = 0;
             this.lboxSectionTexts.SelectedIndexChanged += new System.EventHandler(this.LboxSectionTexts_SelectedIndexChanged);
@@ -712,7 +737,7 @@ namespace EuroText2
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grbxEnableTextPreview.Controls.Add(this.tabControlTextPreview);
             this.grbxEnableTextPreview.Controls.Add(this.chkEnablePreview);
-            this.grbxEnableTextPreview.Location = new System.Drawing.Point(485, 461);
+            this.grbxEnableTextPreview.Location = new System.Drawing.Point(485, 502);
             this.grbxEnableTextPreview.Name = "grbxEnableTextPreview";
             this.grbxEnableTextPreview.Size = new System.Drawing.Size(281, 184);
             this.grbxEnableTextPreview.TabIndex = 9;
@@ -742,7 +767,7 @@ namespace EuroText2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(950, 647);
+            this.ClientSize = new System.Drawing.Size(950, 688);
             this.Controls.Add(this.grbxEnableTextPreview);
             this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.groupBox5);
@@ -846,6 +871,8 @@ namespace EuroText2
         private System.Windows.Forms.TabControl tabControlTextPreview;
         private System.Windows.Forms.CheckBox chkEnablePreview;
         private System.Windows.Forms.Button btnProjectCompare;
+        private System.Windows.Forms.Button btnCheckExitMarkers;
+        private System.Windows.Forms.Button btnCheckColorWords;
     }
 }
 

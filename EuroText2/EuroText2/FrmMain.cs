@@ -338,6 +338,24 @@ namespace EuroText2
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void btnCheckExitMarkers_Click(object sender, EventArgs e)
+        {
+            using (FrmCheckExitMarkers replaceWords = new FrmCheckExitMarkers())
+            {
+                replaceWords.ShowDialog();
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void btnCheckColorWords_Click(object sender, EventArgs e)
+        {
+            using (FrmColorWordsValidation replaceWords = new FrmColorWordsValidation())
+            {
+                replaceWords.ShowDialog();
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         // Context Menu Groups
         //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItemGroups_New_Click(object sender, EventArgs e)
@@ -732,15 +750,12 @@ namespace EuroText2
         internal void ReadTextGroups()
         {
             //Get text file path
-            string textGroupsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextGroups.etf");
-            if (File.Exists(textGroupsFilePath))
+            string[] TextGroups = CommonFunctions.ReadTextGroups();
+            if (TextGroups != null)
             {
-                ETXML_Reader projectFileReader = new ETXML_Reader();
-                EuroText_TextGroups textGroupsData = projectFileReader.ReadTextGroupsFile(textGroupsFilePath);
-
                 lboxGroups.BeginUpdate();
                 lboxGroups.Items.Clear();
-                lboxGroups.Items.AddRange(textGroupsData.TextGroups.ToArray());
+                lboxGroups.Items.AddRange(TextGroups);
                 lboxGroups.EndUpdate();
 
                 lblTotalGroups.Text = "Total: " + lboxGroups.Items.Count;
@@ -791,7 +806,6 @@ namespace EuroText2
             string filePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", lboxSectionTexts.SelectedItems[0] + ".etf");
             CommonFunctions.PreviewTextFile(tabControlTextPreview, filePath);
         }
-
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

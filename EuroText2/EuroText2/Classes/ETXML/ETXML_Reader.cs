@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -291,6 +292,87 @@ namespace EuroText2
             }
 
             return projData;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal EuroText_ColorFile ReadWordsColorDocument(string filePath)
+        {
+            EuroText_ColorFile fileData = new EuroText_ColorFile();
+
+            using (XmlReader reader = XmlReader.Create(filePath))
+            {
+                EuroText_Color currentColor = null;
+                while (reader.Read())
+                {
+                    if (reader.NodeType != XmlNodeType.Element)
+                    {
+                        continue;
+                    }
+
+                    switch (reader.Name)
+                    {
+                        //-----------------------------------------------------------------------------------------
+                        // Info
+                        case "FirstCreated":
+                            fileData.FirstCreated = reader.ReadElementContentAsString();
+                            break;
+
+                        case "CreatedBy":
+                            fileData.CreatedBy = reader.ReadElementContentAsString();
+                            break;
+
+                        case "LastModified":
+                            fileData.LastModified = reader.ReadElementContentAsString();
+                            break;
+
+                        case "LastModifiedBy":
+                            fileData.LastModifiedBy = reader.ReadElementContentAsString();
+                            break;
+
+                        //-----------------------------------------------------------------------------------------
+                        // Color
+                        case "Color":
+                            currentColor = new EuroText_Color();
+                            currentColor.Name = reader.GetAttribute("name");
+
+                            int r = ReadIntAttr(reader, "r");
+                            int g = ReadIntAttr(reader, "g");
+                            int b = ReadIntAttr(reader, "b");
+
+                            currentColor.WordColor = Color.FromArgb(r, g, b);
+                            currentColor.Words = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+                            fileData.Colors.Add(currentColor);
+                            break;
+
+                        //-----------------------------------------------------------------------------------------
+                        // Language
+                        case "Language":
+                            if (currentColor != null)
+                            {
+                                string langId = reader.GetAttribute("id");
+                                string words = reader.ReadElementContentAsString();
+
+                                if (!string.IsNullOrEmpty(langId))
+                                {
+                                    currentColor.Words[langId] = words;
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+
+            return fileData;
+        }
+
+        private int ReadIntAttr(XmlReader reader, string attrName)
+        {
+            int value;
+            if (int.TryParse(reader.GetAttribute(attrName), out value))
+                return value;
+
+            return 0;
         }
     }
 
