@@ -925,7 +925,7 @@ namespace EuroText2
                     double trajectoryProgress = progress;
                     float sourceX = ClientSize.Width * 0.5f;
                     float sourceY = layoutTextCenterY > 0.0f
-                        ? layoutTextCenterY - previewFont.GetHeight()
+                        ? layoutTextCenterY - previewFont.GetHeight() * 1.25f
                         : ClientSize.Height * 0.5f;
 
                     float durationFactor = Math.Max(0.0f, Math.Min(1.0f,
@@ -936,10 +936,15 @@ namespace EuroText2
                     // every character still finishes at its exact laid-out
                     // position but the cloud spreads irregularly in flight.
                     float lateralDirection = GetFountainRandom(fountainIndex, 0x51f15e5d);
-                    float fountainFontScale = Math.Max(0.5f, previewFont.SizeInPoints / 12.0f);
-                    float lateralScale = Math.Min(1.5f, fountainFontScale);
-                    float lateralDistance = ClientSize.Width * 0.22f * lateralScale
-                        * durationFactor * lateralDirection;
+                    // Express the impulse in em-like units derived from the
+                    // actual selected font. No particular family or point
+                    // size is treated as the reference; the viewport cap only
+                    // prevents very large fonts from leaving the help window.
+                    float fontHeight = previewFont.GetHeight();
+                    float lateralReach = Math.Min(ClientSize.Width * 0.25f,
+                        fontHeight * 10.0f);
+                    float lateralDistance = lateralReach * durationFactor
+                        * lateralDirection;
                     double ballisticCurve = 4.0 * trajectoryProgress * (1.0 - trajectoryProgress);
                     float currentX = sourceX + (glyph.Position.X - sourceX) * (float)trajectoryProgress
                         + lateralDistance * (float)ballisticCurve;
@@ -949,10 +954,11 @@ namespace EuroText2
                     // factor avoids the uniform arch produced by the old
                     // implementation while preserving a smooth landing.
                     float heightVariation = GetFountainRandom(fountainIndex, 0x2c9277b5);
-                    float heightRatio = (0.70f + heightVariation * 0.06f)
+                    float verticalReach = Math.Min(ClientSize.Height * 0.63f,
+                        fontHeight * 14.0f);
+                    float arcHeight = verticalReach
+                        * (0.92f + heightVariation * 0.08f)
                         * durationFactor * durationFactor;
-                    float arcHeight = Math.Min(ClientSize.Height * 0.82f,
-                        ClientSize.Height * heightRatio * fountainFontScale);
                     float currentY = sourceY + (glyph.Position.Y - sourceY) * (float)trajectoryProgress
                         - arcHeight * (float)ballisticCurve;
 
