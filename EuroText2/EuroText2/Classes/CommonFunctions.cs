@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,6 +14,29 @@ namespace EuroText2
     //-------------------------------------------------------------------------------------------------------------------------------
     internal static class CommonFunctions
     {
+        private sealed class TextIndexEntry
+        {
+            internal string HashCode;
+            internal string Group;
+            internal string[] OutputSections;
+        }
+
+        private sealed class TextSectionIndex
+        {
+            internal string FilePath;
+            internal DateTime LastWriteUtc;
+            internal Dictionary<string, string> ByCode;
+            internal Dictionary<string, string> ByLabel;
+        }
+
+        private static readonly object TextIndexSync = new object();
+        private static string TextIndexDirectory = string.Empty;
+        private static TextIndexEntry[] TextIndexEntries;
+        private static Dictionary<string, string[]> GroupSectionIndex;
+        private static Dictionary<string, string[]> SectionHashCodeIndex;
+        private static FileSystemWatcher TextIndexWatcher;
+        private static TextSectionIndex CachedTextSections;
+
         //-------------------------------------------------------------------------------------------------------------------------------
         //  USERNAME
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -39,172 +61,333 @@ namespace EuroText2
         //-------------------------------------------------------------------------------------------------------------------------------
         internal static string[] GetGroupSections(string groupToSearch)
         {
-            ETXML_Reader filesReader = new ETXML_Reader();
-            ConcurrentDictionary<string, byte> sectionsInThisGroup = new ConcurrentDictionary<string, byte>();
+            TextSectionIndex sections = GetTextSectionIndex();
+            GetTextIndex();
 
-            //Get textsections
-            string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
-            EuroText_TextSections sectionsFileText = filesReader.ReadTextSectionsFile(textSectionsFilePath);
+            if (!GroupSectionIndex.TryGetValue(groupToSearch, out string[] sectionCodes))
+            {
+                return new string[0];
+            }
 
-            //Search hashcodes that are in this group
-            string messagesPath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages");
-            string[] textFiles = Directory.GetFiles(messagesPath, "*.etf", SearchOption.TopDirectoryOnly);
-
-            ConcurrentDictionary<string, byte> result = new ConcurrentDictionary<string, byte>();
-
-            Parallel.ForEach(
-                textFiles,
-                new ParallelOptions
-                {
-                    MaxDegreeOfParallelism = Environment.ProcessorCount
-                },
-                file =>
-                {
-                    ExtractSectionsFromFile(
-                        file,
-                        groupToSearch,
-                        sectionsFileText.TextSections,
-                        result);
-                });
-
-            string[] array = result.Keys.ToArray();
+            string[] array = new string[sectionCodes.Length];
+            for (int i = 0; i < sectionCodes.Length; i++)
+            {
+                string section = sectionCodes[i];
+                array[i] = string.IsNullOrEmpty(section)
+                    ? "Not Set"
+                    : (sections.ByCode.TryGetValue(section, out string friendly) ? friendly : section);
+            }
             Array.Sort(array);
             return array;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private static void ExtractSectionsFromFile(string filePath, string groupToSearch, Dictionary<string, string> textSections, ConcurrentDictionary<string, byte> output)
-        {
-            bool groupMatches = false;
-
-            using (XmlReader reader = XmlReader.Create(filePath))
-            {
-                while (reader.Read())
-                {
-                    if (reader.NodeType != XmlNodeType.Element)
-                    {
-                        continue;
-                    }
-
-                    //---------------------------------------------------------------------------------
-                    // Read <Group>
-                    //---------------------------------------------------------------------------------
-                    if (!groupMatches && reader.Name == "Group")
-                    {
-                        string groupValue = reader.ReadElementContentAsString();
-                        if (!string.Equals(groupValue, groupToSearch, StringComparison.OrdinalIgnoreCase))
-                        {
-                            return;
-                        }
-                        groupMatches = true;
-                    }
-
-                    //---------------------------------------------------------------------------------
-                    // Read <OutputSection> ONLY if group matches
-                    //---------------------------------------------------------------------------------
-                    else if (groupMatches && reader.Name == "OutputSection")
-                    {
-                        string raw = reader.ReadElementContentAsString();
-                        if (string.IsNullOrEmpty(raw))
-                        {
-                            output.TryAdd("Not Set", 0);
-                            continue;
-                        }
-
-                        // Puede haber VARIOS separados por ';'
-                        string[] sections = raw.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (string s in sections)
-                        {
-                            string sectionKey = s;
-
-                            // Mapear a nombre amigable si existe
-                            if (textSections.TryGetValue(sectionKey, out string friendly))
-                            {
-                                sectionKey = friendly;
-                            }
-                            output.TryAdd(sectionKey, 0);
-                        }
-                    }
-                }
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------------------
         internal static string[] GetSectionHashcodes(string OutputSectionLabel, string OutputSectionHashCode = "")
         {
-            //Get section
             string sectionHashCode = OutputSectionHashCode;
-            if (!string.IsNullOrEmpty(OutputSectionLabel))
+            if (!string.IsNullOrEmpty(OutputSectionLabel) && !OutputSectionLabel.Equals("Not Set", StringComparison.OrdinalIgnoreCase))
             {
-                ETXML_Reader sectionTexts = new ETXML_Reader();
-                string textSectionsFilePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
-                EuroText_TextSections sectionsFileText = sectionTexts.ReadTextSectionsFile(textSectionsFilePath);
-                sectionHashCode = sectionsFileText.TextSections.FirstOrDefault(x => x.Value == OutputSectionLabel).Key;
+                GetTextSectionIndex().ByLabel.TryGetValue(OutputSectionLabel, out sectionHashCode);
             }
 
-            //Search hashcodes that are in this group
-            string[] filesToAdd = Directory.GetFiles(Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
-            ConcurrentQueue<string> hashCodesInThisGroup = new ConcurrentQueue<string>();
-
-            Parallel.ForEach(filesToAdd,
-                new ParallelOptions
-                {
-                    MaxDegreeOfParallelism = Environment.ProcessorCount
-                },
-                file =>
-             {
-                 if (TextContainsOutputSection(file, sectionHashCode))
-                 {
-                     hashCodesInThisGroup.Enqueue(Path.GetFileNameWithoutExtension(file));
-                 }
-             });
-
-            string[] result = hashCodesInThisGroup.ToArray();
-            Array.Sort(result);
-            return result;
+            GetTextIndex();
+            return SectionHashCodeIndex.TryGetValue(sectionHashCode ?? string.Empty, out string[] hashCodes)
+                ? (string[])hashCodes.Clone()
+                : new string[0];
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        private static bool TextContainsOutputSection(string filePath, string hashcodeToCheck)
+        internal static void InvalidateTextIndex()
         {
-            bool searchingForNoSection = string.IsNullOrEmpty(hashcodeToCheck);
-
-            using (XmlReader reader = XmlReader.Create(filePath))
+            lock (TextIndexSync)
             {
-                while (reader.Read())
+                TextIndexEntries = null;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal static void UpdateTextIndex(string filePath, string group, string[] outputSections)
+        {
+            TextIndexEntry entry = new TextIndexEntry
+            {
+                HashCode = Path.GetFileNameWithoutExtension(filePath),
+                Group = group ?? string.Empty,
+                OutputSections = outputSections == null
+                    ? new string[0]
+                    : outputSections.Where(section => !string.IsNullOrEmpty(section)).ToArray()
+            };
+
+            lock (TextIndexSync)
+            {
+                UpdateTextIndexEntry(entry, Path.GetDirectoryName(filePath));
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal static void InvalidateTextSectionsIndex()
+        {
+            lock (TextIndexSync)
+            {
+                CachedTextSections = null;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        internal static void WarmTextFilterIndex()
+        {
+            Task.Run(() =>
+            {
+                try
                 {
-                    if (reader.NodeType == XmlNodeType.Element && reader.Name == "OutputSection")
+                    GetTextSectionIndex();
+                    GetTextIndex();
+                }
+                catch
+                {
+                    // A normal filter request will retry and surface any real file error.
+                }
+            });
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private static TextSectionIndex GetTextSectionIndex()
+        {
+            string filePath = Path.Combine(GlobalVariables.WorkingDirectory, "SystemFiles", "TextSections.etf");
+            DateTime lastWriteUtc = File.GetLastWriteTimeUtc(filePath);
+
+            lock (TextIndexSync)
+            {
+                if (CachedTextSections != null &&
+                    string.Equals(CachedTextSections.FilePath, filePath, StringComparison.OrdinalIgnoreCase) &&
+                    CachedTextSections.LastWriteUtc == lastWriteUtc)
+                {
+                    return CachedTextSections;
+                }
+
+                EuroText_TextSections source = new ETXML_Reader().ReadTextSectionsFile(filePath);
+                Dictionary<string, string> byLabel = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                foreach (KeyValuePair<string, string> section in source.TextSections)
+                {
+                    if (!byLabel.ContainsKey(section.Value))
                     {
-                        string section = reader.ReadElementContentAsString();
-
-                        // ----------------------------------------------------------------
-                        // Case 1: User selected "no section"
-                        // Match only if the ETF OutputSection is also empty or missing
-                        // ----------------------------------------------------------------
-                        if (searchingForNoSection)
-                        {
-                            if (string.IsNullOrEmpty(section))
-                            {
-                                return true;
-                            }
-
-                            continue;
-                        }
-
-                        // ----------------------------------------------------------------
-                        // Case 2: User selected a specific section
-                        // OutputSection may contain multiple values separated by ';'
-                        // ----------------------------------------------------------------
-                        if (!string.IsNullOrEmpty(section) && section.IndexOf(hashcodeToCheck, StringComparison.OrdinalIgnoreCase) >= 0)
-                        {
-                            return true;
-                        }
+                        byLabel.Add(section.Value, section.Key);
                     }
+                }
+
+                CachedTextSections = new TextSectionIndex
+                {
+                    FilePath = filePath,
+                    LastWriteUtc = lastWriteUtc,
+                    ByCode = new Dictionary<string, string>(source.TextSections, StringComparer.OrdinalIgnoreCase),
+                    ByLabel = byLabel
+                };
+                return CachedTextSections;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private static TextIndexEntry[] GetTextIndex()
+        {
+            string messagesPath = Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages");
+            lock (TextIndexSync)
+            {
+                if (TextIndexEntries != null && string.Equals(TextIndexDirectory, messagesPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    return TextIndexEntries;
+                }
+
+                string[] files = Directory.GetFiles(messagesPath, "*.etf", SearchOption.TopDirectoryOnly);
+                Array.Sort(files, StringComparer.OrdinalIgnoreCase);
+
+                TextIndexEntry[] entries = new TextIndexEntry[files.Length];
+                Parallel.For(
+                    0,
+                    files.Length,
+                    new ParallelOptions { MaxDegreeOfParallelism = Math.Min(Environment.ProcessorCount, 8) },
+                    i => entries[i] = ReadTextIndexEntry(files[i]));
+
+                TextIndexDirectory = messagesPath;
+                TextIndexEntries = entries;
+                BuildFilterLookups(entries);
+                ConfigureTextIndexWatcher(messagesPath);
+                return TextIndexEntries;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private static void BuildFilterLookups(TextIndexEntry[] entries)
+        {
+            Dictionary<string, HashSet<string>> groups = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, List<string>> sections = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (TextIndexEntry entry in entries)
+            {
+                if (!groups.TryGetValue(entry.Group ?? string.Empty, out HashSet<string> groupSections))
+                {
+                    groupSections = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    groups.Add(entry.Group ?? string.Empty, groupSections);
+                }
+
+                string[] outputSections = entry.OutputSections.Length == 0 ? new[] { string.Empty } : entry.OutputSections;
+                foreach (string section in outputSections)
+                {
+                    string sectionKey = section ?? string.Empty;
+                    groupSections.Add(sectionKey);
+
+                    if (!sections.TryGetValue(sectionKey, out List<string> hashCodes))
+                    {
+                        hashCodes = new List<string>();
+                        sections.Add(sectionKey, hashCodes);
+                    }
+                    hashCodes.Add(entry.HashCode);
                 }
             }
 
-            // No matching OutputSection found in this file
-            return false;
+            GroupSectionIndex = groups.ToDictionary(
+                item => item.Key,
+                item => item.Value.OrderBy(value => value, StringComparer.OrdinalIgnoreCase).ToArray(),
+                StringComparer.OrdinalIgnoreCase);
+
+            SectionHashCodeIndex = sections.ToDictionary(
+                item => item.Key,
+                item => item.Value.OrderBy(value => value, StringComparer.OrdinalIgnoreCase).ToArray(),
+                StringComparer.OrdinalIgnoreCase);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private static void UpdateTextIndexEntry(TextIndexEntry entry, string directory)
+        {
+            if (TextIndexEntries == null || !string.Equals(TextIndexDirectory, directory, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            int existingIndex = Array.FindIndex(
+                TextIndexEntries,
+                item => string.Equals(item.HashCode, entry.HashCode, StringComparison.OrdinalIgnoreCase));
+
+            if (existingIndex >= 0)
+            {
+                TextIndexEntries[existingIndex] = entry;
+            }
+            else
+            {
+                Array.Resize(ref TextIndexEntries, TextIndexEntries.Length + 1);
+                TextIndexEntries[TextIndexEntries.Length - 1] = entry;
+            }
+
+            BuildFilterLookups(TextIndexEntries);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private static void RefreshTextIndexFile(string filePath)
+        {
+            try
+            {
+                TextIndexEntry entry = ReadTextIndexEntry(filePath);
+                lock (TextIndexSync)
+                {
+                    UpdateTextIndexEntry(entry, Path.GetDirectoryName(filePath));
+                }
+            }
+            catch
+            {
+                // A second Changed event normally follows while an external writer finishes.
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private static void RemoveTextIndexFile(string filePath)
+        {
+            lock (TextIndexSync)
+            {
+                if (TextIndexEntries == null ||
+                    !string.Equals(TextIndexDirectory, Path.GetDirectoryName(filePath), StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+
+                string hashCode = Path.GetFileNameWithoutExtension(filePath);
+                TextIndexEntries = TextIndexEntries
+                    .Where(item => !string.Equals(item.HashCode, hashCode, StringComparison.OrdinalIgnoreCase))
+                    .ToArray();
+                BuildFilterLookups(TextIndexEntries);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private static TextIndexEntry ReadTextIndexEntry(string filePath)
+        {
+            TextIndexEntry entry = new TextIndexEntry
+            {
+                HashCode = Path.GetFileNameWithoutExtension(filePath),
+                Group = string.Empty,
+                OutputSections = new string[0]
+            };
+
+            XmlReaderSettings settings = new XmlReaderSettings
+            {
+                IgnoreComments = true,
+                IgnoreWhitespace = true,
+                DtdProcessing = DtdProcessing.Prohibit
+            };
+
+            using (XmlReader reader = XmlReader.Create(filePath, settings))
+            {
+                while (!reader.EOF)
+                {
+                    if (reader.NodeType == XmlNodeType.Element)
+                    {
+                        if (reader.Name == "Group")
+                        {
+                            entry.Group = reader.ReadElementContentAsString();
+                            continue;
+                        }
+                        if (reader.Name == "OutputSection")
+                        {
+                            entry.OutputSections = reader.ReadElementContentAsString()
+                                .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                            return entry;
+                        }
+                    }
+
+                    reader.Read();
+                }
+            }
+
+            return entry;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private static void ConfigureTextIndexWatcher(string messagesPath)
+        {
+            if (TextIndexWatcher != null)
+            {
+                TextIndexWatcher.Dispose();
+                TextIndexWatcher = null;
+            }
+
+            try
+            {
+                TextIndexWatcher = new FileSystemWatcher(messagesPath, "*.etf")
+                {
+                    NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.Size,
+                    IncludeSubdirectories = false,
+                    EnableRaisingEvents = true
+                };
+                TextIndexWatcher.Changed += (sender, e) => RefreshTextIndexFile(e.FullPath);
+                TextIndexWatcher.Created += (sender, e) => RefreshTextIndexFile(e.FullPath);
+                TextIndexWatcher.Deleted += (sender, e) => RemoveTextIndexFile(e.FullPath);
+                TextIndexWatcher.Renamed += (sender, e) =>
+                {
+                    RemoveTextIndexFile(e.OldFullPath);
+                    RefreshTextIndexFile(e.FullPath);
+                };
+            }
+            catch
+            {
+                // Explicit invalidation in ETXML_Writter still keeps application edits current.
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------

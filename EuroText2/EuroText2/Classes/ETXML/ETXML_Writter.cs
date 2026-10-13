@@ -57,6 +57,7 @@ namespace EuroText2
 
                 textWriter.WriteEndDocument();
                 textWriter.Close();
+                CommonFunctions.UpdateTextIndex(filepath, textObj.Group, textObj.OutputSection);
             }
             catch
             {
@@ -199,6 +200,7 @@ namespace EuroText2
                 }
                 textWriter.WriteEndDocument();
                 textWriter.Close();
+                CommonFunctions.InvalidateTextSectionsIndex();
             }
             catch
             {

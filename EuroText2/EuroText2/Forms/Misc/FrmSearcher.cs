@@ -119,7 +119,8 @@ namespace EuroText2
 
                     //Search for matches
                     string fileName = Path.GetFileNameWithoutExtension(textMessages[i]);
-                    EuroText_TextFile objTextData = filesReader.ReadTextFile(textMessages[i]);
+                    // Hashcode searches only need the file name. Avoid parsing every ETF.
+                    EuroText_TextFile objTextData = mode == 0 ? null : filesReader.ReadTextFile(textMessages[i]);
 
                     if (mode == 0) //Hash-Codes
                     {

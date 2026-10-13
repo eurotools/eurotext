@@ -70,6 +70,7 @@ namespace EuroText2
                     mainform.Text = string.Format("EuroText2: \"{0}\"", GlobalVariables.WorkingDirectory);
 
                     mainform.ReadTextGroups();
+                    CommonFunctions.WarmTextFilterIndex();
                 }
                 else
                 {

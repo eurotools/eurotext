@@ -20,11 +20,15 @@ namespace EuroText2
         private void Button_OK_Click(object sender, EventArgs e)
         {
             TextBox[] ButtonsTextBoxes = new TextBox[] { Textbox_Button1, Textbox_Button2, Textbox_Button3, Textbox_Button4, Textbox_Button5, Textbox_Button6, Textbox_Button7, Textbox_Button8 };
+            string buttonType = Textbox_ButtonType.Text.Trim();
             for (int i = 0; i < ButtonsTextBoxes.Length; i++)
             {
                 if (!string.IsNullOrEmpty(ButtonsTextBoxes[i].Text))
                 {
-                    ButtonsText += string.Join("", "<N>  <B " + (i + 1) + "> ", ButtonsTextBoxes[i].Text.Trim());
+                    string buttonParameters = string.IsNullOrEmpty(buttonType)
+                        ? (i + 1).ToString()
+                        : buttonType + ", " + (i + 1);
+                    ButtonsText += string.Join("", "<N>  <B " + buttonParameters + "> ", ButtonsTextBoxes[i].Text.Trim());
                 }
             }
 

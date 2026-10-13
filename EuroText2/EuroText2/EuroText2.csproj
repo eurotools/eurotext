@@ -86,6 +86,9 @@
     <Compile Include="Controls\CheckboxTriple.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\EngineXPreviewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Classes\CommonFunctions.cs" />
     <Compile Include="Classes\ETXML\ETXML_Reader.cs" />
     <Compile Include="Classes\ETXML\ETXML_Writter.cs" />
@@ -213,6 +216,30 @@
     <Compile Include="Forms\TextEditor\SubForms\Frm_TextCarrot.Designer.cs">
       <DependentUpon>Frm_TextCarrot.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_TextEffectAssistant.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_TextEffectAssistant.Designer.cs">
+      <DependentUpon>Frm_TextEffectAssistant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_ColourCycle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_ColourCycle.Designer.cs">
+      <DependentUpon>Frm_ColourCycle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_AlphaCycle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_AlphaCycle.Designer.cs">
+      <DependentUpon>Frm_AlphaCycle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_DynamicIcon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextEditor\SubForms\Frm_DynamicIcon.Designer.cs">
+      <DependentUpon>Frm_DynamicIcon.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Misc\FrmProjectProperties.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -325,6 +352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TextEditor\SubForms\Frm_WaitTime.resx">
       <DependentUpon>Frm_WaitTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TextEditor\SubForms\Frm_TextEditor_Buttons.resx">
+      <DependentUpon>Frm_TextEditor_Buttons.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
@@ -446,12 +476,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ConsoleControl\ConsoleControl.csproj">
-      <Project>{8779b550-5f60-4a3e-af7e-f0b3d96fa582}</Project>
-      <Name>ConsoleControl</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="clip06.ico" />

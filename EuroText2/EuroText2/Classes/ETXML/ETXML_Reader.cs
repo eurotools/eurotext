@@ -14,93 +14,92 @@ namespace EuroText2
         //-------------------------------------------------------------------------------------------------------------------------------
         internal EuroText_TextFile ReadTextFile(string filePath)
         {
-            //Create a text object
             EuroText_TextFile textObject = new EuroText_TextFile();
 
-            //Create reader
-            XmlDocument reader = new XmlDocument();
-            reader.Load(filePath);
-
-            //Ensure that is a valid file
-            if (reader.DocumentElement.Attributes["type"].Value.Equals("TEXTFILE"))
+            // Text files are read very frequently (search, export, validation, etc.).
+            // A forward-only reader avoids building an XmlDocument for every ETF file.
+            XmlReaderSettings settings = new XmlReaderSettings
             {
-                //Read Basic Info
-                XmlNodeList infoNodes = reader.SelectNodes("ETXML/Info/*");
-                foreach (XmlNode node in infoNodes)
+                IgnoreComments = true,
+                IgnoreWhitespace = true,
+                DtdProcessing = DtdProcessing.Prohibit
+            };
+
+            using (XmlReader reader = XmlReader.Create(filePath, settings))
+            {
+                reader.MoveToContent();
+                if (reader.NodeType != XmlNodeType.Element ||
+                    reader.Name != "ETXML" ||
+                    !string.Equals(reader.GetAttribute("type"), "TEXTFILE", StringComparison.Ordinal))
                 {
-                    switch (node.Name)
+                    return textObject;
+                }
+
+                reader.Read();
+                while (!reader.EOF)
+                {
+                    if (reader.NodeType != XmlNodeType.Element)
+                    {
+                        reader.Read();
+                        continue;
+                    }
+
+                    switch (reader.Name)
                     {
                         case "FirstCreated":
-                            textObject.FirstCreated = node.InnerText;
-                            break;
+                            textObject.FirstCreated = reader.ReadElementContentAsString();
+                            continue;
                         case "CreatedBy":
-                            textObject.CreatedBy = node.InnerText;
-                            break;
+                            textObject.CreatedBy = reader.ReadElementContentAsString();
+                            continue;
                         case "LastModified":
-                            textObject.LastModified = node.InnerText;
-                            break;
+                            textObject.LastModified = reader.ReadElementContentAsString();
+                            continue;
                         case "LastModifiedBy":
-                            textObject.LastModifiedBy = node.InnerText;
-                            break;
-                    }
-                }
-
-                //Read Basic Info
-                XmlNodeList rowInfoNodes = reader.SelectNodes("ETXML/RowInfo/*");
-                foreach (XmlNode node in rowInfoNodes)
-                {
-                    switch (node.Name)
-                    {
+                            textObject.LastModifiedBy = reader.ReadElementContentAsString();
+                            continue;
                         case "Color":
-                            textObject.RowColor = ColorTranslator.FromHtml(node.InnerText);
-                            break;
+                            textObject.RowColor = ColorTranslator.FromHtml(reader.ReadElementContentAsString());
+                            continue;
                         case "Notes":
-                            textObject.Notes = node.InnerText;
-                            break;
+                            textObject.Notes = reader.ReadElementContentAsString();
+                            continue;
                         case "Categories":
-                            textObject.textFlags = Convert.ToInt32(node.InnerText);
-                            break;
-                    }
-                }
-
-                //Read parameters section
-                XmlNodeList paremetersNodes = reader.SelectNodes("ETXML/Properties/*");
-                foreach (XmlNode node in paremetersNodes)
-                {
-                    switch (node.Name)
-                    {
+                            textObject.textFlags = Convert.ToInt32(reader.ReadElementContentAsString());
+                            continue;
                         case "Group":
-                            textObject.Group = node.InnerText;
-                            break;
+                            textObject.Group = reader.ReadElementContentAsString();
+                            continue;
                         case "Tone":
-                            textObject.Tone = node.InnerText;
-                            break;
+                            textObject.Tone = reader.ReadElementContentAsString();
+                            continue;
                         case "Gender":
-                            textObject.Gender = node.InnerText;
-                            break;
+                            textObject.Gender = reader.ReadElementContentAsString();
+                            continue;
                         case "Context":
-                            textObject.Context = node.InnerText;
-                            break;
+                            textObject.Context = reader.ReadElementContentAsString();
+                            continue;
                         case "OutputSection":
-                            textObject.OutputSection = node.InnerText.Split(';');
-                            break;
+                            textObject.OutputSection = reader.ReadElementContentAsString()
+                                .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                            continue;
                         case "MaxNumOfChars":
-                            textObject.MaxNumOfChars = Convert.ToInt32(node.InnerText);
-                            break;
+                            textObject.MaxNumOfChars = Convert.ToInt32(reader.ReadElementContentAsString());
+                            continue;
                         case "DeatText":
-                            textObject.DeadText = Convert.ToInt32(node.InnerText);
+                            textObject.DeadText = Convert.ToInt32(reader.ReadElementContentAsString());
+                            continue;
+                        case "Message":
+                            string currentLanguage = reader.GetAttribute("language");
+                            string message = reader.ReadElementContentAsString();
+                            if (!string.IsNullOrEmpty(currentLanguage) && !textObject.Messages.ContainsKey(currentLanguage))
+                            {
+                                textObject.Messages.Add(currentLanguage, message);
+                            }
+                            continue;
+                        default:
+                            reader.Read();
                             break;
-                    }
-                }
-
-                //Read messages language section
-                XmlNodeList messagesNdoes = reader.SelectNodes("ETXML/Messages/*");
-                foreach (XmlNode node in messagesNdoes)
-                {
-                    string currentLanguage = node.Attributes["language"].Value;
-                    if (!textObject.Messages.ContainsKey(currentLanguage))
-                    {
-                        textObject.Messages.Add(currentLanguage, node.InnerText);
                     }
                 }
             }

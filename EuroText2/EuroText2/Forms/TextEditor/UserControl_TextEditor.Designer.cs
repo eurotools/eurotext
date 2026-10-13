@@ -42,6 +42,7 @@ namespace EuroText2
             this.MenuItem_PageDownButton = new System.Windows.Forms.ToolStripMenuItem();
             this.DropDown_Icons = new System.Windows.Forms.ToolStripDropDownButton();
             this.MenuItem_ItemIcon = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_DynamicIcon = new System.Windows.Forms.ToolStripMenuItem();
             this.DropDown_Button = new System.Windows.Forms.ToolStripDropDownButton();
             this.MenuItem_FontType = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_FontColour = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,6 +51,13 @@ namespace EuroText2
             this.MenuItem_Fountain = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_SineWave = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_ShakeyText = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_Teletype = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_TeletypeFade = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_ColourCycle = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_AlphaCycle = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_CircularText = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_RisingText = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_RandomFontColour = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_EffectString = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_EnsureFastEffect = new System.Windows.Forms.ToolStripMenuItem();
             this.DropDown_GamePad = new System.Windows.Forms.ToolStripDropDownButton();
@@ -196,7 +204,8 @@ namespace EuroText2
             // 
             this.DropDown_Icons.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.DropDown_Icons.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItem_ItemIcon});
+            this.MenuItem_ItemIcon,
+            this.MenuItem_DynamicIcon});
             this.DropDown_Icons.Image = ((System.Drawing.Image)(resources.GetObject("DropDown_Icons.Image")));
             this.DropDown_Icons.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DropDown_Icons.Name = "DropDown_Icons";
@@ -209,6 +218,13 @@ namespace EuroText2
             this.MenuItem_ItemIcon.Size = new System.Drawing.Size(156, 22);
             this.MenuItem_ItemIcon.Text = "Insert Item Icon";
             this.MenuItem_ItemIcon.Click += new System.EventHandler(this.MenuItem_ItemIcon_Click);
+            // 
+            // MenuItem_DynamicIcon
+            // 
+            this.MenuItem_DynamicIcon.Name = "MenuItem_DynamicIcon";
+            this.MenuItem_DynamicIcon.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_DynamicIcon.Text = "Insert Dynamic Icon...";
+            this.MenuItem_DynamicIcon.Click += new System.EventHandler(this.MenuItem_DynamicIcon_Click);
             // 
             // DropDown_Button
             // 
@@ -244,6 +260,13 @@ namespace EuroText2
             this.MenuItem_Fountain,
             this.MenuItem_SineWave,
             this.MenuItem_ShakeyText,
+            this.MenuItem_Teletype,
+            this.MenuItem_TeletypeFade,
+            this.MenuItem_ColourCycle,
+            this.MenuItem_AlphaCycle,
+            this.MenuItem_CircularText,
+            this.MenuItem_RisingText,
+            this.MenuItem_RandomFontColour,
             this.MenuItem_EffectString,
             this.MenuItem_EnsureFastEffect});
             this.DropDown_Effect.Image = ((System.Drawing.Image)(resources.GetObject("DropDown_Effect.Image")));
@@ -279,6 +302,55 @@ namespace EuroText2
             this.MenuItem_ShakeyText.Size = new System.Drawing.Size(222, 22);
             this.MenuItem_ShakeyText.Text = "Shakey Text";
             this.MenuItem_ShakeyText.Click += new System.EventHandler(this.MenuItem_ShakeyText_Click);
+            // 
+            // MenuItem_Teletype
+            // 
+            this.MenuItem_Teletype.Name = "MenuItem_Teletype";
+            this.MenuItem_Teletype.Size = new System.Drawing.Size(222, 22);
+            this.MenuItem_Teletype.Text = "Teletype...";
+            this.MenuItem_Teletype.Click += new System.EventHandler(this.MenuItem_Teletype_Click);
+            // 
+            // MenuItem_TeletypeFade
+            // 
+            this.MenuItem_TeletypeFade.Name = "MenuItem_TeletypeFade";
+            this.MenuItem_TeletypeFade.Size = new System.Drawing.Size(222, 22);
+            this.MenuItem_TeletypeFade.Text = "Teletype and Fade...";
+            this.MenuItem_TeletypeFade.Click += new System.EventHandler(this.MenuItem_TeletypeFade_Click);
+            // 
+            // MenuItem_ColourCycle
+            // 
+            this.MenuItem_ColourCycle.Name = "MenuItem_ColourCycle";
+            this.MenuItem_ColourCycle.Size = new System.Drawing.Size(222, 22);
+            this.MenuItem_ColourCycle.Text = "Colour Cycle...";
+            this.MenuItem_ColourCycle.Click += new System.EventHandler(this.MenuItem_ColourCycle_Click);
+            // 
+            // MenuItem_AlphaCycle
+            // 
+            this.MenuItem_AlphaCycle.Name = "MenuItem_AlphaCycle";
+            this.MenuItem_AlphaCycle.Size = new System.Drawing.Size(222, 22);
+            this.MenuItem_AlphaCycle.Text = "Alpha Cycle...";
+            this.MenuItem_AlphaCycle.Click += new System.EventHandler(this.MenuItem_AlphaCycle_Click);
+            // 
+            // MenuItem_CircularText
+            // 
+            this.MenuItem_CircularText.Name = "MenuItem_CircularText";
+            this.MenuItem_CircularText.Size = new System.Drawing.Size(222, 22);
+            this.MenuItem_CircularText.Text = "Circular Text...";
+            this.MenuItem_CircularText.Click += new System.EventHandler(this.MenuItem_CircularText_Click);
+            // 
+            // MenuItem_RisingText
+            // 
+            this.MenuItem_RisingText.Name = "MenuItem_RisingText";
+            this.MenuItem_RisingText.Size = new System.Drawing.Size(222, 22);
+            this.MenuItem_RisingText.Text = "Rising Text...";
+            this.MenuItem_RisingText.Click += new System.EventHandler(this.MenuItem_RisingText_Click);
+            // 
+            // MenuItem_RandomFontColour
+            // 
+            this.MenuItem_RandomFontColour.Name = "MenuItem_RandomFontColour";
+            this.MenuItem_RandomFontColour.Size = new System.Drawing.Size(222, 22);
+            this.MenuItem_RandomFontColour.Text = "Random Font Colour...";
+            this.MenuItem_RandomFontColour.Click += new System.EventHandler(this.MenuItem_RandomFontColour_Click);
             // 
             // MenuItem_EffectString
             // 
@@ -687,6 +759,7 @@ namespace EuroText2
         private System.Windows.Forms.ToolStripMenuItem MenuItem_NewLine;
         private System.Windows.Forms.ToolStripDropDownButton DropDown_Icons;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_ItemIcon;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_DynamicIcon;
         private System.Windows.Forms.ToolStrip Toolbar2;
         private System.Windows.Forms.ToolStripButton ToolButton_Cut;
         private System.Windows.Forms.ToolStripButton ToolButton_Copy;
@@ -739,6 +812,13 @@ namespace EuroText2
         private System.Windows.Forms.ToolStripButton ToolButton_Preview;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_SineWave;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_ShakeyText;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Teletype;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_TeletypeFade;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_ColourCycle;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_AlphaCycle;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_CircularText;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_RisingText;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_RandomFontColour;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_EnsureFastEffect;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Fountain;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_TextCarrot;

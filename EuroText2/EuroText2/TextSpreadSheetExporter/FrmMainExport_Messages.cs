@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace EuroText2
 {
@@ -61,6 +61,7 @@ namespace EuroText2
             ICellStyle textLangsStyle = workbook.CreateCellStyle();
             textLangsStyle.VerticalAlignment = VerticalAlignment.Top;
             textLangsStyle.Alignment = HorizontalAlignment.Left;
+            textLangsStyle.WrapText = true;
             textLangsStyle.BorderLeft = BorderStyle.Thin;
             textLangsStyle.BorderTop = BorderStyle.Thin;
             textLangsStyle.BorderRight = BorderStyle.Thin;
@@ -639,12 +640,25 @@ namespace EuroText2
             string[] messagesToPrint = Directory.GetFiles(Path.Combine(GlobalVariables.CurrentProject.MessagesDirectory, "Messages"), "*.etf", SearchOption.TopDirectoryOnly);
             Array.Sort(messagesToPrint);
 
+            // XML parsing is independent for each file. Load it in parallel, then keep
+            // the existing sorted order while grouping and writing through NPOI.
+            EuroText_TextFile[] loadedMessages = new EuroText_TextFile[messagesToPrint.Length];
+            Parallel.For(
+                0,
+                messagesToPrint.Length,
+                new ParallelOptions { MaxDegreeOfParallelism = Math.Min(Environment.ProcessorCount, 8) },
+                i =>
+                {
+                    EuroText_TextFile textObj = textReader.ReadTextFile(messagesToPrint[i]);
+                    textObj.HashCode = Path.GetFileNameWithoutExtension(messagesToPrint[i]);
+                    loadedMessages[i] = textObj;
+                });
+
             //Filter
             Dictionary<string, List<EuroText_TextFile>> messagesCategorizes = new Dictionary<string, List<EuroText_TextFile>>();
             for (int i = 0; i < messagesToPrint.Length; i++)
             {
-                EuroText_TextFile textObj = textReader.ReadTextFile(messagesToPrint[i]);
-                textObj.HashCode = Path.GetFileNameWithoutExtension(messagesToPrint[i]);
+                EuroText_TextFile textObj = loadedMessages[i];
 
                 //Skip hashcodes with no section
                 if (textObj.OutputSection.Length == 0 && !WantsHashcodesNoSection)
@@ -740,7 +754,6 @@ namespace EuroText2
                                 {
                                     langCell.SetCellValue(textObj.Messages[languageToPrint]);
                                 }
-                                langCell.CellStyle.WrapText = true;
                             }
 
                             //Empty section
@@ -788,8 +801,6 @@ namespace EuroText2
                             lastColIndex = 0;
 
                         }
-
-                        Thread.Sleep(1);
                     }
 
                     headerRow = Messages.CreateRow(rowIndex++);

@@ -256,6 +256,16 @@ namespace EuroText2
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_DynamicIcon_Click(object sender, EventArgs e)
+        {
+            Frm_DynamicIcon selector = new Frm_DynamicIcon();
+            if (selector.ShowDialog() == DialogResult.OK)
+            {
+                Textbox.SelectedText = selector.DynamicIconText;
+            }
+        }
+
         //-------------------------------------------------------------------------------------------
         //  TOOLBAR 1 - FONT MENU
         //-------------------------------------------------------------------------------------------
@@ -353,6 +363,79 @@ namespace EuroText2
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        private void InsertConfiguredEffect(TextEffectAssistantMode mode)
+        {
+            Frm_TextEffectAssistant selector = new Frm_TextEffectAssistant(mode);
+            if (selector.ShowDialog() == DialogResult.OK)
+            {
+                InsertEffect(selector.EffectText, selector.EndText);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void InsertEffect(string effectText, string endText)
+        {
+            if (Textbox.SelectedText.Length > 0)
+            {
+                Textbox.SelectedText = effectText + Textbox.SelectedText + endText;
+            }
+            else
+            {
+                Textbox.SelectedText = effectText;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_Teletype_Click(object sender, EventArgs e)
+        {
+            InsertConfiguredEffect(TextEffectAssistantMode.Teletype);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_TeletypeFade_Click(object sender, EventArgs e)
+        {
+            InsertConfiguredEffect(TextEffectAssistantMode.TeletypeFade);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_ColourCycle_Click(object sender, EventArgs e)
+        {
+            Frm_ColourCycle selector = new Frm_ColourCycle();
+            if (selector.ShowDialog() == DialogResult.OK)
+            {
+                InsertEffect(selector.EffectText, "<END CC>");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_AlphaCycle_Click(object sender, EventArgs e)
+        {
+            Frm_AlphaCycle selector = new Frm_AlphaCycle();
+            if (selector.ShowDialog() == DialogResult.OK)
+            {
+                InsertEffect(selector.EffectText, "<END AC>");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_CircularText_Click(object sender, EventArgs e)
+        {
+            InsertConfiguredEffect(TextEffectAssistantMode.CircularText);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_RisingText_Click(object sender, EventArgs e)
+        {
+            InsertConfiguredEffect(TextEffectAssistantMode.RisingText);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void MenuItem_RandomFontColour_Click(object sender, EventArgs e)
+        {
+            InsertConfiguredEffect(TextEffectAssistantMode.RandomFontColour);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void MenuItem_SineWave_Click(object sender, EventArgs e)
         {
             Frm_SineWave selector = new Frm_SineWave();
@@ -421,7 +504,7 @@ namespace EuroText2
                 string replacedText;
                 if (Textbox.SelectedText.Length > 0)
                 {
-                    replacedText = string.Format("{0}{1}{2}", fountain.fountainEffect, Textbox.SelectedText, "<END FI>");
+                    replacedText = string.Format("{0}{1}{2}", fountain.fountainEffect, Textbox.SelectedText, "<END FTN>");
                 }
                 else
                 {
@@ -616,7 +699,7 @@ namespace EuroText2
         //-------------------------------------------------------------------------------------------------------------------------------
         private void ToolButton_Preview_Click(object sender, EventArgs e)
         {
-            Frm_Preview previewForm = new Frm_Preview(Textbox.Text);
+            Frm_Preview previewForm = new Frm_Preview(Textbox.Text, Text);
             previewForm.ShowDialog();
         }
     }

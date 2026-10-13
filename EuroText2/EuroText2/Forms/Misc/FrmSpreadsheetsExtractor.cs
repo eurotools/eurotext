@@ -32,7 +32,12 @@ namespace EuroText2
                     //  - OpenXml Excel files (2007 format; *.xlsx, *.xlsb)
                     using (var reader = ExcelReaderFactory.CreateReader(stream))
                     {
-                        DataSet result = reader.AsDataSet();
+                        DataSet result = reader.AsDataSet(new ExcelDataSetConfiguration
+                        {
+                            // All consumers convert cell values to strings. Skipping the
+                            // extra type-inference pass makes large sheets load faster.
+                            UseColumnDataType = false
+                        });
 
                         // The result of each spreadsheet is in result.Tables
                         DataGridView_ExcelSheet.DataSource = result.Tables[0];

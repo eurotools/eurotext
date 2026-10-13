@@ -5,6 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EuroText2
@@ -153,11 +154,18 @@ namespace EuroText2
                     string[] dialogsTexts = Directory.GetFiles(textFilesDirectory, "*.etf", SearchOption.AllDirectories);
                     Array.Sort(dialogsTexts);
 
+                    EuroText_TextFile[] loadedTexts = new EuroText_TextFile[dialogsTexts.Length];
+                    Parallel.For(
+                        0,
+                        dialogsTexts.Length,
+                        new ParallelOptions { MaxDegreeOfParallelism = Math.Min(Environment.ProcessorCount, 8) },
+                        i => loadedTexts[i] = readerMethods.ReadTextFile(dialogsTexts[i]));
+
                     int rowIndex = 1;
                     for (int i = 0; i < dialogsTexts.Length; i++)
                     {
                         bool addItem = true;
-                        EuroText_TextFile objTextData = readerMethods.ReadTextFile(dialogsTexts[i]);
+                        EuroText_TextFile objTextData = loadedTexts[i];
 
                         // check flags
                         int flags = int.Parse(txtExportFlags.Tag.ToString());
@@ -273,6 +281,7 @@ namespace EuroText2
                     {
                         var conf = new ExcelDataSetConfiguration()
                         {
+                            UseColumnDataType = false,
                             ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
                             {
                                 UseHeaderRow = true // <- esto usa la primera fila como encabezados

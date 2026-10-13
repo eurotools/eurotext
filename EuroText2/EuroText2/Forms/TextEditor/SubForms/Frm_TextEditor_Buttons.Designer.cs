@@ -48,6 +48,8 @@ namespace EuroText2
             this.Label_Button5 = new System.Windows.Forms.Label();
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
+            this.Label_ButtonType = new System.Windows.Forms.Label();
+            this.Textbox_ButtonType = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // Label_Button1
@@ -181,8 +183,8 @@ namespace EuroText2
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_OK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_OK.Location = new System.Drawing.Point(366, 127);
+            this.Button_OK.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.Button_OK.Location = new System.Drawing.Point(366, 155);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 16;
@@ -194,7 +196,7 @@ namespace EuroText2
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(447, 127);
+            this.Button_Cancel.Location = new System.Drawing.Point(447, 155);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 17;
@@ -202,13 +204,31 @@ namespace EuroText2
             this.Button_Cancel.UseVisualStyleBackColor = true;
             this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
             // 
+            // Label_ButtonType
+            // 
+            this.Label_ButtonType.AutoSize = true;
+            this.Label_ButtonType.Location = new System.Drawing.Point(12, 132);
+            this.Label_ButtonType.Name = "Label_ButtonType";
+            this.Label_ButtonType.Size = new System.Drawing.Size(69, 13);
+            this.Label_ButtonType.TabIndex = 18;
+            this.Label_ButtonType.Text = "Type (opt.):";
+            // 
+            // Textbox_ButtonType
+            // 
+            this.Textbox_ButtonType.Location = new System.Drawing.Point(87, 129);
+            this.Textbox_ButtonType.Name = "Textbox_ButtonType";
+            this.Textbox_ButtonType.Size = new System.Drawing.Size(177, 20);
+            this.Textbox_ButtonType.TabIndex = 19;
+            // 
             // Frm_TextEditor_Buttons
             // 
             this.AcceptButton = this.Button_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
-            this.ClientSize = new System.Drawing.Size(534, 162);
+            this.ClientSize = new System.Drawing.Size(534, 190);
+            this.Controls.Add(this.Textbox_ButtonType);
+            this.Controls.Add(this.Label_ButtonType);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Button_OK);
             this.Controls.Add(this.Textbox_Button8);
@@ -260,5 +280,7 @@ namespace EuroText2
         private System.Windows.Forms.Label Label_Button5;
         private System.Windows.Forms.Button Button_OK;
         private System.Windows.Forms.Button Button_Cancel;
+        private System.Windows.Forms.Label Label_ButtonType;
+        private System.Windows.Forms.TextBox Textbox_ButtonType;
     }
 }
