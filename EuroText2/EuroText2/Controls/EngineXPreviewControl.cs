@@ -103,7 +103,7 @@ namespace EuroText2
         private Font previewFont;
         private int layoutWidth = -1;
         private Font layoutFont;
-        private float layoutTextCenterY;
+        private float layoutFountainOriginY;
         private int previewRandomSeed = Guid.NewGuid().GetHashCode();
         private int randomColourTagCounter;
         private int randomEffectTagCounter;
@@ -724,7 +724,10 @@ namespace EuroText2
                     glyph.Position = new PointF(glyph.Position.X, glyph.Position.Y + verticalShift);
                 }
             }
-            layoutTextCenterY = (padding + verticalShift + blockBottom + verticalShift) * 0.5f;
+            // The captured FTN nucleus sits at a fixed point inside the
+            // four-line help band, independently of the number of laid-out
+            // lines: about one and a quarter line heights below its top.
+            layoutFountainOriginY = textBandTop + lineHeight * 1.25f;
         }
 
         private Color GetAnimatedColour(PreviewGlyph glyph, long elapsed)
@@ -918,14 +921,9 @@ namespace EuroText2
 
                 if (progress < 1.0)
                 {
-                    // EngineX advances a flying glyph at a nearly constant
-                    // rate. Short-lived glyphs get a proportionally shorter
-                    // arc instead of being forced through the same large arc
-                    // at a much higher speed.
-                    double trajectoryProgress = progress;
                     float sourceX = ClientSize.Width * 0.5f;
-                    float sourceY = layoutTextCenterY > 0.0f
-                        ? layoutTextCenterY - previewFont.GetHeight() * 1.25f
+                    float sourceY = layoutFountainOriginY > 0.0f
+                        ? layoutFountainOriginY
                         : ClientSize.Height * 0.5f;
 
                     float durationFactor = Math.Max(0.0f, Math.Min(1.0f,
@@ -945,9 +943,6 @@ namespace EuroText2
                         fontHeight * 10.0f);
                     float lateralDistance = lateralReach * durationFactor
                         * lateralDirection;
-                    double ballisticCurve = 4.0 * trajectoryProgress * (1.0 - trajectoryProgress);
-                    float currentX = sourceX + (glyph.Position.X - sourceX) * (float)trajectoryProgress
-                        + lateralDistance * (float)ballisticCurve;
 
                     // Longer-lived characters are fired harder and therefore
                     // climb higher, as in the capture. A second small random
@@ -959,14 +954,35 @@ namespace EuroText2
                     float arcHeight = verticalReach
                         * (0.92f + heightVariation * 0.08f)
                         * durationFactor * durationFactor;
-                    float currentY = sourceY + (glyph.Position.Y - sourceY) * (float)trajectoryProgress
-                        - arcHeight * (float)ballisticCurve;
+
+                    // EngineX reaches the crown near the middle of the
+                    // character's allotted time. Linear time through this
+                    // parabola gives the captured constant horizontal motion
+                    // and constant downward acceleration.
+                    double trajectoryProgress = progress;
+                    PointF current = GetFountainPathPoint(trajectoryProgress,
+                        sourceX, sourceY, glyph.Position.X, glyph.Position.Y,
+                        lateralDistance, arcHeight);
+                    float currentX = current.X;
+                    float currentY = current.Y;
 
                     x += currentX - glyph.Position.X;
                     y += currentY - glyph.Position.Y;
                 }
             }
             return new PointF(x, y);
+        }
+
+        private static PointF GetFountainPathPoint(double progress,
+            float sourceX, float sourceY, float targetX, float targetY,
+            float lateralDistance, float arcHeight)
+        {
+            double curve = 4.0 * progress * (1.0 - progress);
+            return new PointF(
+                sourceX + (targetX - sourceX) * (float)progress
+                    + lateralDistance * (float)curve,
+                sourceY + (targetY - sourceY) * (float)progress
+                    - arcHeight * (float)curve);
         }
 
         private static int GetFountainDuration(EffectState state, int glyphIndex)
