@@ -152,6 +152,30 @@ namespace EuroText2
         {
             if (!playing) return;
             long time = playbackOffset + playbackWatch.ElapsedMilliseconds;
+
+            while (PreviewCanvas.CurrentPageAutoAdvances
+                && time >= PreviewCanvas.CurrentPageAutoAdvanceTime)
+            {
+                long overflow = time - PreviewCanvas.CurrentPageAutoAdvanceTime;
+                if (PreviewCanvas.PageIndex + 1 >= PreviewCanvas.PageCount)
+                {
+                    // The final W clears the window just as EngineX does.
+                    PreviewCanvas.SetAnimationTime(PreviewCanvas.CurrentPageAutoAdvanceTime);
+                    playbackOffset = PreviewCanvas.CurrentPageAutoAdvanceTime;
+                    playbackWatch.Reset();
+                    playing = false;
+                    Timer_Animation.Stop();
+                    UpdatePlaybackButton();
+                    return;
+                }
+
+                PreviewCanvas.SetPage(PreviewCanvas.PageIndex + 1);
+                time = Math.Max(0, overflow);
+                playbackOffset = time;
+                playbackWatch.Restart();
+                UpdatePageControls();
+            }
+
             PreviewCanvas.SetAnimationTime(time);
         }
 

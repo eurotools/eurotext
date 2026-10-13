@@ -27,7 +27,8 @@ namespace EuroText2
             public float ShakeVariance = 2.0f;
             public float ShakeSpeed = 2.0f;
             public bool FadeIn;
-            public int FadeDuration = 30;
+            // FI without arguments uses EngineX's 60-tick (two second) fade.
+            public int FadeDuration = 60;
             public int FadeDelay;
             public bool Fountain;
             public int FountainDuration = 60;
@@ -36,15 +37,13 @@ namespace EuroText2
             public long FountainStartTime;
             public bool Circular;
             public float CircleFrequency = 2.0f;
-            // The retail EngineX build behaves as CT 2,30,3 when CT has no
-            // arguments (verified frame-for-frame against the captured game).
-            public float CircleSpeed = 30.0f;
-            public float CircleRadius = 3.0f;
+            public float CircleSpeed = 35.0f;
+            public float CircleRadius = 6.0f;
             public int CircleStartIndex;
             public bool Rising;
             public float RisingSpeed = 120.0f;
             public bool RandomColour;
-            public float RandomRate = 30.0f;
+            public float RandomRate = 15.0f;
             public int RandomColourStartIndex;
             public int RandomColourSeed;
             public List<Color> CycleColours;
@@ -69,7 +68,7 @@ namespace EuroText2
             public float ForcedXPercent = -1.0f;
             public PointF Position;
             public SizeF Size;
-            public float AlphaCycleOriginX;
+            public float AlphaCycleDistance;
         }
 
         private sealed class ColourState
@@ -84,6 +83,8 @@ namespace EuroText2
         {
             public readonly List<PreviewGlyph> Glyphs = new List<PreviewGlyph>();
             public long Duration;
+            public bool AutoAdvance;
+            public long AutoAdvanceTime;
         }
 
         private sealed class PreviewLine
@@ -137,6 +138,20 @@ namespace EuroText2
             {
                 if (pages.Count == 0) return 0;
                 return pages[pageIndex].Duration;
+            }
+        }
+
+        public bool CurrentPageAutoAdvances
+        {
+            get { return pages.Count > 0 && pages[pageIndex].AutoAdvance; }
+        }
+
+        public long CurrentPageAutoAdvanceTime
+        {
+            get
+            {
+                if (pages.Count == 0 || !pages[pageIndex].AutoAdvance) return 0;
+                return pages[pageIndex].AutoAdvanceTime;
             }
         }
 
@@ -217,9 +232,13 @@ namespace EuroText2
             e.Graphics.Clear(Color.Black);
             if (pages.Count == 0 || previewFont == null) return;
 
+            PreviewPage page = pages[pageIndex];
+            // W clears the current help window at its exact deadline. The
+            // form will select the following page on the same timer tick.
+            if (page.AutoAdvance && animationTime >= page.AutoAdvanceTime) return;
+
             e.Graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             EnsureLayout(e.Graphics);
-            PreviewPage page = pages[pageIndex];
             for (int i = 0; i < page.Glyphs.Count; i++)
             {
                 PreviewGlyph glyph = page.Glyphs[i];
@@ -266,14 +285,23 @@ namespace EuroText2
                     }
                 }
 
-                AddCharacter(page, rawText[position], state, revealTime, ref glyphIndex, nextXPercent);
+                char character = rawText[position];
+                AddCharacter(page, character, state, revealTime, ref glyphIndex, nextXPercent);
                 nextXPercent = -1.0f;
-                if (state.Teletype) revealTime += characterDelay;
+                // EngineX advances TT and TTF on visible glyphs. Whitespace
+                // is laid out at the current reveal time but does not consume
+                // another 30 Hz step; punctuation does consume one normally.
+                if (state.Teletype && !char.IsWhiteSpace(character))
+                {
+                    revealTime += characterDelay;
+                }
             }
 
             foreach (PreviewPage parsedPage in pages)
             {
-                parsedPage.Duration = Math.Max(parsedPage.Duration, GetLastRevealTime(parsedPage) + 500);
+                long tail = parsedPage.AutoAdvance ? 0 : 500;
+                parsedPage.Duration = Math.Max(parsedPage.Duration,
+                    GetLastRevealTime(parsedPage) + tail);
             }
             layoutWidth = -1;
             if (pageIndex >= pages.Count) pageIndex = pages.Count - 1;
@@ -290,7 +318,9 @@ namespace EuroText2
             }
             if (upperTag == "P")
             {
-                page.Duration = Math.Max(page.Duration, revealTime + 500);
+                page.Duration = Math.Max(page.Duration, page.AutoAdvance
+                    ? page.AutoAdvanceTime
+                    : revealTime + 500);
                 page = new PreviewPage();
                 pages.Add(page);
                 revealTime = 0;
@@ -299,7 +329,9 @@ namespace EuroText2
             }
             if (upperTag == "E")
             {
-                page.Duration = Math.Max(page.Duration, revealTime + 500);
+                page.Duration = Math.Max(page.Duration, page.AutoAdvance
+                    ? page.AutoAdvanceTime
+                    : revealTime + 500);
                 return true;
             }
             if (upperTag == "LT" || upperTag == "MT")
@@ -318,7 +350,16 @@ namespace EuroText2
             if (upperTag.StartsWith("W "))
             {
                 List<int> waitValues = GetNumbers(tag);
-                if (waitValues.Count > 0) revealTime += waitValues[0] * 1000L / 30L;
+                if (waitValues.Count > 0)
+                {
+                    // W starts after all content parsed before it has been
+                    // revealed, then clears this page after the given number
+                    // of native 30 Hz ticks.
+                    revealTime += Math.Max(0, waitValues[0]) * 1000L / 30L;
+                    page.AutoAdvance = true;
+                    page.AutoAdvanceTime = revealTime;
+                    page.Duration = Math.Max(page.Duration, revealTime);
+                }
                 return true;
             }
             if (upperTag == "CNTR") { state.Centered = true; return true; }
@@ -420,8 +461,11 @@ namespace EuroText2
             {
                 List<int> values = GetNumbers(tag);
                 state.FadeIn = true;
-                if (values.Count > 0) state.FadeDuration = values[0];
-                if (values.Count > 1) state.FadeDelay = values[1];
+                // FI defaults to a 60-tick fade with no wait. Its optional
+                // second value is the invisible hold before the block starts
+                // fading. Reset both so consecutive FI blocks are independent.
+                state.FadeDuration = values.Count > 0 ? Math.Max(1, values[0]) : 60;
+                state.FadeDelay = values.Count > 1 ? Math.Max(0, values[1]) : 0;
                 return true;
             }
             if (upperTag == "END FI") { state.FadeIn = false; return true; }
@@ -431,7 +475,13 @@ namespace EuroText2
                 state.Fountain = true;
                 state.FountainStartIndex = glyphIndex;
                 state.FountainStartTime = revealTime;
-                if (values.Count > 0) state.FountainDuration = Math.Max(1, values[0]);
+                // FTN defaults to a random landing time from 0 to 60 ticks
+                // (two seconds). A single value replaces only that maximum;
+                // the minimum remains zero. Reset both defaults on every new
+                // block so parameters from an earlier FTN cannot leak in.
+                state.FountainDuration = values.Count > 0
+                    ? Math.Max(1, values[0])
+                    : 60;
                 state.FountainMinDuration = values.Count > 1
                     ? Math.Max(0, Math.Min(state.FountainDuration, values[1]))
                     : 0;
@@ -443,9 +493,12 @@ namespace EuroText2
                 List<int> values = GetNumbers(tag);
                 state.Circular = true;
                 state.CircleStartIndex = glyphIndex;
-                if (values.Count > 0) state.CircleFrequency = values[0];
-                if (values.Count > 1) state.CircleSpeed = values[1];
-                if (values.Count > 2) state.CircleRadius = values[2];
+                // EngineX fills omitted CT parameters independently with
+                // Frequency 2, Speed 35 and Radius 6. Reset every field here
+                // so a partial CT never inherits values from an earlier one.
+                state.CircleFrequency = values.Count > 0 ? values[0] : 2.0f;
+                state.CircleSpeed = values.Count > 1 ? values[1] : 35.0f;
+                state.CircleRadius = values.Count > 2 ? values[2] : 6.0f;
                 return true;
             }
             if (upperTag == "END CT") { state.Circular = false; return true; }
@@ -464,7 +517,12 @@ namespace EuroText2
                 state.RandomColourStartIndex = glyphIndex;
                 state.RandomColourSeed = previewRandomSeed
                     ^ (++randomEffectTagCounter * 16777619);
-                if (values.Count > 0) state.RandomRate = values[0];
+                // RFC without a value holds each random palette for 15
+                // EngineX ticks (30 frames in the 60 Hz capture). Reset the
+                // default so a preceding explicit rate cannot leak into it.
+                state.RandomRate = values.Count > 0
+                    ? Math.Max(1, values[0])
+                    : 15.0f;
                 return true;
             }
             if (upperTag == "END RFC") { state.RandomColour = false; return true; }
@@ -486,6 +544,11 @@ namespace EuroText2
             {
                 page.Duration = Math.Max(page.Duration,
                     state.FountainStartTime + state.FountainDuration * 1000L / 30L);
+            }
+            if (state.FadeIn)
+            {
+                page.Duration = Math.Max(page.Duration, revealTime
+                    + (state.FadeDelay + state.FadeDuration) * 1000L / 30L);
             }
         }
 
@@ -532,7 +595,10 @@ namespace EuroText2
         {
             List<int> values = GetNumbers(tag);
             int start = values.Count % 4 == 1 ? 1 : 0;
-            if (start == 1) state.ColourCycleSpeed = Math.Max(1, values[0]);
+            // With no leading speed EngineX uses 30 ticks: the complete list
+            // cycles in one second. Reset it explicitly so a preceding CC
+            // with a custom speed cannot leak into this effect.
+            state.ColourCycleSpeed = start == 1 ? Math.Max(1, values[0]) : 30;
             List<Color> colours = new List<Color>();
             for (int i = start; i + 3 < values.Count; i += 4)
             {
@@ -582,9 +648,6 @@ namespace EuroText2
                 }
 
                 glyph.Size = graphics.MeasureString(glyph.Character.ToString(), previewFont, PointF.Empty, StringFormat.GenericTypographic);
-                // GDI+ reports little or no advance for an isolated trailing space.
-                // The preview lays text out glyph by glyph, so give spaces an
-                // explicit advance derived from the selected font size.
                 if (glyph.Character == ' ')
                 {
                     glyph.Size = new SizeF(Math.Max(2.0f, previewFont.SizeInPoints * 0.52f), glyph.Size.Height);
@@ -614,27 +677,31 @@ namespace EuroText2
                 }
             }
 
-            // AC is a horizontal travelling band. Keep the phase tied to the
-            // laid-out X coordinate rather than the character number, so
-            // proportional fonts do not turn it into a letter-by-letter
-            // blink. Each AC tag owns a list instance shared by its glyphs.
-            Dictionary<List<int>, float> alphaCycleOrigins = new Dictionary<List<int>, float>();
+            // AC follows the accumulated typographic distance, as though the
+            // affected text were one continuous horizontal strip. Explicit
+            // and automatic line breaks therefore do not restart or align
+            // the band, while proportional fonts still produce a smooth
+            // sweep. Each AC tag owns a list instance shared by its glyphs.
+            Dictionary<List<int>, float> alphaCycleDistances = new Dictionary<List<int>, float>();
             for (int i = 0; i < page.Glyphs.Count; i++)
             {
                 PreviewGlyph glyph = page.Glyphs[i];
                 List<int> cycle = glyph.State.CycleAlphas;
-                if (glyph.NewLine || cycle == null || cycle.Count < 2) continue;
-                float origin;
-                if (!alphaCycleOrigins.TryGetValue(cycle, out origin))
+                if (cycle == null || cycle.Count < 2) continue;
+                float distance;
+                if (!alphaCycleDistances.TryGetValue(cycle, out distance))
                 {
-                    origin = glyph.Position.X;
-                    alphaCycleOrigins.Add(cycle, origin);
+                    distance = 0.0f;
                 }
-                glyph.AlphaCycleOriginX = origin;
+                glyph.AlphaCycleDistance = distance;
+                if (!glyph.NewLine)
+                {
+                    distance += Math.Max(1.0f, glyph.Size.Width);
+                }
+                alphaCycleDistances[cycle] = distance;
             }
 
-            // EngineX normally presents dialogue and help text along the
-            // bottom of the viewport. Move the complete laid-out block as a
+            // Move the complete laid-out block as a
             // unit so explicit new lines, wrapping and horizontal alignment
             // retain exactly the same geometry.
             float blockBottom = y + lineHeight;
@@ -718,7 +785,7 @@ namespace EuroText2
                 // normalized by the selected font size, so resizing the text
                 // changes its pixel width without changing the apparent band.
                 int cycleDuration = Math.Max(1, state.AlphaCycleSpeed) * 1000 / 30;
-                double normalizedDistance = (glyph.Position.X - glyph.AlphaCycleOriginX)
+                double normalizedDistance = glyph.AlphaCycleDistance
                     * 12.0 / Math.Max(1.0f, previewFont.SizeInPoints);
                 const double phaseMillisecondsPerPixelAt12Points = 1.6;
                 double phaseTime = animationTime
@@ -737,12 +804,26 @@ namespace EuroText2
                 double blended = first + (second - first) * fraction;
                 alpha = Convert.ToInt32(Math.Pow(Math.Max(0.0, blended), 1.0 / 2.2) * 255.0);
             }
-            if (state.TeletypeFade) alpha = Math.Min(alpha, Convert.ToInt32(Math.Min(1.0, elapsed / 250.0) * 255.0));
+            if (state.TeletypeFade)
+            {
+                // EngineX fades every newly revealed TTF glyph for 30 ticks
+                // (one second). The captured curve is a sine ease-out rather
+                // than a linear ramp, which gives it the characteristic soft
+                // but quickly readable appearance.
+                double progress = Math.Max(0.0, Math.Min(1.0, elapsed / 1000.0));
+                int fadeAlpha = Convert.ToInt32(Math.Sin(progress * Math.PI * 0.5) * 255.0);
+                alpha = Math.Min(alpha, fadeAlpha);
+            }
             if (state.FadeIn)
             {
                 long delay = state.FadeDelay * 1000L / 30L;
                 long duration = Math.Max(1, state.FadeDuration) * 1000L / 30L;
-                alpha = Math.Min(alpha, Convert.ToInt32(Math.Max(0.0, Math.Min(1.0, (elapsed - delay) / (double)duration)) * 255.0));
+                double progress = Math.Max(0.0, Math.Min(1.0,
+                    (elapsed - delay) / (double)duration));
+                // The original renderer uses the same sine ease-out visible
+                // in TTF: halfway through FI the text is about 70% opaque.
+                int fadeAlpha = Convert.ToInt32(Math.Sin(progress * Math.PI * 0.5) * 255.0);
+                alpha = Math.Min(alpha, fadeAlpha);
             }
             return Math.Max(0, Math.Min(255, alpha));
         }
@@ -755,22 +836,27 @@ namespace EuroText2
             double seconds = animationTime / 1000.0;
             if (state.SineWave)
             {
-                // EngineX keeps SW moving for as long as the page is visible.
-                // The captured effect completes a cycle in about 1.05 seconds
-                // (six radians per second) with a subtle 0.08 radian phase
-                // offset between neighbouring glyphs.
+                // Keeps SW moving for as long as the page is visible.
+                // EngineX keeps the temporal speed fixed at about one cycle per
+                // 1.05 seconds. The second SW value controls the spatial
+                // frequency (the phase step between glyphs), not that speed.
                 int waveIndex = Math.Max(0, glyph.Index - state.SineStartIndex);
-                // The 1080p capture moves 12 px for amplitude 10. Scaling
-                // from that text size gives 6 px at the default preview 12 pt.
+                // At the captured 1080p/game font size, amplitude 10 moves the
+                // glyph about 12 px. Scale it with the selectable preview font.
                 float scaledAmplitude = state.SineAmplitude * previewFont.SizeInPoints / 20.0f;
-                double phase = seconds * state.SineFrequency * 6.0 + waveIndex * 0.08;
+                double phase = seconds * 6.0 + waveIndex * state.SineFrequency * 0.08;
                 y += (float)Math.Round(Math.Sin(phase) * scaledAmplitude,
                     MidpointRounding.AwayFromZero);
             }
             if (state.Shakey)
             {
-                int interval = Math.Max(1, Convert.ToInt32(Math.Max(1.0f, state.ShakeSpeed) * 1000.0 / 30.0));
-                Random random = new Random(glyph.Index * 7919 ^ Convert.ToInt32(animationTime / interval));
+                // Speed is a hold time in EngineX's native 30 Hz ticks: the
+                // captures change ST 2 every four 60 Hz frames and ST 8 every
+                // sixteen. Calculate the tick directly so rounding 1000/30
+                // cannot introduce an accumulating cadence error.
+                int shakeFrame = (int)Math.Floor(animationTime * 30.0
+                    / (Math.Max(1.0f, state.ShakeSpeed) * 1000.0));
+                Random random = new Random(glyph.Index * 7919 ^ shakeFrame);
                 // The captured game font is roughly equivalent to 24 pt in
                 // this preview: ST's native variance 2 therefore becomes one
                 // pixel at the default 12 pt, and scales with the chosen size.
@@ -861,7 +947,7 @@ namespace EuroText2
             int maximum = Math.Max(minimum, state.FountainDuration);
             if (minimum == maximum) return maximum;
 
-            // EngineX assigns each glyph an independent landing time. A local
+            // Assign each glyph an independent landing time. A local
             // integer hash gives the preview the same irregular distribution
             // without changing from repaint to repaint.
             unchecked
