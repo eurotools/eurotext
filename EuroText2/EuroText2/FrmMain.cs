@@ -21,6 +21,8 @@ namespace EuroText2
         public FrmMain()
         {
             InitializeComponent();
+            tabControlTextPreview.Enabled = chkEnablePreview.Checked;
+            UpdateUiState();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -38,6 +40,8 @@ namespace EuroText2
                 RecentFilesMenu.AddFile(GlobalVariables.WorkingDirectory);
                 RecentFilesMenu.SaveToIniFile();
             }
+
+            UpdateUiState();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -164,6 +168,19 @@ namespace EuroText2
                 lboxOutSections.EndUpdate();
                 lblTotalOutSections.Text = "Total: " + lboxOutSections.Items.Count;
             }
+            else
+            {
+                lboxOutSections.BeginUpdate();
+                lboxOutSections.Items.Clear();
+                lboxOutSections.EndUpdate();
+                lboxSectionTexts.BeginUpdate();
+                lboxSectionTexts.Items.Clear();
+                lboxSectionTexts.EndUpdate();
+                lblTotalOutSections.Text = "Total: 0";
+                lblTotalHashCodes.Text = "Total: 0";
+            }
+
+            UpdateUiState();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -181,10 +198,11 @@ namespace EuroText2
                 string[] currentGroupHashcodes = CommonFunctions.GetSectionHashcodes(currentSection);
                 lboxSectionTexts.Items.AddRange(currentGroupHashcodes);
 
-                lblTotalHashCodes.Text = "Total: " + lboxSectionTexts.Items.Count;
             }
 
             lboxSectionTexts.EndUpdate();
+            lblTotalHashCodes.Text = "Total: " + lboxSectionTexts.Items.Count;
+            UpdateUiState();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -760,6 +778,8 @@ namespace EuroText2
 
                 lblTotalGroups.Text = "Total: " + lboxGroups.Items.Count;
             }
+
+            UpdateUiState();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -792,19 +812,109 @@ namespace EuroText2
         //-------------------------------------------------------------------------------------------------------------------------------
         private void ChkEnablePreview_CheckedChanged(object sender, EventArgs e)
         {
+            tabControlTextPreview.Enabled = chkEnablePreview.Checked;
+
             if (chkEnablePreview.Checked)
             {
                 CommonFunctions.AddLanguagesToPreviewControl(tabControlTextPreview);
+
+                if (lboxSectionTexts.SelectedItems.Count == 1)
+                {
+                    string filePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", lboxSectionTexts.SelectedItems[0] + ".etf");
+                    CommonFunctions.PreviewTextFile(tabControlTextPreview, filePath);
+                }
             }
+
+            UpdateUiState();
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
         private void LboxSectionTexts_SelectedIndexChanged(object sender, EventArgs e)
         {
+            UpdateUiState();
             if (lboxSectionTexts.SelectedItems.Count != 1 || !chkEnablePreview.Checked) return;
 
             string filePath = Path.Combine(GlobalVariables.WorkingDirectory, "Messages", lboxSectionTexts.SelectedItems[0] + ".etf");
             CommonFunctions.PreviewTextFile(tabControlTextPreview, filePath);
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void UpdateUiState()
+        {
+            bool projectLoaded = !string.IsNullOrEmpty(GlobalVariables.WorkingDirectory);
+            bool groupSelected = lboxGroups.SelectedItem != null;
+            bool sectionSelected = lboxOutSections.SelectedItem != null;
+            int selectedTextCount = lboxSectionTexts.SelectedItems.Count;
+            bool oneTextSelected = selectedTextCount == 1;
+            bool anyTextSelected = selectedTextCount > 0;
+
+            Button_GroupNew.Enabled = projectLoaded;
+            Button_GroupRename.Enabled = groupSelected;
+            Button_GroupDelete.Enabled = groupSelected;
+            Button_GroupRefresh.Enabled = projectLoaded;
+            MenuItemGroups_New.Enabled = projectLoaded;
+            MenuItemGroups_Rename.Enabled = groupSelected;
+            MenuItemGroups_Delete.Enabled = groupSelected;
+            MenuItemGroups_Refresh.Enabled = projectLoaded;
+
+            Button_ManageSections.Enabled = projectLoaded;
+            Button_TextNew.Enabled = projectLoaded;
+            Button_TextEdit.Enabled = anyTextSelected;
+            Button_TextRename.Enabled = oneTextSelected;
+            Button_TextDelete.Enabled = anyTextSelected;
+            MenuItemTextEdit.Enabled = anyTextSelected;
+            MenuItemTextNew.Enabled = projectLoaded;
+            MenuItemTextDelete.Enabled = anyTextSelected;
+            MenuItemTextRename.Enabled = oneTextSelected;
+            MenuItemTextEditCategories.Enabled = anyTextSelected;
+            MenuItemTextEditGroups.Enabled = anyTextSelected;
+            MenuItemTextCopyHashCode.Enabled = oneTextSelected;
+            MenuItemTextExport.Enabled = sectionSelected && lboxSectionTexts.Items.Count > 0;
+
+            string groupName = groupSelected ? lboxGroups.SelectedItem.ToString() : "Select group";
+            string sectionName = sectionSelected ? lboxOutSections.SelectedItem.ToString() : "Select section";
+            string textName;
+            if (oneTextSelected)
+            {
+                textName = lboxSectionTexts.SelectedItem.ToString();
+            }
+            else if (selectedTextCount > 1)
+            {
+                textName = selectedTextCount + " dialogs selected";
+            }
+            else
+            {
+                textName = "Select dialog";
+            }
+
+            StatusLabel_Context.Text = projectLoaded
+                ? string.Format("Selection: {0}  >  {1}  >  {2}", groupName, sectionName, textName)
+                : "Selection: no project loaded";
+
+            if (!projectLoaded)
+            {
+                StatusLabel_Hint.Text = "Open or create a project to begin.";
+            }
+            else if (!groupSelected)
+            {
+                StatusLabel_Hint.Text = "Start by selecting a text group.";
+            }
+            else if (!sectionSelected)
+            {
+                StatusLabel_Hint.Text = "Now select an output section.";
+            }
+            else if (!anyTextSelected)
+            {
+                StatusLabel_Hint.Text = "Select a dialog; double-click it to edit.";
+            }
+            else if (oneTextSelected)
+            {
+                StatusLabel_Hint.Text = "Double-click to edit or right-click for more actions.";
+            }
+            else
+            {
+                StatusLabel_Hint.Text = "Multiple dialogs selected; batch actions are available from the context menu.";
+            }
         }
     }
 

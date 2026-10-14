@@ -31,7 +31,12 @@ namespace EuroText2
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
+            this.ToolTip_Main = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Button_GroupRefresh = new System.Windows.Forms.Button();
+            this.Button_GroupDelete = new System.Windows.Forms.Button();
+            this.Button_GroupRename = new System.Windows.Forms.Button();
+            this.Button_GroupNew = new System.Windows.Forms.Button();
             this.lblTotalGroups = new System.Windows.Forms.Label();
             this.lboxGroups = new System.Windows.Forms.ListBox();
             this.ContextMenu_Groups = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -64,9 +69,14 @@ namespace EuroText2
             this.Button_Output = new System.Windows.Forms.Button();
             this.Checkbox_IncludeHashCodesWithNoSection = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.Button_ManageSections = new System.Windows.Forms.Button();
             this.lblTotalOutSections = new System.Windows.Forms.Label();
             this.lboxOutSections = new System.Windows.Forms.ListBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.Button_TextDelete = new System.Windows.Forms.Button();
+            this.Button_TextRename = new System.Windows.Forms.Button();
+            this.Button_TextEdit = new System.Windows.Forms.Button();
+            this.Button_TextNew = new System.Windows.Forms.Button();
             this.lblTotalHashCodes = new System.Windows.Forms.Label();
             this.lboxSectionTexts = new System.Windows.Forms.ListBox();
             this.ContextMenu_Texts = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -99,6 +109,9 @@ namespace EuroText2
             this.grbxEnableTextPreview = new System.Windows.Forms.GroupBox();
             this.tabControlTextPreview = new System.Windows.Forms.TabControl();
             this.chkEnablePreview = new System.Windows.Forms.CheckBox();
+            this.Status_Main = new System.Windows.Forms.StatusStrip();
+            this.StatusLabel_Context = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusLabel_Hint = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1.SuspendLayout();
             this.ContextMenu_Groups.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -109,12 +122,17 @@ namespace EuroText2
             this.ContextMenu_Texts.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.grbxEnableTextPreview.SuspendLayout();
+            this.Status_Main.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.Button_GroupRefresh);
+            this.groupBox1.Controls.Add(this.Button_GroupDelete);
+            this.groupBox1.Controls.Add(this.Button_GroupRename);
+            this.groupBox1.Controls.Add(this.Button_GroupNew);
             this.groupBox1.Controls.Add(this.lblTotalGroups);
             this.groupBox1.Controls.Add(this.lboxGroups);
             this.groupBox1.Location = new System.Drawing.Point(2, 27);
@@ -122,7 +140,55 @@ namespace EuroText2
             this.groupBox1.Size = new System.Drawing.Size(243, 659);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Text Groups";
+            this.groupBox1.Text = "1. Text Groups";
+            // 
+            // Button_GroupRefresh
+            // 
+            this.Button_GroupRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_GroupRefresh.Location = new System.Drawing.Point(177, 607);
+            this.Button_GroupRefresh.Name = "Button_GroupRefresh";
+            this.Button_GroupRefresh.Size = new System.Drawing.Size(60, 25);
+            this.Button_GroupRefresh.TabIndex = 4;
+            this.Button_GroupRefresh.Text = "Refresh";
+            this.ToolTip_Main.SetToolTip(this.Button_GroupRefresh, "Reload the text groups from the project.");
+            this.Button_GroupRefresh.UseVisualStyleBackColor = true;
+            this.Button_GroupRefresh.Click += new System.EventHandler(this.MenuItemGroups_Refresh_Click);
+            // 
+            // Button_GroupDelete
+            // 
+            this.Button_GroupDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_GroupDelete.Location = new System.Drawing.Point(122, 607);
+            this.Button_GroupDelete.Name = "Button_GroupDelete";
+            this.Button_GroupDelete.Size = new System.Drawing.Size(53, 25);
+            this.Button_GroupDelete.TabIndex = 3;
+            this.Button_GroupDelete.Text = "Delete";
+            this.ToolTip_Main.SetToolTip(this.Button_GroupDelete, "Delete the selected text group.");
+            this.Button_GroupDelete.UseVisualStyleBackColor = true;
+            this.Button_GroupDelete.Click += new System.EventHandler(this.MenuItemGroups_Delete_Click);
+            // 
+            // Button_GroupRename
+            // 
+            this.Button_GroupRename.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_GroupRename.Location = new System.Drawing.Point(59, 607);
+            this.Button_GroupRename.Name = "Button_GroupRename";
+            this.Button_GroupRename.Size = new System.Drawing.Size(61, 25);
+            this.Button_GroupRename.TabIndex = 2;
+            this.Button_GroupRename.Text = "Rename";
+            this.ToolTip_Main.SetToolTip(this.Button_GroupRename, "Rename the selected text group.");
+            this.Button_GroupRename.UseVisualStyleBackColor = true;
+            this.Button_GroupRename.Click += new System.EventHandler(this.MenuItemGroups_Rename_Click);
+            // 
+            // Button_GroupNew
+            // 
+            this.Button_GroupNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_GroupNew.Location = new System.Drawing.Point(3, 607);
+            this.Button_GroupNew.Name = "Button_GroupNew";
+            this.Button_GroupNew.Size = new System.Drawing.Size(54, 25);
+            this.Button_GroupNew.TabIndex = 1;
+            this.Button_GroupNew.Text = "New";
+            this.ToolTip_Main.SetToolTip(this.Button_GroupNew, "Create a new text group.");
+            this.Button_GroupNew.UseVisualStyleBackColor = true;
+            this.Button_GroupNew.Click += new System.EventHandler(this.MenuItemGroups_New_Click);
             // 
             // lblTotalGroups
             // 
@@ -131,7 +197,7 @@ namespace EuroText2
             this.lblTotalGroups.Location = new System.Drawing.Point(6, 639);
             this.lblTotalGroups.Name = "lblTotalGroups";
             this.lblTotalGroups.Size = new System.Drawing.Size(43, 13);
-            this.lblTotalGroups.TabIndex = 1;
+            this.lblTotalGroups.TabIndex = 5;
             this.lblTotalGroups.Text = "Total: 0";
             // 
             // lboxGroups
@@ -144,8 +210,9 @@ namespace EuroText2
             this.lboxGroups.HorizontalScrollbar = true;
             this.lboxGroups.Location = new System.Drawing.Point(3, 16);
             this.lboxGroups.Name = "lboxGroups";
-            this.lboxGroups.Size = new System.Drawing.Size(237, 615);
+            this.lboxGroups.Size = new System.Drawing.Size(237, 589);
             this.lboxGroups.TabIndex = 0;
+            this.ToolTip_Main.SetToolTip(this.lboxGroups, "Select a group to filter the available output sections. Right-click for more actions.");
             this.lboxGroups.SelectedIndexChanged += new System.EventHandler(this.LboxGroups_SelectedIndexChanged);
             // 
             // ContextMenu_Groups
@@ -469,6 +536,7 @@ namespace EuroText2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox2.Controls.Add(this.Button_ManageSections);
             this.groupBox2.Controls.Add(this.lblTotalOutSections);
             this.groupBox2.Controls.Add(this.lboxOutSections);
             this.groupBox2.Location = new System.Drawing.Point(251, 27);
@@ -476,7 +544,19 @@ namespace EuroText2
             this.groupBox2.Size = new System.Drawing.Size(228, 659);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Output Sections";
+            this.groupBox2.Text = "2. Output Sections";
+            // 
+            // Button_ManageSections
+            // 
+            this.Button_ManageSections.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_ManageSections.Location = new System.Drawing.Point(3, 607);
+            this.Button_ManageSections.Name = "Button_ManageSections";
+            this.Button_ManageSections.Size = new System.Drawing.Size(112, 25);
+            this.Button_ManageSections.TabIndex = 1;
+            this.Button_ManageSections.Text = "Manage Sections...";
+            this.ToolTip_Main.SetToolTip(this.Button_ManageSections, "Assign dialogs to output sections.");
+            this.Button_ManageSections.UseVisualStyleBackColor = true;
+            this.Button_ManageSections.Click += new System.EventHandler(this.BtnSetTextSections_Click);
             // 
             // lblTotalOutSections
             // 
@@ -485,7 +565,7 @@ namespace EuroText2
             this.lblTotalOutSections.Location = new System.Drawing.Point(6, 639);
             this.lblTotalOutSections.Name = "lblTotalOutSections";
             this.lblTotalOutSections.Size = new System.Drawing.Size(43, 13);
-            this.lblTotalOutSections.TabIndex = 1;
+            this.lblTotalOutSections.TabIndex = 2;
             this.lblTotalOutSections.Text = "Total: 0";
             // 
             // lboxOutSections
@@ -497,9 +577,10 @@ namespace EuroText2
             this.lboxOutSections.HorizontalScrollbar = true;
             this.lboxOutSections.Location = new System.Drawing.Point(3, 16);
             this.lboxOutSections.Name = "lboxOutSections";
-            this.lboxOutSections.Size = new System.Drawing.Size(222, 615);
+            this.lboxOutSections.Size = new System.Drawing.Size(222, 589);
             this.lboxOutSections.Sorted = true;
             this.lboxOutSections.TabIndex = 0;
+            this.ToolTip_Main.SetToolTip(this.lboxOutSections, "Select an output section to show its dialogs.");
             this.lboxOutSections.SelectedIndexChanged += new System.EventHandler(this.LboxOutSections_SelectedIndexChanged);
             // 
             // groupBox5
@@ -507,6 +588,10 @@ namespace EuroText2
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.Button_TextDelete);
+            this.groupBox5.Controls.Add(this.Button_TextRename);
+            this.groupBox5.Controls.Add(this.Button_TextEdit);
+            this.groupBox5.Controls.Add(this.Button_TextNew);
             this.groupBox5.Controls.Add(this.lblTotalHashCodes);
             this.groupBox5.Controls.Add(this.lboxSectionTexts);
             this.groupBox5.Location = new System.Drawing.Point(485, 27);
@@ -514,7 +599,55 @@ namespace EuroText2
             this.groupBox5.Size = new System.Drawing.Size(281, 469);
             this.groupBox5.TabIndex = 7;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Section Dialogs";
+            this.groupBox5.Text = "3. Dialogs / HashCodes";
+            // 
+            // Button_TextDelete
+            // 
+            this.Button_TextDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_TextDelete.Location = new System.Drawing.Point(191, 404);
+            this.Button_TextDelete.Name = "Button_TextDelete";
+            this.Button_TextDelete.Size = new System.Drawing.Size(58, 25);
+            this.Button_TextDelete.TabIndex = 4;
+            this.Button_TextDelete.Text = "Delete";
+            this.ToolTip_Main.SetToolTip(this.Button_TextDelete, "Delete the selected dialog or dialogs.");
+            this.Button_TextDelete.UseVisualStyleBackColor = true;
+            this.Button_TextDelete.Click += new System.EventHandler(this.MenuItemTextDelete_Click);
+            // 
+            // Button_TextRename
+            // 
+            this.Button_TextRename.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_TextRename.Location = new System.Drawing.Point(125, 404);
+            this.Button_TextRename.Name = "Button_TextRename";
+            this.Button_TextRename.Size = new System.Drawing.Size(64, 25);
+            this.Button_TextRename.TabIndex = 3;
+            this.Button_TextRename.Text = "Rename";
+            this.ToolTip_Main.SetToolTip(this.Button_TextRename, "Rename the selected dialog.");
+            this.Button_TextRename.UseVisualStyleBackColor = true;
+            this.Button_TextRename.Click += new System.EventHandler(this.MenuItemTextRename_Click);
+            // 
+            // Button_TextEdit
+            // 
+            this.Button_TextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_TextEdit.Location = new System.Drawing.Point(65, 404);
+            this.Button_TextEdit.Name = "Button_TextEdit";
+            this.Button_TextEdit.Size = new System.Drawing.Size(58, 25);
+            this.Button_TextEdit.TabIndex = 2;
+            this.Button_TextEdit.Text = "Edit";
+            this.ToolTip_Main.SetToolTip(this.Button_TextEdit, "Open the selected dialog in the text editor.");
+            this.Button_TextEdit.UseVisualStyleBackColor = true;
+            this.Button_TextEdit.Click += new System.EventHandler(this.MenuItemTextEdit_Click);
+            // 
+            // Button_TextNew
+            // 
+            this.Button_TextNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_TextNew.Location = new System.Drawing.Point(3, 404);
+            this.Button_TextNew.Name = "Button_TextNew";
+            this.Button_TextNew.Size = new System.Drawing.Size(60, 25);
+            this.Button_TextNew.TabIndex = 1;
+            this.Button_TextNew.Text = "New";
+            this.ToolTip_Main.SetToolTip(this.Button_TextNew, "Create a new dialog in the current project.");
+            this.Button_TextNew.UseVisualStyleBackColor = true;
+            this.Button_TextNew.Click += new System.EventHandler(this.MenuItemTextNew_Click);
             // 
             // lblTotalHashCodes
             // 
@@ -523,7 +656,7 @@ namespace EuroText2
             this.lblTotalHashCodes.Location = new System.Drawing.Point(6, 449);
             this.lblTotalHashCodes.Name = "lblTotalHashCodes";
             this.lblTotalHashCodes.Size = new System.Drawing.Size(43, 13);
-            this.lblTotalHashCodes.TabIndex = 1;
+            this.lblTotalHashCodes.TabIndex = 5;
             this.lblTotalHashCodes.Text = "Total: 0";
             // 
             // lboxSectionTexts
@@ -537,9 +670,10 @@ namespace EuroText2
             this.lboxSectionTexts.Location = new System.Drawing.Point(3, 16);
             this.lboxSectionTexts.Name = "lboxSectionTexts";
             this.lboxSectionTexts.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lboxSectionTexts.Size = new System.Drawing.Size(275, 420);
+            this.lboxSectionTexts.Size = new System.Drawing.Size(275, 381);
             this.lboxSectionTexts.Sorted = true;
             this.lboxSectionTexts.TabIndex = 0;
+            this.ToolTip_Main.SetToolTip(this.lboxSectionTexts, "Double-click to edit. Use Ctrl or Shift to select several dialogs.");
             this.lboxSectionTexts.SelectedIndexChanged += new System.EventHandler(this.LboxSectionTexts_SelectedIndexChanged);
             this.lboxSectionTexts.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LboxSectionTexts_MouseDoubleClick);
             // 
@@ -742,6 +876,7 @@ namespace EuroText2
             this.grbxEnableTextPreview.Size = new System.Drawing.Size(281, 184);
             this.grbxEnableTextPreview.TabIndex = 9;
             this.grbxEnableTextPreview.TabStop = false;
+            this.grbxEnableTextPreview.Text = "Text Preview";
             // 
             // tabControlTextPreview
             // 
@@ -751,23 +886,51 @@ namespace EuroText2
             this.tabControlTextPreview.SelectedIndex = 0;
             this.tabControlTextPreview.Size = new System.Drawing.Size(275, 165);
             this.tabControlTextPreview.TabIndex = 1;
+            this.ToolTip_Main.SetToolTip(this.tabControlTextPreview, "Preview the selected dialog in every project language.");
             // 
             // chkEnablePreview
             // 
             this.chkEnablePreview.AutoSize = true;
-            this.chkEnablePreview.Location = new System.Drawing.Point(6, 0);
+            this.chkEnablePreview.Location = new System.Drawing.Point(87, 0);
             this.chkEnablePreview.Name = "chkEnablePreview";
-            this.chkEnablePreview.Size = new System.Drawing.Size(119, 17);
+            this.chkEnablePreview.Size = new System.Drawing.Size(132, 17);
             this.chkEnablePreview.TabIndex = 0;
-            this.chkEnablePreview.Text = "Enable text preview";
+            this.chkEnablePreview.Text = "Enable automatic preview";
+            this.ToolTip_Main.SetToolTip(this.chkEnablePreview, "Update the preview when exactly one dialog is selected.");
             this.chkEnablePreview.UseVisualStyleBackColor = true;
             this.chkEnablePreview.CheckedChanged += new System.EventHandler(this.ChkEnablePreview_CheckedChanged);
+            // 
+            // Status_Main
+            // 
+            this.Status_Main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusLabel_Context,
+            this.StatusLabel_Hint});
+            this.Status_Main.Location = new System.Drawing.Point(0, 696);
+            this.Status_Main.Name = "Status_Main";
+            this.Status_Main.Size = new System.Drawing.Size(950, 22);
+            this.Status_Main.SizingGrip = false;
+            this.Status_Main.TabIndex = 10;
+            // 
+            // StatusLabel_Context
+            // 
+            this.StatusLabel_Context.Name = "StatusLabel_Context";
+            this.StatusLabel_Context.Size = new System.Drawing.Size(127, 17);
+            this.StatusLabel_Context.Text = "Selection: no project";
+            // 
+            // StatusLabel_Hint
+            // 
+            this.StatusLabel_Hint.Name = "StatusLabel_Hint";
+            this.StatusLabel_Hint.Size = new System.Drawing.Size(808, 17);
+            this.StatusLabel_Hint.Spring = true;
+            this.StatusLabel_Hint.Text = "Select a group, an output section and then a dialog.";
+            this.StatusLabel_Hint.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(950, 688);
+            this.ClientSize = new System.Drawing.Size(950, 718);
+            this.Controls.Add(this.Status_Main);
             this.Controls.Add(this.grbxEnableTextPreview);
             this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.groupBox5);
@@ -799,6 +962,8 @@ namespace EuroText2
             this.MainMenu.PerformLayout();
             this.grbxEnableTextPreview.ResumeLayout(false);
             this.grbxEnableTextPreview.PerformLayout();
+            this.Status_Main.ResumeLayout(false);
+            this.Status_Main.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -873,6 +1038,19 @@ namespace EuroText2
         private System.Windows.Forms.Button btnProjectCompare;
         private System.Windows.Forms.Button btnCheckExitMarkers;
         private System.Windows.Forms.Button btnCheckColorWords;
+        private System.Windows.Forms.ToolTip ToolTip_Main;
+        private System.Windows.Forms.Button Button_GroupNew;
+        private System.Windows.Forms.Button Button_GroupRename;
+        private System.Windows.Forms.Button Button_GroupDelete;
+        private System.Windows.Forms.Button Button_GroupRefresh;
+        private System.Windows.Forms.Button Button_ManageSections;
+        private System.Windows.Forms.Button Button_TextNew;
+        private System.Windows.Forms.Button Button_TextEdit;
+        private System.Windows.Forms.Button Button_TextRename;
+        private System.Windows.Forms.Button Button_TextDelete;
+        private System.Windows.Forms.StatusStrip Status_Main;
+        private System.Windows.Forms.ToolStripStatusLabel StatusLabel_Context;
+        private System.Windows.Forms.ToolStripStatusLabel StatusLabel_Hint;
     }
 }
 
